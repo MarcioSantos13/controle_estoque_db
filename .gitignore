@@ -8,3 +8,8 @@ utils/__pycache__/db_handler.cpython-313.pyc
 utils/__pycache__/excel_importer.cpython-313.pyc
 utils/__pycache__/logger.cpython-313.pyc
 *.log
+relatorios/controle_patrimonial.db
+utils/__pycache__/db_handler.cpython-313.pyc
+utils/__pycache__/excel_importer.cpython-313.pyc
+utils/__pycache__/logger.cpython-313.pyc
+utils/__pycache__/logger.cpython-313.pyc
