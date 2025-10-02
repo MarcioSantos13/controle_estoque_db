@@ -1,11 +1,4 @@
-<!-- No menu de navegação principal -->
-<li class="nav-item">
-    <a class="nav-link" href="{{ url_for('ajuda') }}">
-        <i class="fas fa-question-circle me-1"></i>Ajuda
-    </a>
-</li>
-
-<!-- Ou como dropdown -->
+<!-- ADICIONE ESTE CÓDIGO NO MENU PRINCIPAL -->
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
         <i class="fas fa-question-circle me-1"></i>Ajuda
@@ -14,13 +7,23 @@
         <li><a class="dropdown-item" href="{{ url_for('ajuda') }}">
             <i class="fas fa-life-ring me-2"></i>Central de Ajuda
         </a></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='cadastro') }}">
             <i class="fas fa-plus-circle me-2"></i>Como Cadastrar
         </a></li>
         <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='localizacao') }}">
             <i class="fas fa-search-location me-2"></i>Localizar Bens
         </a></li>
+        <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='relatorios') }}">
+            <i class="fas fa-chart-bar me-2"></i>Relatórios
+        </a></li>
+        <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='importacao') }}">
+            <i class="fas fa-file-import me-2"></i>Importar Dados
+        </a></li>
         <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='problemas') }}">
+            <i class="fas fa-tools me-2"></i>Problemas Comuns
+        </a></li>
         <li><a class="dropdown-item" href="{{ url_for('ajuda_topico', topico='contato') }}">
             <i class="fas fa-phone me-2"></i>Suporte
         </a></li>
