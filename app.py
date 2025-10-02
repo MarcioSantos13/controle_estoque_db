@@ -1474,3 +1474,22 @@ if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     app.run(debug=True)
+    
+# ==============================
+# ROTAS DE AJUDA
+# ==============================
+
+@app.route('/ajuda')
+def ajuda():
+    """Página central de ajuda do sistema"""
+    return render_template('ajuda.html')
+
+@app.route('/ajuda/<topico>')
+def ajuda_topico(topico):
+    """Página de ajuda por tópico específico"""
+    topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'problemas', 'importacao']
+    
+    if topico not in topicos_validos:
+        abort(404)
+    
+    return render_template('ajuda.html', topico_selecionado=topico)

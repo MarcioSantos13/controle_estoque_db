@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Ajuda - Sistema de Controle Patrimonial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #17a2b8;
+        }
+        
+        .help-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            height: 100%;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .step-number {
+            background: var(--success);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .problem-card {
+            border-left: 4px solid var(--danger);
+            background: #fff5f5;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .solution-card {
+            border-left: 4px solid var(--success);
+            background: #f0fff4;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .nav-pills .nav-link:hover:not(.active) {
+            background: #e9ecef;
+        }
+        
+        .quick-action-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            color: white;
+            background: var(--primary);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        
+        .search-highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container Principal -->
+    <div class="container-fluid px-0">
+        <!-- Hero Section -->
+        <div class="help-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold mb-3">
+                            <i class="fas fa-hands-helping me-3"></i>
+                            Central de Ajuda
+                        </h1>
+                        <p class="lead mb-4">Encontre respostas rápidas e tutoriais completos para usar o Sistema de Controle Patrimonial</p>
+                        
+                        <!-- Barra de Pesquisa -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="input-group input-group-lg">
+                                    <input type="text" class="form-control" placeholder="Digite sua dúvida (ex: como cadastrar um bem, importar dados...)">
+                                    <button class="btn btn-light" type="button">
+                                        <i class="fas fa-search"></i> Buscar
+                                    </button>
+                                </div>
+                                <div class="form-text text-white-50 mt-2">
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Exemplos: "cadastrar bem", "exportar relatório", "bem não encontrado"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <i class="fas fa-life-ring fa-10x text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="container">
+            <div class="row">
+                <!-- Menu Lateral -->
+                <div class="col-lg-3">
+                    <div class="sticky-top" style="top: 2rem;">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-map me-2"></i>Navegação Rápida</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="nav flex-column nav-pills">
+                                    <a class="nav-link active" href="#inicio">
+                                        <i class="fas fa-home me-2"></i>Início
+                                    </a>
+                                    <a class="nav-link" href="#cadastro">
+                                        <i class="fas fa-plus-circle me-2"></i>Cadastro de Bens
+                                    </a>
+                                    <a class="nav-link" href="#localizacao">
+                                        <i class="fas fa-search-location me-2"></i>Localização
+                                    </a>
+                                    <a class="nav-link" href="#relatorios">
+                                        <i class="fas fa-chart-bar me-2"></i>Relatórios
+                                    </a>
+                                    <a class="nav-link" href="#importacao">
+                                        <i class="fas fa-file-import me-2"></i>Importação
+                                    </a>
+                                    <a class="nav-link" href="#problemas">
+                                        <i class="fas fa-tools me-2"></i>Solução de Problemas
+                                    </a>
+                                    <a class="nav-link" href="#contato">
+                                        <i class="fas fa-phone me-2"></i>Suporte
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ações Rápidas -->
+                        <div class="card mt-3">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Ações Rápidas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <a href="{{ url_for('novo_bem') }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Cadastrar Bem
+                                    </a>
+                                    <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-database me-1"></i>Ver Todos os Bens
+                                    </a>
+                                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-home me-1"></i>Página Inicial
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="col-lg-9">
+                    <!-- Seção: Início -->
+                    <section id="inicio" class="mb-5">
+                        <h2 class="section-title">Bem-vindo à Central de Ajuda! 👋</h2>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="quick-action-card">
+                                    <h3><i class="fas fa-rocket me-2"></i>Primeira Vez Aqui?</h3>
+                                    <p class="mb-3">Comece pelo guia de primeiros passos e familiarize-se com as funcionalidades principais do sistema</p>
+                                    <a href="#cadastro" class="btn btn-light">Começar Agora</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="mt-4 mb-3">Funcionalidades Principais</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <i class="fas fa-database feature-icon"></i>
+                                        </div>
+                                        <h5 class="card-title text-center">Cadastro Completo</h5>
+                                        <p class="card-text">Gerencie todos os dados dos bens patrimoniais com formulários intuitivos e campos organizados.</p>
+                                        <ul class="small">
+                                            <li>Número único do bem</li>
+                                            <li>Descrição detalhada</li>
+                                            <li>Localização e responsável</li>
+                                            <li>Datas de vistoria</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <i class="fas fa-search-location feature-icon"></i>
+                                        </div>
+                                        <h5 class="card-title text-center">Localização Inteligente</h5>
+                                        <p class="card-text">Sistema rápido para marcar bens como localizados e acompanhar itens pendentes de forma eficiente.</p>
+                                        <ul class="small">
+                                            <li>Busca instantânea</li>
+                                            <li>Status em tempo real</li>
+                                            <li>Histórico de localizações</li>
+                                            <li>Relatórios de situação</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <i class="fas fa-chart-line feature-icon"></i>
+                                        </div>
+                                        <h5 class="card-title text-center">Relatórios Avançados</h5>
+                                        <p class="card-text">Gere relatórios detalhados e exporte dados para Excel com filtros avançados e formatação profissional.</p>
+                                        <ul class="small">
+                                            <li>Exportação para Excel</li>
+                                            <li>Filtros por localidade</li>
+                                            <li>Relatórios por status</li>
+                                            <li>Dados estruturados</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção: Cadastro -->
+                    <section id="cadastro" class="mb-5">
+                        <h2 class="section-title">📝 Cadastro de Bens</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Dica importante:</strong> Mantenha os dados dos bens sempre atualizados para um controle patrimonial eficiente.
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Como Cadastrar um Novo Bem</h4>
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h5>Acesse o formulário de cadastro</h5>
+                            <p>Clique em <strong>"Novo Bem"</strong> no menu superior ou acesse através do <strong>"Sistema CRUD"</strong> → botão <strong>"Novo Bem"</strong>.</p>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h5>Preencha os dados obrigatórios</h5>
+                            <p>Informe os campos essenciais marcados com <span class="text-danger">*</span>:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Número do Bem:</strong> Código único (ex: "PT-001", "COMP-2024-001")</li>
+                                        <li><strong>Nome do Bem:</strong> Descrição completa do item</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-warning small">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        O número do bem deve ser único no sistema!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h5>Complete com informações adicionais</h5>
+                            <p>Preencha os campos opcionais para um cadastro mais completo:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Localização:</strong> Onde o bem está instalado</li>
+                                        <li><strong>Responsável:</strong> Pessoa encarregada</li>
+                                        <li><strong>Auditor:</strong> Responsável pela vistoria</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Data Última Vistoria:</strong> Última verificação</li>
+                                        <li><strong>Data Vistoria Atual:</strong> Verificação em curso</li>
+                                        <li><strong>Observações:</strong> Informações complementares</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <h5>Salve o cadastro</h5>
+                            <p>Clique em <button class="btn btn-success btn-sm"><i class="fas fa-save me-1"></i>Salvar</button> para finalizar o cadastro.</p>
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Sucesso!</strong> O bem será cadastrado e aparecerá na lista geral do sistema.
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção: Localização -->
+                    <section id="localizacao" class="mb-5">
+                        <h2 class="section-title">📍 Sistema de Localização</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-bullseye me-2"></i>
+                            Use este sistema para marcar bens como localizados durante vistorias e inventários.
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Localizando um Bem</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="step-card">
+                                    <div class="step-number">1</div>
+                                    <h5>Busque pelo número</h5>
+                                    <p>Na <strong>página inicial</strong>, digite o número do bem no campo de busca:</p>
+                                    <div class="bg-light p-3 rounded">
+                                        <code>Exemplo: PT-001, COMP-2024-001, MOB-003</code>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="step-card">
+                                    <div class="step-number">2</div>
+                                    <h5>Confirme a localização</h5>
+                                    <p>O sistema mostrará a localização atual. Se necessário, informe uma nova localização:</p>
+                                    <div class="bg-light p-3 rounded small">
+                                        <strong>Exemplos de localização:</strong><br>
+                                        "Sala 101 - Departamento TI"<br>
+                                        "Almoxarifado - Prateleira A3"<br>
+                                        "Recepção - Balcão Principal"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="step-card">
+                                    <div class="step-number">3</div>
+                                    <h5>Marque como localizado</h5>
+                                    <p>Clique em <button class="btn btn-primary btn-sm"><i class="fas fa-check me-1"></i>Localizar Bem</button> para confirmar.</p>
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-double me-2"></i>
+                                        O sistema atualizará automaticamente o status do bem para <span class="badge bg-success">Localizado</span>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Verificando Status dos Bens</h4>
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <span class="badge bg-success fs-6 p-2 mb-2">Localizado</span>
+                                <p class="small">Bem encontrado e confirmado</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <span class="badge bg-warning fs-6 p-2 mb-2">Pendente</span>
+                                <p class="small">Aguardando localização</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <span class="badge bg-secondary fs-6 p-2 mb-2">Não Informado</span>
+                                <p class="small">Status não definido</p>
+                            </div>
+                        </div>
+                    </section>
+
+                                       <!-- Seção: Relatórios -->
+                    <section id="relatorios" class="mb-5">
+                        <h2 class="section-title">📊 Relatórios e Exportação</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-file-excel me-2"></i>
+                            <strong>Exportação profissional:</strong> Gere relatórios completos em Excel para análise externa, auditorias e backup.
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Tipos de Relatórios Disponíveis</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-check-circle feature-icon text-success"></i>
+                                        <h5>Bens Localizados</h5>
+                                        <p class="small">Relatório completo de todos os bens com status "Localizado"</p>
+                                        <span class="badge bg-success">Excel</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-clock feature-icon text-warning"></i>
+                                        <h5>Bens Pendentes</h5>
+                                        <p class="small">Lista de bens aguardando localização ou com status pendente</p>
+                                        <span class="badge bg-warning">Excel</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-map-marker-alt feature-icon text-primary"></i>
+                                        <h5>Por Localidade</h5>
+                                        <p class="small">Relatório filtrado por localização específica</p>
+                                        <span class="badge bg-primary">Excel</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Como Gerar Relatórios</h4>
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h5>Acesse a visualização desejada</h5>
+                            <p>No menu principal, clique em <strong>"Visualizar"</strong> e escolha o tipo de relatório:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Bens Localizados:</strong> Itens confirmados</li>
+                                        <li><strong>Bens Não Localizados:</strong> Itens pendentes</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-warning small">
+                                        <i class="fas fa-filter me-1"></i>
+                                        Use os filtros para refinar sua busca antes de exportar
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h5>Exporte para Excel</h5>
+                            <p>Na página de visualização, clique no botão <button class="btn btn-success btn-sm"><i class="fas fa-download me-1"></i>Exportar</button></p>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p>O arquivo será gerado automaticamente com:</p>
+                                    <ul>
+                                        <li>Timestamp no nome do arquivo</li>
+                                        <li>Dados organizados em colunas</li>
+                                        <li>Formatação profissional</li>
+                                        <li>Ordenação por número do bem</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded small">
+                                        <strong>Exemplo de nome:</strong><br>
+                                        <code>bens_localizados_20241201-143022.xlsx</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h5>Relatório por Localidade</h5>
+                            <p>Para relatórios específicos por localização:</p>
+                            <ol>
+                                <li>Acesse <strong>"Relatório por Localidade"</strong></li>
+                                <li>Selecione a localidade desejada no dropdown</li>
+                                <li>Use os filtros de situação se necessário</li>
+                                <li>Clique em <button class="btn btn-primary btn-sm"><i class="fas fa-download me-1"></i>Exportar Localidade</button></li>
+                            </ol>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Estrutura dos Arquivos Exportados</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Coluna</th>
+                                        <th>Descrição</th>
+                                        <th>Exemplo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>numero</strong></td>
+                                        <td>Número único do bem</td>
+                                        <td><code>PT-001</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>nome</strong></td>
+                                        <td>Descrição do bem</td>
+                                        <td>Computador Dell i7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>situacao</strong></td>
+                                        <td>Status atual</td>
+                                        <td>OK / Pendente</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>localizacao</strong></td>
+                                        <td>Local onde se encontra</td>
+                                        <td>Sala 101 - TI</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>responsavel</strong></td>
+                                        <td>Pessoa encarregada</td>
+                                        <td>João Silva</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>data_ultima_vistoria</strong></td>
+                                        <td>Data da última verificação</td>
+                                        <td>2024-01-15</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Seção: Importação -->
+                    <section id="importacao" class="mb-5">
+                        <h2 class="section-title">📤 Importação de Dados</h2>
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Atenção:</strong> A importação substitui dados existentes. Sempre faça backup antes de importar.
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Preparando sua Planilha</h4>
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h5>Estrutura da Planilha</h5>
+                            <p>Sua planilha Excel deve conter estas colunas na primeira linha:</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Coluna Obrigatória</th>
+                                            <th>Tipo</th>
+                                            <th>Exemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>numero</strong></td>
+                                            <td>Texto</td>
+                                            <td>PT-001, COMP-001</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>nome</strong></td>
+                                            <td>Texto</td>
+                                            <td>Computador Dell</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>situacao</strong> (opcional)</td>
+                                            <td>Texto</td>
+                                            <td>OK, Pendente</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>localizacao</strong> (opcional)</td>
+                                            <td>Texto</td>
+                                            <td>Sala 101</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h5>Formato do Arquivo</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>✅ Formatos Suportados</h6>
+                                    <ul>
+                                        <li><strong>.xlsx</strong> (Excel 2007+)</li>
+                                        <li><strong>.xls</strong> (Excel 97-2003)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>❌ Formatos Não Suportados</h6>
+                                    <ul>
+                                        <li>.csv</li>
+                                        <li>.pdf</li>
+                                        <li>.ods</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Processo de Importação</h4>
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h5>Acesse a ferramenta de importação</h5>
+                            <p>Na <strong>página inicial</strong>, role até a seção <strong>"Importar do Excel"</strong></p>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h5>Configure a importação</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Arquivo Excel:</strong> Selecione seu arquivo</li>
+                                        <li><strong>Nome da Aba:</strong> Geralmente "Estoque"</li>
+                                        <li><strong>Backup:</strong> Recomendado marcar esta opção</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-info small">
+                                        <i class="fas fa-database me-1"></i>
+                                        <strong>Backup automático:</strong> O sistema cria uma cópia de segurança antes da importação.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h5>Execute a importação</h5>
+                            <p>Clique em <button class="btn btn-primary btn-sm"><i class="fas fa-upload me-1"></i>Importar Dados</button></p>
+                            <div class="alert alert-success">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                O sistema validará a estrutura do arquivo e importará os dados. Você receberá um relatório completo do processo.
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Validações Realizadas</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <i class="fas fa-check-circle me-2"></i>Validações de Estrutura
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>Formato do arquivo</li>
+                                            <li>Existência da aba especificada</li>
+                                            <li>Colunas obrigatórias presentes</li>
+                                            <li>Tipos de dados básicos</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-white">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Validações de Dados
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>Números de bem duplicados</li>
+                                            <li>Campos obrigatórios preenchidos</li>
+                                            <li>Formato de datas</li>
+                                            <li>Consistência das informações</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção: Problemas -->
+                    <section id="problemas" class="mb-5">
+                        <h2 class="section-title">🛠️ Solução de Problemas</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-life-ring me-2"></i>
+                            Encontre soluções rápidas para os problemas mais comuns. Se não encontrar sua resposta, entre em contato com o suporte.
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Problemas Frequentes</h4>
+
+                        <!-- Problema 1 -->
+                        <div class="problem-card">
+                            <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Problema: "Bem não encontrado" ao tentar localizar</h5>
+                            <p class="mb-2"><strong>Sintoma:</strong> Digito o número do bem mas o sistema diz que não foi encontrado.</p>
+                        </div>
+                        <div class="solution-card">
+                            <h5><i class="fas fa-lightbulb me-2 text-success"></i>Solução</h5>
+                            <ol>
+                                <li><strong>Verifique o número digitado</strong>
+                                    <ul>
+                                        <li>Confirme se não há espaços extras</li>
+                                        <li>Verifique letras maiúsculas/minúsculas</li>
+                                        <li>Confirme caracteres especiais</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Verifique se o bem está cadastrado</strong>
+                                    <ul>
+                                        <li>Acesse "Sistema CRUD"</li>
+                                        <li>Busque pelo número do bem</li>
+                                        <li>Verifique se existe na lista</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Use a busca avançada</strong>
+                                    <ul>
+                                        <li>Vá em "Buscar" no menu</li>
+                                        <li>Digite parte do nome</li>
+                                        <li>Verifique resultados similares</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <!-- Problema 2 -->
+                        <div class="problem-card">
+                            <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Problema: Erro ao importar arquivo Excel</h5>
+                            <p class="mb-2"><strong>Sintoma:</strong> Recebo mensagem de erro ao tentar importar dados do Excel.</p>
+                        </div>
+                        <div class="solution-card">
+                            <h5><i class="fas fa-lightbulb me-2 text-success"></i>Solução</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Verifique o arquivo:</h6>
+                                    <ul>
+                                        <li><strong>Formato:</strong> .xlsx ou .xls</li>
+                                        <li><strong>Aba:</strong> Nome correto da planilha</li>
+                                        <li><strong>Colunas:</strong> Estrutura correta</li>
+                                        <li><strong>Dados:</strong> Sem fórmulas complexas</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Ações corretivas:</h6>
+                                    <ul>
+                                        <li>Salve como .xlsx se for .xls</li>
+                                        <li>Verifique o nome da aba</li>
+                                        <li>Confirme as colunas obrigatórias</li>
+                                        <li>Teste com arquivo de exemplo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Problema 3 -->
+                        <div class="problem-card">
+                            <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Problema: Sistema lento ou travando</h5>
+                            <p class="mb-2"><strong>Sintoma:</strong> O sistema está respondendo lentamente ou congelando.</p>
+                        </div>
+                        <div class="solution-card">
+                            <h5><i class="fas fa-lightbulb me-2 text-success"></i>Solução</h5>
+                            <ol>
+                                <li><strong>Limpe o cache do navegador</strong>
+                                    <ul>
+                                        <li>Ctrl+F5 para recarregar forçado</li>
+                                        <li>Limpe cache e cookies</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Verifique a conexão</strong>
+                                    <ul>
+                                        <li>Teste sua internet</li>
+                                        <li>Verifique se o servidor está online</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Otimize os dados</strong>
+                                    <ul>
+                                        <li>Exporte e remova dados antigos</li>
+                                        <li>Use filtros nas visualizações</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <!-- Problema 4 -->
+                        <div class="problem-card">
+                            <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Problema: Não consigo editar um bem</h5>
+                            <p class="mb-2"><strong>Sintoma:</strong> Clico em editar mas não carrega os dados ou dá erro.</p>
+                        </div>
+                        <div class="solution-card">
+                            <h5><i class="fas fa-lightbulb me-2 text-success"></i>Solução</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Verificações rápidas:</h6>
+                                    <ul>
+                                        <li>Recarregue a página (F5)</li>
+                                        <li>Verifique o console do navegador (F12)</li>
+                                        <li>Teste em outro navegador</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Soluções avançadas:</h6>
+                                    <ul>
+                                        <li>Verifique se o JavaScript está habilitado</li>
+                                        <li>Desative extensões do navegador</li>
+                                        <li>Clear storage do site</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Ferramentas de Diagnóstico</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <i class="fas fa-tools me-2"></i>Console do Navegador
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="small">Pressione <kbd>F12</kbd> e verifique a aba "Console" para mensagens de erro detalhadas.</p>
+                                        <button class="btn btn-outline-info btn-sm" onclick="testarConsole()">
+                                            Testar Console
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-white">
+                                        <i class="fas fa-network-wired me-2"></i>Teste de Conexão
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="small">Verifique se há problemas de rede ou com o servidor.</p>
+                                        <button class="btn btn-outline-warning btn-sm" onclick="testarConexao()">
+                                            Testar Conexão
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção: Contato -->
+                    <section id="contato" class="mb-5">
+                        <h2 class="section-title">📞 Suporte e Contato</h2>
+                        
+                        <div class="alert alert-success">
+                            <i class="fas fa-headset me-2"></i>
+                            Nossa equipe de suporte está pronta para ajudar! Entre em contato pelos canais abaixo.
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-envelope feature-icon text-primary"></i>
+                                        <h5>E-mail de Suporte</h5>
+                                        <p class="mb-2">suporte@controlepatrimonial.com</p>
+                                        <small class="text-muted">Resposta em até 4 horas úteis</small>
+                                        <br>
+                                        <a href="mailto:suporte@controlepatrimonial.com" class="btn btn-primary btn-sm mt-2">
+                                            <i class="fas fa-paper-plane me-1"></i>Enviar E-mail
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-phone feature-icon text-success"></i>
+                                        <h5>Telefone</h5>
+                                        <p class="mb-2">(11) 3456-7890</p>
+                                        <small class="text-muted">Segunda a sexta, 8h às 18h</small>
+                                        <br>
+                                        <a href="tel:1134567890" class="btn btn-success btn-sm mt-2">
+                                            <i class="fas fa-phone me-1"></i>Ligar Agora
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Informações para o Suporte</h4>
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h5>Prepare estas informações</h5>
+                            <p>Antes de entrar em contato, tenha em mãos:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Mensagem de erro completa</strong></li>
+                                        <li><strong>Passos para reproduzir o problema</strong></li>
+                                        <li><strong>Navegador e versão</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><strong>Sistema operacional</strong></li>
+                                        <li><strong>Print screens</strong> (se possível)</li>
+                                        <li><strong>Horário do problema</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h5>Formulário de Contato Rápido</h5>
+                            <form id="formContato">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="nome" class="form-label">Seu Nome *</label>
+                                            <input type="text" class="form-control" id="nome" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">E-mail *</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="assunto" class="form-label">Assunto *</label>
+                                    <select class="form-select" id="assunto" required>
+                                        <option value="">Selecione o assunto...</option>
+                                        <option value="problema-tecnico">Problema Técnico</option>
+                                        <option value="duvida-uso">Dúvida de Uso</option>
+                                        <option value="sugestao">Sugestão de Melhoria</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mensagem" class="form-label">Descrição Detalhada *</label>
+                                    <textarea class="form-control" id="mensagem" rows="5" placeholder="Descreva o problema, os passos que executou, mensagens de erro recebidas..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-1"></i>Enviar Mensagem
+                                </button>
+                            </form>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Horário de Atendimento</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Dia</th>
+                                        <th>Horário</th>
+                                        <th>Tipo de Atendimento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Segunda a Sexta</td>
+                                        <td>08:00 - 18:00</td>
+                                        <td>Completo (telefone e e-mail)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sábado</td>
+                                        <td>09:00 - 12:00</td>
+                                        <td>E-mail apenas</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Domingo</td>
+                                        <td>-</td>
+                                        <td>Plantão para emergências</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section> 
+
+
+
+                    <!-- CONTINUA... (Vou continuar nas próximas seções) -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão Voltar ao Topo -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scroll para navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Atualiza a navegação ativa
+                    document.querySelectorAll('.nav-pills .nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Botão voltar ao topo
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // Sistema de busca simples
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm.length > 2) {
+                // Destacar termos nas seções (implementação básica)
+                document.querySelectorAll('section').forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        section.style.backgroundColor = '#fff3cd';
+                        setTimeout(() => {
+                            section.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                });
+            }
+        });
+
+        // Detectar seção ativa na rolagem
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-pills .nav-link');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Efeitos de hover nos cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        console.log('🔧 Central de Ajuda carregada com sucesso!');
+        console.log('📖 Use este guia para tirar dúvidas sobre o sistema.');
+
+                // Funções de teste
+        function testarConsole() {
+            console.log('=== TESTE DO CONSOLE ===');
+            console.log('✅ Console funcionando corretamente');
+            console.log('📅 Data/Hora:', new Date().toLocaleString());
+            console.log('🌐 Navegador:', navigator.userAgent);
+            console.log('📱 Linguagem:', navigator.language);
+            
+            alert('Teste do console realizado! Verifique o console (F12) para ver os resultados.');
+        }
+
+        function testarConexao() {
+            const startTime = Date.now();
+            fetch(window.location.href)
+                .then(response => {
+                    const endTime = Date.now();
+                    const latency = endTime - startTime;
+                    
+                    if (response.ok) {
+                        alert(`✅ Conexão OK!\nLatência: ${latency}ms\nStatus: ${response.status}`);
+                    } else {
+                        alert(`⚠️ Conexão com problemas\nStatus: ${response.status}\nLatência: ${latency}ms`);
+                    }
+                })
+                .catch(error => {
+                    alert(`❌ Erro de conexão:\n${error.message}`);
+                });
+        }
+
+        // Formulário de contato
+        document.getElementById('formContato').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value,
+                assunto: document.getElementById('assunto').value,
+                mensagem: document.getElementById('mensagem').value
+            };
+            
+            // Simulação de envio
+            console.log('📧 Mensagem de contato:', formData);
+            
+            alert('✅ Mensagem enviada com sucesso! Em breve entraremos em contato.\n\n(Demonstração - em produção isso enviaria um e-mail real)');
+            
+            // Limpar formulário
+            this.reset();
+        });
+
+        // Detectar informações do sistema
+        console.log('=== INFORMAÇÕES DO SISTEMA ===');
+        console.log('User Agent:', navigator.userAgent);
+        console.log('Linguagem:', navigator.language);
+        console.log('Online:', navigator.onLine);
+        console.log('URL:', window.location.href);
+
+        // Verificar se há parâmetros de URL para seção específica
+        const urlParams = new URLSearchParams(window.location.search);
+        const sectionParam = urlParams.get('section');
+        if (sectionParam) {
+            const targetSection = document.getElementById(sectionParam);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
