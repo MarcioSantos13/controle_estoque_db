@@ -4,10 +4,12 @@ import re
 import sqlite3
 import shutil
 import io
+import hashlib
+from functools import wraps
 from datetime import datetime
 from typing import Tuple, Dict, Any, List  # ← Adicione List aqui
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response
+from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response, session, flash
 
 # Importar handlers
 from utils.db_handler import (
@@ -45,6 +47,7 @@ class Config:
     EXPORT_CHUNK_SIZE = 1000
 
 app = Flask(__name__)
+app.secret_key = '123'  # Altere para uma chave segura
 app.config.from_object(Config)
 
 # ==============================
@@ -311,6 +314,7 @@ def caminho_relativo(pasta: str) -> str:
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, pasta)
     return os.path.join(os.path.abspath("."), pasta)
+
 # Configurar caminho do banco
 DB_PATH = app.config['DB_PATH']
 bem_service = BemService(DB_PATH)
@@ -369,9 +373,117 @@ def carregar_dados_bancos() -> Dict[str, int]:
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
 # ==============================
+# Sistema de Autenticação
+# ==============================
+def hash_senha(senha):
+    """Gera hash da senha"""
+    return hashlib.sha256(senha.encode()).hexdigest()
+
+def verificar_login(email, senha):
+    """Verifica se o login é válido"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, email, nome, senha_hash, tipo, ativo 
+            FROM usuarios 
+            WHERE email = ? AND ativo = 1
+        ''', (email,))
+        
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        if usuario and usuario[3] == hash_senha(senha):
+            return {
+                'id': usuario[0],
+                'email': usuario[1],
+                'nome': usuario[2],
+                'tipo': usuario[4]
+            }
+        return None
+        
+    except Exception as e:
+        logger.error(f"Erro ao verificar login: {str(e)}")
+        return None
+
+# ==== INSIRA A FUNÇÃO AQUI ====
+def criar_tabela_usuarios_se_nao_existir():
+    """Cria a tabela de usuários se não existir"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se a tabela existe
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'")
+        if not cursor.fetchone():
+            logger.info("Criando tabela usuarios...")
+            
+            cursor.execute('''
+                CREATE TABLE usuarios (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    email TEXT UNIQUE NOT NULL,
+                    nome TEXT NOT NULL,
+                    senha_hash TEXT NOT NULL,
+                    tipo TEXT DEFAULT 'usuario',
+                    departamento TEXT,
+                    telefone TEXT,
+                    ativo INTEGER DEFAULT 1,
+                    criado_por INTEGER,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    ultimo_login TIMESTAMP
+                )
+            ''')
+            
+            # Criar um usuário admin padrão
+            cursor.execute('''
+                INSERT INTO usuarios (email, nome, senha_hash, tipo, ativo)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (
+                'admin@sistema.com',
+                'Administrador',
+                hash_senha('admin123'),
+                'admin',
+                1
+            ))
+            
+            conn.commit()
+            logger.info("Tabela usuarios criada com sucesso!")
+        else:
+            logger.info("Tabela usuarios já existe")
+        
+        conn.close()
+        
+    except Exception as e:
+        logger.error(f"Erro ao criar tabela de usuários: {str(e)}")
+        raise e
+
+def login_required(f):
+    """Decorator para exigir login"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'usuario_id' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def admin_required(f):
+    """Decorator para exigir privilégios de admin"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'usuario_id' not in session:
+            return redirect(url_for('login'))
+        if session.get('usuario_tipo') != 'admin':
+            flash('Acesso restrito a administradores.', 'error')
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# ==============================
 # Rotas Principais
 # ==============================
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     """Página inicial do sistema"""
     mensagem_sucesso = request.args.get('mensagem', None)
@@ -411,6 +523,7 @@ def index():
                          **carregar_dados_bancos())
 
 @app.route('/visualizar/<tipo>')
+@login_required
 def visualizar(tipo: str):
     """Página de visualização de bens com paginação"""
     if not os.path.exists(DB_PATH):
@@ -566,6 +679,7 @@ def importar_excel():
 # Rotas CRUD Unificadas
 # ==============================
 @app.route('/api/bens', methods=['POST'])
+@login_required
 def api_criar_bem():
     """API unificada para criar bem (JSON e Form)"""
     try:
@@ -615,6 +729,7 @@ def api_obter_bem(numero_bem):
         return jsonify({'success': False, 'message': str(e)})
     
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
+@login_required
 def api_editar_bem(bem_id):
     """API para editar um bem existente - COM OBSERVAÇÕES"""
     try:
@@ -660,6 +775,7 @@ def api_editar_bem(bem_id):
         return jsonify({'success': False, 'message': str(e)})
 
 @app.route('/api/bens/<int:bem_id>', methods=['DELETE'])
+@login_required
 def api_excluir_bem(bem_id):
     """API para excluir um bem"""
     try:
@@ -684,6 +800,71 @@ def api_verificar_numero():
     except Exception as e:
         logger.error(f"Erro ao verificar número: {str(e)}")
         return jsonify({'exists': False})
+
+# ==============================
+# Rotas de Autenticação
+# ==============================
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Página de login"""
+    # Se já estiver logado, redireciona para a página inicial
+    if 'usuario_id' in session:
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip().lower()
+        senha = request.form.get('senha', '')
+        
+        # Validar e-mail institucional
+        if not email or '@' not in email:
+            flash('Por favor, informe um e-mail institucional válido.', 'error')
+            return render_template('login.html')
+        
+        usuario = verificar_login(email, senha)
+        
+        if usuario:
+            # Login bem-sucedido
+            session['usuario_id'] = usuario['id']
+            session['usuario_email'] = usuario['email']
+            session['usuario_nome'] = usuario['nome']
+            session['usuario_tipo'] = usuario['tipo']
+            
+            # Atualizar último login
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE usuarios SET ultimo_login = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ''', (usuario['id'],))
+            conn.commit()
+            conn.close()
+            
+            flash(f'Bem-vindo(a), {usuario["nome"]}!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('E-mail ou senha incorretos.', 'error')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    """Faz logout do usuário"""
+    session.clear()
+    flash('Você saiu do sistema.', 'info')
+    return redirect(url_for('login'))
+
+@app.route('/perfil')
+@login_required
+def perfil():
+    """Página do perfil do usuário"""
+    return render_template('perfil.html', 
+                         usuario_nome=session.get('usuario_nome'),
+                         usuario_email=session.get('usuario_email'),
+                         usuario_tipo=session.get('usuario_tipo'))
+
+
+
+
     
     
 def obter_estatisticas_crud():
@@ -1066,6 +1247,130 @@ def api_obter_bem_por_id(bem_id):
         print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)})
 
+
+# ==============================
+# Gerenciamento de Usuários
+# ==============================
+@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+@login_required
+@admin_required  # ← ADICIONE ESTA LINHA para garantir que só admins possam cadastrar
+def cadastrar_usuario():
+    """Página para cadastrar novos usuários"""
+    if request.method == 'POST':
+        try:
+            dados = request.form
+            
+            # Validar dados obrigatórios
+            if not dados.get('nome') or not dados.get('email') or not dados.get('senha'):
+                flash('Preencha todos os campos obrigatórios.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar confirmação de senha
+            if dados.get('senha') != dados.get('confirmar_senha', ''):
+                flash('As senhas não coincidem.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar tamanho da senha
+            if len(dados.get('senha', '')) < 6:
+                flash('A senha deve ter no mínimo 6 caracteres.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar formato do email
+            if '@' not in dados['email']:
+                flash('Por favor, informe um e-mail válido.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Verificar se e-mail já existe
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            
+            cursor.execute("SELECT id FROM usuarios WHERE email = ?", (dados['email'].lower(),))
+            if cursor.fetchone():
+                conn.close()
+                flash('Este e-mail já está cadastrado no sistema.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Inserir novo usuário COM TRATAMENTO DE ERRO MELHOR
+            try:
+                cursor.execute('''
+                    INSERT INTO usuarios (
+                        email, nome, senha_hash, tipo, departamento, 
+                        telefone, ativo, criado_por, data_criacao
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                ''', (
+                    dados['email'].lower().strip(),
+                    dados['nome'].strip(),
+                    hash_senha(dados['senha']),
+                    dados.get('tipo', 'usuario'),
+                    dados.get('departamento', ''),
+                    dados.get('telefone', ''),
+                    int(dados.get('ativo', 1)),
+                    session.get('usuario_id')
+                ))
+                
+                conn.commit()
+                conn.close()
+                
+                flash(f'Usuário {dados["nome"]} cadastrado com sucesso!', 'success')
+                return redirect(url_for('listar_usuarios'))
+                
+            except sqlite3.Error as e:
+                conn.rollback()
+                conn.close()
+                logger.error(f"Erro de banco ao cadastrar usuário: {str(e)}")
+                flash('Erro no banco de dados ao cadastrar usuário.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+        except Exception as e:
+            logger.error(f"Erro inesperado ao cadastrar usuário: {str(e)}")
+            flash('Erro interno ao cadastrar usuário.', 'error')
+            return render_template('cadastrar_usuario.html', dados=request.form)
+    
+    # GET request - mostrar formulário vazio
+    return render_template('cadastrar_usuario.html')
+
+@app.route('/usuarios')
+@login_required
+def listar_usuarios():
+    """Lista todos os usuários do sistema"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT u.id, u.email, u.nome, u.tipo, u.departamento, u.ativo, 
+                   u.data_criacao, u.ultimo_login, criador.nome as criado_por
+            FROM usuarios u
+            LEFT JOIN usuarios criador ON u.criado_por = criador.id
+            ORDER BY u.data_criacao DESC
+        ''')
+        
+        usuarios = []
+        for row in cursor.fetchall():
+            usuarios.append({
+                'id': row[0],
+                'email': row[1],
+                'nome': row[2],
+                'tipo': row[3],
+                'departamento': row[4],
+                'ativo': bool(row[5]),
+                'data_criacao': row[6],
+                'ultimo_login': row[7],
+                'criado_por': row[8]
+            })
+        
+        conn.close()
+        
+        return render_template('listar_usuarios.html', usuarios=usuarios)
+        
+    except Exception as e:
+        logger.error(f"Erro ao listar usuários: {str(e)}")
+        flash('Erro ao carregar lista de usuários.', 'error')
+        return render_template('listar_usuarios.html', usuarios=[])
+
+
+
+
     
 @app.route('/sair')
 def sair():
@@ -1159,6 +1464,9 @@ if app.debug:
 # Inicialização
 # ==============================
 if __name__ == '__main__':
+    # ==== INSIRA ESTA LINHA AQUI ====
+    criar_tabela_usuarios_se_nao_existir()  # Garantir que a tabela de usuários existe
+    
     logger.info("Iniciando aplicação Flask")
     
     # Criar diretórios necessários

@@ -47,280 +47,344 @@
 </head>
 
 <body>
-    <div class="container-fluid py-4">
-        <!-- Cabeçalho -->
-        <div class="row mb-4">
-            <div class="col">
-                <h1 class="h3">
-                    <i class="fas fa-database me-2"></i>Sistema CRUD - Gerenciamento de Bens
-                </h1>
-                <p class="text-muted">Gerencie todos os bens do patrimônio</p>
-            </div>
-            <div class="col-auto">
+    <!-- Cabeçalho -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h3">
+                <i class="fas fa-database me-2"></i>Sistema CRUD - Gerenciamento de Bens
+            </h1>
+            <p class="text-muted">Gerencie todos os bens do patrimônio</p>
+        </div>
+        <div class="col-auto">
+            <div class="d-flex align-items-center gap-2">
+                <!-- Botão Início -->
                 <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
                     <i class="fas fa-home me-1"></i>Início
                 </a>
+
+                <!-- Dropdown do Usuário -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fas fa-user me-1"></i>
+                        {% if session.usuario_nome %}
+                        {{ session.usuario_nome }}
+                        {% else %}
+                        Usuário
+                        {% endif %}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <span class="dropdown-item-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    {% if session.usuario_email %}
+                                    {{ session.usuario_email }}
+                                    {% else %}
+                                    E-mail não disponível
+                                    {% endif %}
+                                </small>
+                            </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('perfil') }}">
+                                <i class="fas fa-user-circle me-2"></i>Meu Perfil
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
+                                <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">
+                                <i class="fas fa-users me-2"></i>Gerenciar Usuários
+                            </a>
+                        </li>
+
+
+
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog me-2"></i>Configurações
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Sair do Sistema
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+    </div>
 
 
-        <!-- Estatísticas -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4 class="card-title">{{ total_count|number_format }}</h4>
-                                <p class="card-text">Total de Bens</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="fas fa-boxes fa-2x"></i>
-                            </div>
+    <!-- Estatísticas -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ total_count|number_format }}</h4>
+                            <p class="card-text">Total de Bens</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4 class="card-title">{{ localizados_count|number_format }}</h4>
-                                <p class="card-text">Bens Localizados</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="fas fa-check-circle fa-2x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
-                                <p class="card-text">Bens Pendentes</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="fas fa-clock fa-2x"></i>
-                            </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-boxes fa-2x"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Barra de Ferramentas -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <!-- Busca -->
-                <form method="GET" class="d-flex">
-                    <div class="input-group search-box">
-                        <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou número..."
-                            value="{{ termo_busca }}">
-                        <button class="btn btn-outline-secondary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ localizados_count|number_format }}</h4>
+                            <p class="card-text">Bens Localizados</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="col-md-6 text-end">
-                <!-- Botões de Ação -->
-                <button class="btn btn-success" onclick="abrirModalNovoBem()">
-                    <i class="fas fa-plus me-1"></i>Novo Bem
-                </button>
-                <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-download me-1"></i>Exportar
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
+                            <p class="card-text">Bens Pendentes</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Ferramentas -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <!-- Busca -->
+            <form method="GET" class="d-flex">
+                <div class="input-group search-box">
+                    <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou número..."
+                        value="{{ termo_busca }}">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-end">
+            <!-- Botões de Ação -->
+            <button class="btn btn-success" onclick="abrirModalNovoBem()">
+                <i class="fas fa-plus me-1"></i>Novo Bem
+            </button>
+            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary">
+                <i class="fas fa-download me-1"></i>Exportar
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group">
+                <a href="{{ url_for('sistema_crud') }}"
+                    class="btn btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
+                    Todos
+                </a>
+                <a href="{{ url_for('sistema_crud', situacao='OK') }}"
+                    class="btn btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
+                    Localizados
+                </a>
+                <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
+                    class="btn btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
+                    Pendentes
                 </a>
             </div>
         </div>
+    </div>
 
-        <!-- Filtros -->
-        <div class="row mb-3">
-            <div class="col">
-                <div class="btn-group">
-                    <a href="{{ url_for('sistema_crud') }}"
-                        class="btn btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
-                        Todos
-                    </a>
-                    <a href="{{ url_for('sistema_crud', situacao='OK') }}"
-                        class="btn btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
-                        Localizados
-                    </a>
-                    <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
-                        class="btn btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
-                        Pendentes
-                    </a>
-                </div>
+    <!-- Tabela de Bens - VERSÃO CORRIGIDA -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-list me-1"></i>
+                Lista de Bens
+                {% if termo_busca %}
+                <span class="badge bg-info">Filtrado: "{{ termo_busca }}"</span>
+                {% endif %}
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Número</th>
+                            <th>Nome</th>
+                            <th>Situação</th>
+                            <th>Localização</th>
+                            <th>Responsável</th>
+                            <th>Última Vistoria</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bem in paginacao.dados %}
+                        <tr>
+                            <td>
+                                {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
+                                <strong>#{{ bem.id }}</strong>
+                                {% else %}
+                                <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
+                                    #---<br><small>Sem ID</small>
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="font-monospace">{{ bem.numero }}</span>
+                            </td>
+                            <td>{{ bem.nome }}</td>
+                            <td>
+                                {% if bem.situacao == 'OK' %}
+                                <span class="badge bg-success badge-status">Localizado</span>
+                                {% else %}
+                                <span class="badge bg-warning badge-status">Pendente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.localizacao %}
+                                {{ bem.localizacao }}
+                                {% else %}
+                                <span class="text-muted">Não informada</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.responsavel %}
+                                {{ bem.responsavel }}
+                                {% else %}
+                                <span class="text-muted">Não informado</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.data_ultima_vistoria %}
+                                {{ bem.data_ultima_vistoria[:10] }}
+                                {% else %}
+                                <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <!-- SOLUÇÃO SIMPLES E FUNCIONAL -->
+                                {% if bem.id %}
+                                <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
+                                    title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info" onclick="visualizarBem({{ bem.id }})"
+                                    title="Visualizar">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger"
+                                    onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                {% else %}
+                                <span class="text-muted" title="ID não disponível">
+                                    <i class="fas fa-ban"></i> N/D
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <div class="text-muted">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                                    <p>Nenhum bem encontrado</p>
+                                    {% if termo_busca %}
+                                    <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
+                                        Limpar busca
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <!-- Tabela de Bens - VERSÃO CORRIGIDA -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-list me-1"></i>
-                    Lista de Bens
-                    {% if termo_busca %}
-                    <span class="badge bg-info">Filtrado: "{{ termo_busca }}"</span>
+    </div>
+    <!-- Paginação -->
+    {% if paginacao.total_paginas > 1 %}
+    <div class="row mt-3">
+        <div class="col">
+            <nav aria-label="Paginação">
+                <ul class="pagination justify-content-center">
+                    {% if paginacao.pagina_atual > 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                            Anterior
+                        </a>
+                    </li>
                     {% endif %}
-                </h5>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Número</th>
-                                <th>Nome</th>
-                                <th>Situação</th>
-                                <th>Localização</th>
-                                <th>Responsável</th>
-                                <th>Última Vistoria</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for bem in paginacao.dados %}
-                            <tr>
-                                <td>
-                                    {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
-                                    <strong>#{{ bem.id }}</strong>
-                                    {% else %}
-                                    <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
-                                        #---<br><small>Sem ID</small>
-                                    </span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="font-monospace">{{ bem.numero }}</span>
-                                </td>
-                                <td>{{ bem.nome }}</td>
-                                <td>
-                                    {% if bem.situacao == 'OK' %}
-                                    <span class="badge bg-success badge-status">Localizado</span>
-                                    {% else %}
-                                    <span class="badge bg-warning badge-status">Pendente</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.localizacao %}
-                                    {{ bem.localizacao }}
-                                    {% else %}
-                                    <span class="text-muted">Não informada</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.responsavel %}
-                                    {{ bem.responsavel }}
-                                    {% else %}
-                                    <span class="text-muted">Não informado</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.data_ultima_vistoria %}
-                                    {{ bem.data_ultima_vistoria[:10] }}
-                                    {% else %}
-                                    <span class="text-muted">N/A</span>
-                                    {% endif %}
-                                </td>
-                                <td class="action-buttons">
-                                    <!-- SOLUÇÃO SIMPLES E FUNCIONAL -->
-                                    {% if bem.id %}
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
-                                        title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info" onclick="visualizarBem({{ bem.id }})"
-                                        title="Visualizar">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger"
-                                        onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    {% else %}
-                                    <span class="text-muted" title="ID não disponível">
-                                        <i class="fas fa-ban"></i> N/D
-                                    </span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <div class="text-muted">
-                                        <i class="fas fa-inbox fa-2x mb-2"></i>
-                                        <p>Nenhum bem encontrado</p>
-                                        {% if termo_busca %}
-                                        <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
-                                            Limpar busca
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- Paginação -->
-        {% if paginacao.total_paginas > 1 %}
-        <div class="row mt-3">
-            <div class="col">
-                <nav aria-label="Paginação">
-                    <ul class="pagination justify-content-center">
-                        {% if paginacao.pagina_atual > 1 %}
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                                Anterior
-                            </a>
+
+                    {% for pagina in range(1, paginacao.total_paginas + 1) %}
+                    {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %} <li
+                        class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
+                        <a class="page-link"
+                            href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                            {{ pagina }}
+                        </a>
                         </li>
                         {% endif %}
+                        {% endfor %}
 
-                        {% for pagina in range(1, paginacao.total_paginas + 1) %}
-                        {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %} <li
-                            class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
+                        {% if paginacao.pagina_atual < paginacao.total_paginas %} <li class="page-item">
                             <a class="page-link"
-                                href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                                {{ pagina }}
+                                href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                                Próxima
                             </a>
                             </li>
                             {% endif %}
-                            {% endfor %}
-
-                            {% if paginacao.pagina_atual < paginacao.total_paginas %} <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                                    Próxima
-                                </a>
-                                </li>
-                                {% endif %}
-                    </ul>
-                </nav>
-            </div>
+                </ul>
+            </nav>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 
-        <!-- Informações de Paginação -->
-        <div class="row mt-2">
-            <div class="col text-center text-muted">
-                <small>
-                    Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
-                    registro{{ paginacao.total_registros|pluralize('', 's') }}
-                    {% if paginacao.total_paginas > 1 %}
-                    - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
-                    {% endif %}
-                </small>
-            </div>
+    <!-- Informações de Paginação -->
+    <div class="row mt-2">
+        <div class="col text-center text-muted">
+            <small>
+                Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
+                registro{{ paginacao.total_registros|pluralize('', 's') }}
+                {% if paginacao.total_paginas > 1 %}
+                - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
+                {% endif %}
+            </small>
         </div>
+    </div>
     </div>
 
     <!-- Modal para Visualizar/Editar Bem -->
