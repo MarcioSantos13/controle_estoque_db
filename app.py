@@ -1476,7 +1476,7 @@ if __name__ == '__main__':
     app.run(debug=True)
     
 # ==============================
-# ROTAS DE AJUDA
+# ROTAS DE AJUDA E SUPORTE
 # ==============================
 
 @app.route('/ajuda')
@@ -1487,9 +1487,80 @@ def ajuda():
 @app.route('/ajuda/<topico>')
 def ajuda_topico(topico):
     """Página de ajuda por tópico específico"""
-    topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'problemas', 'importacao']
+    topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'importacao', 'problemas', 'contato']
     
     if topico not in topicos_validos:
         abort(404)
     
     return render_template('ajuda.html', topico_selecionado=topico)
+
+@app.route('/api/ajuda/buscar', methods=['POST'])
+def api_ajuda_buscar():
+    """API para busca na ajuda"""
+    try:
+        termo = request.json.get('termo', '').lower().strip()
+        
+        # Base de conhecimento para busca
+        base_conhecimento = {
+            'cadastrar': ['cadastro', 'novo bem', 'adicionar'],
+            'localizar': ['localização', 'encontrar', 'buscar bem'],
+            'exportar': ['exportar', 'excel', 'relatório'],
+            'importar': ['importar', 'excel', 'planilha'],
+            'editar': ['editar', 'modificar', 'alterar'],
+            'excluir': ['excluir', 'deletar', 'remover'],
+            'problema': ['erro', 'problema', 'não funciona'],
+            'contato': ['suporte', 'contato', 'ajuda']
+        }
+        
+        resultados = []
+        for categoria, termos in base_conhecimento.items():
+            if any(termo in palavra for palavra in termos):
+                resultados.append({
+                    'categoria': categoria,
+                    'relevancia': sum(1 for palavra in termos if termo in palavra)
+                })
+        
+        # Ordenar por relevância
+        resultados.sort(key=lambda x: x['relevancia'], reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'termo': termo,
+            'resultados': resultados[:5]  # Top 5 resultados
+        })
+        
+    except Exception as e:
+        logger.error(f"Erro na busca de ajuda: {str(e)}")
+        return jsonify({'success': False, 'message': 'Erro na busca'})
+
+@app.route('/api/ajuda/contato', methods=['POST'])
+def api_ajuda_contato():
+    """API para enviar mensagem de contato"""
+    try:
+        dados = request.json
+        
+        # Validar dados obrigatórios
+        campos_obrigatorios = ['nome', 'email', 'assunto', 'mensagem']
+        for campo in campos_obrigatorios:
+            if not dados.get(campo):
+                return jsonify({
+                    'success': False, 
+                    'message': f'Campo {campo} é obrigatório'
+                })
+        
+        # Registrar no log (em produção, enviaria email)
+        logger.info(f"📧 CONTATO RECEBIDO - {dados['assunto']}")
+        logger.info(f"👤 De: {dados['nome']} <{dados['email']}>")
+        logger.info(f"📝 Mensagem: {dados['mensagem'][:100]}...")
+        
+        # Simular envio de email
+        # em produção: enviar_email_contato(dados)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Mensagem enviada com sucesso! Retornaremos em até 4 horas úteis.'
+        })
+        
+    except Exception as e:
+        logger.error(f"Erro ao processar contato: {str(e)}")
+        return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
