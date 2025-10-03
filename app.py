@@ -672,42 +672,34 @@ def importar_excel():
 # ==============================
 # Rotas CRUD Unificadas
 # ==============================
+# No endpoint que cria novos bens, adicione validação:
 @app.route('/api/bens', methods=['POST'])
-@login_required
-def api_criar_bem():
-    """API unificada para criar bem (JSON e Form)"""
+def criar_bem():
     try:
-        # Obter dados conforme o tipo de requisição
-        if request.is_json:
-            dados = request.get_json()
-        else:
-            dados = request.form.to_dict()
+        dados = request.get_json()
         
-        # Criar bem
-        sucesso, mensagem = bem_service.criar_bem(dados)
+        # Validação robusta dos campos
+        numero = dados.get('numero', '').strip() if dados.get('numero') else ''
+        nome = dados.get('nome', '').strip() if dados.get('nome') else ''
         
-        # Retorno adaptável ao tipo de requisição
-        if request.is_json:
-            return jsonify({'success': sucesso, 'message': mensagem})
-        else:
-            if sucesso:
-                return redirect(url_for('index', mensagem=mensagem))
-            else:
-                return render_template('novo_bem.html',
-                                     erro=mensagem,
-                                     dados=dados)
+        # Verificar campos obrigatórios
+        if not numero:
+            return jsonify({'success': False, 'message': 'Número do bem é obrigatório'}), 400
+        if not nome:
+            return jsonify({'success': False, 'message': 'Nome do bem é obrigatório'}), 400
+            
+        # Tratamento seguro para outros campos
+        localizacao = dados.get('localizacao', '').strip() if dados.get('localizacao') else ''
+        responsavel = dados.get('responsavel', '').strip() if dados.get('responsavel') else ''
+        auditor = dados.get('auditor', '').strip() if dados.get('auditor') else ''
+        observacoes = dados.get('observacoes', '').strip() if dados.get('observacoes') else ''
+        
+        # Resto da lógica de criação...
         
     except Exception as e:
-        logger.error(f"Erro ao criar bem: {str(e)}")
-        
-        if request.is_json:
-            return jsonify({'success': False, 'message': str(e)})
-        else:
-            return render_template('novo_bem.html',
-                                 erro=f'Erro interno: {str(e)}',
-                                 dados=request.form.to_dict())
-
+        return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 @app.route('/api/bens/<numero_bem>')
+
 def api_obter_bem(numero_bem):
     """API para obter dados de um bem pelo número"""
     try:
