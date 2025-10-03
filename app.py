@@ -7,7 +7,7 @@ import io
 import hashlib
 from functools import wraps
 from datetime import datetime
-from typing import Tuple, Dict, Any, List  # ← Adicione List aqui
+from typing import Tuple, Dict, Any, List
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response, session, flash
 
@@ -78,9 +78,6 @@ class BemValidator:
         
         return BemValidator.validar_numero(dados['numero'])
 
-
-    """Serviço centralizado para operações com bens"""
-   
 class BemService:
     """Serviço centralizado para operações com bens"""
     
@@ -263,7 +260,7 @@ class BemService:
             logger.error(f"Erro ao exportar localidade: {str(e)}")
             abort(500, description="Erro ao exportar dados da localidade")
             
-def buscar_bens_por_nome_com_id(db_path: str, termo: str) -> list:  # ← Use 'list' em vez de 'List'
+def buscar_bens_por_nome_com_id(db_path: str, termo: str) -> list:
     """Busca bens por nome INCLUINDO ID - VERSÃO CORRIGIDA"""
     try:
         conn = sqlite3.connect(db_path)
@@ -271,7 +268,7 @@ def buscar_bens_por_nome_com_id(db_path: str, termo: str) -> list:  # ← Use 'l
         
         query = """
             SELECT 
-                id,  -- ← AGORA INCLUINDO O ID
+                id,
                 numero, 
                 nome, 
                 situacao, 
@@ -318,8 +315,7 @@ def caminho_relativo(pasta: str) -> str:
 # Configurar caminho do banco
 DB_PATH = app.config['DB_PATH']
 bem_service = BemService(DB_PATH)
-export_service = bem_service  # Corrigido: usar bem_service para exportação
-
+export_service = bem_service
 
 # ==============================
 # Middleware e Validações Globais
@@ -407,7 +403,6 @@ def verificar_login(email, senha):
         logger.error(f"Erro ao verificar login: {str(e)}")
         return None
 
-# ==== INSIRA A FUNÇÃO AQUI ====
 def criar_tabela_usuarios_se_nao_existir():
     """Cria a tabela de usuários se não existir"""
     try:
@@ -575,7 +570,6 @@ def visualizar(tipo: str):
                                  'total_paginas': 0
                              },
                              mensagem=f"Erro ao carregar dados: {str(e)}")
-
 
 @app.route('/exportar/<tipo>')
 def exportar(tipo: str):
@@ -760,7 +754,7 @@ def api_editar_bem(bem_id):
             dados.get('data_ultima_vistoria'),
             dados.get('data_vistoria_atual'),
             dados.get('auditor'),
-            dados.get('observacoes'),  # Nova coluna
+            dados.get('observacoes'),
             bem_id
         ))
         
@@ -862,11 +856,213 @@ def perfil():
                          usuario_email=session.get('usuario_email'),
                          usuario_tipo=session.get('usuario_tipo'))
 
+# ==============================
+# ROTAS DE AJUDA E SUPORTE - MOVIDAS PARA AQUI
+# ==============================
 
+@app.route('/ajuda')
+def ajuda():
+    """Página central de ajuda do sistema"""
+    return render_template('ajuda.html')
 
-
+@app.route('/ajuda/<topico>')
+def ajuda_topico(topico):
+    """Página de ajuda por tópico específico"""
+    topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'importacao', 'problemas', 'contato']
     
+    if topico not in topicos_validos:
+        abort(404)
     
+    return render_template('ajuda.html', topico_selecionado=topico)
+
+@app.route('/api/ajuda/buscar', methods=['POST'])
+def api_ajuda_buscar():
+    """API para busca na ajuda"""
+    try:
+        termo = request.json.get('termo', '').lower().strip()
+        
+        # Base de conhecimento para busca
+        base_conhecimento = {
+            'cadastrar': ['cadastro', 'novo bem', 'adicionar'],
+            'localizar': ['localização', 'encontrar', 'buscar bem'],
+            'exportar': ['exportar', 'excel', 'relatório'],
+            'importar': ['importar', 'excel', 'planilha'],
+            'editar': ['editar', 'modificar', 'alterar'],
+            'excluir': ['excluir', 'deletar', 'remover'],
+            'problema': ['erro', 'problema', 'não funciona'],
+            'contato': ['suporte', 'contato', 'ajuda']
+        }
+        
+        resultados = []
+        for categoria, termos in base_conhecimento.items():
+            if any(termo in palavra for palavra in termos):
+                resultados.append({
+                    'categoria': categoria,
+                    'relevancia': sum(1 for palavra in termos if termo in palavra)
+                })
+        
+        # Ordenar por relevância
+        resultados.sort(key=lambda x: x['relevancia'], reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'termo': termo,
+            'resultados': resultados[:5]  # Top 5 resultados
+        })
+        
+    except Exception as e:
+        logger.error(f"Erro na busca de ajuda: {str(e)}")
+        return jsonify({'success': False, 'message': 'Erro na busca'})
+
+@app.route('/api/ajuda/contato', methods=['POST'])
+def api_ajuda_contato():
+    """API para enviar mensagem de contato"""
+    try:
+        dados = request.json
+        
+        # Validar dados obrigatórios
+        campos_obrigatorios = ['nome', 'email', 'assunto', 'mensagem']
+        for campo in campos_obrigatorios:
+            if not dados.get(campo):
+                return jsonify({
+                    'success': False, 
+                    'message': f'Campo {campo} é obrigatório'
+                })
+        
+        # Registrar no log (em produção, enviaria email)
+        logger.info(f"📧 CONTATO RECEBIDO - {dados['assunto']}")
+        logger.info(f"👤 De: {dados['nome']} <{dados['email']}>")
+        logger.info(f"📝 Mensagem: {dados['mensagem'][:100]}...")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Mensagem enviada com sucesso! Retornaremos em até 4 horas úteis.'
+        })
+        
+    except Exception as e:
+        logger.error(f"Erro ao processar contato: {str(e)}")
+        return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
+
+# ==============================
+# Gerenciamento de Usuários
+# ==============================
+@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def cadastrar_usuario():
+    """Página para cadastrar novos usuários"""
+    if request.method == 'POST':
+        try:
+            dados = request.form
+            
+            # Validar dados obrigatórios
+            if not dados.get('nome') or not dados.get('email') or not dados.get('senha'):
+                flash('Preencha todos os campos obrigatórios.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar confirmação de senha
+            if dados.get('senha') != dados.get('confirmar_senha', ''):
+                flash('As senhas não coincidem.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar tamanho da senha
+            if len(dados.get('senha', '')) < 6:
+                flash('A senha deve ter no mínimo 6 caracteres.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Validar formato do email
+            if '@' not in dados['email']:
+                flash('Por favor, informe um e-mail válido.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Verificar se e-mail já existe
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            
+            cursor.execute("SELECT id FROM usuarios WHERE email = ?", (dados['email'].lower(),))
+            if cursor.fetchone():
+                conn.close()
+                flash('Este e-mail já está cadastrado no sistema.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+            # Inserir novo usuário COM TRATAMENTO DE ERRO MELHOR
+            try:
+                cursor.execute('''
+                    INSERT INTO usuarios (
+                        email, nome, senha_hash, tipo, departamento, 
+                        telefone, ativo, criado_por, data_criacao
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                ''', (
+                    dados['email'].lower().strip(),
+                    dados['nome'].strip(),
+                    hash_senha(dados['senha']),
+                    dados.get('tipo', 'usuario'),
+                    dados.get('departamento', ''),
+                    dados.get('telefone', ''),
+                    int(dados.get('ativo', 1)),
+                    session.get('usuario_id')
+                ))
+                
+                conn.commit()
+                conn.close()
+                
+                flash(f'Usuário {dados["nome"]} cadastrado com sucesso!', 'success')
+                return redirect(url_for('listar_usuarios'))
+                
+            except sqlite3.Error as e:
+                conn.rollback()
+                conn.close()
+                logger.error(f"Erro de banco ao cadastrar usuário: {str(e)}")
+                flash('Erro no banco de dados ao cadastrar usuário.', 'error')
+                return render_template('cadastrar_usuario.html', dados=dados)
+            
+        except Exception as e:
+            logger.error(f"Erro inesperado ao cadastrar usuário: {str(e)}")
+            flash('Erro interno ao cadastrar usuário.', 'error')
+            return render_template('cadastrar_usuario.html', dados=request.form)
+    
+    # GET request - mostrar formulário vazio
+    return render_template('cadastrar_usuario.html')
+
+@app.route('/usuarios')
+@login_required
+def listar_usuarios():
+    """Lista todos os usuários do sistema"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT u.id, u.email, u.nome, u.tipo, u.departamento, u.ativo, 
+                   u.data_criacao, u.ultimo_login, criador.nome as criado_por
+            FROM usuarios u
+            LEFT JOIN usuarios criador ON u.criado_por = criador.id
+            ORDER BY u.data_criacao DESC
+        ''')
+        
+        usuarios = []
+        for row in cursor.fetchall():
+            usuarios.append({
+                'id': row[0],
+                'email': row[1],
+                'nome': row[2],
+                'tipo': row[3],
+                'departamento': row[4],
+                'ativo': bool(row[5]),
+                'data_criacao': row[6],
+                'ultimo_login': row[7],
+                'criado_por': row[8]
+            })
+        
+        conn.close()
+        
+        return render_template('listar_usuarios.html', usuarios=usuarios)
+        
+    except Exception as e:
+        logger.error(f"Erro ao listar usuários: {str(e)}")
+        flash('Erro ao carregar lista de usuários.', 'error')
+        return render_template('listar_usuarios.html', usuarios=[])
+
 def obter_estatisticas_crud():
     """Obtém estatísticas para a página CRUD com fallback seguro"""
     try:
@@ -906,6 +1102,7 @@ def obter_estatisticas_crud():
             'localizados_count': 0,
             'nao_localizados_count': 0
         }
+
 # ==============================
 # Rotas de Interface
 # ==============================
@@ -930,7 +1127,7 @@ def relatorio_localidades():
     """Relatório de bens por localidade - COM FILTROS AVANÇADOS"""
     try:
         localidade_selecionada = request.args.get('localidade', '').strip()
-        situacao_filtro = request.args.get('situacao', 'OK')  # Novo filtro
+        situacao_filtro = request.args.get('situacao', 'OK')
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 20, type=int)
         
@@ -989,7 +1186,7 @@ def relatorio_localidades():
                 'por_pagina': por_pagina,
                 'total_registros': total_registros,
                 'total_paginas': total_paginas,
-                'situacao_filtro': situacao_filtro  # Para usar no template
+                'situacao_filtro': situacao_filtro
             }
         
         conn.close()
@@ -1035,7 +1232,7 @@ def obter_bens_paginados_com_id(db_path: str, tipo: str, pagina: int = 1, por_pa
         # Query principal COM ID
         query = f"""
             SELECT 
-                id,  -- ← AGORA INCLUINDO O ID
+                id,
                 numero, 
                 nome, 
                 situacao, 
@@ -1084,6 +1281,7 @@ def obter_bens_paginados_com_id(db_path: str, tipo: str, pagina: int = 1, por_pa
             'total_registros': 0,
             'total_paginas': 0
         }
+
 @app.route('/sistema-crud')
 def sistema_crud():
     """Página completa de CRUD para gerenciamento de bens - VERSÃO DEFINITIVA CORRIGIDA"""
@@ -1208,7 +1406,6 @@ def sistema_crud():
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
         
-
 @app.route('/api/bens/id/<int:bem_id>')
 def api_obter_bem_por_id(bem_id):
     """API para obter dados de um bem pelo ID - COM OBSERVAÇÕES"""
@@ -1247,131 +1444,6 @@ def api_obter_bem_por_id(bem_id):
         print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)})
 
-
-# ==============================
-# Gerenciamento de Usuários
-# ==============================
-@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
-@login_required
-@admin_required  # ← ADICIONE ESTA LINHA para garantir que só admins possam cadastrar
-def cadastrar_usuario():
-    """Página para cadastrar novos usuários"""
-    if request.method == 'POST':
-        try:
-            dados = request.form
-            
-            # Validar dados obrigatórios
-            if not dados.get('nome') or not dados.get('email') or not dados.get('senha'):
-                flash('Preencha todos os campos obrigatórios.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-            # Validar confirmação de senha
-            if dados.get('senha') != dados.get('confirmar_senha', ''):
-                flash('As senhas não coincidem.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-            # Validar tamanho da senha
-            if len(dados.get('senha', '')) < 6:
-                flash('A senha deve ter no mínimo 6 caracteres.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-            # Validar formato do email
-            if '@' not in dados['email']:
-                flash('Por favor, informe um e-mail válido.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-            # Verificar se e-mail já existe
-            conn = sqlite3.connect(DB_PATH)
-            cursor = conn.cursor()
-            
-            cursor.execute("SELECT id FROM usuarios WHERE email = ?", (dados['email'].lower(),))
-            if cursor.fetchone():
-                conn.close()
-                flash('Este e-mail já está cadastrado no sistema.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-            # Inserir novo usuário COM TRATAMENTO DE ERRO MELHOR
-            try:
-                cursor.execute('''
-                    INSERT INTO usuarios (
-                        email, nome, senha_hash, tipo, departamento, 
-                        telefone, ativo, criado_por, data_criacao
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-                ''', (
-                    dados['email'].lower().strip(),
-                    dados['nome'].strip(),
-                    hash_senha(dados['senha']),
-                    dados.get('tipo', 'usuario'),
-                    dados.get('departamento', ''),
-                    dados.get('telefone', ''),
-                    int(dados.get('ativo', 1)),
-                    session.get('usuario_id')
-                ))
-                
-                conn.commit()
-                conn.close()
-                
-                flash(f'Usuário {dados["nome"]} cadastrado com sucesso!', 'success')
-                return redirect(url_for('listar_usuarios'))
-                
-            except sqlite3.Error as e:
-                conn.rollback()
-                conn.close()
-                logger.error(f"Erro de banco ao cadastrar usuário: {str(e)}")
-                flash('Erro no banco de dados ao cadastrar usuário.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
-            
-        except Exception as e:
-            logger.error(f"Erro inesperado ao cadastrar usuário: {str(e)}")
-            flash('Erro interno ao cadastrar usuário.', 'error')
-            return render_template('cadastrar_usuario.html', dados=request.form)
-    
-    # GET request - mostrar formulário vazio
-    return render_template('cadastrar_usuario.html')
-
-@app.route('/usuarios')
-@login_required
-def listar_usuarios():
-    """Lista todos os usuários do sistema"""
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            SELECT u.id, u.email, u.nome, u.tipo, u.departamento, u.ativo, 
-                   u.data_criacao, u.ultimo_login, criador.nome as criado_por
-            FROM usuarios u
-            LEFT JOIN usuarios criador ON u.criado_por = criador.id
-            ORDER BY u.data_criacao DESC
-        ''')
-        
-        usuarios = []
-        for row in cursor.fetchall():
-            usuarios.append({
-                'id': row[0],
-                'email': row[1],
-                'nome': row[2],
-                'tipo': row[3],
-                'departamento': row[4],
-                'ativo': bool(row[5]),
-                'data_criacao': row[6],
-                'ultimo_login': row[7],
-                'criado_por': row[8]
-            })
-        
-        conn.close()
-        
-        return render_template('listar_usuarios.html', usuarios=usuarios)
-        
-    except Exception as e:
-        logger.error(f"Erro ao listar usuários: {str(e)}")
-        flash('Erro ao carregar lista de usuários.', 'error')
-        return render_template('listar_usuarios.html', usuarios=[])
-
-
-
-
-    
 @app.route('/sair')
 def sair():
     """Página de encerramento do aplicativo"""
@@ -1398,16 +1470,6 @@ def service_unavailable(error):
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Serviço temporariamente indisponível'}), 503
     return render_template('503.html'), 503
-
-# ==============================
-# Função para Remover Rotas de Debug (Opcional)
-# ==============================
-def remover_rotas_debug():
-    """Remove rotas de debug em produção - opcional"""
-    if not app.debug:
-        # Em vez de modificar as regras diretamente, simplesmente não registramos as rotas de debug
-        # Ou podemos usar condicionais no registro das rotas
-        pass
 
 # ==============================
 # Rotas de Debug (Apenas em modo desenvolvimento)
@@ -1464,8 +1526,8 @@ if app.debug:
 # Inicialização
 # ==============================
 if __name__ == '__main__':
-    # ==== INSIRA ESTA LINHA AQUI ====
-    criar_tabela_usuarios_se_nao_existir()  # Garantir que a tabela de usuários existe
+    # Garantir que a tabela de usuários existe
+    criar_tabela_usuarios_se_nao_existir()
     
     logger.info("Iniciando aplicação Flask")
     
@@ -1474,93 +1536,3 @@ if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     app.run(debug=True)
-    
-# ==============================
-# ROTAS DE AJUDA E SUPORTE
-# ==============================
-
-@app.route('/ajuda')
-def ajuda():
-    """Página central de ajuda do sistema"""
-    return render_template('ajuda.html')
-
-@app.route('/ajuda/<topico>')
-def ajuda_topico(topico):
-    """Página de ajuda por tópico específico"""
-    topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'importacao', 'problemas', 'contato']
-    
-    if topico not in topicos_validos:
-        abort(404)
-    
-    return render_template('ajuda.html', topico_selecionado=topico)
-
-@app.route('/api/ajuda/buscar', methods=['POST'])
-def api_ajuda_buscar():
-    """API para busca na ajuda"""
-    try:
-        termo = request.json.get('termo', '').lower().strip()
-        
-        # Base de conhecimento para busca
-        base_conhecimento = {
-            'cadastrar': ['cadastro', 'novo bem', 'adicionar'],
-            'localizar': ['localização', 'encontrar', 'buscar bem'],
-            'exportar': ['exportar', 'excel', 'relatório'],
-            'importar': ['importar', 'excel', 'planilha'],
-            'editar': ['editar', 'modificar', 'alterar'],
-            'excluir': ['excluir', 'deletar', 'remover'],
-            'problema': ['erro', 'problema', 'não funciona'],
-            'contato': ['suporte', 'contato', 'ajuda']
-        }
-        
-        resultados = []
-        for categoria, termos in base_conhecimento.items():
-            if any(termo in palavra for palavra in termos):
-                resultados.append({
-                    'categoria': categoria,
-                    'relevancia': sum(1 for palavra in termos if termo in palavra)
-                })
-        
-        # Ordenar por relevância
-        resultados.sort(key=lambda x: x['relevancia'], reverse=True)
-        
-        return jsonify({
-            'success': True,
-            'termo': termo,
-            'resultados': resultados[:5]  # Top 5 resultados
-        })
-        
-    except Exception as e:
-        logger.error(f"Erro na busca de ajuda: {str(e)}")
-        return jsonify({'success': False, 'message': 'Erro na busca'})
-
-@app.route('/api/ajuda/contato', methods=['POST'])
-def api_ajuda_contato():
-    """API para enviar mensagem de contato"""
-    try:
-        dados = request.json
-        
-        # Validar dados obrigatórios
-        campos_obrigatorios = ['nome', 'email', 'assunto', 'mensagem']
-        for campo in campos_obrigatorios:
-            if not dados.get(campo):
-                return jsonify({
-                    'success': False, 
-                    'message': f'Campo {campo} é obrigatório'
-                })
-        
-        # Registrar no log (em produção, enviaria email)
-        logger.info(f"📧 CONTATO RECEBIDO - {dados['assunto']}")
-        logger.info(f"👤 De: {dados['nome']} <{dados['email']}>")
-        logger.info(f"📝 Mensagem: {dados['mensagem'][:100]}...")
-        
-        # Simular envio de email
-        # em produção: enviar_email_contato(dados)
-        
-        return jsonify({
-            'success': True,
-            'message': 'Mensagem enviada com sucesso! Retornaremos em até 4 horas úteis.'
-        })
-        
-    except Exception as e:
-        logger.error(f"Erro ao processar contato: {str(e)}")
-        return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
