@@ -211,52 +211,36 @@
     </div>
 
     <!-- Ações Rápidas - VERSÃO ATUALIZADA -->
-<div class="text-center mb-4">
-  <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
-  <div class="d-flex flex-wrap justify-content-center gap-2">
-    <!-- BOTÃO DE AJUDA DESTACADO -->
-    <a href="{{ url_for('ajuda') }}" class="btn btn-warning fw-bold">
-      <i class="bi bi-question-circle-fill me-1"></i>Central de Ajuda
-    </a>
-    
-    <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
-      <i class="bi bi-check-circle me-1"></i>Localizados
-    </a>
-    <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
-      <i class="bi bi-clock-history me-1"></i>Pendentes
-    </a>
-    <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-success">
-      <i class="bi bi-download me-1"></i>Exportar Localizados
-    </a>
-    <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
-      <i class="bi bi-download me-1"></i>Exportar Pendentes
-    </a>
-    <a href="{{ url_for('novo_bem') }}" class="btn btn-outline-info">
-      <i class="bi bi-plus-circle me-1"></i>Novo Bem
-    </a>
-    <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-dark">
-      <i class="bi bi-gear me-1"></i>Gestão Completa
-    </a>
-    <a href="{{ url_for('relatorio_localidades') }}" class="btn btn-outline-info">
-      <i class="bi bi-map me-1"></i>Relatório por Localidade
-    </a>
-    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
-      <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
-    </button>
-    <a href="{{ url_for('sair') }}" class="btn btn-outline-danger" onclick="return confirmSair(event)">
-      <i class="bi bi-box-arrow-right me-1"></i>Sair
-    </a>
-  
+    <div class="text-center mb-4">
+      <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <!-- BOTÃO DE AJUDA DESTACADO -->
+        <a href="{{ url_for('ajuda') }}" class="btn btn-warning fw-bold">
+          <i class="bi bi-question-circle-fill me-1"></i>Central de Ajuda
+        </a>
 
-
-        <!-- Botão de Importação -->
+        <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
+          <i class="bi bi-check-circle me-1"></i>Localizados
+        </a>
+        <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
+          <i class="bi bi-clock-history me-1"></i>Pendentes
+        </a>
+        <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-success">
+          <i class="bi bi-download me-1"></i>Exportar Localizados
+        </a>
+        <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
+          <i class="bi bi-download me-1"></i>Exportar Pendentes
+        </a>
+        <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-dark">
+          <i class="bi bi-gear me-1"></i>Gestão Completa
+        </a>
+        <a href="{{ url_for('relatorio_localidades') }}" class="btn btn-outline-info">
+          <i class="bi bi-map me-1"></i>Relatório por Localidade
+        </a>
         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
           <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
         </button>
 
-        <a href="{{ url_for('sair') }}" class="btn btn-outline-danger" onclick="return confirmSair(event)">
-          <i class="bi bi-box-arrow-right me-1"></i>Sair
-        </a>
       </div>
     </div>
 
