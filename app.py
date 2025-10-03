@@ -1036,6 +1036,174 @@ def cadastrar_usuario():
     # GET request - mostrar formulário vazio
     return render_template('cadastrar_usuario.html')
 
+# ==============================
+# ROTA PARA EDITAR USUÁRIO
+# ==============================
+@app.route('/usuarios/editar/<int:usuario_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def editar_usuario(usuario_id):
+    """Página para editar usuário existente"""
+    conn = None
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        if request.method == 'POST':
+            # Processar edição
+            dados = request.form
+            
+            # Validar dados obrigatórios
+            if not dados.get('nome') or not dados.get('email'):
+                flash('Preencha todos os campos obrigatórios.', 'error')
+                return render_template('editar_usuario.html', 
+                                    usuario={'id': usuario_id, **dados})
+            
+            # Verificar se email já existe (excluindo o usuário atual)
+            cursor.execute("SELECT id FROM usuarios WHERE email = ? AND id != ?", 
+                         (dados['email'].lower(), usuario_id))
+            if cursor.fetchone():
+                flash('Este e-mail já está cadastrado para outro usuário.', 'error')
+                return render_template('editar_usuario.html', 
+                                    usuario={'id': usuario_id, **dados})
+            
+            # Atualizar usuário
+            campos_atualizacao = []
+            valores = []
+            
+            if dados.get('nome'):
+                campos_atualizacao.append("nome = ?")
+                valores.append(dados['nome'].strip())
+            
+            if dados.get('email'):
+                campos_atualizacao.append("email = ?")
+                valores.append(dados['email'].lower().strip())
+            
+            if dados.get('departamento'):
+                campos_atualizacao.append("departamento = ?")
+                valores.append(dados['departamento'])
+            
+            if dados.get('telefone'):
+                campos_atualizacao.append("telefone = ?")
+                valores.append(dados['telefone'])
+            
+            if 'tipo' in dados:
+                campos_atualizacao.append("tipo = ?")
+                valores.append(dados['tipo'])
+            
+            if 'ativo' in dados:
+                campos_atualizacao.append("ativo = ?")
+                valores.append(int(dados['ativo']))
+            
+            # Se houver nova senha
+            if dados.get('senha'):
+                if len(dados['senha']) < 6:
+                    flash('A senha deve ter no mínimo 6 caracteres.', 'error')
+                    return render_template('editar_usuario.html', 
+                                        usuario={'id': usuario_id, **dados})
+                
+                if dados.get('senha') != dados.get('confirmar_senha', ''):
+                    flash('As senhas não coincidem.', 'error')
+                    return render_template('editar_usuario.html', 
+                                        usuario={'id': usuario_id, **dados})
+                
+                campos_atualizacao.append("senha_hash = ?")
+                valores.append(hash_senha(dados['senha']))
+            
+            # Adicionar data de atualização
+            campos_atualizacao.append("data_atualizacao = CURRENT_TIMESTAMP")
+            
+            # Montar e executar query
+            if campos_atualizacao:
+                query = f"UPDATE usuarios SET {', '.join(campos_atualizacao)} WHERE id = ?"
+                valores.append(usuario_id)
+                
+                cursor.execute(query, valores)
+                conn.commit()
+                
+                flash('Usuário atualizado com sucesso!', 'success')
+                return redirect(url_for('listar_usuarios'))
+            else:
+                flash('Nenhuma alteração foi feita.', 'info')
+                return redirect(url_for('listar_usuarios'))
+        
+        else:
+            # GET - Carregar dados do usuário
+            cursor.execute('''
+                SELECT id, email, nome, tipo, departamento, telefone, ativo, data_criacao
+                FROM usuarios WHERE id = ?
+            ''', (usuario_id,))
+            
+            usuario = cursor.fetchone()
+            
+            if not usuario:
+                flash('Usuário não encontrado.', 'error')
+                return redirect(url_for('listar_usuarios'))
+            
+            # Converter para dicionário
+            usuario_dict = {
+                'id': usuario[0],
+                'email': usuario[1],
+                'nome': usuario[2],
+                'tipo': usuario[3],
+                'departamento': usuario[4],
+                'telefone': usuario[5],
+                'ativo': usuario[6],
+                'data_criacao': usuario[7]
+            }
+            
+            return render_template('editar_usuario.html', usuario=usuario_dict)
+            
+    except Exception as e:
+        logger.error(f"Erro ao editar usuário: {str(e)}")
+        flash('Erro ao editar usuário.', 'error')
+        return redirect(url_for('listar_usuarios'))
+    finally:
+        if conn:
+            conn.close()
+
+# ==============================
+# ROTA PARA EXCLUIR USUÁRIO
+# ==============================
+@app.route('/usuarios/excluir/<int:usuario_id>')
+@login_required
+@admin_required
+def excluir_usuario(usuario_id):
+    """Excluir usuário do sistema"""
+    # Impedir que o usuário exclua a si mesmo
+    if usuario_id == session.get('usuario_id'):
+        flash('Você não pode excluir seu próprio usuário.', 'error')
+        return redirect(url_for('listar_usuarios'))
+    
+    conn = None
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se o usuário existe
+        cursor.execute("SELECT nome FROM usuarios WHERE id = ?", (usuario_id,))
+        usuario = cursor.fetchone()
+        
+        if not usuario:
+            flash('Usuário não encontrado.', 'error')
+            return redirect(url_for('listar_usuarios'))
+        
+        # Excluir usuário
+        cursor.execute("DELETE FROM usuarios WHERE id = ?", (usuario_id,))
+        conn.commit()
+        
+        flash(f'Usuário {usuario[0]} excluído com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Erro ao excluir usuário: {str(e)}")
+        flash('Erro ao excluir usuário.', 'error')
+    finally:
+        if conn:
+            conn.close()
+    
+    return redirect(url_for('listar_usuarios'))
+
+
 @app.route('/usuarios')
 @login_required
 def listar_usuarios():

@@ -133,11 +133,15 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
-                                                <a href="#" class="btn btn-outline-primary" title="Editar">
+                                                <!-- BOTÃO EDITAR -->
+                                                <a href="{{ url_for('editar_usuario', usuario_id=usuario.id) }}" class="btn btn-outline-primary" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
+                                                
+                                                <!-- BOTÃO EXCLUIR -->
                                                 {% if usuario.id != session.get('usuario_id') %}
-                                                <a href="#" class="btn btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza?')">
+                                                <a href="{{ url_for('excluir_usuario', usuario_id=usuario.id) }}" class="btn btn-outline-danger" title="Excluir" 
+                                                   onclick="return confirm('Tem certeza que deseja excluir o usuário {{ usuario.nome }}?')">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                                 {% else %}
