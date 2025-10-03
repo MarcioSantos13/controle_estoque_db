@@ -47,347 +47,348 @@
 </head>
 
 <body>
-    <!-- Cabeçalho -->
-    <div class="row mb-4">
-        <div class="col">
-            <h1 class="h3">
-                <i class="fas fa-database me-2"></i>Sistema CRUD - Gerenciamento de Bens
-            </h1>
-            <p class="text-muted">Gerencie todos os bens do patrimônio</p>
-        </div>
-        <div class="col-auto">
-            <div class="d-flex align-items-center gap-2">
-                <!-- Botão Início -->
-                <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-home me-1"></i>Início
-                </a>
-
-                <!-- Dropdown do Usuário -->
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fas fa-user me-1"></i>
-                        {% if session.usuario_nome %}
-                        {{ session.usuario_nome }}
-                        {% else %}
-                        Usuário
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <span class="dropdown-item-text">
-                                <small class="text-muted">
-                                    <i class="fas fa-envelope me-1"></i>
-                                    {% if session.usuario_email %}
-                                    {{ session.usuario_email }}
-                                    {% else %}
-                                    E-mail não disponível
-                                    {% endif %}
-                                </small>
-                            </span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url_for('perfil') }}">
-                                <i class="fas fa-user-circle me-2"></i>Meu Perfil
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
-                                <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">
-                                <i class="fas fa-users me-2"></i>Gerenciar Usuários
-                            </a>
-                        </li>
-
-
-
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cog me-2"></i>Configurações
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i>Sair do Sistema
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="container-fluid">
+        <!-- Cabeçalho -->
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="h3">
+                    <i class="fas fa-database me-2"></i>Sistema CRUD - Gerenciamento de Bens
+                </h1>
+                <p class="text-muted">Gerencie todos os bens do patrimônio</p>
             </div>
-        </div>
-    </div>
+            <div class="col-auto">
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Botão Início -->
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-home me-1"></i>Início
+                    </a>
 
-
-    <!-- Estatísticas -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">{{ total_count|number_format }}</h4>
-                            <p class="card-text">Total de Bens</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-boxes fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">{{ localizados_count|number_format }}</h4>
-                            <p class="card-text">Bens Localizados</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-check-circle fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
-                            <p class="card-text">Bens Pendentes</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-clock fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Barra de Ferramentas -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <!-- Busca -->
-            <form method="GET" class="d-flex">
-                <div class="input-group search-box">
-                    <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou número..."
-                        value="{{ termo_busca }}">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6 text-end">
-            <!-- Botões de Ação -->
-            <button class="btn btn-success" onclick="abrirModalNovoBem()">
-                <i class="fas fa-plus me-1"></i>Novo Bem
-            </button>
-            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary">
-                <i class="fas fa-download me-1"></i>Exportar
-            </a>
-        </div>
-    </div>
-
-    <!-- Filtros -->
-    <div class="row mb-3">
-        <div class="col">
-            <div class="btn-group">
-                <a href="{{ url_for('sistema_crud') }}"
-                    class="btn btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
-                    Todos
-                </a>
-                <a href="{{ url_for('sistema_crud', situacao='OK') }}"
-                    class="btn btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
-                    Localizados
-                </a>
-                <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
-                    class="btn btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
-                    Pendentes
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tabela de Bens - VERSÃO CORRIGIDA -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">
-                <i class="fas fa-list me-1"></i>
-                Lista de Bens
-                {% if termo_busca %}
-                <span class="badge bg-info">Filtrado: "{{ termo_busca }}"</span>
-                {% endif %}
-            </h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Número</th>
-                            <th>Nome</th>
-                            <th>Situação</th>
-                            <th>Localização</th>
-                            <th>Responsável</th>
-                            <th>Última Vistoria</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for bem in paginacao.dados %}
-                        <tr>
-                            <td>
-                                {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
-                                <strong>#{{ bem.id }}</strong>
-                                {% else %}
-                                <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
-                                    #---<br><small>Sem ID</small>
+                    <!-- Dropdown do Usuário -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            {% if session.usuario_nome %}
+                            {{ session.usuario_nome }}
+                            {% else %}
+                            Usuário
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <span class="dropdown-item-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        {% if session.usuario_email %}
+                                        {{ session.usuario_email }}
+                                        {% else %}
+                                        E-mail não disponível
+                                        {% endif %}
+                                    </small>
                                 </span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <span class="font-monospace">{{ bem.numero }}</span>
-                            </td>
-                            <td>{{ bem.nome }}</td>
-                            <td>
-                                {% if bem.situacao == 'OK' %}
-                                <span class="badge bg-success badge-status">Localizado</span>
-                                {% else %}
-                                <span class="badge bg-warning badge-status">Pendente</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if bem.localizacao %}
-                                {{ bem.localizacao }}
-                                {% else %}
-                                <span class="text-muted">Não informada</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if bem.responsavel %}
-                                {{ bem.responsavel }}
-                                {% else %}
-                                <span class="text-muted">Não informado</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if bem.data_ultima_vistoria %}
-                                {{ bem.data_ultima_vistoria[:10] }}
-                                {% else %}
-                                <span class="text-muted">N/A</span>
-                                {% endif %}
-                            </td>
-                            <td class="action-buttons">
-                                <!-- SOLUÇÃO SIMPLES E FUNCIONAL -->
-                                {% if bem.id %}
-                                <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
-                                    title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-info" onclick="visualizarBem({{ bem.id }})"
-                                    title="Visualizar">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger"
-                                    onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                                {% else %}
-                                <span class="text-muted" title="ID não disponível">
-                                    <i class="fas fa-ban"></i> N/D
-                                </span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="8" class="text-center py-4">
-                                <div class="text-muted">
-                                    <i class="fas fa-inbox fa-2x mb-2"></i>
-                                    <p>Nenhum bem encontrado</p>
-                                    {% if termo_busca %}
-                                    <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
-                                        Limpar busca
-                                    </a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('perfil') }}">
+                                    <i class="fas fa-user-circle me-2"></i>Meu Perfil
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
+                                    <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">
+                                    <i class="fas fa-users me-2"></i>Gerenciar Usuários
+                                </a>
+                            </li>
+
+
+
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog me-2"></i>Configurações
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Sair do Sistema
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Paginação -->
-    {% if paginacao.total_paginas > 1 %}
-    <div class="row mt-3">
-        <div class="col">
-            <nav aria-label="Paginação">
-                <ul class="pagination justify-content-center">
-                    {% if paginacao.pagina_atual > 1 %}
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                            Anterior
-                        </a>
-                    </li>
+
+        <!-- Estatísticas -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="card-title">{{ total_count|number_format }}</h4>
+                                <p class="card-text">Total de Bens</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-boxes fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="card-title">{{ localizados_count|number_format }}</h4>
+                                <p class="card-text">Bens Localizados</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
+                                <p class="card-text">Bens Pendentes</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Ferramentas -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Busca -->
+                <form method="GET" class="d-flex">
+                    <div class="input-group search-box">
+                        <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou número..."
+                            value="{{ termo_busca }}">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <!-- Botões de Ação -->
+                <button class="btn btn-success" onclick="abrirModalNovoBem()">
+                    <i class="fas fa-plus me-1"></i>Novo Bem
+                </button>
+                <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-download me-1"></i>Exportar
+                </a>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row mb-3">
+            <div class="col">
+                <div class="btn-group">
+                    <a href="{{ url_for('sistema_crud') }}"
+                        class="btn btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
+                        Todos
+                    </a>
+                    <a href="{{ url_for('sistema_crud', situacao='OK') }}"
+                        class="btn btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
+                        Localizados
+                    </a>
+                    <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
+                        class="btn btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
+                        Pendentes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Bens -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-1"></i>
+                    Lista de Bens
+                    {% if termo_busca %}
+                    <span class="badge bg-info">Filtrado: "{{ termo_busca }}"</span>
                     {% endif %}
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Número</th>
+                                <th>Nome</th>
+                                <th>Situação</th>
+                                <th>Localização</th>
+                                <th>Responsável</th>
+                                <th>Última Vistoria</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bem in paginacao.dados %}
+                            <tr>
+                                <td>
+                                    {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
+                                    <strong>#{{ bem.id }}</strong>
+                                    {% else %}
+                                    <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
+                                        #---<br><small>Sem ID</small>
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="font-monospace">{{ bem.numero }}</span>
+                                </td>
+                                <td>{{ bem.nome }}</td>
+                                <td>
+                                    {% if bem.situacao == 'OK' %}
+                                    <span class="badge bg-success badge-status">Localizado</span>
+                                    {% else %}
+                                    <span class="badge bg-warning badge-status">Pendente</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bem.localizacao %}
+                                    {{ bem.localizacao }}
+                                    {% else %}
+                                    <span class="text-muted">Não informada</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bem.responsavel %}
+                                    {{ bem.responsavel }}
+                                    {% else %}
+                                    <span class="text-muted">Não informado</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bem.data_ultima_vistoria %}
+                                    {{ bem.data_ultima_vistoria[:10] }}
+                                    {% else %}
+                                    <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                                <td class="action-buttons">
+                                    {% if bem.id %}
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
+                                        title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="visualizarBem({{ bem.id }})"
+                                        title="Visualizar">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    {% else %}
+                                    <span class="text-muted" title="ID não disponível">
+                                        <i class="fas fa-ban"></i> N/D
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fas fa-inbox fa-2x mb-2"></i>
+                                        <p>Nenhum bem encontrado</p>
+                                        {% if termo_busca %}
+                                        <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
+                                            Limpar busca
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                    {% for pagina in range(1, paginacao.total_paginas + 1) %}
-                    {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %} <li
-                        class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
-                        <a class="page-link"
-                            href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                            {{ pagina }}
-                        </a>
+        <!-- Paginação -->
+        {% if paginacao.total_paginas > 1 %}
+        <div class="row mt-3">
+            <div class="col">
+                <nav aria-label="Paginação">
+                    <ul class="pagination justify-content-center">
+                        {% if paginacao.pagina_atual > 1 %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                                Anterior
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for pagina in range(1, paginacao.total_paginas + 1) %}
+                        {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %}
+                        <li class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
+                            <a class="page-link"
+                                href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                                {{ pagina }}
+                            </a>
                         </li>
                         {% endif %}
                         {% endfor %}
 
-                        {% if paginacao.pagina_atual < paginacao.total_paginas %} <li class="page-item">
+                        {% if paginacao.pagina_atual < paginacao.total_paginas %}
+                        <li class="page-item">
                             <a class="page-link"
                                 href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
                                 Próxima
                             </a>
-                            </li>
-                            {% endif %}
-                </ul>
-            </nav>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Informações de Paginação -->
+        <div class="row mt-2">
+            <div class="col text-center text-muted">
+                <small>
+                    Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
+                    registro{{ paginacao.total_registros|pluralize('', 's') }}
+                    {% if paginacao.total_paginas > 1 %}
+                    - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
+                    {% endif %}
+                </small>
+            </div>
         </div>
     </div>
-    {% endif %}
 
-    <!-- Informações de Paginação -->
-    <div class="row mt-2">
-        <div class="col text-center text-muted">
-            <small>
-                Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
-                registro{{ paginacao.total_registros|pluralize('', 's') }}
-                {% if paginacao.total_paginas > 1 %}
-                - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
-                {% endif %}
-            </small>
-        </div>
-    </div>
-    </div>
-
-    <!-- Modal para Visualizar/Editar Bem -->
+    <!-- Modal para Visualizar/Editar Bem - CORRIGIDO -->
     <div class="modal fade" id="modalBem" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -398,14 +399,12 @@
                 <div class="modal-body">
                     <form id="formBem">
                         <input type="hidden" id="bemId" name="id">
-                        <input type="hidden" id="bemNumero" name="numero">
-
+                        
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="numeroDisplay" class="form-label">Número do Bem *</label>
-                                    <input type="text" class="form-control" id="numeroDisplay" name="numero_display"
-                                        required readonly>
+                                    <label for="numero" class="form-label">Número do Bem *</label>
+                                    <input type="text" class="form-control" id="numero" name="numero" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -453,30 +452,26 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="data_ultima_vistoria" class="form-label">Data Última Vistoria</label>
-                                    <input type="date" class="form-control" id="data_ultima_vistoria"
-                                        name="data_ultima_vistoria">
+                                    <input type="date" class="form-control" id="data_ultima_vistoria" name="data_ultima_vistoria">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="data_vistoria_atual" class="form-label">Data Vistoria Atual</label>
-                                    <input type="date" class="form-control" id="data_vistoria_atual"
-                                        name="data_vistoria_atual">
+                                    <input type="date" class="form-control" id="data_vistoria_atual" name="data_vistoria_atual">
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="observacoes" class="form-label">Observações</label>
-                                <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
-                            </div>
-
-
+                        <div class="mb-3">
+                            <label for="observacoes" class="form-label">Observações</label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="btnSalvar" onclick="salvarBem()">Salvar
-                        Alterações</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvar" onclick="salvarBem()">Salvar Alterações</button>
                 </div>
             </div>
         </div>
@@ -509,49 +504,7 @@
         // VARIÁVEIS GLOBAIS
         let bemIdParaExcluir = null;
 
-        // FUNÇÕES DE DEBUG
-        function investigarDados() {
-            const bens = {{ paginacao.dados | tojson | safe
-        }};
-        console.log("📊 Dados completos da página:", bens);
-
-        let debugHTML = `<div class="alert alert-info">
-            <h6>🔍 Diagnóstico dos Dados</h6>
-            <p><strong>Total de registros:</strong> ${bens.length}</p>
-            <p><strong>Termo de busca:</strong> "${'{{ termo_busca }}' || 'Nenhum'}"</p>
-        </div>`;
-
-        debugHTML += `<div class="table-responsive"><table class='table table-sm table-bordered'>`;
-        debugHTML += `<thead><tr>
-            <th>#</th>
-            <th>ID</th>
-            <th>Número</th>
-            <th>Nome</th>
-            <th>Situação</th>
-            <th>ID Válido?</th>
-        </tr></thead><tbody>`;
-
-        bens.forEach((bem, index) => {
-            const idValido = bem.id && bem.id != 'None' && bem.id != 'null' && bem.id != '';
-
-            debugHTML += `<tr>
-                <td>${index + 1}</td>
-                <td class="${idValido ? 'table-success' : 'table-danger'}">
-                    ${bem.id || '<em class="text-muted">NULL</em>'}
-                </td>
-                <td>${bem.numero || '<em class="text-muted">NULL</em>'}</td>
-                <td>${bem.nome || 'Sem nome'}</td>
-                <td>${bem.situacao || 'N/A'}</td>
-                <td>${idValido ? '✅ Sim' : '❌ Não'}</td>
-            </tr>`;
-        });
-
-        debugHTML += `</tbody></table></div>`;
-
-        document.getElementById('debugInfo').innerHTML = debugHTML;
-    }
-
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -576,7 +529,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("📊 Dados recebidos:", data);
+                    console.log("📊 Dados COMPLETOS recebidos:", data);
 
                     // Restaurar botão
                     btnSalvar.innerHTML = originalText;
@@ -600,7 +553,7 @@
                 });
         }
 
-        // FUNÇÃO PARA VISUALIZAR POR ID
+        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -609,12 +562,24 @@
                 return;
             }
 
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+            btnSalvar.disabled = true;
+
             fetch(`/api/bens/id/${bemId}`)
                 .then(response => {
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     return response.json();
                 })
                 .then(data => {
+                    console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
+                    
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
                     if (data.success && data.data) {
                         preencherModalVisualizacao(data.data);
                     } else {
@@ -622,11 +587,14 @@
                     }
                 })
                 .catch(error => {
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
                     alert("Erro: " + error.message);
                 });
         }
 
-        // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
+        // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO - CORRIGIDA
         function preencherModalEdicao(bem) {
             console.log("📝 Preenchendo modal de EDIÇÃO com:", bem);
 
@@ -635,10 +603,10 @@
                 return;
             }
 
+            // Preencher todos os campos
             document.getElementById('modalBemTitle').textContent = `Editar Bem: ${bem.nome || 'Sem nome'}`;
             document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('bemNumero').value = bem.numero || '';
-            document.getElementById('numeroDisplay').value = bem.numero || '';
+            document.getElementById('numero').value = bem.numero || '';
             document.getElementById('nome').value = bem.nome || '';
             document.getElementById('situacao').value = bem.situacao || 'Pendente';
             document.getElementById('localizacao').value = bem.localizacao || '';
@@ -646,29 +614,49 @@
             document.getElementById('auditor').value = bem.auditor || '';
             document.getElementById('observacoes').value = bem.observacoes || '';
 
-            // Datas - tratamento seguro
-            if (bem.data_ultima_vistoria) {
-                const dataUltima = bem.data_ultima_vistoria.split('T')[0];
-                document.getElementById('data_ultima_vistoria').value = dataUltima;
-            } else {
-                document.getElementById('data_ultima_vistoria').value = '';
-            }
+            // Datas - tratamento mais robusto
+            try {
+                if (bem.data_ultima_vistoria) {
+                    let dataUltima = bem.data_ultima_vistoria;
+                    // Se for string, converter para formato date
+                    if (typeof dataUltima === 'string') {
+                        if (dataUltima.includes('T')) {
+                            dataUltima = dataUltima.split('T')[0];
+                        } else if (dataUltima.includes(' ')) {
+                            dataUltima = dataUltima.split(' ')[0];
+                        }
+                    }
+                    document.getElementById('data_ultima_vistoria').value = dataUltima;
+                } else {
+                    document.getElementById('data_ultima_vistoria').value = '';
+                }
 
-            if (bem.data_vistoria_atual) {
-                const dataAtual = bem.data_vistoria_atual.split('T')[0];
-                document.getElementById('data_vistoria_atual').value = dataAtual;
-            } else {
+                if (bem.data_vistoria_atual) {
+                    let dataAtual = bem.data_vistoria_atual;
+                    // Se for string, converter para formato date
+                    if (typeof dataAtual === 'string') {
+                        if (dataAtual.includes('T')) {
+                            dataAtual = dataAtual.split('T')[0];
+                        } else if (dataAtual.includes(' ')) {
+                            dataAtual = dataAtual.split(' ')[0];
+                        }
+                    }
+                    document.getElementById('data_vistoria_atual').value = dataAtual;
+                } else {
+                    document.getElementById('data_vistoria_atual').value = '';
+                }
+            } catch (error) {
+                console.error("Erro ao processar datas:", error);
+                document.getElementById('data_ultima_vistoria').value = '';
                 document.getElementById('data_vistoria_atual').value = '';
             }
 
-            // REMOVA esta parte das observações
-            // document.getElementById('observacoes').value = bem.observacoes || '';
-
-            // Habilitar campos para edição (exceto número)
+            // Habilitar campos para edição (número como readonly)
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
-                if (input.id !== 'numeroDisplay') {
-                    input.disabled = false;
+                input.disabled = false;
+                if (input.id === 'numero') {
+                    input.readOnly = true; // Número não pode ser alterado na edição
                 }
             });
             document.getElementById('btnSalvar').style.display = 'block';
@@ -677,68 +665,109 @@
             const modal = new bootstrap.Modal(document.getElementById('modalBem'));
             modal.show();
         }
-        // FUNÇÃO PARA NOVO BEM
+
+        // FUNÇÃO PARA NOVO BEM - CORRIGIDA
         function abrirModalNovoBem() {
+            console.log("➕ ABRINDO MODAL PARA NOVO BEM");
+            
             document.getElementById('modalBemTitle').textContent = 'Novo Bem';
             document.getElementById('formBem').reset();
             document.getElementById('bemId').value = '';
-            document.getElementById('bemNumero').value = '';
-            document.getElementById('numeroDisplay').readOnly = false;
 
-            // Habilitar campos
+            // Habilitar todos os campos (incluindo número como editável)
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => input.disabled = false);
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.readOnly = false;
+            });
+            
+            // Definir data atual como padrão para vistoria atual
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('data_vistoria_atual').value = hoje;
+            
             document.getElementById('btnSalvar').style.display = 'block';
 
             const modal = new bootstrap.Modal(document.getElementById('modalBem'));
             modal.show();
         }
 
-        // FUNÇÃO PARA SALVAR (EDITAR OU CRIAR)
+        // FUNÇÃO SALVAR BEM - CORRIGIDA PARA TRATAR VALORES NULOS
         async function salvarBem() {
+            console.log("💾 INICIANDO SALVAMENTO DO BEM");
+            
             const formData = new FormData(document.getElementById('formBem'));
             const bemId = document.getElementById('bemId').value;
-            const bemNumero = document.getElementById('bemNumero').value;
 
+            // Converter FormData para objeto JavaScript - TRATAMENTO CORRETO DE VALORES NULOS
             const dados = {};
-            formData.forEach((value, key) => {
-                if (key !== 'numero_display') { // Ignorar o campo display
-                    dados[key] = value;
+            for (let [key, value] of formData.entries()) {
+                // Tratamento seguro para valores nulos/vazios
+                if (value === null || value === undefined || value === '') {
+                    dados[key] = null;
+                } else {
+                    // Apenas aplicar trim() se for string
+                    dados[key] = typeof value === 'string' ? value.trim() : value;
                 }
-            });
+                console.log(`📋 Campo: ${key} =`, dados[key]);
+            }
 
-            console.log("💾 Salvando dados:", dados);
-            console.log("💾 ID do bem:", bemId);
+            console.log("📤 Dados completos a serem enviados:", dados);
+            console.log("🎯 ID do bem:", bemId || "NOVO BEM");
+
+            // Validar campos obrigatórios
+            if (!dados.numero || dados.numero === '') {
+                alert("❌ Campo obrigatório: Número do Bem deve ser preenchido.");
+                document.getElementById('numero').focus();
+                return;
+            }
+
+            if (!dados.nome || dados.nome === '') {
+                alert("❌ Campo obrigatório: Nome do Bem deve ser preenchido.");
+                document.getElementById('nome').focus();
+                return;
+            }
 
             try {
                 let response;
+                let url;
+                let method;
+
                 if (bemId && bemId !== '') {
                     // EDIÇÃO - usar ID
-                    console.log(`📤 Enviando PUT para /api/bens/${bemId}`);
-                    response = await fetch(`/api/bens/${bemId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(dados)
-                    });
+                    method = 'PUT';
+                    url = `/api/bens/${bemId}`;
+                    console.log(`📤 Enviando ${method} para ${url}`);
                 } else {
                     // NOVO BEM
-                    console.log("📤 Enviando POST para /api/bens");
-                    response = await fetch('/api/bens', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(dados)
-                    });
+                    method = 'POST';
+                    url = '/api/bens';
+                    console.log(`📤 Enviando ${method} para ${url}`);
                 }
 
+                response = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
                 const result = await response.json();
-                console.log("📥 Resposta do servidor:", result);
+                console.log("📥 Resposta completa do servidor:", result);
 
                 if (result.success) {
                     alert("✅ " + result.message);
                     bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
-                    location.reload(); // Recarregar a página para ver as mudanças
+                    location.reload();
                 } else {
-                    alert("❌ Erro: " + result.message);
+                    // Mostrar erro mais detalhado
+                    let mensagemErro = result.message || "Erro desconhecido";
+                    if (result.errors) {
+                        mensagemErro += "\nErros: " + JSON.stringify(result.errors);
+                    }
+                    alert("❌ Erro: " + mensagemErro);
+                    console.error("Erro detalhado:", result);
                 }
             } catch (error) {
                 console.error("💥 Erro ao salvar:", error);
@@ -746,6 +775,69 @@
             }
         }
 
+        // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO - CORRIGIDA
+        function preencherModalVisualizacao(bem) {
+            console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
+
+            if (!bem) {
+                alert("Dados do bem não recebidos");
+                return;
+            }
+
+            // Preencher todos os campos
+            document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
+            document.getElementById('bemId').value = bem.id || '';
+            document.getElementById('numero').value = bem.numero || '';
+            document.getElementById('nome').value = bem.nome || '';
+            document.getElementById('situacao').value = bem.situacao || 'Pendente';
+            document.getElementById('localizacao').value = bem.localizacao || '';
+            document.getElementById('responsavel').value = bem.responsavel || '';
+            document.getElementById('auditor').value = bem.auditor || '';
+            document.getElementById('observacoes').value = bem.observacoes || '';
+
+            // Datas - tratamento mais robusto
+            try {
+                if (bem.data_ultima_vistoria) {
+                    let dataUltima = bem.data_ultima_vistoria;
+                    if (typeof dataUltima === 'string') {
+                        if (dataUltima.includes('T')) {
+                            dataUltima = dataUltima.split('T')[0];
+                        } else if (dataUltima.includes(' ')) {
+                            dataUltima = dataUltima.split(' ')[0];
+                        }
+                    }
+                    document.getElementById('data_ultima_vistoria').value = dataUltima;
+                } else {
+                    document.getElementById('data_ultima_vistoria').value = '';
+                }
+
+                if (bem.data_vistoria_atual) {
+                    let dataAtual = bem.data_vistoria_atual;
+                    if (typeof dataAtual === 'string') {
+                        if (dataAtual.includes('T')) {
+                            dataAtual = dataAtual.split('T')[0];
+                        } else if (dataAtual.includes(' ')) {
+                            dataAtual = dataAtual.split(' ')[0];
+                        }
+                    }
+                    document.getElementById('data_vistoria_atual').value = dataAtual;
+                } else {
+                    document.getElementById('data_vistoria_atual').value = '';
+                }
+            } catch (error) {
+                console.error("Erro ao processar datas:", error);
+                document.getElementById('data_ultima_vistoria').value = '';
+                document.getElementById('data_vistoria_atual').value = '';
+            }
+
+            // Desabilitar campos para visualização
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => input.disabled = true);
+            document.getElementById('btnSalvar').style.display = 'none';
+
+            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
+            modal.show();
+        }
 
         // FUNÇÕES DE EXCLUSÃO
         function confirmarExclusao(bemId, nomeBem) {
@@ -784,71 +876,15 @@
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
-                if (input.id === 'numeroDisplay') {
-                    input.readOnly = true;
-                }
+                input.readOnly = false;
             });
             document.getElementById('btnSalvar').style.display = 'block';
         });
 
-        // Executar investigação automaticamente
+        // Executar quando página carregar
         document.addEventListener('DOMContentLoaded', function () {
             console.log("✅ Sistema CRUD carregado com sucesso!");
-            // investigarDados(); // Descomente se quiser debug automático
         });
-
-
-        // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO
-        function preencherModalVisualizacao(bem) {
-            console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
-
-            if (!bem) {
-                alert("Dados do bem não recebidos");
-                return;
-            }
-
-            document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
-            document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('bemNumero').value = bem.numero || '';
-            document.getElementById('numeroDisplay').value = bem.numero || '';
-            document.getElementById('nome').value = bem.nome || '';
-            document.getElementById('situacao').value = bem.situacao || 'Pendente';
-            document.getElementById('localizacao').value = bem.localizacao || '';
-            document.getElementById('responsavel').value = bem.responsavel || '';
-            document.getElementById('auditor').value = bem.auditor || '';
-
-            // Datas
-            if (bem.data_ultima_vistoria) {
-                const dataUltima = bem.data_ultima_vistoria.split('T')[0];
-                document.getElementById('data_ultima_vistoria').value = dataUltima;
-            } else {
-                document.getElementById('data_ultima_vistoria').value = '';
-            }
-
-            if (bem.data_vistoria_atual) {
-                const dataAtual = bem.data_vistoria_atual.split('T')[0];
-                document.getElementById('data_vistoria_atual').value = dataAtual;
-            } else {
-                document.getElementById('data_vistoria_atual').value = '';
-            }
-
-            // Observações (se o campo existir)
-            const campoObservacoes = document.getElementById('observacoes');
-            if (campoObservacoes) {
-                campoObservacoes.value = bem.observacoes || '';
-            }
-
-            // Desabilitar campos para visualização
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => input.disabled = true);
-            document.getElementById('btnSalvar').style.display = 'none';
-
-            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
-            modal.show();
-        }
-
-
-
     </script>
 </body>
 
