@@ -943,17 +943,16 @@ def api_ajuda_contato():
         logger.error(f"Erro ao processar contato: {str(e)}")
         return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
 
-# ==============================
-# Gerenciamento de Usuários
-# ==============================
 @app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def cadastrar_usuario():
     """Página para cadastrar novos usuários"""
     if request.method == 'POST':
+        conn = None
         try:
             dados = request.form
+            logger.info(f"Dados recebidos: {dict(dados)}")
             
             # Validar dados obrigatórios
             if not dados.get('nome') or not dados.get('email') or not dados.get('senha'):
@@ -975,51 +974,64 @@ def cadastrar_usuario():
                 flash('Por favor, informe um e-mail válido.', 'error')
                 return render_template('cadastrar_usuario.html', dados=dados)
             
-            # Verificar se e-mail já existe
+            # Conectar ao banco
             conn = sqlite3.connect(DB_PATH)
             cursor = conn.cursor()
             
+            # Verificar se e-mail já existe
             cursor.execute("SELECT id FROM usuarios WHERE email = ?", (dados['email'].lower(),))
             if cursor.fetchone():
-                conn.close()
                 flash('Este e-mail já está cadastrado no sistema.', 'error')
                 return render_template('cadastrar_usuario.html', dados=dados)
             
-            # Inserir novo usuário COM TRATAMENTO DE ERRO MELHOR
-            try:
-                cursor.execute('''
-                    INSERT INTO usuarios (
-                        email, nome, senha_hash, tipo, departamento, 
-                        telefone, ativo, criado_por, data_criacao
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-                ''', (
-                    dados['email'].lower().strip(),
-                    dados['nome'].strip(),
-                    hash_senha(dados['senha']),
-                    dados.get('tipo', 'usuario'),
-                    dados.get('departamento', ''),
-                    dados.get('telefone', ''),
-                    int(dados.get('ativo', 1)),
-                    session.get('usuario_id')
-                ))
-                
-                conn.commit()
-                conn.close()
-                
-                flash(f'Usuário {dados["nome"]} cadastrado com sucesso!', 'success')
-                return redirect(url_for('listar_usuarios'))
-                
-            except sqlite3.Error as e:
+            # Inserir novo usuário
+            cursor.execute('''
+                INSERT INTO usuarios (
+                    email, nome, senha_hash, tipo, departamento, 
+                    telefone, ativo, criado_por
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                dados['email'].lower().strip(),
+                dados['nome'].strip(),
+                hash_senha(dados['senha']),
+                dados.get('tipo', 'usuario'),
+                dados.get('departamento', ''),
+                dados.get('telefone', ''),
+                int(dados.get('ativo', 1)),
+                session.get('usuario_id')  # Pode ser None se não houver usuário logado
+            ))
+            
+            conn.commit()
+            user_id = cursor.lastrowid
+            logger.info(f"Usuário cadastrado com ID: {user_id}")
+            
+            flash(f'Usuário {dados["nome"]} cadastrado com sucesso!', 'success')
+            return redirect(url_for('listar_usuarios'))
+            
+        except sqlite3.IntegrityError as e:
+            if conn:
                 conn.rollback()
-                conn.close()
-                logger.error(f"Erro de banco ao cadastrar usuário: {str(e)}")
-                flash('Erro no banco de dados ao cadastrar usuário.', 'error')
-                return render_template('cadastrar_usuario.html', dados=dados)
+            logger.error(f"Erro de integridade (email duplicado?): {str(e)}")
+            flash('Este e-mail já está cadastrado no sistema.', 'error')
+            return render_template('cadastrar_usuario.html', dados=dados)
+            
+        except sqlite3.Error as e:
+            if conn:
+                conn.rollback()
+            logger.error(f"Erro SQLite: {str(e)}")
+            flash(f'Erro no banco de dados: {str(e)}', 'error')
+            return render_template('cadastrar_usuario.html', dados=dados)
             
         except Exception as e:
-            logger.error(f"Erro inesperado ao cadastrar usuário: {str(e)}")
+            if conn:
+                conn.rollback()
+            logger.error(f"Erro inesperado: {str(e)}", exc_info=True)
             flash('Erro interno ao cadastrar usuário.', 'error')
-            return render_template('cadastrar_usuario.html', dados=request.form)
+            return render_template('cadastrar_usuario.html', dados=dados)
+            
+        finally:
+            if conn:
+                conn.close()
     
     # GET request - mostrar formulário vazio
     return render_template('cadastrar_usuario.html')
