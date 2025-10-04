@@ -693,23 +693,22 @@
             modal.show();
         }
 
-       // FUNÇÃO SALVAR BEM - CORRIGIDA PARA TRATAR ERROS DE RESPOSTA
+   // FUNÇÃO SALVAR BEM - CORREÇÃO NO TRATAMENTO DE DATAS
 async function salvarBem() {
     console.log("💾 INICIANDO SALVAMENTO DO BEM");
     
     const formData = new FormData(document.getElementById('formBem'));
     const bemId = document.getElementById('bemId').value;
 
-    // Converter FormData para objeto JavaScript - TRATAMENTO CORRETO DE VALORES NULOS
+    // Converter FormData para objeto JavaScript
     const dados = {};
     for (let [key, value] of formData.entries()) {
-        // Tratamento mais seguro para valores nulos/vazios
-        if (value === null || value === undefined) {
-            dados[key] = null;
-        } else if (value === '') {
-            dados[key] = ''; // Mantém como string vazia em vez de null
+        // Tratamento específico para campos de data vazios
+        if ((key === 'data_ultima_vistoria' || key === 'data_vistoria_atual') && value === '') {
+            dados[key] = null; // Enviar null para datas vazias
+        } else if (value === '' || value === null || value === undefined) {
+            dados[key] = ''; // String vazia para outros campos
         } else {
-            // Apenas aplicar trim() se for string e não estiver vazia
             dados[key] = typeof value === 'string' ? value.trim() : value;
         }
         console.log(`📋 Campo: ${key} =`, dados[key]);
@@ -764,9 +763,7 @@ async function salvarBem() {
         });
 
         console.log("📥 Status da resposta:", response.status);
-        console.log("📥 Headers da resposta:", response.headers);
 
-        // Verificar se a resposta é JSON válido
         const responseText = await response.text();
         console.log("📥 Resposta bruta do servidor:", responseText);
 
@@ -785,7 +782,6 @@ async function salvarBem() {
             bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
             location.reload();
         } else {
-            // Mostrar erro mais detalhado
             let mensagemErro = result.message || "Erro desconhecido";
             if (result.errors) {
                 mensagemErro += "\nErros: " + JSON.stringify(result.errors);

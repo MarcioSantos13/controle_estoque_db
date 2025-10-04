@@ -673,10 +673,13 @@ def importar_excel():
 # Rotas CRUD Unificadas
 # ==============================
 # No endpoint que cria novos bens, adicione validação:
+
 @app.route('/api/bens', methods=['POST'])
+@login_required  # Adicionar esta linha para exigir autenticação
 def criar_bem():
     try:
         dados = request.get_json()
+        print(f"📥 Dados recebidos para novo bem: {dados}")
         
         # Validação robusta dos campos
         numero = dados.get('numero', '').strip() if dados.get('numero') else ''
@@ -688,16 +691,50 @@ def criar_bem():
         if not nome:
             return jsonify({'success': False, 'message': 'Nome do bem é obrigatório'}), 400
             
+        # Verificar se número já existe
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
+        if cursor.fetchone():
+            conn.close()
+            return jsonify({'success': False, 'message': 'Número do bem já existe'}), 400
+        
         # Tratamento seguro para outros campos
         localizacao = dados.get('localizacao', '').strip() if dados.get('localizacao') else ''
         responsavel = dados.get('responsavel', '').strip() if dados.get('responsavel') else ''
         auditor = dados.get('auditor', '').strip() if dados.get('auditor') else ''
         observacoes = dados.get('observacoes', '').strip() if dados.get('observacoes') else ''
+        situacao = dados.get('situacao', 'Pendente')
         
-        # Resto da lógica de criação...
+        # Tratamento de datas
+        data_ultima_vistoria = dados.get('data_ultima_vistoria') or None
+        data_vistoria_atual = dados.get('data_vistoria_atual') or None
+        
+        # Inserir novo bem no banco de dados
+        cursor.execute('''
+            INSERT INTO bens 
+            (numero, nome, situacao, localizacao, responsavel, data_ultima_vistoria, data_vistoria_atual, auditor, observacoes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            numero, nome, situacao, localizacao, responsavel, 
+            data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+        ))
+        
+        conn.commit()
+        novo_id = cursor.lastrowid
+        conn.close()
+        
+        print(f"✅ Novo bem criado com ID: {novo_id}, Número: {numero}")
+        return jsonify({
+            'success': True, 
+            'message': 'Bem criado com sucesso!',
+            'id': novo_id
+        })
         
     except Exception as e:
+        print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
+    
 @app.route('/api/bens/<numero_bem>')
 
 def api_obter_bem(numero_bem):
@@ -1577,44 +1614,44 @@ def sistema_crud():
                             localizados_count=0,
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
+ 
+ 
         
 @app.route('/api/bens/id/<int:bem_id>')
+@login_required
 def api_obter_bem_por_id(bem_id):
-    """API para obter dados de um bem pelo ID - COM OBSERVAÇÕES"""
+    """API para obter dados de um bem pelo ID"""
     try:
-        print(f"🔍 API - Buscando bem por ID: {bem_id}")
-        
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         
-        # Query com colunas existentes (incluindo observacoes)
         cursor.execute('''
-            SELECT 
-                id, numero, nome, situacao, localizacao, responsavel,
-                data_ultima_vistoria, data_vistoria_atual, auditor,
-                data_criacao, data_localizacao, observacoes
-            FROM bens 
-            WHERE id = ?
+            SELECT id, numero, nome, situacao, localizacao, responsavel, 
+                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+            FROM bens WHERE id = ?
         ''', (bem_id,))
         
-        row = cursor.fetchone()
+        bem = cursor.fetchone()
         conn.close()
         
-        if row:
-            # Mapear para dicionário
-            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'data_criacao', 'data_localizacao', 'observacoes']
+        if bem:
+            # Converter para dicionário
+            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
+            bem_dict = dict(zip(colunas, bem))
             
-            bem = dict(zip(colunas, row))
-            print(f"✅ Bem encontrado: ID={bem['id']}, Número={bem['numero']}, Nome={bem['nome']}")
+            # Converter datas para string se necessário
+            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
+                if bem_dict[campo]:
+                    bem_dict[campo] = str(bem_dict[campo])
             
-            return jsonify({'success': True, 'data': bem})
+            return jsonify({'success': True, 'data': bem_dict})
         else:
-            print(f"❌ Bem não encontrado para ID: {bem_id}")
-            return jsonify({'success': False, 'message': 'Bem não encontrado'})
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
         print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)})
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/sair')
 def sair():
