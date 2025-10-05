@@ -618,92 +618,245 @@
                     </section>
 
                     <!-- Seção: Importação -->
-                    <section id="importacao" class="mb-5">
-                        <h2 class="section-title">📤 Importação de Dados</h2>
-                        
-                        <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Atenção:</strong> A importação substitui dados existentes. Sempre faça backup antes de importar.
-                        </div>
+<section id="importacao" class="mb-5">
+    <h2 class="section-title">📤 Importação de Dados</h2>
+    
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Atenção:</strong> A importação substitui dados existentes. Sempre faça backup antes de importar.
+    </div>
 
-                        <h4 class="mt-4 mb-3">Preparando sua Planilha</h4>
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <h5>Estrutura da Planilha</h5>
-                            <p>Sua planilha Excel deve conter estas colunas na primeira linha:</p>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered">
-                                    <thead class="table-primary">
-                                        <tr>
-                                            <th>Coluna Obrigatória</th>
-                                            <th>Tipo</th>
-                                            <th>Exemplo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>numero</strong></td>
-                                            <td>Texto</td>
-                                            <td>PT-001, COMP-001</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>nome</strong></td>
-                                            <td>Texto</td>
-                                            <td>Computador Dell</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>situacao</strong> (opcional)</td>
-                                            <td>Texto</td>
-                                            <td>OK, Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>localizacao</strong> (opcional)</td>
-                                            <td>Texto</td>
-                                            <td>Sala 101</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+    <h4 class="mt-4 mb-3">Preparando sua Planilha</h4>
+    <div class="step-card">
+        <div class="step-number">1</div>
+        <h5>Estrutura Flexível da Planilha</h5>
+        <p>Seu arquivo Excel pode usar diferentes nomes para as colunas. O sistema detecta automaticamente:</p>
+        
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Coluna</th>
+                        <th>Obrigatório</th>
+                        <th>Nomes Aceitos</th>
+                        <th>Exemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-success">
+                        <td><strong>Número do Bem</strong></td>
+                        <td><span class="badge bg-danger">Sim</span></td>
+                        <td>
+                            <small>
+                                "número do bem", "numero do bem", "nº do bem",<br>
+                                "patrimonio", "patrimônio", "numero", "número"
+                            </small>
+                        </td>
+                        <td>PT-001, COMP-001</td>
+                    </tr>
+                    <tr class="table-success">
+                        <td><strong>Nome</strong></td>
+                        <td><span class="badge bg-danger">Sim</span></td>
+                        <td>
+                            <small>
+                                "nome", "descrição", "descricao",<br>
+                                "item", "equipamento", "bem"
+                            </small>
+                        </td>
+                        <td>Computador Dell</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Situação</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "situação", "situacao", "status",<br>
+                                "estado", "condição"
+                            </small>
+                        </td>
+                        <td>OK, Pendente</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Localização</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "localização", "localizacao", "local",<br>
+                                "setor", "departamento"
+                            </small>
+                        </td>
+                        <td>Sala 101</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Responsável</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "responsavel", "responsável",<br>
+                                "encarregado", "curador"
+                            </small>
+                        </td>
+                        <td>João Silva</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Data Última Vistoria</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "data da ultima vistoria",<br>
+                                "última vistoria", "data ultima vistoria"
+                            </small>
+                        </td>
+                        <td>15/01/2024</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Data Vistoria Atual</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "data da vistoria atual",<br>
+                                "vistoria atual", "data vistoria atual"
+                            </small>
+                        </td>
+                        <td>20/01/2024</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td><strong>Auditor</strong></td>
+                        <td><span class="badge bg-warning">Opcional</span></td>
+                        <td>
+                            <small>
+                                "auditor", "auditor responsavel",<br>
+                                "inspetor"
+                            </small>
+                        </td>
+                        <td>Maria Santos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-                        <h4 class="mt-4 mb-3">Processo de Importação</h4>
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <h5>Acesse a ferramenta de importação</h5>
-                            <p>Na <strong>página inicial</strong>, role até a seção <strong>"Importar do Excel"</strong></p>
-                        </div>
+        <div class="alert alert-info mt-3">
+            <i class="fas fa-lightbulb me-2"></i>
+            <strong>Dica:</strong> O sistema é inteligente! Ele detecta automaticamente as colunas mesmo com nomes diferentes.
+            Apenas <strong>Número do Bem</strong> e <strong>Nome</strong> são obrigatórios.
+        </div>
+    </div>
 
-                        <div class="step-card">
-                            <div class="step-number">2</div>
-                            <h5>Configure a importação</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <ul>
-                                        <li><strong>Arquivo Excel:</strong> Selecione seu arquivo</li>
-                                        <li><strong>Nome da Aba:</strong> Geralmente "Estoque"</li>
-                                        <li><strong>Backup:</strong> Recomendado marcar esta opção</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="alert alert-info small">
-                                        <i class="fas fa-database me-1"></i>
-                                        <strong>Backup automático:</strong> O sistema cria uma cópia de segurança antes da importação.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <h4 class="mt-4 mb-3">Formatos de Data Suportados</h4>
+    <div class="step-card">
+        <div class="step-number">2</div>
+        <h5>Datas Flexíveis</h5>
+        <p>O sistema aceita diversos formatos de data:</p>
+        <div class="row">
+            <div class="col-md-6">
+                <ul>
+                    <li><strong>DD/MM/AAAA</strong> → 15/01/2024</li>
+                    <li><strong>DD-MM-AAAA</strong> → 15-01-2024</li>
+                    <li><strong>AAAA-MM-DD</strong> → 2024-01-15</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul>
+                    <li><strong>DD/MM/AA</strong> → 15/01/24</li>
+                    <li><strong>AAAA/MM/DD</strong> → 2024/01/15</li>
+                    <li><strong>Datas do Excel</strong> → Formatos nativos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-                        <div class="step-card">
-                            <div class="step-number">3</div>
-                            <h5>Execute a importação</h5>
-                            <p>Clique em <button class="btn btn-primary btn-sm"><i class="fas fa-upload me-1"></i>Importar Dados</button></p>
-                            <div class="alert alert-success">
-                                <i class="fas fa-sync-alt me-2"></i>
-                                O sistema validará a estrutura do arquivo e importará os dados. Você receberá um relatório completo do processo.
-                            </div>
-                        </div>
-                    </section>
+    <h4 class="mt-4 mb-3">Processo de Importação</h4>
+    <div class="step-card">
+        <div class="step-number">1</div>
+        <h5>Acesse a ferramenta de importação</h5>
+        <p>Na <strong>página inicial</strong>, role até a seção <strong>"Importar do Excel"</strong></p>
+    </div>
 
+    <div class="step-card">
+        <div class="step-number">2</div>
+        <h5>Configure a importação</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <ul>
+                    <li><strong>Arquivo Excel:</strong> Selecione seu arquivo (.xlsx ou .xls)</li>
+                    <li><strong>Nome da Aba:</strong> Geralmente "Estoque" (mas pode ser qualquer uma)</li>
+                    <li><strong>Backup Automático:</strong> Recomendado marcar esta opção</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info small">
+                    <i class="fas fa-robot me-1"></i>
+                    <strong>Detecção inteligente:</strong> O sistema identifica automaticamente as colunas, mesmo com nomes diferentes dos exemplos.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <div class="step-number">3</div>
+        <h5>Execute a importação</h5>
+        <p>Clique em <button class="btn btn-primary btn-sm"><i class="fas fa-upload me-1"></i>Importar Dados</button></p>
+        <div class="alert alert-success">
+            <i class="fas fa-sync-alt me-2"></i>
+            O sistema fará:
+            <ul class="mb-0 mt-2">
+                <li><strong>Detecção automática</strong> das colunas</li>
+                <li><strong>Validação</strong> da estrutura do arquivo</li>
+                <li><strong>Backup</strong> automático (se selecionado)</li>
+                <li><strong>Importação</strong> dos dados com relatório completo</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4 mb-3">Exemplo de Planilha</h4>
+    <div class="step-card">
+        <div class="step-number">📋</div>
+        <h5>Estrutura Recomendada</h5>
+        <p>Seu arquivo Excel pode ter esta aparência (nomes de coluna são flexíveis):</p>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>numero do bem</th>
+                        <th>nome</th>
+                        <th>situação</th>
+                        <th>localização</th>
+                        <th>responsável</th>
+                        <th>data ultima vistoria</th>
+                        <th>auditor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PT-001</td>
+                        <td>Computador Dell</td>
+                        <td>OK</td>
+                        <td>Sala 101 - TI</td>
+                        <td>João Silva</td>
+                        <td>15/01/2024</td>
+                        <td>Maria Santos</td>
+                    </tr>
+                    <tr>
+                        <td>MOB-002</td>
+                        <td>Mesa Executiva</td>
+                        <td>Pendente</td>
+                        <td>Escritório 2</td>
+                        <td>Pedro Costa</td>
+                        <td>10/01/2024</td>
+                        <td>Carlos Lima</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="alert alert-warning mt-3">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Importante:</strong> Mantenha os nomes das colunas na <strong>primeira linha</strong> da planilha.
+            O sistema não importa fórmulas complexas - apenas valores simples.
+        </div>
+    </div>
+</section>
                     <!-- Seção: Problemas -->
                     <section id="problemas" class="mb-5">
                         <h2 class="section-title">🛠️ Solução de Problemas</h2>

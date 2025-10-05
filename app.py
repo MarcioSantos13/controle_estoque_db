@@ -1081,83 +1081,92 @@ def editar_usuario(usuario_id):
         if request.method == 'POST':
             # Processar edição
             dados = request.form
+            logger.info(f"Editando usuário {usuario_id} com dados: {dict(dados)}")
             
             # Validar dados obrigatórios
             if not dados.get('nome') or not dados.get('email'):
                 flash('Preencha todos os campos obrigatórios.', 'error')
-                return render_template('editar_usuario.html', 
-                                    usuario={'id': usuario_id, **dados})
+                return redirect(url_for('editar_usuario', usuario_id=usuario_id))
             
             # Verificar se email já existe (excluindo o usuário atual)
             cursor.execute("SELECT id FROM usuarios WHERE email = ? AND id != ?", 
                          (dados['email'].lower(), usuario_id))
             if cursor.fetchone():
                 flash('Este e-mail já está cadastrado para outro usuário.', 'error')
-                return render_template('editar_usuario.html', 
-                                    usuario={'id': usuario_id, **dados})
+                return redirect(url_for('editar_usuario', usuario_id=usuario_id))
             
-            # Atualizar usuário
+            # **CORREÇÃO: Inicializar listas para a query**
             campos_atualizacao = []
             valores = []
             
-            if dados.get('nome'):
-                campos_atualizacao.append("nome = ?")
-                valores.append(dados['nome'].strip())
+            # **CORREÇÃO: Sempre adicionar campos obrigatórios**
+            campos_atualizacao.append("nome = ?")
+            valores.append(dados['nome'].strip())
             
-            if dados.get('email'):
-                campos_atualizacao.append("email = ?")
-                valores.append(dados['email'].lower().strip())
+            campos_atualizacao.append("email = ?")
+            valores.append(dados['email'].lower().strip())
             
+            # Campos opcionais
             if dados.get('departamento'):
                 campos_atualizacao.append("departamento = ?")
                 valores.append(dados['departamento'])
+            else:
+                campos_atualizacao.append("departamento = NULL")
             
             if dados.get('telefone'):
                 campos_atualizacao.append("telefone = ?")
                 valores.append(dados['telefone'])
+            else:
+                campos_atualizacao.append("telefone = NULL")
             
+            # **CORREÇÃO: Campos sempre presentes no formulário**
             if 'tipo' in dados:
                 campos_atualizacao.append("tipo = ?")
                 valores.append(dados['tipo'])
             
+            # **CORREÇÃO: Tratamento correto do campo ativo**
             if 'ativo' in dados:
                 campos_atualizacao.append("ativo = ?")
+                # Já vem como '1' ou '0' do formulário
                 valores.append(int(dados['ativo']))
+            else:
+                # Se não veio no formulário, assumir como inativo
+                campos_atualizacao.append("ativo = 0")
             
-            # Se houver nova senha
-            if dados.get('senha'):
+            # **CORREÇÃO: Lógica para senha - só atualizar se fornecida**
+            if dados.get('senha') and dados['senha'].strip():
+                logger.info("Senha fornecida, atualizando hash")
                 if len(dados['senha']) < 6:
                     flash('A senha deve ter no mínimo 6 caracteres.', 'error')
-                    return render_template('editar_usuario.html', 
-                                        usuario={'id': usuario_id, **dados})
+                    return redirect(url_for('editar_usuario', usuario_id=usuario_id))
                 
                 if dados.get('senha') != dados.get('confirmar_senha', ''):
                     flash('As senhas não coincidem.', 'error')
-                    return render_template('editar_usuario.html', 
-                                        usuario={'id': usuario_id, **dados})
+                    return redirect(url_for('editar_usuario', usuario_id=usuario_id))
                 
                 campos_atualizacao.append("senha_hash = ?")
                 valores.append(hash_senha(dados['senha']))
+            else:
+                logger.info("Nenhuma senha fornecida, mantendo a atual")
             
             # Adicionar data de atualização
             campos_atualizacao.append("data_atualizacao = CURRENT_TIMESTAMP")
             
-            # Montar e executar query
-            if campos_atualizacao:
-                query = f"UPDATE usuarios SET {', '.join(campos_atualizacao)} WHERE id = ?"
-                valores.append(usuario_id)
-                
-                cursor.execute(query, valores)
-                conn.commit()
-                
-                flash('Usuário atualizado com sucesso!', 'success')
-                return redirect(url_for('listar_usuarios'))
-            else:
-                flash('Nenhuma alteração foi feita.', 'info')
-                return redirect(url_for('listar_usuarios'))
+            # **CORREÇÃO: Montar e executar query com debug**
+            query = f"UPDATE usuarios SET {', '.join(campos_atualizacao)} WHERE id = ?"
+            valores.append(usuario_id)
+            
+            logger.info(f"Query: {query}")
+            logger.info(f"Valores: {valores}")
+            
+            cursor.execute(query, valores)
+            conn.commit()
+            
+            flash('Usuário atualizado com sucesso!', 'success')
+            return redirect(url_for('listar_usuarios'))
         
         else:
-            # GET - Carregar dados do usuário
+            # GET - Carregar dados do usuário (seu código original está bom)
             cursor.execute('''
                 SELECT id, email, nome, tipo, departamento, telefone, ativo, data_criacao
                 FROM usuarios WHERE id = ?
@@ -1177,19 +1186,29 @@ def editar_usuario(usuario_id):
                 'tipo': usuario[3],
                 'departamento': usuario[4],
                 'telefone': usuario[5],
-                'ativo': usuario[6],
+                'ativo': bool(usuario[6]),  # **CORREÇÃO: Converter para boolean**
                 'data_criacao': usuario[7]
             }
             
             return render_template('editar_usuario.html', usuario=usuario_dict)
             
+    except sqlite3.Error as e:
+        if conn:
+            conn.rollback()
+        logger.error(f"Erro SQLite ao editar usuário {usuario_id}: {str(e)}")
+        flash(f'Erro no banco de dados ao editar usuário: {str(e)}', 'error')
+        return redirect(url_for('editar_usuario', usuario_id=usuario_id))
+        
     except Exception as e:
-        logger.error(f"Erro ao editar usuário: {str(e)}")
-        flash('Erro ao editar usuário.', 'error')
-        return redirect(url_for('listar_usuarios'))
+        if conn:
+            conn.rollback()
+        logger.error(f"Erro inesperado ao editar usuário {usuario_id}: {str(e)}", exc_info=True)
+        flash('Erro interno ao editar usuário.', 'error')
+        return redirect(url_for('editar_usuario', usuario_id=usuario_id))
     finally:
         if conn:
             conn.close()
+
 
 # ==============================
 # ROTA PARA EXCLUIR USUÁRIO
