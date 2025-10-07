@@ -973,7 +973,7 @@ def api_ajuda_contato():
         return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
 
 @app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
-@login_required
+# @login_required
 @admin_required
 def cadastrar_usuario():
     """Página para cadastrar novos usuários"""
