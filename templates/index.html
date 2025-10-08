@@ -30,7 +30,10 @@
                 <span id="total-bens">{{ total_count|number_format }}</span> bens
               </small>
             </div>
-
+            <!-- ✅ BOTÃO DE AJUDA FORA DO DROPDOWN -->
+            <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
+              <i class="bi bi-question-circle me-1"></i>Ajuda
+            </a>
             <!-- Dropdown do Usuário -->
             <div class="dropdown">
               <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -66,12 +69,6 @@
                 <li>
                   <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
                     <i class="bi bi-gear me-2"></i>Gestão Completa
-                  </a>
-                </li>
-
-                <li>
-                  <a href="{{ url_for('ajuda') }}" class="btn btn-info">
-                    <i class="fas fa-question-circle"></i> Ajuda
                   </a>
                 </li>
 
@@ -214,10 +211,10 @@
     <div class="text-center mb-4">
       <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
       <div class="d-flex flex-wrap justify-content-center gap-2">
-        <!-- BOTÃO DE AJUDA DESTACADO -->
+        <!-- BOTÃO DE AJUDA DESTACADO 
         <a href="{{ url_for('ajuda') }}" class="btn btn-warning fw-bold">
           <i class="bi bi-question-circle-fill me-1"></i>Central de Ajuda
-        </a>
+        </a> -->
 
         <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
           <i class="bi bi-check-circle me-1"></i>Localizados
@@ -596,7 +593,7 @@
         </div>
         <div class="modal-footer border-0">
           <!-- Botões para Modo Visualização -->
-         <!-- <div id="botoesVisualizacao">
+          <!-- <div id="botoesVisualizacao">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               <i class="bi bi-x-circle me-1"></i>Fechar
             </button>
