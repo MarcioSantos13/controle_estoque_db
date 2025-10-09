@@ -832,130 +832,36 @@
     });
 
     // ===== Scanner (QR) =====
-  function openScanner() {
-    // ✅ VERIFICAR SUPORTE BÁSICO ANTES DE ABRIR O MODAL
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse um navegador moderno como Chrome, Firefox ou Safari e certifique-se de que está acessando por HTTPS.');
-        document.getElementById('numero_bem').focus();
-        return;
+    function openScanner() {
+      scannerModalInstance.show();
+      setTimeout(startScanner, 500);
     }
-
-    // ✅ VERIFICAR SE É DISPOSITIVO MÓVEL E OFERECER ALTERNATIVA
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile && location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        if (!confirm('📱 Para melhor funcionamento no celular, recomenda-se usar HTTPS.\n\nDeseja continuar mesmo assim?')) {
-            document.getElementById('numero_bem').focus();
-            return;
-        }
-    }
-
-    scannerModalInstance.show();
-    updateScannerStatus('🔄 Iniciando câmera...');
-    
-    // ✅ DELAY MAIOR PARA DISPOSITIVOS MÓVEIS
-    const delay = isMobile ? 1000 : 500;
-    setTimeout(startScanner, delay);
-}
-
-// ✅ FUNÇÃO PARA ATUALIZAR STATUS DO SCANNER
-function updateScannerStatus(message) {
-    const statusElement = document.getElementById('scanner-status');
-    if (statusElement) {
-        statusElement.innerHTML = message;
-        
-        // Adicionar classes CSS baseadas no tipo de mensagem
-        if (message.includes('❌')) {
-            statusElement.className = 'p-3 bg-danger text-white';
-        } else if (message.includes('✅')) {
-            statusElement.className = 'p-3 bg-success text-white';
-        } else {
-            statusElement.className = 'p-3 bg-dark text-white';
-        }
-    }
-}
-
-
-
-
-
 
     async function startScanner() {
-    try {
-        // ✅ VERIFICAR SE A CÂMERA É SUPORTADA
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error('Seu navegador não suporta acesso à câmera ou você está em modo de navegação privada');
-        }
-
-        // ✅ VERIFICAR PERMISSÕES (apenas em HTTPS ou localhost)
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            console.warn('A câmera pode não funcionar sem HTTPS em produção');
-        }
-
+      try {
         if (videoStream) stopScanner();
 
         const constraints = {
-            video: {
-                facingMode: usingFrontCamera ? "user" : "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            }
+          video: {
+            facingMode: usingFrontCamera ? "user" : "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
         };
 
-        // ✅ ADICIONAR TRATAMENTO DE ERRO ESPECÍFICO PARA DISPOSITIVOS MÓVEIS
-        videoStream = await navigator.mediaDevices.getUserMedia(constraints)
-            .catch(error => {
-                console.error('Erro detalhado da câmera:', error);
-                
-                // Tratamento específico para diferentes erros
-                if (error.name === 'NotAllowedError') {
-                    throw new Error('Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.');
-                } else if (error.name === 'NotFoundError') {
-                    throw new Error('Nenhuma câmera encontrada no dispositivo.');
-                } else if (error.name === 'NotSupportedError') {
-                    throw new Error('Seu navegador não suporta esta funcionalidade.');
-                } else if (error.name === 'NotReadableError') {
-                    throw new Error('Câmera já está em uso por outro aplicativo.');
-                } else {
-                    throw new Error(`Erro ao acessar a câmera: ${error.message}`);
-                }
-            });
-
+        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
         const videoElement = document.getElementById('scanner-video');
-        if (!videoElement) {
-            throw new Error('Elemento de vídeo não encontrado');
-        }
-
         videoElement.srcObject = videoStream;
-        
-        videoElement.onloadedmetadata = function() {
-            videoElement.play()
-                .then(() => {
-                    startScanning();
-                    updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
-                })
-                .catch(error => {
-                    throw new Error('Erro ao reproduzir vídeo: ' + error.message);
-                });
+        videoElement.onloadedmetadata = function () {
+          videoElement.play();
+          startScanning();
         };
-
-        videoElement.onerror = function() {
-            throw new Error('Erro no elemento de vídeo');
-        };
-
-    } catch (error) {
+      } catch (error) {
         console.error('Erro ao acessar a câmera:', error);
-        updateScannerStatus(`❌ ${error.message}`);
-        
-        // ✅ OFERECER ALTERNATIVA MANUAL
-        setTimeout(() => {
-            if (confirm(`${error.message}\n\nDeseja digitar o código manualmente?`)) {
-                scannerModalInstance.hide();
-                document.getElementById('numero_bem').focus();
-            }
-        }, 1000);
+        document.getElementById('scanner-status').innerHTML =
+          '<i class="bi bi-exclamation-triangle me-1"></i>Erro ao acessar a câmera: ' + error.message;
+      }
     }
-}
 
     function startScanning() {
       const videoElement = document.getElementById('scanner-video');
