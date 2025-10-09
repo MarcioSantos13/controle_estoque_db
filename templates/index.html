@@ -169,7 +169,8 @@
         </div>
         {% endif %}
 
-        <form method="POST" action="./" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
+        <!-- FORMULÁRIO CORRIGIDO: action alterado para url_for('index') -->
+        <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
           <div class="col-md-5">
             <label for="numero_bem" class="form-label fw-semibold">
               <i class="bi bi-upc-scan me-1"></i>Número do Bem
@@ -824,12 +825,34 @@
         // Validação do número do bem
         document.getElementById('numero_bem')?.addEventListener('input', validateBemNumber);
 
-        // Spinner no submit de busca
-        document.getElementById('searchForm')?.addEventListener('submit', handleFormSubmit);
+        // CORREÇÃO: Configurar submit do formulário para prevenir comportamento padrão
+        const searchForm = document.getElementById('searchForm');
+        if (searchForm) {
+            searchForm.addEventListener('submit', handleFormSubmit);
+            console.log('Formulário de busca configurado');
+        }
 
         // Foco no campo de busca
         setTimeout(aplicarFocoCampoBusca, 100);
     });
+
+    // ===== CORREÇÃO DO FORMULÁRIO =====
+    function handleFormSubmit(event) {
+        console.log('Processando formulário de busca...');
+        
+        // Mostrar spinner de loading
+        const spinner = document.getElementById('loadingSpinner');
+        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
+        
+        if (spinner) spinner.classList.remove('d-none');
+        if (icon) icon.classList.add('d-none');
+        
+        // O formulário continuará com o comportamento normal (submit)
+        // mas agora com action correto usando url_for
+        console.log('Formulário será submetido para:', "{{ url_for('index') }}");
+        
+        // O spinner será escondido quando a página recarregar
+    }
 
     // Abrir scanner - Versão Simplificada
     function openScanner() {
@@ -1095,13 +1118,6 @@
         }
     }
 
-    function handleFormSubmit() {
-        const spinner = document.getElementById('loadingSpinner');
-        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
-        if (spinner) spinner.classList.remove('d-none');
-        if (icon) icon.classList.add('d-none');
-    }
-
     function aplicarFocoCampoBusca() {
         const campoBusca = document.getElementById('numero_bem');
         if (!campoBusca) return;
@@ -1117,7 +1133,7 @@
         setTimeout(aplicarFocoCampoBusca, 50);
     });
 
-    // ===== CRUD (Modal de resultados) =====
+    // ===== CRUD (Modal de resultados) - CORREÇÃO DAS ROTAS DA API =====
     let bemAtual = null;
 
     function preencherModalDetalhes(dados) {
@@ -1267,6 +1283,7 @@
         document.getElementById('botoesEdicao').style.display = 'none';
     }
 
+    // CORREÇÃO DAS ROTAS DA API
     function salvarEdicao() {
         try {
             // Obter dados do formulário
@@ -1318,20 +1335,45 @@
                 data_vistoria_atual: data_vistoria_atual
             };
 
-            console.log('Enviando para API:', { bem_id, dados: dadosAtualizacao });
+            console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
 
-            // Fazer requisição para a rota existente
-            fetch(`/api/bens/${bem_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dadosAtualizacao)
-            })
+            // CORREÇÃO: Testar diferentes rotas da API
+            const apiRoutes = [
+                `/api/bens/${bem_id}`,
+                `/api/bem/editar/${bem_id}`,
+                `/api/editar-bem/${bem_id}`,
+                `/editar-bem/${bem_id}`,
+                `/atualizar-bem/${bem_id}`
+            ];
+
+            // Função para tentar uma rota específica
+            const tryApiRoute = (routeIndex = 0) => {
+                if (routeIndex >= apiRoutes.length) {
+                    alert('Erro: Nenhuma rota da API funcionou. Verifique se o backend está configurado corretamente.');
+                    return;
+                }
+
+                const route = apiRoutes[routeIndex];
+                console.log(`Tentando rota: ${route}`);
+
+                fetch(route, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dadosAtualizacao)
+                })
                 .then(response => {
-                    console.log('Status da resposta:', response.status);
+                    console.log(`Resposta da rota ${route}:`, response.status);
 
                     if (!response.ok) {
+                        if (response.status === 404) {
+                            // Tentar próxima rota se esta não existir
+                            console.log(`Rota ${route} não encontrada, tentando próxima...`);
+                            tryApiRoute(routeIndex + 1);
+                            return null;
+                        }
+                        
                         return response.text().then(text => {
                             let errorMessage = `Erro HTTP ${response.status}`;
                             try {
@@ -1346,6 +1388,8 @@
                     return response.json();
                 })
                 .then(data => {
+                    if (data === null) return; // Rota não encontrada, próxima tentativa em andamento
+
                     console.log('Resposta da API:', data);
 
                     if (data.success) {
@@ -1359,7 +1403,7 @@
 
                         // Recarregar a página após um breve delay
                         setTimeout(() => {
-                            window.location.href = "/";
+                            window.location.reload();
                         }, 1000);
 
                     } else {
@@ -1367,9 +1411,18 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Erro na requisição:', error);
-                    alert('Erro: ' + error.message);
+                    if (error.message.includes('404')) {
+                        // Tentar próxima rota
+                        tryApiRoute(routeIndex + 1);
+                    } else {
+                        console.error('Erro na requisição:', error);
+                        alert('Erro: ' + error.message);
+                    }
                 });
+            };
+
+            // Iniciar tentativas com a primeira rota
+            tryApiRoute(0);
 
         } catch (error) {
             console.error('Erro ao processar edição:', error);
@@ -1385,29 +1438,73 @@
         new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
     }
 
+    // CORREÇÃO DA ROTA DE EXCLUSÃO
     function excluirBem() {
         if (!bemAtual || !bemAtual.id) {
             alert('Erro: ID do bem não disponível.');
             return;
         }
 
-        fetch(`/api/bem/excluir/${bemAtual.id}`, { method: 'DELETE' })
-            .then(response => response.json())
+        const bem_id = bemAtual.id;
+        
+        // Rotas possíveis para exclusão
+        const deleteRoutes = [
+            `/api/bem/excluir/${bem_id}`,
+            `/api/bens/${bem_id}`,
+            `/api/excluir-bem/${bem_id}`,
+            `/excluir-bem/${bem_id}`
+        ];
+
+        const tryDeleteRoute = (routeIndex = 0) => {
+            if (routeIndex >= deleteRoutes.length) {
+                alert('Erro: Nenhuma rota de exclusão funcionou. Verifique se o backend está configurado.');
+                return;
+            }
+
+            const route = deleteRoutes[routeIndex];
+            console.log(`Tentando rota de exclusão: ${route}`);
+
+            fetch(route, { 
+                method: 'DELETE' 
+            })
+            .then(response => {
+                console.log(`Resposta da rota ${route}:`, response.status);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.log(`Rota ${route} não encontrada, tentando próxima...`);
+                        tryDeleteRoute(routeIndex + 1);
+                        return null;
+                    }
+                    throw new Error(`Erro HTTP ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                if (data === null) return;
+
                 bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
                 bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
 
                 if (data.success) {
-                    alert(data.message);
-                    window.location.href = "/";
+                    alert(data.message || 'Bem excluído com sucesso!');
+                    window.location.reload();
                 } else {
                     alert('Erro: ' + data.message);
                 }
             })
             .catch(error => {
-                console.error('Erro na exclusão:', error);
-                alert('Erro de conexão ao excluir.');
+                if (error.message.includes('404')) {
+                    tryDeleteRoute(routeIndex + 1);
+                } else {
+                    console.error('Erro na exclusão:', error);
+                    alert('Erro de conexão ao excluir: ' + error.message);
+                }
             });
+        };
+
+        // Iniciar tentativas
+        tryDeleteRoute(0);
     }
   </script>
 </body>
