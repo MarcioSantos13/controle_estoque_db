@@ -169,8 +169,7 @@
         </div>
         {% endif %}
 
-        <!-- FORMULÁRIO CORRIGIDO: action alterado para url_for('index') -->
-        <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
+        <form method="POST" action="./" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
           <div class="col-md-5">
             <label for="numero_bem" class="form-label fw-semibold">
               <i class="bi bi-upc-scan me-1"></i>Número do Bem
@@ -825,34 +824,12 @@
         // Validação do número do bem
         document.getElementById('numero_bem')?.addEventListener('input', validateBemNumber);
 
-        // CORREÇÃO: Configurar submit do formulário para prevenir comportamento padrão
-        const searchForm = document.getElementById('searchForm');
-        if (searchForm) {
-            searchForm.addEventListener('submit', handleFormSubmit);
-            console.log('Formulário de busca configurado');
-        }
+        // Spinner no submit de busca
+        document.getElementById('searchForm')?.addEventListener('submit', handleFormSubmit);
 
         // Foco no campo de busca
         setTimeout(aplicarFocoCampoBusca, 100);
     });
-
-    // ===== CORREÇÃO DO FORMULÁRIO =====
-    function handleFormSubmit(event) {
-        console.log('Processando formulário de busca...');
-        
-        // Mostrar spinner de loading
-        const spinner = document.getElementById('loadingSpinner');
-        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
-        
-        if (spinner) spinner.classList.remove('d-none');
-        if (icon) icon.classList.add('d-none');
-        
-        // O formulário continuará com o comportamento normal (submit)
-        // mas agora com action correto usando url_for
-        console.log('Formulário será submetido para:', "{{ url_for('index') }}");
-        
-        // O spinner será escondido quando a página recarregar
-    }
 
     // Abrir scanner - Versão Simplificada
     function openScanner() {
@@ -1116,6 +1093,13 @@
             e.target.classList.remove('is-invalid');
             if (btn) btn.disabled = false;
         }
+    }
+
+    function handleFormSubmit() {
+        const spinner = document.getElementById('loadingSpinner');
+        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
+        if (spinner) spinner.classList.remove('d-none');
+        if (icon) icon.classList.add('d-none');
     }
 
     function aplicarFocoCampoBusca() {
