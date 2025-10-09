@@ -8,6 +8,49 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .scanner-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background: #000;
+      overflow: hidden;
+    }
+    
+    .scanner-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .scan-line {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      width: 80%;
+      height: 2px;
+      background: #00ff00;
+      opacity: 0.7;
+      animation: scan 2s ease-in-out infinite;
+    }
+    
+    @keyframes scan {
+      0% { top: 20%; }
+      50% { top: 80%; }
+      100% { top: 20%; }
+    }
+    
+    .scanner-frame {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 150px;
+      border: 2px solid #00ff00;
+      background: transparent;
+    }
+  </style>
 </head>
 
 <body class="bg-light">
@@ -211,11 +254,6 @@
     <div class="text-center mb-4">
       <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
       <div class="d-flex flex-wrap justify-content-center gap-2">
-        <!-- BOTÃO DE AJUDA DESTACADO 
-        <a href="{{ url_for('ajuda') }}" class="btn btn-warning fw-bold">
-          <i class="bi bi-question-circle-fill me-1"></i>Central de Ajuda
-        </a> -->
-
         <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
           <i class="bi bi-check-circle me-1"></i>Localizados
         </a>
@@ -593,7 +631,7 @@
         </div>
         <div class="modal-footer border-0">
           <!-- Botões para Modo Visualização -->
-          <!-- <div id="botoesVisualizacao">
+          <div id="botoesVisualizacao">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               <i class="bi bi-x-circle me-1"></i>Fechar
             </button>
@@ -604,7 +642,7 @@
               <i class="bi bi-trash me-1"></i>Excluir
             </button>
           </div>
-        -->
+        
           <!-- Botões para Modo Edição -->
           <div id="botoesEdicao" style="display: none;">
             <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
@@ -639,60 +677,50 @@
     </div>
   </div>
 
-  <!-- Modal para Scanner de Código de Barras - VERSÃO MELHORADA -->
-<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+  <!-- Modal para Scanner de Código de Barras - VERSÃO FUNCIONAL -->
+  <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="scannerModalLabel">
-                    <i class="bi bi-camera me-2"></i>Escanear Código
+                    <i class="bi bi-upc-scan me-2"></i>Escanear Código
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <!-- ✅ ÁREA DO SCANNER COM FALLBACK -->
-                <div id="scanner-container">
-                    <video id="scanner-video" playsinline></video>
-                    <div id="scanner-overlay">
-                        <div class="corner corner-tl"></div>
-                        <div class="corner corner-tr"></div>
-                        <div class="corner corner-bl"></div>
-                        <div class="corner corner-br"></div>
-                        <div class="scanning-line"></div>
-                    </div>
+                <!-- Área do Scanner -->
+                <div class="scanner-container">
+                    <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                    <div class="scanner-frame"></div>
+                    <div class="scan-line"></div>
                 </div>
 
-                <!-- ✅ MENSAGEM DE FALLBACK (inicialmente oculta) -->
-                <div id="scanner-fallback" class="d-none text-center p-4 bg-light">
-                    <i class="bi bi-camera-video-off display-4 text-muted mb-3"></i>
-                    <h5 class="text-muted">Câmera Não Disponível</h5>
-                    <p class="text-muted mb-3">Use a opção "Digitar Manualmente" abaixo</p>
+                <!-- Mensagem de status -->
+                <div id="scanner-status" class="p-3 bg-dark text-white small">
+                    <i class="bi bi-info-circle me-1"></i>
+                    <span id="status-text">Preparando scanner...</span>
                 </div>
 
-                <!-- ✅ STATUS DO SCANNER -->
-                <div id="scanner-status" class="p-3 bg-dark text-white">
-                    <i class="bi bi-info-circle me-1"></i>Preparando scanner...
+                <!-- Resultado do scan -->
+                <div id="scan-result" class="p-3 bg-success text-white d-none">
+                    <i class="bi bi-check-circle me-1"></i>
+                    Código lido: <strong id="scanned-code"></strong>
                 </div>
             </div>
             <div class="modal-footer">
-                <!-- ✅ BOTÃO TROCAR CÂMERA -->
                 <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
                     <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
                 </button>
-                
-                <!-- ✅ NOVO BOTÃO: DIGITAR MANUALMENTE -->
                 <button type="button" class="btn btn-secondary" onclick="enterManually()">
-                    <i class="bi bi-keyboard me-1"></i>Digitar
+                    <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
                 </button>
-                
-                <!-- ✅ BOTÃO FECHAR -->
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="stopScanner()">
                     <i class="bi bi-x-circle me-1"></i>Fechar
                 </button>
             </div>
         </div>
     </div>
-</div>
+  </div>
 
   <!-- Footer -->
   <footer class="bg-dark text-white py-3 mt-5">
@@ -715,12 +743,11 @@
   <!-- Biblioteca jsQR para decodificar QR codes -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
-  <!-- Script de Abertura Automática do Modal - VERSÃO CORRIGIDA -->
+  <!-- Script de Abertura Automática do Modal -->
   {% if bem_detalhes %}
   <script>
     console.log('DEBUG: Bem encontrado, preparando para abrir modal...');
     console.log('DEBUG: Dados do bem:', {{ bem_detalhes | tojson | safe }});
-    console.log('DEBUG: Show modal:', {{ show_modal | tojson | safe }});
 
     // Preencher os dados do bem
     const bemAtual = {{ bem_detalhes | tojson | safe }};
@@ -747,17 +774,8 @@
             modalInstance.show();
             console.log('DEBUG: Modal aberto com sucesso!');
 
-            // Debug adicional quando o modal é mostrado
-            modalElement.addEventListener('shown.bs.modal', function () {
-              console.log('DEBUG: Modal completamente visível');
-            });
-
           } catch (error) {
             console.error('DEBUG: Erro ao abrir modal:', error);
-            // Fallback: forçar a abertura manualmente
-            modalElement.style.display = 'block';
-            modalElement.classList.add('show');
-            document.body.classList.add('modal-open');
           }
 
         } else {
@@ -767,298 +785,346 @@
     });
   </script>
   {% endif %}
-  <!-- Script Principal -->
-  <script>
-    // ===== Utilidades =====
-    function confirmSair(event) {
-      const confirmar = confirm('Deseja realmente sair do aplicativo? A janela será fechada.');
-      if (!confirmar) {
-        event.preventDefault();
-        return false;
-      }
-      return true;
-    }
 
-    // Variáveis globais do scanner
+  <!-- Script Principal Corrigido -->
+  <script>
+    // ===== Scanner Simplificado - Versão Funcional =====
     let scannerModalInstance = null;
     let videoStream = null;
     let usingFrontCamera = false;
     let scanningInterval = null;
 
-    // Variável global para o bem atual
-    let bemAtual = null;
-
-    // Função de debug
-    function debug(message, data = null) {
-      console.log(`[DEBUG] ${message}`, data || '');
-    }
-
     // Inicialização quando o DOM estiver carregado
     document.addEventListener('DOMContentLoaded', function () {
-      // Inicializar o modal do scanner
-      scannerModalInstance = new bootstrap.Modal(document.getElementById('scannerModal'));
-
-      // Configurar botão da câmera
-      document.getElementById('btnCamera')?.addEventListener('click', openScanner);
-
-      // Configurar botão de trocar câmera
-      document.getElementById('switchCameraBtn')?.addEventListener('click', switchCamera);
-
-      // Parar a câmera quando o modal for fechado
-      document.getElementById('scannerModal')?.addEventListener('hidden.bs.modal', stopScanner);
-
-      // Validação do número do bem
-      document.getElementById('numero_bem')?.addEventListener('input', validateBemNumber);
-
-      // Spinner no submit de busca
-      document.getElementById('searchForm')?.addEventListener('submit', handleFormSubmit);
-
-      // Foco no campo de busca
-      setTimeout(aplicarFocoCampoBusca, 100);
-
-      // Submissão do formulário de importação (mostra progresso, valida e desabilita o botão)
-      document.getElementById('importForm')?.addEventListener('submit', function (e) {
-        const fileInput = document.getElementById('excel_file');
-        if (!fileInput || fileInput.files.length === 0) {
-          e.preventDefault();
-          alert('Por favor, selecione um arquivo Excel.');
-          return;
+        console.log('DOM carregado - inicializando scanner...');
+        
+        // Inicializar o modal do scanner
+        const scannerModalElement = document.getElementById('scannerModal');
+        if (scannerModalElement) {
+            scannerModalInstance = new bootstrap.Modal(scannerModalElement);
+            console.log('Modal do scanner inicializado');
         }
 
-        const statusDiv = document.getElementById('importStatus');
-        const statusMessage = document.getElementById('statusMessage');
-        const progressBar = document.querySelector('#importStatus .progress-bar');
-        const btnImportar = document.getElementById('btnImportar');
-
-        statusDiv?.classList.remove('d-none');
-        if (statusMessage) statusMessage.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Iniciando importação...';
-        if (progressBar) progressBar.style.width = '25%';
-        if (btnImportar) {
-          btnImportar.disabled = true;
-          btnImportar.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Importando...';
+        // Configurar botão da câmera
+        const btnCamera = document.getElementById('btnCamera');
+        if (btnCamera) {
+            btnCamera.addEventListener('click', openScanner);
+            console.log('Botão da câmera configurado');
         }
 
-        // Simulação leve de progresso até a navegação
-        let progress = 25;
-        const intervalId = setInterval(() => {
-          progress = Math.min(progress + 5, 90);
-          if (progressBar) progressBar.style.width = progress + '%';
-          if (progress >= 90) {
-            clearInterval(intervalId);
-            if (statusMessage) statusMessage.innerHTML = '<i class="bi bi-database me-1"></i>Processando...';
-          }
-        }, 200);
-      });
+        // Configurar botão de trocar câmera
+        const switchCameraBtn = document.getElementById('switchCameraBtn');
+        if (switchCameraBtn) {
+            switchCameraBtn.addEventListener('click', switchCamera);
+        }
+
+        // Parar a câmera quando o modal for fechado
+        scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
+
+        // Validação do número do bem
+        document.getElementById('numero_bem')?.addEventListener('input', validateBemNumber);
+
+        // Spinner no submit de busca
+        document.getElementById('searchForm')?.addEventListener('submit', handleFormSubmit);
+
+        // Foco no campo de busca
+        setTimeout(aplicarFocoCampoBusca, 100);
     });
 
-    // ===== Scanner (QR) =====
+    // Abrir scanner - Versão Simplificada
     function openScanner() {
-      scannerModalInstance.show();
-      setTimeout(startScanner, 500);
-    }
-
-// ===== Scanner (QR) =====
-function openScanner() {
-    // ✅ VERIFICAR SUPORTE BÁSICO ANTES DE ABRIR O MODAL
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse um navegador moderno como Chrome, Firefox ou Safari.');
-        document.getElementById('numero_bem').focus();
-        return;
-    }
-
-    scannerModalInstance.show();
-    updateScannerStatus('🔄 Iniciando câmera...');
-    
-    // ✅ DELAY MAIOR PARA DISPOSITIVOS MÓVEIS
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const delay = isMobile ? 1000 : 500;
-    setTimeout(startScanner, delay);
-}
-
-async function startScanner() {
-    try {
-        // ✅ VERIFICAR SE A CÂMERA É SUPORTADA
+        console.log('Abrindo scanner...');
+        
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error('Seu navegador não suporta acesso à câmera');
+            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge em computador, ou Chrome no celular.');
+            return;
         }
+        
+        // Mostrar o modal primeiro
+        if (scannerModalInstance) {
+            scannerModalInstance.show();
+            updateScannerStatus('🔄 Iniciando câmera...');
+            
+            // Pequeno delay para o modal abrir completamente
+            setTimeout(() => {
+                startSimpleScanner();
+            }, 300);
+        }
+    }
 
-        if (videoStream) stopScanner();
+    // Scanner Simplificado
+    async function startSimpleScanner() {
+        try {
+            console.log('Iniciando scanner simples...');
+            
+            // Parar qualquer scanner anterior
+            stopScanner();
 
-        const constraints = {
-            video: {
-                facingMode: usingFrontCamera ? "user" : "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
+            const constraints = {
+                video: {
+                    facingMode: usingFrontCamera ? "user" : "environment",
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false
+            };
+
+            console.log('Solicitando acesso à câmera...');
+            
+            // Solicitar acesso à câmera
+            videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+            console.log('Acesso à câmera concedido');
+
+            const videoElement = document.getElementById('scanner-video');
+            if (!videoElement) {
+                throw new Error('Elemento de vídeo não encontrado');
             }
-        };
 
-        // ✅ ADICIONAR TRATAMENTO DE ERRO ESPECÍFICO
-        videoStream = await navigator.mediaDevices.getUserMedia(constraints)
-            .catch(error => {
-                console.error('Erro detalhado da câmera:', error);
-                
-                // Tratamento específico para diferentes erros
-                if (error.name === 'NotAllowedError') {
-                    throw new Error('Permissão de câmera negada. Permita o acesso à câmera nas configurações do navegador.');
-                } else if (error.name === 'NotFoundError') {
-                    throw new Error('Nenhuma câmera encontrada no dispositivo.');
-                } else if (error.name === 'NotSupportedError') {
-                    throw new Error('Seu navegador não suporta esta funcionalidade.');
-                } else if (error.name === 'NotReadableError') {
-                    throw new Error('Câmera já está em uso por outro aplicativo.');
-                } else {
-                    throw new Error(`Erro ao acessar a câmera: ${error.message}`);
+            // Configurar o elemento de vídeo
+            videoElement.srcObject = videoStream;
+            videoElement.playsInline = true;
+            
+            // Quando o vídeo estiver carregado
+            videoElement.onloadedmetadata = function() {
+                console.log('Metadados do vídeo carregados');
+                videoElement.play()
+                    .then(() => {
+                        console.log('Vídeo iniciado com sucesso');
+                        updateScannerStatus('✅ Câmera ativa - Aponte para o código');
+                        startQRCodeDetection();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao reproduzir vídeo:', error);
+                        throw new Error('Erro ao reproduzir vídeo: ' + error.message);
+                    });
+            };
+
+            videoElement.onerror = function(error) {
+                console.error('Erro no elemento de vídeo:', error);
+                updateScannerStatus('❌ Erro na câmera');
+            };
+
+        } catch (error) {
+            console.error('Erro detalhado:', error);
+            let errorMessage = 'Erro ao acessar a câmera: ';
+            
+            if (error.name === 'NotAllowedError') {
+                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+            } else if (error.name === 'NotSupportedError') {
+                errorMessage = 'Seu navegador não suporta esta funcionalidade.';
+            } else if (error.name === 'NotReadableError') {
+                errorMessage = 'Câmera já está em uso por outro aplicativo.';
+            } else {
+                errorMessage += error.message;
+            }
+            
+            updateScannerStatus('❌ ' + errorMessage);
+            
+            // Oferecer alternativa manual após 2 segundos
+            setTimeout(() => {
+                if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                    enterManually();
                 }
-            });
+            }, 2000);
+        }
+    }
 
+    // Detecção de QR Code (funciona bem para muitos casos)
+    function startQRCodeDetection() {
         const videoElement = document.getElementById('scanner-video');
         if (!videoElement) {
-            throw new Error('Elemento de vídeo não encontrado');
+            console.error('Elemento de vídeo não encontrado para detecção');
+            return;
         }
 
-        videoElement.srcObject = videoStream;
-        
-        videoElement.onloadedmetadata = function() {
-            videoElement.play()
-                .then(() => {
-                    startScanning();
-                    updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
-                })
-                .catch(error => {
-                    throw new Error('Erro ao reproduzir vídeo: ' + error.message);
-                });
-        };
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
 
-        videoElement.onerror = function() {
-            throw new Error('Erro no elemento de vídeo');
-        };
+        console.log('Iniciando detecção QR...');
 
-    } catch (error) {
-        console.error('Erro ao acessar a câmera:', error);
-        updateScannerStatus(`❌ ${error.message}`);
-        
-        // ✅ OFERECER ALTERNATIVA MANUAL
-        setTimeout(() => {
-            if (confirm(`${error.message}\n\nDeseja digitar o código manualmente?`)) {
-                scannerModalInstance.hide();
-                document.getElementById('numero_bem').focus();
+        scanningInterval = setInterval(() => {
+            if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                try {
+                    canvas.width = videoElement.videoWidth;
+                    canvas.height = videoElement.videoHeight;
+                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                        inversionAttempts: "dontInvert",
+                    });
+
+                    if (code) {
+                        console.log('Código detectado:', code.data);
+                        handleBarcodeDetected(code.data);
+                    }
+                } catch (error) {
+                    console.log('Erro na detecção:', error);
+                }
             }
-        }, 1000);
+        }, 300); // Verificar a cada 300ms
     }
-}
 
-function startScanning() {
-    const videoElement = document.getElementById('scanner-video');
-    const canvasElement = document.createElement('canvas');
-    const canvas = canvasElement.getContext('2d');
-
-    scanningInterval = setInterval(function () {
-        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
-            canvasElement.height = videoElement.videoHeight;
-            canvasElement.width = videoElement.videoWidth;
-            canvas.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-            const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
-
-            if (code) {
-                document.getElementById('numero_bem').value = code.data;
+    // Processar código detectado
+    function handleBarcodeDetected(code) {
+        if (!code) return;
+        
+        console.log('Processando código:', code);
+        
+        // Mostrar resultado
+        const scannedCodeElement = document.getElementById('scanned-code');
+        const scanResultElement = document.getElementById('scan-result');
+        
+        if (scannedCodeElement && scanResultElement) {
+            scannedCodeElement.textContent = code;
+            scanResultElement.classList.remove('d-none');
+            updateScannerStatus('✅ Código detectado!');
+            
+            // Vibrar se suportado (para mobile)
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+            
+            // Preencher o campo e fechar após breve delay
+            setTimeout(() => {
+                const numeroBemField = document.getElementById('numero_bem');
+                if (numeroBemField) {
+                    numeroBemField.value = code;
+                }
                 stopScanner();
-                scannerModalInstance.hide();
-                document.getElementById('localizacao').focus();
                 
-                // ✅ FEEDBACK VISUAL DE SUCESSO
-                updateScannerStatus('✅ Código lido com sucesso!');
-            }
+                if (scannerModalInstance) {
+                    scannerModalInstance.hide();
+                }
+                
+                // Focar no próximo campo
+                setTimeout(() => {
+                    const localizacaoField = document.getElementById('localizacao');
+                    if (localizacaoField) {
+                        localizacaoField.focus();
+                    }
+                }, 100);
+                
+            }, 1500);
         }
-    }, 100);
-}
-
-function stopScanner() {
-    if (scanningInterval) {
-        clearInterval(scanningInterval);
-        scanningInterval = null;
     }
-    if (videoStream) {
-        videoStream.getTracks().forEach(track => track.stop());
-        videoStream = null;
-    }
-}
 
-function switchCamera() {
-    usingFrontCamera = !usingFrontCamera;
-    stopScanner();
-    startScanner();
-    updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
-}
-
-// ✅ FUNÇÃO PARA ATUALIZAR STATUS DO SCANNER
-function updateScannerStatus(message) {
-    const statusElement = document.getElementById('scanner-status');
-    if (statusElement) {
-        statusElement.innerHTML = message;
+    // Parar scanner
+    function stopScanner() {
+        console.log('Parando scanner...');
         
-        // Adicionar classes CSS baseadas no tipo de mensagem
-        if (message.includes('❌')) {
-            statusElement.className = 'p-3 bg-danger text-white';
-        } else if (message.includes('✅')) {
-            statusElement.className = 'p-3 bg-success text-white';
-        } else if (message.includes('🔄')) {
-            statusElement.className = 'p-3 bg-warning text-dark';
-        } else {
-            statusElement.className = 'p-3 bg-dark text-white';
+        // Parar intervalos
+        if (scanningInterval) {
+            clearInterval(scanningInterval);
+            scanningInterval = null;
+        }
+        
+        // Parar stream de vídeo
+        if (videoStream) {
+            videoStream.getTracks().forEach(track => {
+                track.stop();
+            });
+            videoStream = null;
+        }
+        
+        // Limpar resultado
+        const scanResult = document.getElementById('scan-result');
+        if (scanResult) {
+            scanResult.classList.add('d-none');
+        }
+        
+        // Limpar elemento de vídeo
+        const videoElement = document.getElementById('scanner-video');
+        if (videoElement) {
+            videoElement.srcObject = null;
         }
     }
-}
 
-// ✅ FUNÇÃO PARA ENTRADA MANUAL
-function enterManually() {
-    stopScanner();
-    scannerModalInstance.hide();
-    document.getElementById('numero_bem').focus();
-    document.getElementById('numero_bem').select();
-}
-
-// ===== Busca / UX =====
-function validateBemNumber(e) {
-    const valor = e.target.value;
-    const btn = document.getElementById('btnLocalizar');
-    if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
-        e.target.classList.add('is-invalid');
-        if (btn) btn.disabled = true;
-    } else {
-        e.target.classList.remove('is-invalid');
-        if (btn) btn.disabled = false;
+    // Trocar câmera
+    function switchCamera() {
+        console.log('Trocando câmera...');
+        usingFrontCamera = !usingFrontCamera;
+        stopScanner();
+        
+        setTimeout(() => {
+            startSimpleScanner();
+        }, 500);
+        
+        updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
     }
-}
 
-function handleFormSubmit() {
-    const spinner = document.getElementById('loadingSpinner');
-    const icon = document.getElementById('btnLocalizar').querySelector('i');
-    if (spinner) spinner.classList.remove('d-none');
-    if (icon) icon.classList.add('d-none');
-}
-
-function aplicarFocoCampoBusca() {
-    const campoBusca = document.getElementById('numero_bem');
-    if (!campoBusca) return;
-    const modaisAbertos = document.querySelectorAll('.modal.show');
-    if (modaisAbertos.length === 0) {
-        campoBusca.focus();
-        campoBusca.select();
-        campoBusca.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Atualizar status
+    function updateScannerStatus(message) {
+        const statusElement = document.getElementById('status-text');
+        if (statusElement) {
+            statusElement.textContent = message;
+            console.log('Status:', message);
+        }
     }
-}
 
-document.addEventListener('hidden.bs.modal', function () {
-    setTimeout(aplicarFocoCampoBusca, 50);
-});
+    // Entrada manual
+    function enterManually() {
+        console.log('Alternando para entrada manual...');
+        stopScanner();
+        
+        if (scannerModalInstance) {
+            scannerModalInstance.hide();
+        }
+        
+        setTimeout(() => {
+            const numeroBemField = document.getElementById('numero_bem');
+            if (numeroBemField) {
+                numeroBemField.focus();
+                numeroBemField.select();
+            }
+        }, 300);
+    }
+
+    // ===== Funções Auxiliares =====
+    function validateBemNumber(e) {
+        const valor = e.target.value;
+        const btn = document.getElementById('btnLocalizar');
+        if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
+            e.target.classList.add('is-invalid');
+            if (btn) btn.disabled = true;
+        } else {
+            e.target.classList.remove('is-invalid');
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    function handleFormSubmit() {
+        const spinner = document.getElementById('loadingSpinner');
+        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
+        if (spinner) spinner.classList.remove('d-none');
+        if (icon) icon.classList.add('d-none');
+    }
+
+    function aplicarFocoCampoBusca() {
+        const campoBusca = document.getElementById('numero_bem');
+        if (!campoBusca) return;
+        const modaisAbertos = document.querySelectorAll('.modal.show');
+        if (modaisAbertos.length === 0) {
+            campoBusca.focus();
+            campoBusca.select();
+        }
+    }
+
+    // Event listeners adicionais
+    document.addEventListener('hidden.bs.modal', function () {
+        setTimeout(aplicarFocoCampoBusca, 50);
+    });
 
     // ===== CRUD (Modal de resultados) =====
-    function preencherModalDetalhes(dados) {
-      debug('Preenchendo modal com dados:', dados);
-      bemAtual = dados;
+    let bemAtual = null;
 
-      const detalhesHTML = `
+    function preencherModalDetalhes(dados) {
+        console.log('Preenchendo modal com dados:', dados);
+        bemAtual = dados;
+
+        const detalhesHTML = `
         <div class="row g-4">
           <div class="col-12">
             <div class="bg-light rounded-3 p-3">
@@ -1085,9 +1151,9 @@ document.addEventListener('hidden.bs.modal', function () {
               </h6>
               <p class="mb-0">
                 ${dados.situacao === 'OK'
-          ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
-          : `<span class="badge bg-warning fs-6 p-2"><i class="bi bi-clock-history me-1"></i>${dados.situacao}</span>`
-        }
+                  ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
+                  : `<span class="badge bg-warning fs-6 p-2"><i class="bi bi-clock-history me-1"></i>${dados.situacao}</span>`
+                }
               </p>
             </div>
           </div>
@@ -1099,14 +1165,13 @@ document.addEventListener('hidden.bs.modal', function () {
               </h6>
               <p class="fs-5 mb-0">
                 ${dados.localizacao && dados.localizacao !== 'Não informada'
-          ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
-          : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
-        }
+                  ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
+                  : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
+                }
               </p>
             </div>
           </div>
 
-          <!-- NOVOS CAMPOS NO JAVASCRIPT -->
           <div class="col-md-6">
             <div class="border rounded-3 p-3 h-100">
               <h6 class="text-primary fw-semibold mb-2">
@@ -1114,9 +1179,9 @@ document.addEventListener('hidden.bs.modal', function () {
               </h6>
               <p class="mb-0">
                 ${dados.responsavel && dados.responsavel !== 'Não informado'
-          ? `<span class="text-success"><i class="bi bi-person-check me-1"></i>${dados.responsavel}</span>`
-          : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
-        }
+                  ? `<span class="text-success"><i class="bi bi-person-check me-1"></i>${dados.responsavel}</span>`
+                  : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
+                }
               </p>
             </div>
           </div>
@@ -1128,37 +1193,9 @@ document.addEventListener('hidden.bs.modal', function () {
               </h6>
               <p class="mb-0">
                 ${dados.auditor && dados.auditor !== 'Não informado'
-          ? `<span class="text-info"><i class="bi bi-person-check me-1"></i>${dados.auditor}</span>`
-          : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
-        }
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-calendar-check me-2"></i>Data Última Vistoria
-              </h6>
-              <p class="mb-0">
-                ${dados.data_ultima_vistoria && dados.data_ultima_vistoria !== 'Não informada'
-          ? `<span class="text-dark"><i class="bi bi-calendar-event me-1"></i>${dados.data_ultima_vistoria}</span>`
-          : '<span class="text-muted"><i class="bi bi-calendar me-1"></i>Não informada</span>'
-        }
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-calendar-event me-2"></i>Data Vistoria Atual
-              </h6>
-              <p class="mb-0">
-                ${dados.data_vistoria_atual && dados.data_vistoria_atual !== 'Não informada'
-          ? `<span class="text-dark"><i class="bi bi-calendar-check me-1"></i>${dados.data_vistoria_atual}</span>`
-          : '<span class="text-muted"><i class="bi bi-calendar me-1"></i>Não informada</span>'
-        }
+                  ? `<span class="text-info"><i class="bi bi-person-check me-1"></i>${dados.auditor}</span>`
+                  : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
+                }
               </p>
             </div>
           </div>
@@ -1170,213 +1207,208 @@ document.addEventListener('hidden.bs.modal', function () {
               </h6>
               <p class="small text-muted mb-0">
                 ${dados.situacao === 'OK'
-          ? '✅ Este bem já foi localizado e está devidamente registrado no sistema.'
-          : '⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.'
-        }
+                  ? '✅ Este bem já foi localizado e está devidamente registrado no sistema.'
+                  : '⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.'
+                }
               </p>
             </div>
           </div>
         </div>
       `;
 
-      document.getElementById('detalhesBem').innerHTML = detalhesHTML;
-      document.getElementById('botoesVisualizacao').style.display = 'flex';
-      document.getElementById('botoesEdicao').style.display = 'none';
-      document.getElementById('detalhesBem').style.display = 'block';
-      document.getElementById('formEdicao').style.display = 'none';
+        const detalhesBemElement = document.getElementById('detalhesBem');
+        if (detalhesBemElement) {
+            detalhesBemElement.innerHTML = detalhesHTML;
+        }
+
+        const botoesVisualizacao = document.getElementById('botoesVisualizacao');
+        const botoesEdicao = document.getElementById('botoesEdicao');
+        const formEdicao = document.getElementById('formEdicao');
+
+        if (botoesVisualizacao) botoesVisualizacao.style.display = 'flex';
+        if (botoesEdicao) botoesEdicao.style.display = 'none';
+        if (detalhesBemElement) detalhesBemElement.style.display = 'block';
+        if (formEdicao) formEdicao.style.display = 'none';
     }
 
     function habilitarEdicao() {
-      debug('habilitarEdicao chamada');
-      if (!bemAtual) {
-        alert('Erro: Dados do bem não carregados. Por favor, recarregue a página e tente novamente.');
-        return;
-      }
-      try {
-        document.getElementById('bem_id').value = bemAtual.id;
-        document.getElementById('edt_numero').value = bemAtual.numero;
-        document.getElementById('edt_nome').value = bemAtual.nome;
-        document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
-        document.getElementById('edt_situacao').value = bemAtual.situacao;
+        console.log('habilitarEdicao chamada');
+        if (!bemAtual) {
+            alert('Erro: Dados do bem não carregados. Por favor, recarregue a página e tente novamente.');
+            return;
+        }
+        try {
+            document.getElementById('bem_id').value = bemAtual.id;
+            document.getElementById('edt_numero').value = bemAtual.numero;
+            document.getElementById('edt_nome').value = bemAtual.nome;
+            document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
+            document.getElementById('edt_situacao').value = bemAtual.situacao;
 
-        // NOVOS CAMPOS NO FORMULÁRIO DE EDIÇÃO
-        document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
-        document.getElementById('edt_auditor').value = bemAtual.auditor || '';
-        document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
-        document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
+            // Novos campos
+            document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
+            document.getElementById('edt_auditor').value = bemAtual.auditor || '';
+            document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
+            document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
 
-        document.getElementById('detalhesBem').style.display = 'none';
-        document.getElementById('formEdicao').style.display = 'block';
-        document.getElementById('botoesVisualizacao').style.display = 'none';
-        document.getElementById('botoesEdicao').style.display = 'flex';
-      } catch (error) {
-        console.error('Erro ao habilitar edição:', error);
-        alert('Erro ao carregar formulário de edição.');
-      }
+            document.getElementById('detalhesBem').style.display = 'none';
+            document.getElementById('formEdicao').style.display = 'block';
+            document.getElementById('botoesVisualizacao').style.display = 'none';
+            document.getElementById('botoesEdicao').style.display = 'flex';
+        } catch (error) {
+            console.error('Erro ao habilitar edição:', error);
+            alert('Erro ao carregar formulário de edição.');
+        }
     }
 
     function cancelarEdicao() {
-      document.getElementById('detalhesBem').style.display = 'block';
-      document.getElementById('formEdicao').style.display = 'none';
-      document.getElementById('botoesVisualizacao').style.display = 'flex';
-      document.getElementById('botoesEdicao').style.display = 'none';
+        document.getElementById('detalhesBem').style.display = 'block';
+        document.getElementById('formEdicao').style.display = 'none';
+        document.getElementById('botoesVisualizacao').style.display = 'flex';
+        document.getElementById('botoesEdicao').style.display = 'none';
     }
 
     function salvarEdicao() {
-      try {
-        // Obter dados do formulário
-        const bem_id = parseInt(document.getElementById('bem_id').value);
-        const numero = document.getElementById('edt_numero').value.trim();
-        const nome = document.getElementById('edt_nome').value.trim();
-        const localizacao = document.getElementById('edt_localizacao').value.trim();
-        const situacao = document.getElementById('edt_situacao').value;
+        try {
+            // Obter dados do formulário
+            const bem_id = parseInt(document.getElementById('bem_id').value);
+            const numero = document.getElementById('edt_numero').value.trim();
+            const nome = document.getElementById('edt_nome').value.trim();
+            const localizacao = document.getElementById('edt_localizacao').value.trim();
+            const situacao = document.getElementById('edt_situacao').value;
 
-        // NOVOS CAMPOS
-        const responsavel = document.getElementById('edt_responsavel').value.trim();
-        const auditor = document.getElementById('edt_auditor').value.trim();
-        const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
-        const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
+            // Novos campos
+            const responsavel = document.getElementById('edt_responsavel').value.trim();
+            const auditor = document.getElementById('edt_auditor').value.trim();
+            const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
+            const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
 
-        // Validações client-side
-        if (isNaN(bem_id) || bem_id <= 0) {
-          alert('ID do bem inválido');
-          return;
-        }
-
-        if (!numero) {
-          alert('Número do bem é obrigatório');
-          document.getElementById('edt_numero').focus();
-          return;
-        }
-
-        if (!nome) {
-          alert('Nome do item é obrigatório');
-          document.getElementById('edt_nome').focus();
-          return;
-        }
-
-        if (!situacao) {
-          alert('Situação é obrigatória');
-          document.getElementById('edt_situacao').focus();
-          return;
-        }
-
-        // Preparar dados para a API
-        const dadosAtualizacao = {
-          numero: numero,
-          nome: nome,
-          localizacao: localizacao,
-          situacao: situacao,
-          responsavel: responsavel,
-          auditor: auditor,
-          data_ultima_vistoria: data_ultima_vistoria,
-          data_vistoria_atual: data_vistoria_atual
-        };
-
-        console.log('Enviando para API:', { bem_id, dados: dadosAtualizacao });
-
-        // Fazer requisição para a rota existente
-        fetch(`/api/bens/${bem_id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dadosAtualizacao)
-        })
-          .then(response => {
-            console.log('Status da resposta:', response.status);
-
-            if (!response.ok) {
-              // Tentar ler a resposta de erro
-              return response.text().then(text => {
-                let errorMessage = `Erro HTTP ${response.status}`;
-                try {
-                  const errorData = JSON.parse(text);
-                  errorMessage = errorData.message || text;
-                } catch {
-                  errorMessage = text || errorMessage;
-                }
-                throw new Error(errorMessage);
-              });
+            // Validações client-side
+            if (isNaN(bem_id) || bem_id <= 0) {
+                alert('ID do bem inválido');
+                return;
             }
-            return response.json();
-          })
-          .then(data => {
-            console.log('Resposta da API:', data);
 
-            if (data.success) {
-              // Sucesso - mostrar mensagem e recarregar
-              alert(data.message || 'Bem atualizado com sucesso!');
-
-              // Fechar o modal
-              const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
-              if (modal) {
-                modal.hide();
-              }
-
-              // Recarregar a página após um breve delay
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1000);
-
-            } else {
-              // Erro da API
-              alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
+            if (!numero) {
+                alert('Número do bem é obrigatório');
+                document.getElementById('edt_numero').focus();
+                return;
             }
-          })
-          .catch(error => {
-            console.error('Erro na requisição:', error);
 
-            if (error.name === 'TypeError' && error.message.includes('fetch')) {
-              alert('Erro de conexão: Não foi possível conectar ao servidor. Verifique sua conexão.');
-            } else if (error.message.includes('404')) {
-              alert('Erro: Rota não encontrada. A API pode não estar disponível.');
-            } else if (error.message.includes('500')) {
-              alert('Erro interno do servidor. Tente novamente mais tarde.');
-            } else {
-              alert('Erro: ' + error.message);
+            if (!nome) {
+                alert('Nome do item é obrigatório');
+                document.getElementById('edt_nome').focus();
+                return;
             }
-          });
 
-      } catch (error) {
-        console.error('Erro ao processar edição:', error);
-        alert('Erro inesperado: ' + error.message);
-      }
+            if (!situacao) {
+                alert('Situação é obrigatória');
+                document.getElementById('edt_situacao').focus();
+                return;
+            }
+
+            // Preparar dados para a API
+            const dadosAtualizacao = {
+                numero: numero,
+                nome: nome,
+                localizacao: localizacao,
+                situacao: situacao,
+                responsavel: responsavel,
+                auditor: auditor,
+                data_ultima_vistoria: data_ultima_vistoria,
+                data_vistoria_atual: data_vistoria_atual
+            };
+
+            console.log('Enviando para API:', { bem_id, dados: dadosAtualizacao });
+
+            // Fazer requisição para a rota existente
+            fetch(`/api/bens/${bem_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dadosAtualizacao)
+            })
+                .then(response => {
+                    console.log('Status da resposta:', response.status);
+
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            let errorMessage = `Erro HTTP ${response.status}`;
+                            try {
+                                const errorData = JSON.parse(text);
+                                errorMessage = errorData.message || text;
+                            } catch {
+                                errorMessage = text || errorMessage;
+                            }
+                            throw new Error(errorMessage);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Resposta da API:', data);
+
+                    if (data.success) {
+                        alert(data.message || 'Bem atualizado com sucesso!');
+
+                        // Fechar o modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+
+                        // Recarregar a página após um breve delay
+                        setTimeout(() => {
+                            window.location.href = "/";
+                        }, 1000);
+
+                    } else {
+                        alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Erro: ' + error.message);
+                });
+
+        } catch (error) {
+            console.error('Erro ao processar edição:', error);
+            alert('Erro inesperado: ' + error.message);
+        }
     }
 
     function confirmarExclusao() {
-      if (!bemAtual) {
-        alert('Dados do bem não disponíveis para exclusão.');
-        return;
-      }
-      new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
+        if (!bemAtual) {
+            alert('Dados do bem não disponíveis para exclusão.');
+            return;
+        }
+        new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
     }
 
     function excluirBem() {
-      if (!bemAtual || !bemAtual.id) {
-        alert('Erro: ID do bem não disponível.');
-        return;
-      }
+        if (!bemAtual || !bemAtual.id) {
+            alert('Erro: ID do bem não disponível.');
+            return;
+        }
 
-      fetch(`/api/bem/excluir/${bemAtual.id}`, { method: 'DELETE' })
-        .then(response => response.json())
-        .then(data => {
-          bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
-          bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
+        fetch(`/api/bem/excluir/${bemAtual.id}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
+                bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
 
-          if (data.success) {
-            alert(data.message);
-            window.location.href = "/";
-          } else {
-            alert('Erro: ' + data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Erro na exclusão:', error);
-          alert('Erro de conexão ao excluir.');
-        });
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = "/";
+                } else {
+                    alert('Erro: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erro na exclusão:', error);
+                alert('Erro de conexão ao excluir.');
+            });
     }
   </script>
 </body>
-
 </html>
