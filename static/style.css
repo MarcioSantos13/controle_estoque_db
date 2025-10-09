@@ -796,3 +796,116 @@ footer {
     background-color: #ffc107;
     color: black;
 }
+
+/* ✅ ESTILOS MELHORADOS PARA O SCANNER */
+#scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    overflow: hidden;
+}
+
+#scanner-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#scanner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-color: #00ff00;
+    border-style: solid;
+    border-width: 0;
+}
+
+.corner-tl {
+    top: 20px;
+    left: 20px;
+    border-top-width: 3px;
+    border-left-width: 3px;
+}
+
+.corner-tr {
+    top: 20px;
+    right: 20px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+}
+
+.corner-bl {
+    bottom: 20px;
+    left: 20px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+}
+
+.corner-br {
+    bottom: 20px;
+    right: 20px;
+    border-bottom-width: 3px;
+    border-right-width: 3px;
+}
+
+.scanning-line {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: #00ff00;
+    animation: scan 2s linear infinite;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+@keyframes scan {
+    0% {
+        top: 20%;
+    }
+    50% {
+        top: 80%;
+    }
+    100% {
+        top: 20%;
+    }
+}
+
+/* ✅ ESTILOS PARA OS STATUS */
+.bg-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #fd7e14) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
+}
+
+/* ✅ RESPONSIVIDADE PARA MOBILE */
+@media (max-width: 576px) {
+    #scanner-container {
+        height: 250px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+}

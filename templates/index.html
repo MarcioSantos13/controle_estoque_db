@@ -639,40 +639,60 @@
     </div>
   </div>
 
-  <!-- Modal para Scanner de Código de Barras -->
-  <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+  <!-- Modal para Scanner de Código de Barras - VERSÃO MELHORADA -->
+<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="scannerModalLabel">
-            <i class="bi bi-camera me-2"></i>Escanear Código de Barras
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-0">
-          <div id="scanner-container">
-            <video id="scanner-video" playsinline></video>
-            <div id="scanner-overlay">
-              <div class="corner corner-tl"></div>
-              <div class="corner corner-tr"></div>
-              <div class="corner corner-bl"></div>
-              <div class="corner corner-br"></div>
-              <div class="scanning-line"></div>
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="scannerModalLabel">
+                    <i class="bi bi-camera me-2"></i>Escanear Código
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-          <div id="scanner-status" class="p-3 bg-dark">
-            <i class="bi bi-info-circle me-1"></i>Posicione o código de barras dentro da área destacada
-          </div>
+            <div class="modal-body p-0">
+                <!-- ✅ ÁREA DO SCANNER COM FALLBACK -->
+                <div id="scanner-container">
+                    <video id="scanner-video" playsinline></video>
+                    <div id="scanner-overlay">
+                        <div class="corner corner-tl"></div>
+                        <div class="corner corner-tr"></div>
+                        <div class="corner corner-bl"></div>
+                        <div class="corner corner-br"></div>
+                        <div class="scanning-line"></div>
+                    </div>
+                </div>
+
+                <!-- ✅ MENSAGEM DE FALLBACK (inicialmente oculta) -->
+                <div id="scanner-fallback" class="d-none text-center p-4 bg-light">
+                    <i class="bi bi-camera-video-off display-4 text-muted mb-3"></i>
+                    <h5 class="text-muted">Câmera Não Disponível</h5>
+                    <p class="text-muted mb-3">Use a opção "Digitar Manualmente" abaixo</p>
+                </div>
+
+                <!-- ✅ STATUS DO SCANNER -->
+                <div id="scanner-status" class="p-3 bg-dark text-white">
+                    <i class="bi bi-info-circle me-1"></i>Preparando scanner...
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- ✅ BOTÃO TROCAR CÂMERA -->
+                <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
+                    <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
+                </button>
+                
+                <!-- ✅ NOVO BOTÃO: DIGITAR MANUALMENTE -->
+                <button type="button" class="btn btn-secondary" onclick="enterManually()">
+                    <i class="bi bi-keyboard me-1"></i>Digitar
+                </button>
+                
+                <!-- ✅ BOTÃO FECHAR -->
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="stopScanner()">
+                    <i class="bi bi-x-circle me-1"></i>Fechar
+                </button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="switchCameraBtn">
-            <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
-          </button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
   <!-- Footer -->
   <footer class="bg-dark text-white py-3 mt-5">
@@ -837,108 +857,201 @@
       setTimeout(startScanner, 500);
     }
 
-    async function startScanner() {
-      try {
+// ===== Scanner (QR) =====
+function openScanner() {
+    // ✅ VERIFICAR SUPORTE BÁSICO ANTES DE ABRIR O MODAL
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse um navegador moderno como Chrome, Firefox ou Safari.');
+        document.getElementById('numero_bem').focus();
+        return;
+    }
+
+    scannerModalInstance.show();
+    updateScannerStatus('🔄 Iniciando câmera...');
+    
+    // ✅ DELAY MAIOR PARA DISPOSITIVOS MÓVEIS
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const delay = isMobile ? 1000 : 500;
+    setTimeout(startScanner, delay);
+}
+
+async function startScanner() {
+    try {
+        // ✅ VERIFICAR SE A CÂMERA É SUPORTADA
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            throw new Error('Seu navegador não suporta acesso à câmera');
+        }
+
         if (videoStream) stopScanner();
 
         const constraints = {
-          video: {
-            facingMode: usingFrontCamera ? "user" : "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          }
+            video: {
+                facingMode: usingFrontCamera ? "user" : "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
         };
 
-        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+        // ✅ ADICIONAR TRATAMENTO DE ERRO ESPECÍFICO
+        videoStream = await navigator.mediaDevices.getUserMedia(constraints)
+            .catch(error => {
+                console.error('Erro detalhado da câmera:', error);
+                
+                // Tratamento específico para diferentes erros
+                if (error.name === 'NotAllowedError') {
+                    throw new Error('Permissão de câmera negada. Permita o acesso à câmera nas configurações do navegador.');
+                } else if (error.name === 'NotFoundError') {
+                    throw new Error('Nenhuma câmera encontrada no dispositivo.');
+                } else if (error.name === 'NotSupportedError') {
+                    throw new Error('Seu navegador não suporta esta funcionalidade.');
+                } else if (error.name === 'NotReadableError') {
+                    throw new Error('Câmera já está em uso por outro aplicativo.');
+                } else {
+                    throw new Error(`Erro ao acessar a câmera: ${error.message}`);
+                }
+            });
+
         const videoElement = document.getElementById('scanner-video');
-        videoElement.srcObject = videoStream;
-        videoElement.onloadedmetadata = function () {
-          videoElement.play();
-          startScanning();
-        };
-      } catch (error) {
-        console.error('Erro ao acessar a câmera:', error);
-        document.getElementById('scanner-status').innerHTML =
-          '<i class="bi bi-exclamation-triangle me-1"></i>Erro ao acessar a câmera: ' + error.message;
-      }
-    }
-
-    function startScanning() {
-      const videoElement = document.getElementById('scanner-video');
-      const canvasElement = document.createElement('canvas');
-      const canvas = canvasElement.getContext('2d');
-
-      scanningInterval = setInterval(function () {
-        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
-          canvasElement.height = videoElement.videoHeight;
-          canvasElement.width = videoElement.videoWidth;
-          canvas.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-          const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-          const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
-
-          if (code) {
-            document.getElementById('numero_bem').value = code.data;
-            stopScanner();
-            scannerModalInstance.hide();
-            document.getElementById('localizacao').focus();
-          }
+        if (!videoElement) {
+            throw new Error('Elemento de vídeo não encontrado');
         }
-      }, 100);
-    }
 
-    function stopScanner() {
-      if (scanningInterval) {
+        videoElement.srcObject = videoStream;
+        
+        videoElement.onloadedmetadata = function() {
+            videoElement.play()
+                .then(() => {
+                    startScanning();
+                    updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
+                })
+                .catch(error => {
+                    throw new Error('Erro ao reproduzir vídeo: ' + error.message);
+                });
+        };
+
+        videoElement.onerror = function() {
+            throw new Error('Erro no elemento de vídeo');
+        };
+
+    } catch (error) {
+        console.error('Erro ao acessar a câmera:', error);
+        updateScannerStatus(`❌ ${error.message}`);
+        
+        // ✅ OFERECER ALTERNATIVA MANUAL
+        setTimeout(() => {
+            if (confirm(`${error.message}\n\nDeseja digitar o código manualmente?`)) {
+                scannerModalInstance.hide();
+                document.getElementById('numero_bem').focus();
+            }
+        }, 1000);
+    }
+}
+
+function startScanning() {
+    const videoElement = document.getElementById('scanner-video');
+    const canvasElement = document.createElement('canvas');
+    const canvas = canvasElement.getContext('2d');
+
+    scanningInterval = setInterval(function () {
+        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+            canvasElement.height = videoElement.videoHeight;
+            canvasElement.width = videoElement.videoWidth;
+            canvas.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
+
+            if (code) {
+                document.getElementById('numero_bem').value = code.data;
+                stopScanner();
+                scannerModalInstance.hide();
+                document.getElementById('localizacao').focus();
+                
+                // ✅ FEEDBACK VISUAL DE SUCESSO
+                updateScannerStatus('✅ Código lido com sucesso!');
+            }
+        }
+    }, 100);
+}
+
+function stopScanner() {
+    if (scanningInterval) {
         clearInterval(scanningInterval);
         scanningInterval = null;
-      }
-      if (videoStream) {
+    }
+    if (videoStream) {
         videoStream.getTracks().forEach(track => track.stop());
         videoStream = null;
-      }
     }
+}
 
-    function switchCamera() {
-      usingFrontCamera = !usingFrontCamera;
-      stopScanner();
-      startScanner();
-      document.getElementById('scanner-status').innerHTML =
-        '<i class="bi bi-info-circle me-1"></i>Usando ' + (usingFrontCamera ? 'câmera frontal' : 'câmera traseira');
+function switchCamera() {
+    usingFrontCamera = !usingFrontCamera;
+    stopScanner();
+    startScanner();
+    updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
+}
+
+// ✅ FUNÇÃO PARA ATUALIZAR STATUS DO SCANNER
+function updateScannerStatus(message) {
+    const statusElement = document.getElementById('scanner-status');
+    if (statusElement) {
+        statusElement.innerHTML = message;
+        
+        // Adicionar classes CSS baseadas no tipo de mensagem
+        if (message.includes('❌')) {
+            statusElement.className = 'p-3 bg-danger text-white';
+        } else if (message.includes('✅')) {
+            statusElement.className = 'p-3 bg-success text-white';
+        } else if (message.includes('🔄')) {
+            statusElement.className = 'p-3 bg-warning text-dark';
+        } else {
+            statusElement.className = 'p-3 bg-dark text-white';
+        }
     }
+}
 
-    // ===== Busca / UX =====
-    function validateBemNumber(e) {
-      const valor = e.target.value;
-      const btn = document.getElementById('btnLocalizar');
-      if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
+// ✅ FUNÇÃO PARA ENTRADA MANUAL
+function enterManually() {
+    stopScanner();
+    scannerModalInstance.hide();
+    document.getElementById('numero_bem').focus();
+    document.getElementById('numero_bem').select();
+}
+
+// ===== Busca / UX =====
+function validateBemNumber(e) {
+    const valor = e.target.value;
+    const btn = document.getElementById('btnLocalizar');
+    if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
         e.target.classList.add('is-invalid');
         if (btn) btn.disabled = true;
-      } else {
+    } else {
         e.target.classList.remove('is-invalid');
         if (btn) btn.disabled = false;
-      }
     }
+}
 
-    function handleFormSubmit() {
-      const spinner = document.getElementById('loadingSpinner');
-      const icon = document.getElementById('btnLocalizar').querySelector('i');
-      if (spinner) spinner.classList.remove('d-none');
-      if (icon) icon.classList.add('d-none');
-    }
+function handleFormSubmit() {
+    const spinner = document.getElementById('loadingSpinner');
+    const icon = document.getElementById('btnLocalizar').querySelector('i');
+    if (spinner) spinner.classList.remove('d-none');
+    if (icon) icon.classList.add('d-none');
+}
 
-    function aplicarFocoCampoBusca() {
-      const campoBusca = document.getElementById('numero_bem');
-      if (!campoBusca) return;
-      const modaisAbertos = document.querySelectorAll('.modal.show');
-      if (modaisAbertos.length === 0) {
+function aplicarFocoCampoBusca() {
+    const campoBusca = document.getElementById('numero_bem');
+    if (!campoBusca) return;
+    const modaisAbertos = document.querySelectorAll('.modal.show');
+    if (modaisAbertos.length === 0) {
         campoBusca.focus();
         campoBusca.select();
         campoBusca.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
     }
+}
 
-    document.addEventListener('hidden.bs.modal', function () {
-      setTimeout(aplicarFocoCampoBusca, 50);
-    });
+document.addEventListener('hidden.bs.modal', function () {
+    setTimeout(aplicarFocoCampoBusca, 50);
+});
 
     // ===== CRUD (Modal de resultados) =====
     function preencherModalDetalhes(dados) {
