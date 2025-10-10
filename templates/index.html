@@ -879,36 +879,81 @@
         // O spinner será escondido quando a página recarregar
     }
 
-    // Abrir scanner - Versão Corrigida para HTTPS
-    function openScanner() {
-        console.log('Abrindo scanner...');
-        
-        // Verificar se está em HTTPS
-        const isSecure = window.location.protocol === 'https:';
-        const isLocalhost = window.location.hostname === 'localhost' || 
-                           window.location.hostname === '127.0.0.1';
-        
-        if (!isSecure && !isLocalhost) {
-            alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
-            return;
-        }
-        
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
-            return;
-        }
-        
-        // Mostrar o modal primeiro
-        if (scannerModalInstance) {
-            scannerModalInstance.show();
-            updateScannerStatus('🔄 Iniciando câmera...');
-            
-            // Pequeno delay para o modal abrir completamente
-            setTimeout(() => {
-                startSimpleScanner();
-            }, 300);
-        }
+
+
+
+
+
+
+function openScanner() {
+    console.log('Abrindo scanner...');
+    
+    // REMOVER ou MODIFICAR esta validação restritiva:
+    const isSecure = window.location.protocol === 'https:';
+    const isLocalhost = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
+    
+    // Comentar esta verificação temporariamente:
+    // if (!isSecure && !isLocalhost) {
+    //     alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
+    //     return;
+    // }
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+        return;
     }
+    
+    // Restante do código...
+}
+
+
+
+
+
+
+    
+    // // ===== FUNÇÃO OPENSCANNER MODIFICADA - REMOVIDA VERIFICAÇÃO HTTPS =====
+    // function openScanner() {
+    //     console.log('Abrindo scanner...');
+        
+    //     // VERIFICAÇÃO HTTPS REMOVIDA - Permitir câmera em HTTP temporariamente
+    //     // const isSecure = window.location.protocol === 'https:';
+    //     // const isLocalhost = window.location.hostname === 'localhost' || 
+    //     //                    window.location.hostname === '127.0.0.1';
+        
+    //     // if (!isSecure && !isLocalhost) {
+    //     //     alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
+    //     //     return;
+    //     // }
+        
+    //     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    //         alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+    //         return;
+    //     }
+        
+    //     // Mostrar o modal primeiro
+    //     if (scannerModalInstance) {
+    //         scannerModalInstance.show();
+    //         updateScannerStatus('🔄 Iniciando câmera...');
+            
+    //         // Pequeno delay para o modal abrir completamente
+    //         setTimeout(() => {
+    //             startSimpleScanner();
+    //         }, 300);
+    //     }
+    // }
+
+
+
+
+
+
+
+
+
+
+
 
     // Scanner Simplificado
     async function startSimpleScanner() {
