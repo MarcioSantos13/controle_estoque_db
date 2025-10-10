@@ -789,6 +789,28 @@
 
   <!-- Script Principal Corrigido -->
   <script>
+    // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
+    function getApiBaseUrl() {
+        // Tenta detectar automaticamente a base URL
+        const currentUrl = window.location.origin;
+        
+        // Se estiver em localhost, usa uma base, senão outra
+        if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
+            return '/api'; // Para desenvolvimento local
+        } else {
+            return '/api'; // Para produção - ajuste conforme necessário
+        }
+    }
+
+    function debugServerConfig() {
+        console.log('=== DEBUG SERVER CONFIG ===');
+        console.log('URL atual:', window.location.href);
+        console.log('Protocolo:', window.location.protocol);
+        console.log('Hostname:', window.location.hostname);
+        console.log('Base URL detectada:', getApiBaseUrl());
+        console.log('=== FIM DEBUG ===');
+    }
+
     // ===== Scanner Simplificado - Versão Funcional =====
     let scannerModalInstance = null;
     let videoStream = null;
@@ -798,6 +820,9 @@
     // Inicialização quando o DOM estiver carregado
     document.addEventListener('DOMContentLoaded', function () {
         console.log('DOM carregado - inicializando scanner...');
+        
+        // Debug da configuração
+        debugServerConfig();
         
         // Inicializar o modal do scanner
         const scannerModalElement = document.getElementById('scannerModal');
@@ -854,12 +879,22 @@
         // O spinner será escondido quando a página recarregar
     }
 
-    // Abrir scanner - Versão Simplificada
+    // Abrir scanner - Versão Corrigida para HTTPS
     function openScanner() {
         console.log('Abrindo scanner...');
         
+        // Verificar se está em HTTPS
+        const isSecure = window.location.protocol === 'https:';
+        const isLocalhost = window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1';
+        
+        if (!isSecure && !isLocalhost) {
+            alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
+            return;
+        }
+        
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge em computador, ou Chrome no celular.');
+            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
             return;
         }
         
@@ -1337,11 +1372,11 @@
 
             console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
 
-            // CORREÇÃO: Testar diferentes rotas da API
+            const apiBase = getApiBaseUrl();
             const apiRoutes = [
-                `/api/bens/${bem_id}`,
-                `/api/bem/editar/${bem_id}`,
-                `/api/editar-bem/${bem_id}`,
+                `${apiBase}/bens/${bem_id}`,
+                `${apiBase}/bem/editar/${bem_id}`,
+                `${apiBase}/editar-bem/${bem_id}`,
                 `/editar-bem/${bem_id}`,
                 `/atualizar-bem/${bem_id}`
             ];
@@ -1446,12 +1481,12 @@
         }
 
         const bem_id = bemAtual.id;
+        const apiBase = getApiBaseUrl();
         
-        // Rotas possíveis para exclusão
         const deleteRoutes = [
-            `/api/bem/excluir/${bem_id}`,
-            `/api/bens/${bem_id}`,
-            `/api/excluir-bem/${bem_id}`,
+            `${apiBase}/bem/excluir/${bem_id}`,
+            `${apiBase}/bens/${bem_id}`,
+            `${apiBase}/excluir-bem/${bem_id}`,
             `/excluir-bem/${bem_id}`
         ];
 
