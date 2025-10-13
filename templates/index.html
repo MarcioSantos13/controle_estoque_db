@@ -77,6 +77,23 @@
             left: 0;
             top: 0;
         }
+        
+        /* Estilos para overlay de detecção */
+        .detection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+        
+        .detection-box {
+            position: absolute;
+            border: 2px solid #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -96,9 +113,9 @@
                         <!-- Contador de Bens -->
                         <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1">
                             <small>
-                <i class="bi bi-database me-1"></i>
-                <span id="total-bens">{{ total_count|number_format }}</span> bens
-              </small>
+                                <i class="bi bi-database me-1"></i>
+                                <span id="total-bens">{{ total_count|number_format }}</span> bens
+                            </small>
                         </div>
                         <!-- ✅ BOTÃO DE AJUDA FORA DO DROPDOWN -->
                         <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
@@ -107,25 +124,25 @@
                         <!-- Dropdown do Usuário -->
                         <div class="dropdown">
                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle me-1"></i>
-                {% if session.usuario_nome %}
-                {{ session.usuario_nome }}
-                {% else %}
-                Usuário
-                {% endif %}
-              </button>
+                                <i class="bi bi-person-circle me-1"></i>
+                                {% if session.usuario_nome %}
+                                {{ session.usuario_nome }}
+                                {% else %}
+                                Usuário
+                                {% endif %}
+                            </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                     <span class="dropdown-item-text">
-                    <small class="text-muted">
-                      <i class="bi bi-envelope me-1"></i>
-                      {% if session.usuario_email %}
-                      {{ session.usuario_email }}
-                      {% else %}
-                      E-mail não disponível
-                      {% endif %}
-                    </small>
-                  </span>
+                                        <small class="text-muted">
+                                            <i class="bi bi-envelope me-1"></i>
+                                            {% if session.usuario_email %}
+                                            {{ session.usuario_email }}
+                                            {% else %}
+                                            E-mail não disponível
+                                            {% endif %}
+                                        </small>
+                                    </span>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -192,30 +209,30 @@
                 <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
                     <div class="col-md-5">
                         <label for="numero_bem" class="form-label fw-semibold">
-              <i class="bi bi-upc-scan me-1"></i>Número do Bem
-            </label>
+                            <i class="bi bi-upc-scan me-1"></i>Número do Bem
+                        </label>
                         <div class="input-group">
                             <input type="text" name="numero_bem" id="numero_bem" class="form-control form-control" placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
                             <button type="button" class="btn btn-outline-secondary" id="btnCamera" title="Escanear código de barras">
-                <i class="bi bi-camera"></i>
-              </button>
+                                <i class="bi bi-camera"></i>
+                            </button>
                         </div>
                         <div class="form-text">Digite apenas números, letras ou hífen, ou use a câmera</div>
                     </div>
 
                     <div class="col-md-5">
                         <label for="localizacao" class="form-label fw-semibold">
-              <i class="bi bi-geo-alt me-1"></i>Localização
-            </label>
+                            <i class="bi bi-geo-alt me-1"></i>Localização
+                        </label>
                         <input type="text" name="localizacao" id="localizacao" class="form-control form-control" placeholder="Ex: Almoxarifado Central, Sala 101">
                         <div class="form-text">Opcional - atualiza a localização</div>
                     </div>
 
                     <div class="col-md-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary w-100" id="btnLocalizar" style="height: 42px;">
-              <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
-              <i class="bi bi-search"></i>
-            </button>
+                            <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -287,9 +304,8 @@
                     <i class="bi bi-map me-1"></i>Relatório por Localidade
                 </a>
                 <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
-          <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
-        </button>
-
+                    <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
+                </button>
             </div>
         </div>
 
@@ -318,16 +334,16 @@
                     <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}" enctype="multipart/form-data" autocomplete="off">
                         <div class="mb-3">
                             <label for="excel_file" class="form-label fw-semibold">
-                <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo Excel
-              </label>
+                                <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo Excel
+                            </label>
                             <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
                             <div class="form-text">Formatos suportados: .xlsx, .xls</div>
                         </div>
 
                         <div class="mb-3">
                             <label for="aba_nome" class="form-label fw-semibold">
-                <i class="bi bi-grid me-1"></i>Nome da aba
-              </label>
+                                <i class="bi bi-grid me-1"></i>Nome da aba
+                            </label>
                             <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque" required>
                             <div class="form-text">Nome da aba onde estão os dados</div>
                         </div>
@@ -335,8 +351,8 @@
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="backup" name="backup" checked>
                             <label class="form-check-label" for="backup">
-                <i class="bi bi-shield-check me-1"></i>Criar backup do banco atual
-              </label>
+                                <i class="bi bi-shield-check me-1"></i>Criar backup do banco atual
+                            </label>
                         </div>
 
                         <div id="importStatus" class="d-none">
@@ -349,12 +365,12 @@
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="bi bi-x-circle me-1"></i>Cancelar
-          </button>
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
                     <!-- Botão fora do form, mas enviando o form via HTML5 -->
                     <button type="submit" class="btn btn-info" id="btnImportar" form="importForm">
-            <i class="bi bi-upload me-1"></i>Importar
-          </button>
+                        <i class="bi bi-upload me-1"></i>Importar
+                    </button>
                 </div>
             </div>
         </div>
@@ -404,11 +420,11 @@
                                     <p class="mb-0">
                                         {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %}
                                         <span class="badge bg-success fs-6 p-2">
-                      <i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO
-                    </span> {% else %}
+                                            <i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO
+                                        </span> {% else %}
                                         <span class="badge bg-warning fs-6 p-2">
-                      <i class="bi bi-clock-history me-1"></i>{{ bem_detalhes.situacao }}
-                    </span> {% endif %}
+                                            <i class="bi bi-clock-history me-1"></i>{{ bem_detalhes.situacao }}
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -422,11 +438,11 @@
                                     <p class="fs-5 mb-0">
                                         {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
                                         <span class="text-success">
-                      <i class="bi bi-geo-alt-fill me-1"></i>{{ bem_detalhes.localizacao }}
-                    </span> {% else %}
+                                            <i class="bi bi-geo-alt-fill me-1"></i>{{ bem_detalhes.localizacao }}
+                                        </span> {% else %}
                                         <span class="text-muted">
-                      <i class="bi bi-geo-alt me-1"></i>Localização não informada
-                    </span> {% endif %}
+                                            <i class="bi bi-geo-alt me-1"></i>Localização não informada
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -441,11 +457,11 @@
                                     <p class="mb-0">
                                         {% if bem_detalhes.responsavel and bem_detalhes.responsavel != 'Não informado' %}
                                         <span class="text-success">
-                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.responsavel }}
-                    </span> {% else %}
+                                            <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.responsavel }}
+                                        </span> {% else %}
                                         <span class="text-muted">
-                      <i class="bi bi-person me-1"></i>Não informado
-                    </span> {% endif %}
+                                            <i class="bi bi-person me-1"></i>Não informado
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -459,11 +475,11 @@
                                     <p class="mb-0">
                                         {% if bem_detalhes.auditor and bem_detalhes.auditor != 'Não informado' %}
                                         <span class="text-info">
-                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.auditor }}
-                    </span> {% else %}
+                                            <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.auditor }}
+                                        </span> {% else %}
                                         <span class="text-muted">
-                      <i class="bi bi-person me-1"></i>Não informado
-                    </span> {% endif %}
+                                            <i class="bi bi-person me-1"></i>Não informado
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -477,11 +493,11 @@
                                     <p class="mb-0">
                                         {% if bem_detalhes.data_ultima_vistoria and bem_detalhes.data_ultima_vistoria != 'Não informada' %}
                                         <span class="text-dark">
-                      <i class="bi bi-calendar-event me-1"></i>{{ bem_detalhes.data_ultima_vistoria }}
-                    </span> {% else %}
+                                            <i class="bi bi-calendar-event me-1"></i>{{ bem_detalhes.data_ultima_vistoria }}
+                                        </span> {% else %}
                                         <span class="text-muted">
-                      <i class="bi bi-calendar me-1"></i>Não informada
-                    </span> {% endif %}
+                                            <i class="bi bi-calendar me-1"></i>Não informada
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -495,11 +511,11 @@
                                     <p class="mb-0">
                                         {% if bem_detalhes.data_vistoria_atual and bem_detalhes.data_vistoria_atual != 'Não informada' %}
                                         <span class="text-dark">
-                      <i class="bi bi-calendar-check me-1"></i>{{ bem_detalhes.data_vistoria_atual }}
-                    </span> {% else %}
+                                            <i class="bi bi-calendar-check me-1"></i>{{ bem_detalhes.data_vistoria_atual }}
+                                        </span> {% else %}
                                         <span class="text-muted">
-                      <i class="bi bi-calendar me-1"></i>Não informada
-                    </span> {% endif %}
+                                            <i class="bi bi-calendar me-1"></i>Não informada
+                                        </span> {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -550,8 +566,8 @@
                             O número do bem informado não foi encontrado em nosso sistema. Verifique o número e tente novamente.
                         </p>
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-              <i class="bi bi-arrow-left me-1"></i>Voltar e tentar novamente
-            </button>
+                            <i class="bi bi-arrow-left me-1"></i>Voltar e tentar novamente
+                        </button>
                     </div>
                     {% endif %}
 
@@ -569,11 +585,11 @@
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">Situação *</label>
                                     <select class="form-select" id="edt_situacao" name="situacao" required>
-                    <option value="Pendente">Pendente</option>
-                    <option value="OK">Localizado</option>
-                    <option value="Inativo">Inativo</option>
-                    <option value="Manutenção">Em Manutenção</option>
-                  </select>
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="OK">Localizado</option>
+                                        <option value="Inativo">Inativo</option>
+                                        <option value="Manutenção">Em Manutenção</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-12">
@@ -620,24 +636,24 @@
                     <!-- Botões para Modo Visualização -->
                     <div id="botoesVisualizacao">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-              <i class="bi bi-x-circle me-1"></i>Fechar
-            </button>
+                            <i class="bi bi-x-circle me-1"></i>Fechar
+                        </button>
                         <button type="button" class="btn btn-warning" onclick="habilitarEdicao()">
-              <i class="bi bi-pencil me-1"></i>Editar
-            </button>
+                            <i class="bi bi-pencil me-1"></i>Editar
+                        </button>
                         <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">
-              <i class="bi bi-trash me-1"></i>Excluir
-            </button>
+                            <i class="bi bi-trash me-1"></i>Excluir
+                        </button>
                     </div>
 
                     <!-- Botões para Modo Edição -->
                     <div id="botoesEdicao" style="display: none;">
                         <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
-              <i class="bi bi-x-circle me-1"></i>Cancelar
-            </button>
+                            <i class="bi bi-x-circle me-1"></i>Cancelar
+                        </button>
                         <button type="button" class="btn btn-success" onclick="salvarEdicao()">
-              <i class="bi bi-check-circle me-1"></i>Salvar
-            </button>
+                            <i class="bi bi-check-circle me-1"></i>Salvar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -664,22 +680,23 @@
         </div>
     </div>
 
-    <!-- Modal para Scanner - VERSÃO SIMPLIFICADA -->
+    <!-- Modal para Scanner - VERSÃO OTIMIZADA PARA CÓDIGOS DE BARRAS -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="scannerModalLabel">
-                        <i class="bi bi-upc-scan me-2"></i>Escanear Código
+                        <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <!-- Área do Scanner Simplificada -->
+                    <!-- Área do Scanner com Overlay -->
                     <div class="scanner-container">
                         <video id="scanner-video" class="scanner-video" playsinline muted></video>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
+                        <div class="detection-overlay" id="detectionOverlay"></div>
                     </div>
 
                     <!-- Mensagem de status -->
@@ -696,14 +713,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
-                    <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
-                </button>
+                        <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
+                    </button>
                     <button type="button" class="btn btn-warning" onclick="enterManually()">
-                    <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
-                </button>
+                        <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
+                    </button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="stopScanner()">
-                    <i class="bi bi-x-circle me-1"></i>Fechar
-                </button>
+                        <i class="bi bi-x-circle me-1"></i>Fechar
+                    </button>
                 </div>
             </div>
         </div>
@@ -727,29 +744,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Biblioteca ZXing para códigos de barras (mais confiável) -->
-    <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
-    <!-- Biblioteca QuaggaJS para códigos de barras lineares -->
+    <!-- Biblioteca QuaggaJS para códigos de barras lineares (PRINCIPAL) -->
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    <!-- jsQR como fallback para QR codes -->
+    <!-- ZXing como alternativa -->
+    <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+    <!-- jsQR para QR codes (fallback) -->
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
     <!-- Script de Abertura Automática do Modal -->
     {% if bem_detalhes %}
     <script>
         console.log('DEBUG: Bem encontrado, preparando para abrir modal...');
-        console.log('DEBUG: Dados do bem:', {
-            {
-                bem_detalhes | tojson | safe
-            }
-        });
+        console.log('DEBUG: Dados do bem:', {{ bem_detalhes | tojson | safe }});
 
         // Preencher os dados do bem
-        const bemAtual = {
-            {
-                bem_detalhes | tojson | safe
-            }
-        };
+        const bemAtual = {{ bem_detalhes | tojson | safe }};
 
         // Aguardar o DOM estar completamente carregado
         document.addEventListener('DOMContentLoaded', function() {
@@ -785,8 +794,15 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal com Scanner Profissional -->
+    <!-- Script Principal com Scanner Otimizado para Códigos de Barras -->
     <script>
+        // ===== SCANNER OTIMIZADO PARA CÓDIGOS DE BARRAS =====
+        let scannerModalInstance = null;
+        let videoStream = null;
+        let usingFrontCamera = false;
+        let currentScanner = null;
+        let quaggaInitialized = false;
+
         // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
         function getApiBaseUrl() {
             const currentUrl = window.location.origin;
@@ -797,14 +813,6 @@
             }
         }
 
-        // ===== Scanner Profissional Corrigido =====
-        let scannerModalInstance = null;
-        let videoStream = null;
-        let usingFrontCamera = false;
-        let isScanning = false;
-        let currentScanner = null; // 'quagga' ou 'simple'
-
-        // Inicialização quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM carregado - inicializando scanner...');
 
@@ -812,14 +820,12 @@
             const scannerModalElement = document.getElementById('scannerModal');
             if (scannerModalElement) {
                 scannerModalInstance = new bootstrap.Modal(scannerModalElement);
-                console.log('Modal do scanner inicializado');
             }
 
             // Configurar botão da câmera
             const btnCamera = document.getElementById('btnCamera');
             if (btnCamera) {
                 btnCamera.addEventListener('click', openScanner);
-                console.log('Botão da câmera configurado');
             }
 
             // Configurar botão de trocar câmera
@@ -828,13 +834,13 @@
                 switchCameraBtn.addEventListener('click', switchCamera);
             }
 
-            // Parar a câmera quando o modal for fechado
-            scannerModalElement ? .addEventListener('hidden.bs.modal', stopScanner);
+            // Parar scanner quando modal fechar
+            scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
         });
 
-        // Scanner Corrigido - Versão Simplificada
+        // Abrir scanner otimizado para códigos de barras
         function openScanner() {
-            console.log('Abrindo scanner...');
+            console.log('Abrindo scanner para códigos de barras...');
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
@@ -844,38 +850,29 @@
 
             if (scannerModalInstance) {
                 scannerModalInstance.show();
-                updateScannerStatus('🔄 Iniciando câmera...');
+                updateScannerStatus('🔄 Iniciando câmera para códigos de barras...');
 
-                // Pequeno delay para o modal abrir completamente
                 setTimeout(() => {
-                    startSimpleScanner();
+                    startBarcodeScanner();
                 }, 500);
             }
         }
 
-        // Scanner Simples e Funcional
-        async function startSimpleScanner() {
+        // Scanner focado em códigos de barras lineares
+        async function startBarcodeScanner() {
             try {
-                console.log('Iniciando scanner simples...');
+                console.log('Iniciando scanner de códigos de barras...');
                 stopScanner();
 
-                // Configuração básica da câmera
                 const constraints = {
                     video: {
                         facingMode: usingFrontCamera ? "user" : "environment",
-                        width: {
-                            ideal: 1280
-                        },
-                        height: {
-                            ideal: 720
-                        }
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
                     },
                     audio: false
                 };
 
-                console.log('Solicitando acesso à câmera...');
-
-                // Solicitar acesso à câmera
                 videoStream = await navigator.mediaDevices.getUserMedia(constraints);
                 console.log('✅ Acesso à câmera concedido');
 
@@ -884,232 +881,245 @@
                     throw new Error('Elemento de vídeo não encontrado');
                 }
 
-                // Configurar o elemento de vídeo
                 videoElement.srcObject = videoStream;
                 videoElement.playsInline = true;
                 videoElement.setAttribute('playsinline', 'true');
 
-                // Aguardar o vídeo estar pronto
                 videoElement.onloadedmetadata = function() {
-                    console.log('Metadados do vídeo carregados');
                     videoElement.play()
                         .then(() => {
                             console.log('Vídeo iniciado com sucesso');
-                            console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
-                            updateScannerStatus('✅ Câmera ativa - Aponte para o código');
-
-                            // Iniciar detecção dupla
-                            startDualDetection();
+                            updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
+                            
+                            // Priorizar Quagga para códigos de barras lineares
+                            if (typeof Quagga !== 'undefined') {
+                                startQuaggaBarcodeScanner();
+                            } else {
+                                startBasicBarcodeDetection();
+                            }
                         })
                         .catch(error => {
                             console.error('Erro ao reproduzir vídeo:', error);
-                            throw new Error('Erro ao reproduzir vídeo: ' + error.message);
+                            handleCameraError(error);
                         });
                 };
 
-                videoElement.onerror = function(error) {
-                    console.error('Erro no elemento de vídeo:', error);
-                    updateScannerStatus('❌ Erro na câmera');
-                };
-
             } catch (error) {
-                console.error('Erro detalhado:', error);
+                console.error('Erro ao acessar câmera:', error);
                 handleCameraError(error);
             }
         }
 
-        // Detecção Profissional: Código de Barras PRIMEIRO
-        function startDualDetection() {
-            const videoElement = document.getElementById('scanner-video');
-            if (!videoElement) return;
-
-            console.log('Iniciando detecção focada em códigos de barras...');
-            updateScannerStatus('🔍 Procurando códigos de barras...');
-
-            // Prioridade 1: Tentar ZXing (melhor para códigos de barras)
-            if (typeof ZXing !== 'undefined') {
-                startZXingScanner();
+        // Scanner Quagga otimizado para códigos de barras
+        function startQuaggaBarcodeScanner() {
+            if (typeof Quagga === 'undefined') {
+                console.log('Quagga não disponível, usando detecção básica');
+                startBasicBarcodeDetection();
                 return;
             }
 
-            // Prioridade 2: Tentar QuaggaJS  
-            if (tryStartQuagga()) {
-                return;
-            }
-
-            // Fallback: Scanner básico com foco em códigos de barras
-            startBasicBarcodeScanner();
-        }
-
-        // Scanner ZXing (mais preciso para códigos de barras)
-        function startZXingScanner() {
             try {
-                console.log('Iniciando ZXing scanner...');
-                const codeReader = new ZXing.BrowserMultiFormatReader();
-                currentScanner = 'zxing';
-
-                // Configurar hints para códigos de barras
-                const hints = new Map();
-                hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
-                    ZXing.BarcodeFormat.CODE_128,
-                    ZXing.BarcodeFormat.CODE_39,
-                    ZXing.BarcodeFormat.EAN_13,
-                    ZXing.BarcodeFormat.EAN_8,
-                    ZXing.BarcodeFormat.UPC_A,
-                    ZXing.BarcodeFormat.CODE_93,
-                    ZXing.BarcodeFormat.ITF,
-                    ZXing.BarcodeFormat.CODABAR,
-                    // QR Code como última opção
-                    ZXing.BarcodeFormat.QR_CODE
-                ]);
-
-                hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
-
+                console.log('Iniciando Quagga para códigos de barras...');
                 const videoElement = document.getElementById('scanner-video');
 
-                codeReader.decodeFromVideoDevice(undefined, videoElement, (result, err) => {
-                    if (result) {
-                        const format = result.getBarcodeFormat();
-                        const code = result.getText();
-
-                        console.log('✅ ZXing detectou:', code, 'Formato:', format);
-
-                        // Verificar se é código de barras (não QR)
-                        if (format !== ZXing.BarcodeFormat.QR_CODE) {
-                            updateScannerStatus('📦 Código de barras detectado!');
-                        } else {
-                            updateScannerStatus('🔲 QR Code detectado!');
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: videoElement,
+                        constraints: {
+                            facingMode: usingFrontCamera ? "user" : "environment",
+                            width: { min: 640, ideal: 1280, max: 1920 },
+                            height: { min: 480, ideal: 720, max: 1080 },
+                            aspectRatio: { min: 1, max: 2 }
+                        },
+                        area: {
+                            top: "25%",
+                            right: "15%",
+                            left: "15%",
+                            bottom: "25%"
                         }
-
-                        handleBarcodeDetected(code, format.toString());
-
-                    } else if (err && !(err instanceof ZXing.NotFoundException)) {
-                        console.log('ZXing erro:', err);
+                    },
+                    locator: {
+                        patchSize: "large",
+                        halfSample: true
+                    },
+                    numOfWorkers: navigator.hardwareConcurrency || 2,
+                    frequency: 15, // Aumentar frequência para melhor detecção
+                    decoder: {
+                        readers: [
+                            // PRIORIDADE: Códigos de barras lineares
+                            "code_128_reader",
+                            "ean_reader",
+                            "ean_8_reader", 
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader",
+                            "2of5_reader",
+                            "code_93_reader"
+                        ]
+                    },
+                    locate: true,
+                }, function(err) {
+                    if (err) {
+                        console.log('Quagga erro:', err);
+                        updateScannerStatus('❌ Erro no scanner, usando modo básico');
+                        startBasicBarcodeDetection();
+                        return;
                     }
+
+                    console.log('✅ Quagga inicializado para códigos de barras');
+                    Quagga.start();
+                    currentScanner = 'quagga';
+                    quaggaInitialized = true;
+                    updateScannerStatus('📦 Scanner ativo - Aponte para o código de barras');
+
+                    // Configurar detecção
+                    Quagga.onDetected(function(result) {
+                        if (result && result.codeResult && result.codeResult.code) {
+                            const code = result.codeResult.code;
+                            const format = result.codeResult.format || 'Código de Barras';
+                            
+                            console.log('🎯 Código de barras detectado:', code, 'Formato:', format);
+                            
+                            // Validar e processar o código
+                            if (isValidBarcode(code)) {
+                                handleBarcodeDetected(code, format);
+                                
+                                // Parar temporariamente para evitar múltiplas leituras
+                                Quagga.stop();
+                                setTimeout(() => {
+                                    if (currentScanner === 'quagga') {
+                                        Quagga.start();
+                                    }
+                                }, 2000);
+                            }
+                        }
+                    });
+
+                    // Feedback visual do processo
+                    Quagga.onProcessed(function(result) {
+                        if (result) {
+                            drawBarcodeDetectionOverlay(result);
+                        }
+                    });
                 });
 
-                updateScannerStatus('✅ ZXing ativo - Aponte para código de barras');
-
             } catch (error) {
-                console.log('Erro no ZXing, tentando Quagga...', error);
-                if (!tryStartQuagga()) {
-                    startBasicBarcodeScanner();
-                }
+                console.error('Erro crítico no Quagga:', error);
+                startBasicBarcodeDetection();
             }
         }
 
-        // Scanner básico melhorado para códigos de barras
-        function startBasicBarcodeScanner() {
-            const videoElement = document.getElementById('scanner-video');
-            if (!videoElement) return;
+        // Desenhar overlay de detecção (feedback visual)
+        function drawBarcodeDetectionOverlay(result) {
+            const canvas = document.querySelector('canvas.drawingBuffer');
+            if (!canvas || !result) return;
 
-            console.log('Iniciando scanner básico focado em códigos de barras...');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (result.boxes) {
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#00ff00';
+                
+                result.boxes.forEach(box => {
+                    ctx.beginPath();
+                    ctx.moveTo(box[0][0], box[0][1]);
+                    for (let i = 1; i < box.length; i++) {
+                        ctx.lineTo(box[i][0], box[i][1]);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                });
+            }
+        }
+
+        // Detecção básica de códigos de barras (fallback)
+        function startBasicBarcodeDetection() {
+            console.log('Iniciando detecção básica de códigos de barras...');
             currentScanner = 'basic';
-
+            
+            const videoElement = document.getElementById('scanner-video');
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            let scanCount = 0;
-
-            const scanFrame = () => {
-                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+            
+            function scanFrame() {
+                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA && currentScanner === 'basic') {
                     try {
                         canvas.width = videoElement.videoWidth;
                         canvas.height = videoElement.videoHeight;
                         context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
+                        
+                        // Tentar detecção visual de padrões de código de barras
                         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-                        scanCount++;
-
-                        // A cada 10 frames, tentar detectar padrões de código de barras
-                        if (scanCount % 10 === 0) {
-                            const barcodeResult = detectBarcodePatterns(imageData);
-                            if (barcodeResult) {
-                                updateScannerStatus('📦 Padrão detectado - mantenha firme!');
-                            }
+                        const barcodePattern = detectBarcodePattern(imageData);
+                        
+                        if (barcodePattern && barcodePattern.confidence > 0.7) {
+                            updateScannerStatus('📦 Padrão de código detectado - ajuste o foco');
                         }
-
-                        // Fallback: Tentar QR Code apenas se nada mais funcionar
-                        if (scanCount % 30 === 0 && typeof jsQR !== 'undefined') {
-                            const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
-                                inversionAttempts: "dontInvert",
-                            });
-
-                            if (qrCode) {
-                                console.log('📱 QR Code detectado como fallback:', qrCode.data);
-                                handleBarcodeDetected(qrCode.data, 'QR Code');
-                                return;
-                            }
-                        }
-
+                        
                     } catch (error) {
                         console.log('Erro na detecção básica:', error);
                     }
-                }
-
-                if (currentScanner === 'basic') {
+                    
                     requestAnimationFrame(scanFrame);
                 }
-            };
-
-            scanFrame();
-            updateScannerStatus('🔍 Scanner básico ativo - Aponte para o código');
-        }
-
-        // Detectar padrões visuais de códigos de barras
-        function detectBarcodePatterns(imageData) {
-            try {
-                const width = imageData.width;
-                const height = imageData.height;
-                const data = imageData.data;
-
-                // Analisar múltiplas linhas (não só o centro)
-                const linesToScan = [
-                    Math.floor(height * 0.4), // 40% da altura
-                    Math.floor(height * 0.5), // Centro
-                    Math.floor(height * 0.6) // 60% da altura
-                ];
-
-                for (const y of linesToScan) {
-                    const pattern = analyzeScanLine(data, width, y);
-
-                    // Se encontrar padrão forte de código de barras
-                    if (pattern.isBarcode && pattern.confidence > 0.7) {
-                        return {
-                            detected: true,
-                            line: y,
-                            confidence: pattern.confidence
-                        };
-                    }
-                }
-
-            } catch (error) {
-                console.log('Erro na detecção de padrões:', error);
             }
-
-            return null;
+            
+            scanFrame();
+            updateScannerStatus('🔍 Modo básico ativo - Aponte para o código de barras');
         }
 
-        // Analisar linha para padrões de código de barras
+        // Detectar padrões visuais de código de barras
+        function detectBarcodePattern(imageData) {
+            const width = imageData.width;
+            const height = imageData.height;
+            const data = imageData.data;
+            
+            // Analisar múltiplas linhas horizontais
+            const scanLines = [
+                Math.floor(height * 0.4),
+                Math.floor(height * 0.5),
+                Math.floor(height * 0.6)
+            ];
+            
+            let bestResult = { confidence: 0 };
+            
+            for (const y of scanLines) {
+                const result = analyzeScanLine(data, width, y);
+                if (result.confidence > bestResult.confidence) {
+                    bestResult = result;
+                }
+            }
+            
+            return bestResult.confidence > 0 ? bestResult : null;
+        }
+
+        // Analisar linha individual para padrões de código de barras
         function analyzeScanLine(data, width, y) {
             const scanLine = [];
-
+            const step = Math.max(1, Math.floor(width / 400)); // Otimizar performance
+            
             // Converter linha para preto/branco
-            for (let x = 0; x < width; x += 2) { // Pular pixels para performance
+            for (let x = 0; x < width; x += step) {
                 const index = (y * width + x) * 4;
                 const r = data[index];
                 const g = data[index + 1];
                 const b = data[index + 2];
                 const brightness = (r + g + b) / 3;
-                scanLine.push(brightness < 120); // true = escuro, false = claro
+                scanLine.push(brightness < 100); // Threshold para preto
             }
-
-            // Contar transições e padrões
+            
+            // Contar transições
             let transitions = 0;
             let lastValue = scanLine[0];
             const segments = [];
             let currentSegmentLength = 1;
-
+            
             for (let i = 1; i < scanLine.length; i++) {
                 if (scanLine[i] !== lastValue) {
                     transitions++;
@@ -1120,209 +1130,60 @@
                     currentSegmentLength++;
                 }
             }
-
-            // Análise de padrão
+            
+            // Análise de padrão de código de barras
             const transitionDensity = transitions / scanLine.length;
-            const hasRegularPattern = segments.length > 10 && segments.length < 100;
-            const avgSegmentLength = segments.reduce((a, b) => a + b, 0) / segments.length;
-
-            // Código de barras típico tem:
-            // - 20-80 transições por linha
-            // - Segmentos com tamanho relativamente uniforme
-            // - Densidade de transição entre 0.1 e 0.4
-
-            const isBarcode = transitions > 20 &&
-                transitions < 80 &&
-                transitionDensity > 0.1 &&
-                transitionDensity < 0.4 &&
-                hasRegularPattern &&
-                avgSegmentLength > 2;
-
-            const confidence = isBarcode ? Math.min(0.9, transitionDensity * 2) : 0;
-
+            const hasRegularPattern = segments.length > 15 && segments.length < 150;
+            const segmentVariance = calculateSegmentVariance(segments);
+            
+            // Códigos de barras têm padrões regulares com variância moderada
+            const isBarcode = transitions > 15 && 
+                             transitions < 100 && 
+                             transitionDensity > 0.1 && 
+                             transitionDensity < 0.5 &&
+                             hasRegularPattern &&
+                             segmentVariance < 5;
+            
+            const confidence = isBarcode ? 
+                Math.min(0.9, (transitions / 50) * (1 - segmentVariance / 10)) : 0;
+            
             return {
                 isBarcode,
                 confidence,
                 transitions,
-                density: transitionDensity
+                density: transitionDensity,
+                variance: segmentVariance
             };
         }
 
-        // Tentativa de detecção visual de código de barras
-        function attemptVisualBarcodeDetection(imageData) {
-            try {
-                // Análise simplificada para padrões lineares
-                const centerY = Math.floor(imageData.height / 2);
-                const scanLine = [];
-
-                // Analisar linha central
-                for (let x = 0; x < imageData.width; x += 2) {
-                    const index = (centerY * imageData.width + x) * 4;
-                    const r = imageData.data[index];
-                    const g = imageData.data[index + 1];
-                    const b = imageData.data[index + 2];
-                    const brightness = (r + g + b) / 3;
-                    scanLine.push(brightness < 128); // true para escuro, false para claro
-                }
-
-                // Procurar por padrões de alternância (código de barras)
-                let transitions = 0;
-                let lastValue = scanLine[0];
-
-                for (let i = 1; i < scanLine.length; i++) {
-                    if (scanLine[i] !== lastValue) {
-                        transitions++;
-                        lastValue = scanLine[i];
-                    }
-                }
-
-                // Se houver muitas transições, pode ser um código de barras
-                if (transitions > 20) {
-                    return "Padrão detectado - use QR Code para melhor precisão";
-                }
-
-            } catch (error) {
-                console.log('Erro na detecção visual:', error);
-            }
-
-            return null;
-        }
-
-        // Quagga otimizado para códigos de barras
-        function tryStartQuagga() {
-            if (typeof Quagga === 'undefined') {
-                console.log('Quagga não disponível');
-                return false;
-            }
-
-            try {
-                console.log('Iniciando Quagga com configuração otimizada para códigos de barras...');
-                const videoElement = document.getElementById('scanner-video');
-
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: videoElement,
-                        constraints: {
-                            facingMode: usingFrontCamera ? "user" : "environment",
-                            width: {
-                                min: 640,
-                                ideal: 1280,
-                                max: 1920
-                            },
-                            height: {
-                                min: 480,
-                                ideal: 720,
-                                max: 1080
-                            }
-                        }
-                    },
-                    locator: {
-                        patchSize: "medium",
-                        halfSample: true
-                    },
-                    numOfWorkers: 2,
-                    frequency: 10,
-                    decoder: {
-                        readers: [
-                            // CÓDIGOS DE BARRAS LINEARES (prioridade)
-                            "code_128_reader", // Mais comum
-                            "ean_reader", // EAN-13, EAN-8
-                            "ean_8_reader", // EAN-8 específico
-                            "code_39_reader", // CODE-39
-                            "code_39_vin_reader", // CODE-39 VIN
-                            "codabar_reader", // Codabar
-                            "upc_reader", // UPC-A
-                            "upc_e_reader", // UPC-E
-                            "i2of5_reader", // Interleaved 2 of 5
-                            "2of5_reader", // Standard 2 of 5
-                            "code_93_reader" // CODE-93
-                        ],
-                        debug: {
-                            showCanvas: false,
-                            showPatches: false,
-                            showFoundPatches: false,
-                            showSkeleton: false,
-                            showLabels: false,
-                            showPatchLabels: false,
-                            showRemainingPatchLabels: false,
-                            boxFromPatches: {
-                                showTransformed: false,
-                                showTransformedBox: false,
-                                showBB: false
-                            }
-                        }
-                    },
-                    locate: true,
-                }, function(err) {
-                    if (err) {
-                        console.log('Quagga erro na inicialização:', err);
-                        return false;
-                    }
-
-                    console.log('✅ Quagga inicializado - focado em códigos de barras');
-                    Quagga.start();
-                    currentScanner = 'quagga';
-                    updateScannerStatus('📦 Quagga ativo - Aponte para código de barras');
-
-                    // Handler para detecção
-                    Quagga.onDetected(function(result) {
-                        if (result && result.codeResult && result.codeResult.code) {
-                            const code = result.codeResult.code;
-                            const format = result.codeResult.format || 'Código de Barras';
-
-                            console.log('🎯 Quagga detectou código de barras:', code, 'Formato:', format);
-
-                            // Verificar qualidade da detecção
-                            const confidence = result.codeResult.decodedCodes ?
-                                result.codeResult.decodedCodes.length / 10 : 0.5;
-
-                            if (confidence > 0.3) {
-                                updateScannerStatus('✅ Código de barras detectado!');
-                                handleBarcodeDetected(code, format);
-                            } else {
-                                console.log('Baixa confiança, ignorando detecção');
-                            }
-                        }
-                    });
-
-                    // Handler para processos (debug)
-                    Quagga.onProcessed(function(result) {
-                        // Log apenas se houver detecção parcial
-                        if (result && result.codeResult) {
-                            console.log('Quagga processando...', result.codeResult.format);
-                        }
-                    });
-                });
-
-                return true;
-            } catch (error) {
-                console.log('Erro crítico no Quagga:', error);
-                return false;
-            }
+        // Calcular variância dos segmentos
+        function calculateSegmentVariance(segments) {
+            if (segments.length < 2) return 10;
+            
+            const mean = segments.reduce((a, b) => a + b, 0) / segments.length;
+            const variance = segments.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / segments.length;
+            return Math.sqrt(variance);
         }
 
         // Processar código detectado
         function handleBarcodeDetected(code, format = 'Desconhecido') {
             if (!code) return;
-
+            
             console.log('🎯 Código processado:', code, 'Formato:', format);
-
-            // Limpar e validar o código
+            
             const cleanCode = cleanBarcodeData(code);
-
+            
             if (!isValidBarcode(cleanCode)) {
                 console.log('Código inválido:', cleanCode);
                 updateScannerStatus('❌ Código inválido - tente novamente');
                 return;
             }
-
+            
             // Mostrar resultado
             const scannedCodeElement = document.getElementById('scanned-code');
             const codeFormatElement = document.getElementById('code-format');
             const scanResultElement = document.getElementById('scan-result');
-
+            
             if (scannedCodeElement && scanResultElement) {
                 scannedCodeElement.textContent = cleanCode;
                 if (codeFormatElement) {
@@ -1330,95 +1191,79 @@
                 }
                 scanResultElement.classList.remove('d-none');
                 updateScannerStatus('✅ Código detectado!');
-
-                // Vibrar se suportado (para mobile)
+                
+                // Feedback háptico (mobile)
                 if (navigator.vibrate) {
                     navigator.vibrate(200);
                 }
-
-                // Preencher o campo e fechar após breve delay
+                
+                // Preencher campo e fechar modal
                 setTimeout(() => {
                     const numeroBemField = document.getElementById('numero_bem');
                     if (numeroBemField) {
                         numeroBemField.value = cleanCode;
                         numeroBemField.focus();
                     }
-
+                    
                     stopScanner();
-
-                    if (scannerModalInstance) {
-                        scannerModalInstance.hide();
-                    }
-
-                }, 1500);
+                    scannerModalInstance?.hide();
+                    
+                }, 1000);
             }
         }
 
         // Limpar dados do código de barras
         function cleanBarcodeData(code) {
             return code.toString()
-                .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
+                .replace(/[^a-zA-Z0-9\-]/g, '')
                 .trim();
         }
 
         // Validar código de barras
         function isValidBarcode(code) {
             if (!code || code.length < 2) return false;
-
-            // Permitir letras, números e hífen
             const validPattern = /^[a-zA-Z0-9\-]+$/;
             return validPattern.test(code);
         }
 
         // Parar scanner completamente
         function stopScanner() {
-            console.log('Parando todos os scanners...');
-
-            // Parar ZXing se estiver ativo
-            if (currentScanner === 'zxing' && typeof ZXing !== 'undefined') {
-                try {
-                    // ZXing usa promises, então tentamos parar de forma segura
-                    console.log('Parando ZXing scanner...');
-                } catch (error) {
-                    console.log('Erro ao parar ZXing:', error);
-                }
-            }
-
-            // Parar Quagga se estiver ativo
-            if (currentScanner === 'quagga' && typeof Quagga !== 'undefined') {
+            console.log('Parando scanner...');
+            
+            // Parar Quagga
+            if (currentScanner === 'quagga' && typeof Quagga !== 'undefined' && quaggaInitialized) {
                 try {
                     Quagga.stop();
                     Quagga.offDetected();
                     Quagga.offProcessed();
+                    quaggaInitialized = false;
                     console.log('✅ Quagga parado');
                 } catch (error) {
                     console.log('Erro ao parar Quagga:', error);
                 }
             }
-
+            
             currentScanner = null;
-
+            
             // Parar stream de vídeo
             if (videoStream) {
                 videoStream.getTracks().forEach(track => {
                     track.stop();
-                    console.log('Track parada:', track.kind);
                 });
                 videoStream = null;
             }
-
-            // Limpar resultado
+            
+            // Limpar elementos visuais
             const scanResult = document.getElementById('scan-result');
             if (scanResult) {
                 scanResult.classList.add('d-none');
             }
-
-            // Limpar elemento de vídeo
+            
             const videoElement = document.getElementById('scanner-video');
             if (videoElement) {
                 videoElement.srcObject = null;
             }
-
+            
             updateScannerStatus('⏹️ Scanner parado');
         }
 
@@ -1427,14 +1272,15 @@
             console.log('Trocando câmera...');
             usingFrontCamera = !usingFrontCamera;
             stopScanner();
-
+            
             setTimeout(() => {
-                startSimpleScanner();
+                startBarcodeScanner();
             }, 500);
-
-            updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
+            
+            updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Câmera frontal' : 'Câmera traseira'));
         }
 
+        // Atualizar status do scanner
         function updateScannerStatus(message) {
             const statusElement = document.getElementById('status-text');
             if (statusElement) {
@@ -1443,14 +1289,12 @@
             }
         }
 
+        // Entrada manual
         function enterManually() {
             console.log('Alternando para entrada manual...');
             stopScanner();
-
-            if (scannerModalInstance) {
-                scannerModalInstance.hide();
-            }
-
+            scannerModalInstance?.hide();
+            
             setTimeout(() => {
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
@@ -1460,12 +1304,13 @@
             }, 300);
         }
 
+        // Tratamento de erros da câmera
         function handleCameraError(error) {
-            console.error('Erro detalhado na câmera:', error);
+            console.error('Erro na câmera:', error);
             let errorMessage = 'Erro ao acessar a câmera: ';
-
+            
             if (error.name === 'NotAllowedError') {
-                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
             } else if (error.name === 'NotFoundError') {
                 errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
             } else if (error.name === 'NotSupportedError') {
@@ -1477,45 +1322,15 @@
             } else {
                 errorMessage += error.message;
             }
-
+            
             updateScannerStatus('❌ ' + errorMessage);
-
+            
             setTimeout(() => {
                 if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
                     enterManually();
-                } else {
-                    stopScanner();
                 }
             }, 2000);
         }
-
-        // ===== Funções Auxiliares =====
-        function validateBemNumber(e) {
-            const valor = e.target.value;
-            const btn = document.getElementById('btnLocalizar');
-            if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
-                e.target.classList.add('is-invalid');
-                if (btn) btn.disabled = true;
-            } else {
-                e.target.classList.remove('is-invalid');
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        function aplicarFocoCampoBusca() {
-            const campoBusca = document.getElementById('numero_bem');
-            if (!campoBusca) return;
-            const modaisAbertos = document.querySelectorAll('.modal.show');
-            if (modaisAbertos.length === 0) {
-                campoBusca.focus();
-                campoBusca.select();
-            }
-        }
-
-        // Event listeners adicionais
-        document.addEventListener('hidden.bs.modal', function() {
-            setTimeout(aplicarFocoCampoBusca, 50);
-        });
 
         // ===== CRUD (Modal de resultados) =====
         let bemAtual = null;
@@ -1525,164 +1340,220 @@
             bemAtual = dados;
 
             const detalhesHTML = `
-        <div class="row g-4">
-          <div class="col-12">
-            <div class="bg-light rounded-3 p-3">
-              <h6 class="mb-1 text-primary fw-semibold">
-                <i class="bi bi-upc-scan me-2"></i>Número do Bem
-              </h6>
-              <p class="fs-4 fw-bold mb-0">${dados.numero}</p>
-            </div>
-          </div>
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="bg-light rounded-3 p-3">
+                            <h6 class="mb-1 text-primary fw-semibold">
+                                <i class="bi bi-upc-scan me-2"></i>Número do Bem
+                            </h6>
+                            <p class="fs-4 fw-bold mb-0">${dados.numero}</p>
+                        </div>
+                    </div>
 
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-tag me-2"></i>Nome do Item
-              </h6>
-              <p class="fs-5 mb-0">${dados.nome}</p>
-            </div>
-          </div>
+                    <div class="col-md-6">
+                        <div class="border rounded-3 p-3 h-100">
+                            <h6 class="text-primary fw-semibold mb-2">
+                                <i class="bi bi-tag me-2"></i>Nome do Item
+                            </h6>
+                            <p class="fs-5 mb-0">${dados.nome}</p>
+                        </div>
+                    </div>
 
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-info-circle me-2"></i>Situação
-              </h6>
-              <p class="mb-0">
-                ${dados.situacao === 'OK'
-                  ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
-                  : `<span class="badge bg-warning fs-6 p-2"><i class="bi bi-clock-history me-1"></i>${dados.situacao}</span>`
-                }
-              </p>
-            </div>
-          </div>
+                    <div class="col-md-6">
+                        <div class="border rounded-3 p-3 h-100">
+                            <h6 class="text-primary fw-semibold mb-2">
+                                <i class="bi bi-info-circle me-2"></i>Situação
+                            </h6>
+                            <p class="mb-0">
+                                ${dados.situacao === 'OK'
+                                ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
+                                : `<span class="badge bg-warning fs-6 p-2"><i class="bi bi-clock-history me-1"></i>${dados.situacao}</span>`
+                                }
+                            </p>
+                        </div>
+                    </div>
 
-          <div class="col-12">
-            <div class="border rounded-3 p-3">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-geo-alt me-2"></i>Localização
-              </h6>
-              <p class="fs-5 mb-0">
-                ${dados.localizacao && dados.localizacao !== 'Não informada'
-                  ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
-                  : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
-                }
-              </p>
-            </div>
-          </div>
+                    <div class="col-12">
+                        <div class="border rounded-3 p-3">
+                            <h6 class="text-primary fw-semibold mb-2">
+                                <i class="bi bi-geo-alt me-2"></i>Localização
+                            </h6>
+                            <p class="fs-5 mb-0">
+                                ${dados.localizacao && dados.localizacao !== 'Não informada'
+                                ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
+                                : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
+                                }
+                            </p>
+                        </div>
+                    </div>
 
-          <div class="col-12">
-            <div class="bg-light rounded-3 p-3">
-              <h6 class="text-muted mb-2">
-                <i class="bi bi-lightbulb me-2"></i>Informações
-              </h6>
-              <p class="small text-muted mb-0">
-                ${dados.situacao === 'OK'
-                  ? '✅ Este bem já foi localizado e está devidamente registrado no sistema.'
-                  : '⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.'
-                }
-              </p>
-            </div>
-          </div>
-        </div>
-      `;
+                    <div class="col-12">
+                        <div class="bg-light rounded-3 p-3">
+                            <h6 class="text-muted mb-2">
+                                <i class="bi bi-lightbulb me-2"></i>Informações
+                            </h6>
+                            <p class="small text-muted mb-0">
+                                ${dados.situacao === 'OK'
+                                ? '✅ Este bem já foi localizado e está devidamente registrado no sistema.'
+                                : '⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.'
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-        const detalhesBemElement = document.getElementById('detalhesBem');
-        if (detalhesBemElement) {
-            detalhesBemElement.innerHTML = detalhesHTML;
+            const detalhesBemElement = document.getElementById('detalhesBem');
+            if (detalhesBemElement) {
+                detalhesBemElement.innerHTML = detalhesHTML;
+            }
+
+            const botoesVisualizacao = document.getElementById('botoesVisualizacao');
+            const botoesEdicao = document.getElementById('botoesEdicao');
+            const formEdicao = document.getElementById('formEdicao');
+
+            if (botoesVisualizacao) botoesVisualizacao.style.display = 'flex';
+            if (botoesEdicao) botoesEdicao.style.display = 'none';
+            if (detalhesBemElement) detalhesBemElement.style.display = 'block';
+            if (formEdicao) formEdicao.style.display = 'none';
         }
 
-        const botoesVisualizacao = document.getElementById('botoesVisualizacao');
-        const botoesEdicao = document.getElementById('botoesEdicao');
-        const formEdicao = document.getElementById('formEdicao');
+        function habilitarEdicao() {
+            console.log('habilitarEdicao chamada');
+            if (!bemAtual) {
+                alert('Erro: Dados do bem não carregados. Por favor, recarregue a página e tente novamente.');
+                return;
+            }
+            try {
+                document.getElementById('bem_id').value = bemAtual.id;
+                document.getElementById('edt_numero').value = bemAtual.numero;
+                document.getElementById('edt_nome').value = bemAtual.nome;
+                document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
+                document.getElementById('edt_situacao').value = bemAtual.situacao;
 
-        if (botoesVisualizacao) botoesVisualizacao.style.display = 'flex';
-        if (botoesEdicao) botoesEdicao.style.display = 'none';
-        if (detalhesBemElement) detalhesBemElement.style.display = 'block';
-        if (formEdicao) formEdicao.style.display = 'none';
-    }
+                // Novos campos
+                document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
+                document.getElementById('edt_auditor').value = bemAtual.auditor || '';
+                document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
+                document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
 
-    function habilitarEdicao() {
-        console.log('habilitarEdicao chamada');
-        if (!bemAtual) {
-            alert('Erro: Dados do bem não carregados. Por favor, recarregue a página e tente novamente.');
-            return;
+                document.getElementById('detalhesBem').style.display = 'none';
+                document.getElementById('formEdicao').style.display = 'block';
+                document.getElementById('botoesVisualizacao').style.display = 'none';
+                document.getElementById('botoesEdicao').style.display = 'flex';
+            } catch (error) {
+                console.error('Erro ao habilitar edição:', error);
+                alert('Erro ao carregar formulário de edição.');
+            }
         }
-        try {
-            document.getElementById('bem_id').value = bemAtual.id;
-            document.getElementById('edt_numero').value = bemAtual.numero;
-            document.getElementById('edt_nome').value = bemAtual.nome;
-            document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
-            document.getElementById('edt_situacao').value = bemAtual.situacao;
 
-            // Novos campos
-            document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
-            document.getElementById('edt_auditor').value = bemAtual.auditor || '';
-            document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
-            document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
-
-            document.getElementById('detalhesBem').style.display = 'none';
-            document.getElementById('formEdicao').style.display = 'block';
-            document.getElementById('botoesVisualizacao').style.display = 'none';
-            document.getElementById('botoesEdicao').style.display = 'flex';
-        } catch (error) {
-            console.error('Erro ao habilitar edição:', error);
-            alert('Erro ao carregar formulário de edição.');
+        function cancelarEdicao() {
+            document.getElementById('detalhesBem').style.display = 'block';
+            document.getElementById('formEdicao').style.display = 'none';
+            document.getElementById('botoesVisualizacao').style.display = 'flex';
+            document.getElementById('botoesEdicao').style.display = 'none';
         }
-    }
 
-    function cancelarEdicao() {
-        document.getElementById('detalhesBem').style.display = 'block';
-        document.getElementById('formEdicao').style.display = 'none';
-        document.getElementById('botoesVisualizacao').style.display = 'flex';
-        document.getElementById('botoesEdicao').style.display = 'none';
-    }
+        function salvarEdicao() {
+            try {
+                const bem_id = parseInt(document.getElementById('bem_id').value);
+                const numero = document.getElementById('edt_numero').value.trim();
+                const nome = document.getElementById('edt_nome').value.trim();
+                const localizacao = document.getElementById('edt_localizacao').value.trim();
+                const situacao = document.getElementById('edt_situacao').value;
+                const responsavel = document.getElementById('edt_responsavel').value.trim();
+                const auditor = document.getElementById('edt_auditor').value.trim();
+                const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
+                const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
 
-    function salvarEdicao() {
-        try {
-            const bem_id = parseInt(document.getElementById('bem_id').value);
-            const numero = document.getElementById('edt_numero').value.trim();
-            const nome = document.getElementById('edt_nome').value.trim();
-            const localizacao = document.getElementById('edt_localizacao').value.trim();
-            const situacao = document.getElementById('edt_situacao').value;
-            const responsavel = document.getElementById('edt_responsavel').value.trim();
-            const auditor = document.getElementById('edt_auditor').value.trim();
-            const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
-            const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
+                // Validações
+                if (isNaN(bem_id) || bem_id <= 0) {
+                    alert('ID do bem inválido');
+                    return;
+                }
 
-            // Validações
-            if (isNaN(bem_id) || bem_id <= 0) {
-                alert('ID do bem inválido');
+                if (!numero || !nome || !situacao) {
+                    alert('Campos obrigatórios não preenchidos');
+                    return;
+                }
+
+                const dadosAtualizacao = {
+                    numero: numero,
+                    nome: nome,
+                    localizacao: localizacao,
+                    situacao: situacao,
+                    responsavel: responsavel,
+                    auditor: auditor,
+                    data_ultima_vistoria: data_ultima_vistoria,
+                    data_vistoria_atual: data_vistoria_atual
+                };
+
+                console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
+
+                const apiBase = getApiBaseUrl();
+                
+                fetch(`${apiBase}/bens/${bem_id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dadosAtualizacao)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Resposta da API:', data);
+
+                    if (data.success) {
+                        alert(data.message || 'Bem atualizado com sucesso!');
+
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+
+                    } else {
+                        alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Erro: ' + error.message);
+                });
+
+            } catch (error) {
+                console.error('Erro ao processar edição:', error);
+                alert('Erro inesperado: ' + error.message);
+            }
+        }
+
+        function confirmarExclusao() {
+            if (!bemAtual) {
+                alert('Dados do bem não disponíveis para exclusão.');
+                return;
+            }
+            new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
+        }
+
+        function excluirBem() {
+            if (!bemAtual || !bemAtual.id) {
+                alert('Erro: ID do bem não disponível.');
                 return;
             }
 
-            if (!numero || !nome || !situacao) {
-                alert('Campos obrigatórios não preenchidos');
-                return;
-            }
-
-            const dadosAtualizacao = {
-                numero: numero,
-                nome: nome,
-                localizacao: localizacao,
-                situacao: situacao,
-                responsavel: responsavel,
-                auditor: auditor,
-                data_ultima_vistoria: data_ultima_vistoria,
-                data_vistoria_atual: data_vistoria_atual
-            };
-
-            console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
-
+            const bem_id = bemAtual.id;
             const apiBase = getApiBaseUrl();
             
-            fetch(`${apiBase}/bens/${bem_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dadosAtualizacao)
+            fetch(`${apiBase}/bens/${bem_id}`, { 
+                method: 'DELETE' 
             })
             .then(response => {
                 if (!response.ok) {
@@ -1691,78 +1562,21 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Resposta da API:', data);
+                bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
+                bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
 
                 if (data.success) {
-                    alert(data.message || 'Bem atualizado com sucesso!');
-
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
-                    if (modal) {
-                        modal.hide();
-                    }
-
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-
+                    alert(data.message || 'Bem excluído com sucesso!');
+                    window.location.reload();
                 } else {
-                    alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
+                    alert('Erro: ' + data.message);
                 }
             })
             .catch(error => {
-                console.error('Erro na requisição:', error);
-                alert('Erro: ' + error.message);
+                console.error('Erro na exclusão:', error);
+                alert('Erro de conexão ao excluir: ' + error.message);
             });
-
-        } catch (error) {
-            console.error('Erro ao processar edição:', error);
-            alert('Erro inesperado: ' + error.message);
         }
-    }
-
-    function confirmarExclusao() {
-        if (!bemAtual) {
-            alert('Dados do bem não disponíveis para exclusão.');
-            return;
-        }
-        new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
-    }
-
-    function excluirBem() {
-        if (!bemAtual || !bemAtual.id) {
-            alert('Erro: ID do bem não disponível.');
-            return;
-        }
-
-        const bem_id = bemAtual.id;
-        const apiBase = getApiBaseUrl();
-        
-        fetch(`${apiBase}/bens/${bem_id}`, { 
-            method: 'DELETE' 
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro HTTP ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
-            bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
-
-            if (data.success) {
-                alert(data.message || 'Bem excluído com sucesso!');
-                window.location.reload();
-            } else {
-                alert('Erro: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erro na exclusão:', error);
-            alert('Erro de conexão ao excluir: ' + error.message);
-        });
-    }
     </script>
 </body>
-
 </html>
