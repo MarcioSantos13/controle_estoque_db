@@ -12,7 +12,7 @@
     .scanner-container {
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 400px;
       background: #000;
       overflow: hidden;
     }
@@ -28,16 +28,16 @@
       top: 50%;
       left: 10%;
       width: 80%;
-      height: 2px;
-      background: #00ff00;
+      height: 3px;
+      background: #ff0000;
       opacity: 0.7;
       animation: scan 2s ease-in-out infinite;
     }
     
     @keyframes scan {
-      0% { top: 20%; }
-      50% { top: 80%; }
-      100% { top: 20%; }
+      0% { top: 25%; }
+      50% { top: 75%; }
+      100% { top: 25%; }
     }
     
     .scanner-frame {
@@ -45,16 +45,31 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
-      height: 150px;
-      border: 2px solid #00ff00;
+      width: 90%;
+      height: 200px;
+      border: 3px solid #00ff00;
       background: transparent;
+      z-index: 10;
+    }
+
+    /* Estilos para o Quagga */
+    #interactive.viewport {
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+
+    #interactive.viewport > canvas, #interactive.viewport > video {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    canvas.drawing, canvas.drawingBuffer {
+      position: absolute;
+      left: 0;
+      top: 0;
     }
   </style>
-
-<!-- Adicione ESTA biblioteca no final do <head> -->
-<script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-
 </head>
 
 <body class="bg-light">
@@ -682,46 +697,35 @@
     </div>
   </div>
 
-  <!-- Modal para Scanner de Código de Barras - VERSÃO OTIMIZADA -->
-  <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+ <!-- Modal para Scanner - VERSÃO SIMPLIFICADA -->
+<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="scannerModalLabel">
-                    <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
+                    <i class="bi bi-upc-scan me-2"></i>Escanear Código
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <!-- Área do Scanner Melhorada -->
-                <div class="scanner-container" style="height: 400px;">
+                <!-- Área do Scanner Simplificada -->
+                <div class="scanner-container">
                     <video id="scanner-video" class="scanner-video" playsinline muted></video>
-                    <div class="scanner-frame" style="border: 3px solid #00ff00; width: 90%; height: 200px;"></div>
-                    <div class="scan-line" style="background: #ff0000; height: 3px;"></div>
-                </div>
-
-                <!-- Dicas de uso -->
-                <div class="p-3 bg-dark text-white">
-                    <div class="row">
-                        <div class="col-12">
-                            <small>
-                                <i class="bi bi-lightbulb me-1"></i>
-                                <strong>Dicas:</strong> Aponte para o código em boa luz, mantenha estável e preencha a área verde
-                            </small>
-                        </div>
-                    </div>
+                    <div class="scanner-frame"></div>
+                    <div class="scan-line"></div>
                 </div>
 
                 <!-- Mensagem de status -->
-                <div id="scanner-status" class="p-2 bg-secondary text-white">
+                <div id="scanner-status" class="p-3 bg-dark text-white small">
                     <i class="bi bi-info-circle me-1"></i>
-                    <span id="status-text">Preparando scanner...</span>
+                    <span id="status-text">Preparando câmera...</span>
                 </div>
 
                 <!-- Resultado do scan -->
                 <div id="scan-result" class="p-3 bg-success text-white d-none">
                     <i class="bi bi-check-circle me-1"></i>
-                    Código lido: <strong id="scanned-code"></strong>
+                    Código detectado: <strong id="scanned-code"></strong>
+                    <small class="ms-2 opacity-75" id="code-format"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -737,7 +741,7 @@
             </div>
         </div>
     </div>
-  </div>
+</div>
 
   <!-- Footer -->
   <footer class="bg-dark text-white py-3 mt-5">
@@ -759,7 +763,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Biblioteca jsQR para decodificar QR codes -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-  <!-- Biblioteca para código de barras -->
+  <!-- Biblioteca profissional para código de barras -->
   <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 
   <!-- Script de Abertura Automática do Modal -->
@@ -805,515 +809,460 @@
   </script>
   {% endif %}
 
-  <!-- Script Principal Corrigido -->
+  <!-- Script Principal com Scanner Profissional -->
   <script>
     // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
     function getApiBaseUrl() {
-        // Tenta detectar automaticamente a base URL
         const currentUrl = window.location.origin;
-        
-        // Se estiver em localhost, usa uma base, senão outra
         if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
-            return '/api'; // Para desenvolvimento local
+            return '/api';
         } else {
-            return '/api'; // Para produção - ajuste conforme necessário
+            return '/api';
         }
     }
 
-    function debugServerConfig() {
-        console.log('=== DEBUG SERVER CONFIG ===');
-        console.log('URL atual:', window.location.href);
-        console.log('Protocolo:', window.location.protocol);
-        console.log('Hostname:', window.location.hostname);
-        console.log('Base URL detectada:', getApiBaseUrl());
-        console.log('=== FIM DEBUG ===');
+ // ===== Scanner Profissional Corrigido =====
+let scannerModalInstance = null;
+let videoStream = null;
+let usingFrontCamera = false;
+let isScanning = false;
+let currentScanner = null; // 'quagga' ou 'simple'
+
+// Inicialização quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM carregado - inicializando scanner...');
+    
+    // Inicializar o modal do scanner
+    const scannerModalElement = document.getElementById('scannerModal');
+    if (scannerModalElement) {
+        scannerModalInstance = new bootstrap.Modal(scannerModalElement);
+        console.log('Modal do scanner inicializado');
     }
 
-    // ===== Scanner de Código de Barras Melhorado =====
-    let scannerModalInstance = null;
-    let videoStream = null;
-    let usingFrontCamera = false;
-    let scanningInterval = null;
-    let canvas = null;
-    let context = null;
-
-    // Inicialização quando o DOM estiver carregado
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log('DOM carregado - inicializando scanner...');
-        
-        // Debug da configuração
-        debugServerConfig();
-        
-        // Inicializar o modal do scanner
-        const scannerModalElement = document.getElementById('scannerModal');
-        if (scannerModalElement) {
-            scannerModalInstance = new bootstrap.Modal(scannerModalElement);
-            console.log('Modal do scanner inicializado');
-        }
-
-        // Configurar botão da câmera
-        const btnCamera = document.getElementById('btnCamera');
-        if (btnCamera) {
-            btnCamera.addEventListener('click', openScanner);
-            console.log('Botão da câmera configurado');
-        }
-
-        // Configurar botão de trocar câmera
-        const switchCameraBtn = document.getElementById('switchCameraBtn');
-        if (switchCameraBtn) {
-            switchCameraBtn.addEventListener('click', switchCamera);
-        }
-
-        // Parar a câmera quando o modal for fechado
-        scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
-
-        // Validação do número do bem
-        document.getElementById('numero_bem')?.addEventListener('input', validateBemNumber);
-
-        // CORREÇÃO: Configurar submit do formulário para prevenir comportamento padrão
-        const searchForm = document.getElementById('searchForm');
-        if (searchForm) {
-            searchForm.addEventListener('submit', handleFormSubmit);
-            console.log('Formulário de busca configurado');
-        }
-
-        // Foco no campo de busca
-        setTimeout(aplicarFocoCampoBusca, 100);
-
-        // Criar canvas para detecção
-        canvas = document.createElement('canvas');
-        context = canvas.getContext('2d', { willReadFrequently: true });
-    });
-
-    // ===== CORREÇÃO DO FORMULÁRIO =====
-    function handleFormSubmit(event) {
-        console.log('Processando formulário de busca...');
-        
-        // Mostrar spinner de loading
-        const spinner = document.getElementById('loadingSpinner');
-        const icon = document.getElementById('btnLocalizar')?.querySelector('i');
-        
-        if (spinner) spinner.classList.remove('d-none');
-        if (icon) icon.classList.add('d-none');
-        
-        // O formulário continuará com o comportamento normal (submit)
-        // mas agora com action correto usando url_for
-        console.log('Formulário será submetido para:', "{{ url_for('index') }}");
-        
-        // O spinner será escondido quando a página recarregar
+    // Configurar botão da câmera
+    const btnCamera = document.getElementById('btnCamera');
+    if (btnCamera) {
+        btnCamera.addEventListener('click', openScanner);
+        console.log('Botão da câmera configurado');
     }
 
-    // Scanner Melhorado - Suporte a QR Code e Código de Barras
-    function openScanner() {
-        console.log('Abrindo scanner melhorado...');
-        
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
-            enterManually();
-            return;
-        }
-        
-        if (scannerModalInstance) {
-            scannerModalInstance.show();
-            updateScannerStatus('🔄 Iniciando câmera...');
-            
-            // Pequeno delay para o modal abrir completamente
-            setTimeout(() => {
-                startEnhancedScanner();
-            }, 500);
-        }
+    // Configurar botão de trocar câmera
+    const switchCameraBtn = document.getElementById('switchCameraBtn');
+    if (switchCameraBtn) {
+        switchCameraBtn.addEventListener('click', switchCamera);
     }
 
-    // Scanner Aprimorado
-    async function startEnhancedScanner() {
-        try {
-            console.log('Iniciando scanner aprimorado...');
-            
-            // Parar qualquer scanner anterior
-            stopScanner();
+    // Parar a câmera quando o modal for fechado
+    scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
+});
 
-            // Configurações otimizadas para códigos de barras
-            const constraints = {
-                video: {
-                    facingMode: usingFrontCamera ? "user" : "environment",
-                    width: { ideal: 1920, max: 1920 },
-                    height: { ideal: 1080, max: 1080 },
-                    aspectRatio: { ideal: 1.777777778 } // 16:9
-                },
-                audio: false
-            };
-
-            console.log('Solicitando acesso à câmera com constraints:', constraints);
-            
-            // Solicitar acesso à câmera
-            videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-            console.log('✅ Acesso à câmera concedido');
-
-            const videoElement = document.getElementById('scanner-video');
-            if (!videoElement) {
-                throw new Error('Elemento de vídeo não encontrado');
-            }
-
-            // Configurar o elemento de vídeo
-            videoElement.srcObject = videoStream;
-            videoElement.playsInline = true;
-            videoElement.setAttribute('playsinline', 'true');
-            
-            // Aguardar o vídeo estar pronto
-            await new Promise((resolve, reject) => {
-                videoElement.onloadedmetadata = () => {
-                    console.log('Metadados do vídeo carregados');
-                    videoElement.play()
-                        .then(() => {
-                            console.log('Vídeo iniciado com sucesso');
-                            console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
-                            updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
-                            startEnhancedDetection();
-                            resolve();
-                        })
-                        .catch(reject);
-                };
-                
-                videoElement.onerror = reject;
-                
-                // Timeout de segurança
-                setTimeout(() => reject(new Error('Timeout ao carregar vídeo')), 10000);
-            });
-
-        } catch (error) {
-            console.error('Erro detalhado:', error);
-            handleCameraError(error);
-        }
+// Scanner Corrigido - Versão Simplificada
+function openScanner() {
+    console.log('Abrindo scanner...');
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+        enterManually();
+        return;
     }
+    
+    if (scannerModalInstance) {
+        scannerModalInstance.show();
+        updateScannerStatus('🔄 Iniciando câmera...');
+        
+        // Pequeno delay para o modal abrir completamente
+        setTimeout(() => {
+            startSimpleScanner();
+        }, 500);
+    }
+}
 
-    // Detecção Aprimorada - QR Code + Tentativa de Código de Barras
-    function startEnhancedDetection() {
+// Scanner Simples e Funcional
+async function startSimpleScanner() {
+    try {
+        console.log('Iniciando scanner simples...');
+        stopScanner();
+
+        // Configuração básica da câmera
+        const constraints = {
+            video: {
+                facingMode: usingFrontCamera ? "user" : "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        };
+
+        console.log('Solicitando acesso à câmera...');
+        
+        // Solicitar acesso à câmera
+        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+        console.log('✅ Acesso à câmera concedido');
+
         const videoElement = document.getElementById('scanner-video');
-        if (!videoElement) return;
-
-        console.log('Iniciando detecção aprimorada...');
-
-        scanningInterval = setInterval(() => {
-            if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
-                try {
-                    // Configurar canvas com as dimensões do vídeo
-                    canvas.width = videoElement.videoWidth;
-                    canvas.height = videoElement.videoHeight;
-                    
-                    // Desenhar o frame atual no canvas
-                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                    
-                    // Obter dados da imagem para processamento
-                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                    
-                    // Tentativa 1: Detecção de QR Code com jsQR
-                    const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "dontInvert",
-                    });
-
-                    if (qrCode) {
-                        console.log('✅ QR Code detectado:', qrCode.data);
-                        handleBarcodeDetected(qrCode.data);
-                        return;
-                    }
-
-                    // Tentativa 2: Detecção simples de padrões de código de barras
-                    const barcodeData = attemptBarcodeDetection(imageData);
-                    if (barcodeData) {
-                        console.log('📦 Possível código de barras detectado:', barcodeData);
-                        handleBarcodeDetected(barcodeData);
-                        return;
-                    }
-
-                } catch (error) {
-                    console.log('Erro na detecção:', error);
-                }
-            }
-        }, 200); // Verificar a cada 200ms (mais rápido)
-    }
-
-    // Tentativa de detecção de código de barras simples
-    function attemptBarcodeDetection(imageData) {
-        try {
-            // Converter para escala de cinza e analisar padrões
-            const grayData = convertToGrayscale(imageData);
-            const patterns = findBarcodePatterns(grayData, imageData.width, imageData.height);
-            
-            if (patterns.length > 0) {
-                // Tentar decodificar os padrões encontrados
-                return decodeBarcodePatterns(patterns);
-            }
-        } catch (error) {
-            console.log('Erro na detecção de código de barras:', error);
+        if (!videoElement) {
+            throw new Error('Elemento de vídeo não encontrado');
         }
-        return null;
-    }
 
-    // Converter imagem para escala de cinza
-    function convertToGrayscale(imageData) {
-        const grayData = [];
-        const data = imageData.data;
+        // Configurar o elemento de vídeo
+        videoElement.srcObject = videoStream;
+        videoElement.playsInline = true;
+        videoElement.setAttribute('playsinline', 'true');
         
-        for (let i = 0; i < data.length; i += 4) {
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-            // Fórmula de luminância
-            const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-            grayData.push(gray);
-        }
-        
-        return grayData;
-    }
-
-    // Encontrar padrões de código de barras
-    function findBarcodePatterns(grayData, width, height) {
-        const patterns = [];
-        const threshold = 128; // Limiar para preto/branco
-        
-        // Analisar linhas horizontais no centro da imagem
-        const centerY = Math.floor(height / 2);
-        const scanHeight = 10; // Analisar 10 linhas no centro
-        
-        for (let y = centerY - Math.floor(scanHeight / 2); y <= centerY + Math.floor(scanHeight / 2); y++) {
-            const linePattern = analyzeLine(grayData, width, y, threshold);
-            if (linePattern && linePattern.length > 10) { // Padrão deve ter pelo menos 10 elementos
-                patterns.push(linePattern);
-            }
-        }
-        
-        return patterns;
-    }
-
-    // Analisar uma linha horizontal
-    function analyzeLine(grayData, width, y, threshold) {
-        const pattern = [];
-        let currentColor = null;
-        let currentLength = 0;
-        
-        for (let x = 0; x < width; x++) {
-            const index = y * width + x;
-            const value = grayData[index];
-            const isBlack = value < threshold;
-            
-            if (currentColor === null) {
-                currentColor = isBlack;
-                currentLength = 1;
-            } else if (currentColor === isBlack) {
-                currentLength++;
-            } else {
-                pattern.push({
-                    color: currentColor ? 'black' : 'white',
-                    length: currentLength
+        // Aguardar o vídeo estar pronto
+        videoElement.onloadedmetadata = function() {
+            console.log('Metadados do vídeo carregados');
+            videoElement.play()
+                .then(() => {
+                    console.log('Vídeo iniciado com sucesso');
+                    console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
+                    updateScannerStatus('✅ Câmera ativa - Aponte para o código');
+                    
+                    // Iniciar detecção dupla
+                    startDualDetection();
+                })
+                .catch(error => {
+                    console.error('Erro ao reproduzir vídeo:', error);
+                    throw new Error('Erro ao reproduzir vídeo: ' + error.message);
                 });
-                currentColor = isBlack;
-                currentLength = 1;
-            }
-        }
-        
-        // Adicionar o último segmento
-        if (currentColor !== null) {
-            pattern.push({
-                color: currentColor ? 'black' : 'white',
-                length: currentLength
-            });
-        }
-        
-        return pattern.length > 5 ? pattern : null; // Retornar apenas padrões significativos
-    }
+        };
 
-    // Tentar decodificar padrões de código de barras
-    function decodeBarcodePatterns(patterns) {
-        // Para simplificar, vamos tentar extrair números dos padrões
-        // Esta é uma implementação básica - em produção use uma biblioteca especializada
-        
-        const possibleCodes = [];
-        
-        patterns.forEach(pattern => {
-            // Tentar extrair sequências que parecem números
-            let code = '';
-            let totalSegments = pattern.length;
-            
-            // Procurar por padrões regulares (alternância preto/branco)
-            if (totalSegments >= 20) { // Código de barras típico tem muitos segmentos
-                for (let i = 0; i < Math.min(30, totalSegments); i++) {
-                    const segment = pattern[i];
-                    // Simplificação: converter padrões em dígitos
-                    if (segment.length > 2) {
-                        code += Math.min(9, Math.floor(segment.length / 3));
+        videoElement.onerror = function(error) {
+            console.error('Erro no elemento de vídeo:', error);
+            updateScannerStatus('❌ Erro na câmera');
+        };
+
+    } catch (error) {
+        console.error('Erro detalhado:', error);
+        handleCameraError(error);
+    }
+}
+
+// Detecção Dupla: QR Code + Tentativa de Código de Barras
+function startDualDetection() {
+    const videoElement = document.getElementById('scanner-video');
+    if (!videoElement) return;
+
+    console.log('Iniciando detecção dupla...');
+    currentScanner = 'simple';
+
+    // Criar canvas para processamento
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    let lastDetectionTime = 0;
+    const detectionInterval = 300; // ms entre detecções
+
+    const scanFrame = () => {
+        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+            try {
+                // Configurar canvas
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                
+                // Obter dados da imagem
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                
+                // Tentativa 1: Detecção de QR Code
+                const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
+                    inversionAttempts: "dontInvert",
+                });
+
+                if (qrCode) {
+                    console.log('✅ QR Code detectado:', qrCode.data);
+                    handleBarcodeDetected(qrCode.data, 'QR Code');
+                    return;
+                }
+
+                // Tentativa 2: Detecção visual de código de barras (simplificada)
+                const currentTime = Date.now();
+                if (currentTime - lastDetectionTime > detectionInterval) {
+                    const barcodeCandidate = attemptVisualBarcodeDetection(imageData);
+                    if (barcodeCandidate) {
+                        console.log('📦 Possível código de barras detectado:', barcodeCandidate);
+                        lastDetectionTime = currentTime;
+                        // Não processar automaticamente - requer confirmação visual
                     }
                 }
-                
-                if (code.length >= 8) { // Código válido deve ter pelo menos 8 caracteres
-                    possibleCodes.push(code);
-                }
+
+            } catch (error) {
+                console.log('Erro na detecção:', error);
             }
+        }
+        
+        // Continuar scanning
+        if (currentScanner === 'simple') {
+            requestAnimationFrame(scanFrame);
+        }
+    };
+
+    // Iniciar loop de detecção
+    scanFrame();
+}
+
+// Tentativa de detecção visual de código de barras
+function attemptVisualBarcodeDetection(imageData) {
+    try {
+        // Análise simplificada para padrões lineares
+        const centerY = Math.floor(imageData.height / 2);
+        const scanLine = [];
+        
+        // Analisar linha central
+        for (let x = 0; x < imageData.width; x += 2) {
+            const index = (centerY * imageData.width + x) * 4;
+            const r = imageData.data[index];
+            const g = imageData.data[index + 1];
+            const b = imageData.data[index + 2];
+            const brightness = (r + g + b) / 3;
+            scanLine.push(brightness < 128); // true para escuro, false para claro
+        }
+        
+        // Procurar por padrões de alternância (código de barras)
+        let transitions = 0;
+        let lastValue = scanLine[0];
+        
+        for (let i = 1; i < scanLine.length; i++) {
+            if (scanLine[i] !== lastValue) {
+                transitions++;
+                lastValue = scanLine[i];
+            }
+        }
+        
+        // Se houver muitas transições, pode ser um código de barras
+        if (transitions > 20) {
+            return "Padrão detectado - use QR Code para melhor precisão";
+        }
+        
+    } catch (error) {
+        console.log('Erro na detecção visual:', error);
+    }
+    
+    return null;
+}
+
+// Tentar iniciar Quagga como alternativa
+function tryStartQuagga() {
+    if (typeof Quagga === 'undefined') {
+        console.log('Quagga não disponível');
+        return false;
+    }
+    
+    try {
+        console.log('Tentando iniciar Quagga...');
+        const videoElement = document.getElementById('scanner-video');
+        
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: videoElement,
+                constraints: {
+                    facingMode: usingFrontCamera ? "user" : "environment",
+                    width: { min: 640, ideal: 1280, max: 1920 },
+                    height: { min: 480, ideal: 720, max: 1080 }
+                }
+            },
+            decoder: {
+                readers: ["code_128_reader", "ean_reader", "code_39_reader"]
+            },
+            locate: true,
+        }, function(err) {
+            if (err) {
+                console.log('Quagga não pôde ser inicializado:', err);
+                return;
+            }
+            
+            console.log('Quagga inicializado com sucesso');
+            Quagga.start();
+            currentScanner = 'quagga';
+            
+            Quagga.onDetected(function(result) {
+                if (result && result.codeResult) {
+                    console.log('Quagga detectou:', result.codeResult.code);
+                    handleBarcodeDetected(result.codeResult.code, result.codeResult.format);
+                }
+            });
         });
         
-        // Retornar o código mais provável
-        return possibleCodes.length > 0 ? possibleCodes[0] : null;
+        return true;
+    } catch (error) {
+        console.log('Erro no Quagga:', error);
+        return false;
     }
+}
 
-    // Processar código detectado
-    function handleBarcodeDetected(code) {
-        if (!code) return;
-        
-        console.log('🎯 Código processado:', code);
-        
-        // Limpar e validar o código
-        const cleanCode = cleanBarcodeData(code);
-        
-        if (!isValidBarcode(cleanCode)) {
-            console.log('Código inválido:', cleanCode);
-            updateScannerStatus('❌ Código inválido - tente novamente');
-            return;
-        }
-        
-        // Mostrar resultado
-        const scannedCodeElement = document.getElementById('scanned-code');
-        const scanResultElement = document.getElementById('scan-result');
-        
-        if (scannedCodeElement && scanResultElement) {
-            scannedCodeElement.textContent = cleanCode;
-            scanResultElement.classList.remove('d-none');
-            updateScannerStatus('✅ Código detectado!');
-            
-            // Vibrar se suportado (para mobile)
-            if (navigator.vibrate) {
-                navigator.vibrate(200);
-            }
-            
-            // Preencher o campo e fechar após breve delay
-            setTimeout(() => {
-                const numeroBemField = document.getElementById('numero_bem');
-                if (numeroBemField) {
-                    numeroBemField.value = cleanCode;
-                    numeroBemField.focus();
-                }
-                
-                stopScanner();
-                
-                if (scannerModalInstance) {
-                    scannerModalInstance.hide();
-                }
-                
-                // Focar no próximo campo
-                setTimeout(() => {
-                    const localizacaoField = document.getElementById('localizacao');
-                    if (localizacaoField) {
-                        localizacaoField.focus();
-                    }
-                }, 100);
-                
-            }, 1000);
-        }
+// Processar código detectado
+function handleBarcodeDetected(code, format = 'Desconhecido') {
+    if (!code) return;
+    
+    console.log('🎯 Código processado:', code, 'Formato:', format);
+    
+    // Limpar e validar o código
+    const cleanCode = cleanBarcodeData(code);
+    
+    if (!isValidBarcode(cleanCode)) {
+        console.log('Código inválido:', cleanCode);
+        updateScannerStatus('❌ Código inválido - tente novamente');
+        return;
     }
-
-    // Limpar dados do código de barras
-    function cleanBarcodeData(code) {
-        return code.toString()
-            .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
-            .trim()
-            .substring(0, 50); // Limitar tamanho
-    }
-
-    // Validar código de barras
-    function isValidBarcode(code) {
-        if (!code || code.length < 2) return false;
+    
+    // Mostrar resultado
+    const scannedCodeElement = document.getElementById('scanned-code');
+    const codeFormatElement = document.getElementById('code-format');
+    const scanResultElement = document.getElementById('scan-result');
+    
+    if (scannedCodeElement && scanResultElement) {
+        scannedCodeElement.textContent = cleanCode;
+        if (codeFormatElement) {
+            codeFormatElement.textContent = `(${format})`;
+        }
+        scanResultElement.classList.remove('d-none');
+        updateScannerStatus('✅ Código detectado!');
         
-        // Permitir letras, números e hífen
-        const validPattern = /^[a-zA-Z0-9\-]+$/;
-        return validPattern.test(code);
-    }
-
-    // Funções auxiliares do scanner
-    function stopScanner() {
-        console.log('Parando scanner...');
-        
-        if (scanningInterval) {
-            clearInterval(scanningInterval);
-            scanningInterval = null;
+        // Vibrar se suportado (para mobile)
+        if (navigator.vibrate) {
+            navigator.vibrate(200);
         }
         
-        if (videoStream) {
-            videoStream.getTracks().forEach(track => track.stop());
-            videoStream = null;
-        }
-        
-        const scanResult = document.getElementById('scan-result');
-        if (scanResult) {
-            scanResult.classList.add('d-none');
-        }
-        
-        const videoElement = document.getElementById('scanner-video');
-        if (videoElement) {
-            videoElement.srcObject = null;
-        }
-    }
-
-    function switchCamera() {
-        console.log('Trocando câmera...');
-        usingFrontCamera = !usingFrontCamera;
-        stopScanner();
-        
-        setTimeout(() => {
-            startEnhancedScanner();
-        }, 500);
-        
-        updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
-    }
-
-    function updateScannerStatus(message) {
-        const statusElement = document.getElementById('status-text');
-        if (statusElement) {
-            statusElement.textContent = message;
-            console.log('Status:', message);
-        }
-    }
-
-    function enterManually() {
-        console.log('Alternando para entrada manual...');
-        stopScanner();
-        
-        if (scannerModalInstance) {
-            scannerModalInstance.hide();
-        }
-        
+        // Preencher o campo e fechar após breve delay
         setTimeout(() => {
             const numeroBemField = document.getElementById('numero_bem');
             if (numeroBemField) {
+                numeroBemField.value = cleanCode;
                 numeroBemField.focus();
-                numeroBemField.select();
             }
-        }, 300);
+            
+            stopScanner();
+            
+            if (scannerModalInstance) {
+                scannerModalInstance.hide();
+            }
+            
+        }, 1500);
     }
+}
 
-    function handleCameraError(error) {
-        console.error('Erro detalhado na câmera:', error);
-        let errorMessage = 'Erro ao acessar a câmera: ';
-        
-        if (error.name === 'NotAllowedError') {
-            errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
-        } else if (error.name === 'NotFoundError') {
-            errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
-        } else if (error.name === 'NotSupportedError') {
-            errorMessage = 'Seu navegador não suporta esta funcionalidade.';
-        } else if (error.name === 'NotReadableError') {
-            errorMessage = 'Câmera já está em uso por outro aplicativo.';
-        } else if (error.name === 'OverconstrainedError') {
-            errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
-        } else {
-            errorMessage += error.message;
+// Limpar dados do código de barras
+function cleanBarcodeData(code) {
+    return code.toString()
+        .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
+        .trim();
+}
+
+// Validar código de barras
+function isValidBarcode(code) {
+    if (!code || code.length < 2) return false;
+    
+    // Permitir letras, números e hífen
+    const validPattern = /^[a-zA-Z0-9\-]+$/;
+    return validPattern.test(code);
+}
+
+// Parar scanner completamente
+function stopScanner() {
+    console.log('Parando scanner...');
+    
+    // Parar Quagga se estiver ativo
+    if (currentScanner === 'quagga' && typeof Quagga !== 'undefined') {
+        try {
+            Quagga.stop();
+            Quagga.offDetected();
+            console.log('Quagga parado');
+        } catch (error) {
+            console.log('Erro ao parar Quagga:', error);
         }
-        
-        updateScannerStatus('❌ ' + errorMessage);
-        
-        setTimeout(() => {
-            if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
-                enterManually();
-            }
-        }, 2000);
     }
+    
+    currentScanner = null;
+    
+    // Parar stream de vídeo
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => {
+            track.stop();
+            console.log('Track parada:', track.kind);
+        });
+        videoStream = null;
+    }
+    
+    // Limpar resultado
+    const scanResult = document.getElementById('scan-result');
+    if (scanResult) {
+        scanResult.classList.add('d-none');
+    }
+    
+    // Limpar elemento de vídeo
+    const videoElement = document.getElementById('scanner-video');
+    if (videoElement) {
+        videoElement.srcObject = null;
+    }
+}
+
+// Trocar câmera
+function switchCamera() {
+    console.log('Trocando câmera...');
+    usingFrontCamera = !usingFrontCamera;
+    stopScanner();
+    
+    setTimeout(() => {
+        startSimpleScanner();
+    }, 500);
+    
+    updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
+}
+
+function updateScannerStatus(message) {
+    const statusElement = document.getElementById('status-text');
+    if (statusElement) {
+        statusElement.textContent = message;
+        console.log('Status:', message);
+    }
+}
+
+function enterManually() {
+    console.log('Alternando para entrada manual...');
+    stopScanner();
+    
+    if (scannerModalInstance) {
+        scannerModalInstance.hide();
+    }
+    
+    setTimeout(() => {
+        const numeroBemField = document.getElementById('numero_bem');
+        if (numeroBemField) {
+            numeroBemField.focus();
+            numeroBemField.select();
+        }
+    }, 300);
+}
+
+function handleCameraError(error) {
+    console.error('Erro detalhado na câmera:', error);
+    let errorMessage = 'Erro ao acessar a câmera: ';
+    
+    if (error.name === 'NotAllowedError') {
+        errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+    } else if (error.name === 'NotFoundError') {
+        errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+    } else if (error.name === 'NotSupportedError') {
+        errorMessage = 'Seu navegador não suporta esta funcionalidade.';
+    } else if (error.name === 'NotReadableError') {
+        errorMessage = 'Câmera já está em uso por outro aplicativo.';
+    } else if (error.name === 'OverconstrainedError') {
+        errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
+    } else {
+        errorMessage += error.message;
+    }
+    
+    updateScannerStatus('❌ ' + errorMessage);
+    
+    setTimeout(() => {
+        if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+            enterManually();
+        } else {
+            stopScanner();
+        }
+    }, 2000);
+}
 
     // ===== Funções Auxiliares =====
     function validateBemNumber(e) {
@@ -1343,7 +1292,7 @@
         setTimeout(aplicarFocoCampoBusca, 50);
     });
 
-    // ===== CRUD (Modal de resultados) - CORREÇÃO DAS ROTAS DA API =====
+    // ===== CRUD (Modal de resultados) =====
     let bemAtual = null;
 
     function preencherModalDetalhes(dados) {
@@ -1393,34 +1342,6 @@
                 ${dados.localizacao && dados.localizacao !== 'Não informada'
                   ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
                   : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
-                }
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-person me-2"></i>Responsável
-              </h6>
-              <p class="mb-0">
-                ${dados.responsavel && dados.responsavel !== 'Não informado'
-                  ? `<span class="text-success"><i class="bi bi-person-check me-1"></i>${dados.responsavel}</span>`
-                  : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
-                }
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="border rounded-3 p-3 h-100">
-              <h6 class="text-primary fw-semibold mb-2">
-                <i class="bi bi-person-badge me-2"></i>Auditor
-              </h6>
-              <p class="mb-0">
-                ${dados.auditor && dados.auditor !== 'Não informado'
-                  ? `<span class="text-info"><i class="bi bi-person-check me-1"></i>${dados.auditor}</span>`
-                  : '<span class="text-muted"><i class="bi bi-person me-1"></i>Não informado</span>'
                 }
               </p>
             </div>
@@ -1493,47 +1414,29 @@
         document.getElementById('botoesEdicao').style.display = 'none';
     }
 
-    // CORREÇÃO DAS ROTAS DA API
     function salvarEdicao() {
         try {
-            // Obter dados do formulário
             const bem_id = parseInt(document.getElementById('bem_id').value);
             const numero = document.getElementById('edt_numero').value.trim();
             const nome = document.getElementById('edt_nome').value.trim();
             const localizacao = document.getElementById('edt_localizacao').value.trim();
             const situacao = document.getElementById('edt_situacao').value;
-
-            // Novos campos
             const responsavel = document.getElementById('edt_responsavel').value.trim();
             const auditor = document.getElementById('edt_auditor').value.trim();
             const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
             const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
 
-            // Validações client-side
+            // Validações
             if (isNaN(bem_id) || bem_id <= 0) {
                 alert('ID do bem inválido');
                 return;
             }
 
-            if (!numero) {
-                alert('Número do bem é obrigatório');
-                document.getElementById('edt_numero').focus();
+            if (!numero || !nome || !situacao) {
+                alert('Campos obrigatórios não preenchidos');
                 return;
             }
 
-            if (!nome) {
-                alert('Nome do item é obrigatório');
-                document.getElementById('edt_nome').focus();
-                return;
-            }
-
-            if (!situacao) {
-                alert('Situação é obrigatória');
-                document.getElementById('edt_situacao').focus();
-                return;
-            }
-
-            // Preparar dados para a API
             const dadosAtualizacao = {
                 numero: numero,
                 nome: nome,
@@ -1548,91 +1451,43 @@
             console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
 
             const apiBase = getApiBaseUrl();
-            const apiRoutes = [
-                `${apiBase}/bens/${bem_id}`,
-                `${apiBase}/bem/editar/${bem_id}`,
-                `${apiBase}/editar-bem/${bem_id}`,
-                `/editar-bem/${bem_id}`,
-                `/atualizar-bem/${bem_id}`
-            ];
-
-            // Função para tentar uma rota específica
-            const tryApiRoute = (routeIndex = 0) => {
-                if (routeIndex >= apiRoutes.length) {
-                    alert('Erro: Nenhuma rota da API funcionou. Verifique se o backend está configurado corretamente.');
-                    return;
+            
+            fetch(`${apiBase}/bens/${bem_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dadosAtualizacao)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resposta da API:', data);
 
-                const route = apiRoutes[routeIndex];
-                console.log(`Tentando rota: ${route}`);
+                if (data.success) {
+                    alert(data.message || 'Bem atualizado com sucesso!');
 
-                fetch(route, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dadosAtualizacao)
-                })
-                .then(response => {
-                    console.log(`Resposta da rota ${route}:`, response.status);
-
-                    if (!response.ok) {
-                        if (response.status === 404) {
-                            // Tentar próxima rota se esta não existir
-                            console.log(`Rota ${route} não encontrada, tentando próxima...`);
-                            tryApiRoute(routeIndex + 1);
-                            return null;
-                        }
-                        
-                        return response.text().then(text => {
-                            let errorMessage = `Erro HTTP ${response.status}`;
-                            try {
-                                const errorData = JSON.parse(text);
-                                errorMessage = errorData.message || text;
-                            } catch {
-                                errorMessage = text || errorMessage;
-                            }
-                            throw new Error(errorMessage);
-                        });
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
+                    if (modal) {
+                        modal.hide();
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data === null) return; // Rota não encontrada, próxima tentativa em andamento
 
-                    console.log('Resposta da API:', data);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
 
-                    if (data.success) {
-                        alert(data.message || 'Bem atualizado com sucesso!');
-
-                        // Fechar o modal
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        // Recarregar a página após um breve delay
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-
-                    } else {
-                        alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
-                    }
-                })
-                .catch(error => {
-                    if (error.message.includes('404')) {
-                        // Tentar próxima rota
-                        tryApiRoute(routeIndex + 1);
-                    } else {
-                        console.error('Erro na requisição:', error);
-                        alert('Erro: ' + error.message);
-                    }
-                });
-            };
-
-            // Iniciar tentativas com a primeira rota
-            tryApiRoute(0);
+                } else {
+                    alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição:', error);
+                alert('Erro: ' + error.message);
+            });
 
         } catch (error) {
             console.error('Erro ao processar edição:', error);
@@ -1648,7 +1503,6 @@
         new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
     }
 
-    // CORREÇÃO DA ROTA DE EXCLUSÃO
     function excluirBem() {
         if (!bemAtual || !bemAtual.id) {
             alert('Erro: ID do bem não disponível.');
@@ -1658,63 +1512,30 @@
         const bem_id = bemAtual.id;
         const apiBase = getApiBaseUrl();
         
-        const deleteRoutes = [
-            `${apiBase}/bem/excluir/${bem_id}`,
-            `${apiBase}/bens/${bem_id}`,
-            `${apiBase}/excluir-bem/${bem_id}`,
-            `/excluir-bem/${bem_id}`
-        ];
-
-        const tryDeleteRoute = (routeIndex = 0) => {
-            if (routeIndex >= deleteRoutes.length) {
-                alert('Erro: Nenhuma rota de exclusão funcionou. Verifique se o backend está configurado.');
-                return;
+        fetch(`${apiBase}/bens/${bem_id}`, { 
+            method: 'DELETE' 
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro HTTP ${response.status}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
+            bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
 
-            const route = deleteRoutes[routeIndex];
-            console.log(`Tentando rota de exclusão: ${route}`);
-
-            fetch(route, { 
-                method: 'DELETE' 
-            })
-            .then(response => {
-                console.log(`Resposta da rota ${route}:`, response.status);
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        console.log(`Rota ${route} não encontrada, tentando próxima...`);
-                        tryDeleteRoute(routeIndex + 1);
-                        return null;
-                    }
-                    throw new Error(`Erro HTTP ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data === null) return;
-
-                bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
-                bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
-
-                if (data.success) {
-                    alert(data.message || 'Bem excluído com sucesso!');
-                    window.location.reload();
-                } else {
-                    alert('Erro: ' + data.message);
-                }
-            })
-            .catch(error => {
-                if (error.message.includes('404')) {
-                    tryDeleteRoute(routeIndex + 1);
-                } else {
-                    console.error('Erro na exclusão:', error);
-                    alert('Erro de conexão ao excluir: ' + error.message);
-                }
-            });
-        };
-
-        // Iniciar tentativas
-        tryDeleteRoute(0);
+            if (data.success) {
+                alert(data.message || 'Bem excluído com sucesso!');
+                window.location.reload();
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro na exclusão:', error);
+            alert('Erro de conexão ao excluir: ' + error.message);
+        });
     }
   </script>
 </body>
