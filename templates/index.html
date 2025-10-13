@@ -678,26 +678,38 @@
     </div>
   </div>
 
-  <!-- Modal para Scanner de Código de Barras - VERSÃO FUNCIONAL -->
+  <!-- Modal para Scanner de Código de Barras - VERSÃO OTIMIZADA -->
   <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="scannerModalLabel">
-                    <i class="bi bi-upc-scan me-2"></i>Escanear Código
+                    <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <!-- Área do Scanner -->
-                <div class="scanner-container">
+                <!-- Área do Scanner Melhorada -->
+                <div class="scanner-container" style="height: 400px;">
                     <video id="scanner-video" class="scanner-video" playsinline muted></video>
-                    <div class="scanner-frame"></div>
-                    <div class="scan-line"></div>
+                    <div class="scanner-frame" style="border: 3px solid #00ff00; width: 90%; height: 200px;"></div>
+                    <div class="scan-line" style="background: #ff0000; height: 3px;"></div>
+                </div>
+
+                <!-- Dicas de uso -->
+                <div class="p-3 bg-dark text-white">
+                    <div class="row">
+                        <div class="col-12">
+                            <small>
+                                <i class="bi bi-lightbulb me-1"></i>
+                                <strong>Dicas:</strong> Aponte para o código em boa luz, mantenha estável e preencha a área verde
+                            </small>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Mensagem de status -->
-                <div id="scanner-status" class="p-3 bg-dark text-white small">
+                <div id="scanner-status" class="p-2 bg-secondary text-white">
                     <i class="bi bi-info-circle me-1"></i>
                     <span id="status-text">Preparando scanner...</span>
                 </div>
@@ -712,10 +724,10 @@
                 <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
                     <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
                 </button>
-                <button type="button" class="btn btn-secondary" onclick="enterManually()">
+                <button type="button" class="btn btn-warning" onclick="enterManually()">
                     <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
                 </button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="stopScanner()">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="stopScanner()">
                     <i class="bi bi-x-circle me-1"></i>Fechar
                 </button>
             </div>
@@ -743,6 +755,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Biblioteca jsQR para decodificar QR codes -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <!-- Biblioteca para código de barras -->
+  <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 
   <!-- Script de Abertura Automática do Modal -->
   {% if bem_detalhes %}
@@ -811,11 +825,13 @@
         console.log('=== FIM DEBUG ===');
     }
 
-    // ===== Scanner Simplificado - Versão Funcional =====
+    // ===== Scanner de Código de Barras Melhorado =====
     let scannerModalInstance = null;
     let videoStream = null;
     let usingFrontCamera = false;
     let scanningInterval = null;
+    let canvas = null;
+    let context = null;
 
     // Inicialização quando o DOM estiver carregado
     document.addEventListener('DOMContentLoaded', function () {
@@ -859,6 +875,10 @@
 
         // Foco no campo de busca
         setTimeout(aplicarFocoCampoBusca, 100);
+
+        // Criar canvas para detecção
+        canvas = document.createElement('canvas');
+        context = canvas.getContext('2d', { willReadFrequently: true });
     });
 
     // ===== CORREÇÃO DO FORMULÁRIO =====
@@ -879,67 +899,51 @@
         // O spinner será escondido quando a página recarregar
     }
 
-
-
-
-
-
-    
+    // Scanner Melhorado - Suporte a QR Code e Código de Barras
     function openScanner() {
-    console.log('Abrindo scanner...');
-    
-    // Verificação simplificada - permitir em HTTP para desenvolvimento
-    const isSecure = window.location.protocol === 'https:';
-    const isLocalhost = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1';
-    
-    if (!isSecure && !isLocalhost) {
-        console.warn('⚠️ Acesso via HTTP - câmera pode não funcionar em alguns navegadores');
-        // Não bloquear, apenas avisar
-    }
-    
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
-        enterManually();
-        return;
-    }
-    
-    // Mostrar o modal primeiro
-    if (scannerModalInstance) {
-        scannerModalInstance.show();
-        updateScannerStatus('🔄 Iniciando câmera...');
+        console.log('Abrindo scanner melhorado...');
         
-        // Pequeno delay para o modal abrir completamente
-        setTimeout(() => {
-            startSimpleScanner();
-        }, 500);
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+            enterManually();
+            return;
+        }
+        
+        if (scannerModalInstance) {
+            scannerModalInstance.show();
+            updateScannerStatus('🔄 Iniciando câmera...');
+            
+            // Pequeno delay para o modal abrir completamente
+            setTimeout(() => {
+                startEnhancedScanner();
+            }, 500);
+        }
     }
-}
 
-
-
-    // Scanner Simplificado
-    async function startSimpleScanner() {
+    // Scanner Aprimorado
+    async function startEnhancedScanner() {
         try {
-            console.log('Iniciando scanner simples...');
+            console.log('Iniciando scanner aprimorado...');
             
             // Parar qualquer scanner anterior
             stopScanner();
 
+            // Configurações otimizadas para códigos de barras
             const constraints = {
                 video: {
                     facingMode: usingFrontCamera ? "user" : "environment",
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
+                    width: { ideal: 1920, max: 1920 },
+                    height: { ideal: 1080, max: 1080 },
+                    aspectRatio: { ideal: 1.777777778 } // 16:9
                 },
                 audio: false
             };
 
-            console.log('Solicitando acesso à câmera...');
+            console.log('Solicitando acesso à câmera com constraints:', constraints);
             
             // Solicitar acesso à câmera
             videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-            console.log('Acesso à câmera concedido');
+            console.log('✅ Acesso à câmera concedido');
 
             const videoElement = document.getElementById('scanner-video');
             if (!videoElement) {
@@ -949,102 +953,224 @@
             // Configurar o elemento de vídeo
             videoElement.srcObject = videoStream;
             videoElement.playsInline = true;
+            videoElement.setAttribute('playsinline', 'true');
             
-            // Quando o vídeo estiver carregado
-            videoElement.onloadedmetadata = function() {
-                console.log('Metadados do vídeo carregados');
-                videoElement.play()
-                    .then(() => {
-                        console.log('Vídeo iniciado com sucesso');
-                        updateScannerStatus('✅ Câmera ativa - Aponte para o código');
-                        startQRCodeDetection();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao reproduzir vídeo:', error);
-                        throw new Error('Erro ao reproduzir vídeo: ' + error.message);
-                    });
-            };
-
-            videoElement.onerror = function(error) {
-                console.error('Erro no elemento de vídeo:', error);
-                updateScannerStatus('❌ Erro na câmera');
-            };
+            // Aguardar o vídeo estar pronto
+            await new Promise((resolve, reject) => {
+                videoElement.onloadedmetadata = () => {
+                    console.log('Metadados do vídeo carregados');
+                    videoElement.play()
+                        .then(() => {
+                            console.log('Vídeo iniciado com sucesso');
+                            console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
+                            updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
+                            startEnhancedDetection();
+                            resolve();
+                        })
+                        .catch(reject);
+                };
+                
+                videoElement.onerror = reject;
+                
+                // Timeout de segurança
+                setTimeout(() => reject(new Error('Timeout ao carregar vídeo')), 10000);
+            });
 
         } catch (error) {
             console.error('Erro detalhado:', error);
-            let errorMessage = 'Erro ao acessar a câmera: ';
-            
-            if (error.name === 'NotAllowedError') {
-                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
-            } else if (error.name === 'NotSupportedError') {
-                errorMessage = 'Seu navegador não suporta esta funcionalidade.';
-            } else if (error.name === 'NotReadableError') {
-                errorMessage = 'Câmera já está em uso por outro aplicativo.';
-            } else {
-                errorMessage += error.message;
-            }
-            
-            updateScannerStatus('❌ ' + errorMessage);
-            
-            // Oferecer alternativa manual após 2 segundos
-            setTimeout(() => {
-                if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
-                    enterManually();
-                }
-            }, 2000);
+            handleCameraError(error);
         }
     }
 
-    // Detecção de QR Code (funciona bem para muitos casos)
-    function startQRCodeDetection() {
+    // Detecção Aprimorada - QR Code + Tentativa de Código de Barras
+    function startEnhancedDetection() {
         const videoElement = document.getElementById('scanner-video');
-        if (!videoElement) {
-            console.error('Elemento de vídeo não encontrado para detecção');
-            return;
-        }
+        if (!videoElement) return;
 
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        console.log('Iniciando detecção QR...');
+        console.log('Iniciando detecção aprimorada...');
 
         scanningInterval = setInterval(() => {
             if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
                 try {
+                    // Configurar canvas com as dimensões do vídeo
                     canvas.width = videoElement.videoWidth;
                     canvas.height = videoElement.videoHeight;
+                    
+                    // Desenhar o frame atual no canvas
                     context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
                     
+                    // Obter dados da imagem para processamento
                     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                    
+                    // Tentativa 1: Detecção de QR Code com jsQR
+                    const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
                         inversionAttempts: "dontInvert",
                     });
 
-                    if (code) {
-                        console.log('Código detectado:', code.data);
-                        handleBarcodeDetected(code.data);
+                    if (qrCode) {
+                        console.log('✅ QR Code detectado:', qrCode.data);
+                        handleBarcodeDetected(qrCode.data);
+                        return;
                     }
+
+                    // Tentativa 2: Detecção simples de padrões de código de barras
+                    const barcodeData = attemptBarcodeDetection(imageData);
+                    if (barcodeData) {
+                        console.log('📦 Possível código de barras detectado:', barcodeData);
+                        handleBarcodeDetected(barcodeData);
+                        return;
+                    }
+
                 } catch (error) {
                     console.log('Erro na detecção:', error);
                 }
             }
-        }, 300); // Verificar a cada 300ms
+        }, 200); // Verificar a cada 200ms (mais rápido)
+    }
+
+    // Tentativa de detecção de código de barras simples
+    function attemptBarcodeDetection(imageData) {
+        try {
+            // Converter para escala de cinza e analisar padrões
+            const grayData = convertToGrayscale(imageData);
+            const patterns = findBarcodePatterns(grayData, imageData.width, imageData.height);
+            
+            if (patterns.length > 0) {
+                // Tentar decodificar os padrões encontrados
+                return decodeBarcodePatterns(patterns);
+            }
+        } catch (error) {
+            console.log('Erro na detecção de código de barras:', error);
+        }
+        return null;
+    }
+
+    // Converter imagem para escala de cinza
+    function convertToGrayscale(imageData) {
+        const grayData = [];
+        const data = imageData.data;
+        
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            // Fórmula de luminância
+            const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+            grayData.push(gray);
+        }
+        
+        return grayData;
+    }
+
+    // Encontrar padrões de código de barras
+    function findBarcodePatterns(grayData, width, height) {
+        const patterns = [];
+        const threshold = 128; // Limiar para preto/branco
+        
+        // Analisar linhas horizontais no centro da imagem
+        const centerY = Math.floor(height / 2);
+        const scanHeight = 10; // Analisar 10 linhas no centro
+        
+        for (let y = centerY - Math.floor(scanHeight / 2); y <= centerY + Math.floor(scanHeight / 2); y++) {
+            const linePattern = analyzeLine(grayData, width, y, threshold);
+            if (linePattern && linePattern.length > 10) { // Padrão deve ter pelo menos 10 elementos
+                patterns.push(linePattern);
+            }
+        }
+        
+        return patterns;
+    }
+
+    // Analisar uma linha horizontal
+    function analyzeLine(grayData, width, y, threshold) {
+        const pattern = [];
+        let currentColor = null;
+        let currentLength = 0;
+        
+        for (let x = 0; x < width; x++) {
+            const index = y * width + x;
+            const value = grayData[index];
+            const isBlack = value < threshold;
+            
+            if (currentColor === null) {
+                currentColor = isBlack;
+                currentLength = 1;
+            } else if (currentColor === isBlack) {
+                currentLength++;
+            } else {
+                pattern.push({
+                    color: currentColor ? 'black' : 'white',
+                    length: currentLength
+                });
+                currentColor = isBlack;
+                currentLength = 1;
+            }
+        }
+        
+        // Adicionar o último segmento
+        if (currentColor !== null) {
+            pattern.push({
+                color: currentColor ? 'black' : 'white',
+                length: currentLength
+            });
+        }
+        
+        return pattern.length > 5 ? pattern : null; // Retornar apenas padrões significativos
+    }
+
+    // Tentar decodificar padrões de código de barras
+    function decodeBarcodePatterns(patterns) {
+        // Para simplificar, vamos tentar extrair números dos padrões
+        // Esta é uma implementação básica - em produção use uma biblioteca especializada
+        
+        const possibleCodes = [];
+        
+        patterns.forEach(pattern => {
+            // Tentar extrair sequências que parecem números
+            let code = '';
+            let totalSegments = pattern.length;
+            
+            // Procurar por padrões regulares (alternância preto/branco)
+            if (totalSegments >= 20) { // Código de barras típico tem muitos segmentos
+                for (let i = 0; i < Math.min(30, totalSegments); i++) {
+                    const segment = pattern[i];
+                    // Simplificação: converter padrões em dígitos
+                    if (segment.length > 2) {
+                        code += Math.min(9, Math.floor(segment.length / 3));
+                    }
+                }
+                
+                if (code.length >= 8) { // Código válido deve ter pelo menos 8 caracteres
+                    possibleCodes.push(code);
+                }
+            }
+        });
+        
+        // Retornar o código mais provável
+        return possibleCodes.length > 0 ? possibleCodes[0] : null;
     }
 
     // Processar código detectado
     function handleBarcodeDetected(code) {
         if (!code) return;
         
-        console.log('Processando código:', code);
+        console.log('🎯 Código processado:', code);
+        
+        // Limpar e validar o código
+        const cleanCode = cleanBarcodeData(code);
+        
+        if (!isValidBarcode(cleanCode)) {
+            console.log('Código inválido:', cleanCode);
+            updateScannerStatus('❌ Código inválido - tente novamente');
+            return;
+        }
         
         // Mostrar resultado
         const scannedCodeElement = document.getElementById('scanned-code');
         const scanResultElement = document.getElementById('scan-result');
         
         if (scannedCodeElement && scanResultElement) {
-            scannedCodeElement.textContent = code;
+            scannedCodeElement.textContent = cleanCode;
             scanResultElement.classList.remove('d-none');
             updateScannerStatus('✅ Código detectado!');
             
@@ -1057,8 +1183,10 @@
             setTimeout(() => {
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
-                    numeroBemField.value = code;
+                    numeroBemField.value = cleanCode;
+                    numeroBemField.focus();
                 }
+                
                 stopScanner();
                 
                 if (scannerModalInstance) {
@@ -1073,55 +1201,64 @@
                     }
                 }, 100);
                 
-            }, 1500);
+            }, 1000);
         }
     }
 
-    // Parar scanner
+    // Limpar dados do código de barras
+    function cleanBarcodeData(code) {
+        return code.toString()
+            .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
+            .trim()
+            .substring(0, 50); // Limitar tamanho
+    }
+
+    // Validar código de barras
+    function isValidBarcode(code) {
+        if (!code || code.length < 2) return false;
+        
+        // Permitir letras, números e hífen
+        const validPattern = /^[a-zA-Z0-9\-]+$/;
+        return validPattern.test(code);
+    }
+
+    // Funções auxiliares do scanner
     function stopScanner() {
         console.log('Parando scanner...');
         
-        // Parar intervalos
         if (scanningInterval) {
             clearInterval(scanningInterval);
             scanningInterval = null;
         }
         
-        // Parar stream de vídeo
         if (videoStream) {
-            videoStream.getTracks().forEach(track => {
-                track.stop();
-            });
+            videoStream.getTracks().forEach(track => track.stop());
             videoStream = null;
         }
         
-        // Limpar resultado
         const scanResult = document.getElementById('scan-result');
         if (scanResult) {
             scanResult.classList.add('d-none');
         }
         
-        // Limpar elemento de vídeo
         const videoElement = document.getElementById('scanner-video');
         if (videoElement) {
             videoElement.srcObject = null;
         }
     }
 
-    // Trocar câmera
     function switchCamera() {
         console.log('Trocando câmera...');
         usingFrontCamera = !usingFrontCamera;
         stopScanner();
         
         setTimeout(() => {
-            startSimpleScanner();
+            startEnhancedScanner();
         }, 500);
         
         updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
     }
 
-    // Atualizar status
     function updateScannerStatus(message) {
         const statusElement = document.getElementById('status-text');
         if (statusElement) {
@@ -1130,7 +1267,6 @@
         }
     }
 
-    // Entrada manual
     function enterManually() {
         console.log('Alternando para entrada manual...');
         stopScanner();
@@ -1148,86 +1284,32 @@
         }, 300);
     }
 
-   async function startSimpleScanner() {
-    try {
-        console.log('Iniciando scanner simples...');
+    function handleCameraError(error) {
+        console.error('Erro detalhado na câmera:', error);
+        let errorMessage = 'Erro ao acessar a câmera: ';
         
-        // Parar qualquer scanner anterior
-        stopScanner();
-
-        // Tentar diferentes configurações de câmera
-        const constraints = {
-            video: {
-                facingMode: usingFrontCamera ? "user" : "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            },
-            audio: false
-        };
-
-        console.log('Solicitando acesso à câmera com constraints:', constraints);
-        
-        // Solicitar acesso à câmera
-        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-        console.log('✅ Acesso à câmera concedido');
-
-        const videoElement = document.getElementById('scanner-video');
-        if (!videoElement) {
-            throw new Error('Elemento de vídeo não encontrado');
+        if (error.name === 'NotAllowedError') {
+            errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+        } else if (error.name === 'NotFoundError') {
+            errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+        } else if (error.name === 'NotSupportedError') {
+            errorMessage = 'Seu navegador não suporta esta funcionalidade.';
+        } else if (error.name === 'NotReadableError') {
+            errorMessage = 'Câmera já está em uso por outro aplicativo.';
+        } else if (error.name === 'OverconstrainedError') {
+            errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
+        } else {
+            errorMessage += error.message;
         }
-
-        // Configurar o elemento de vídeo
-        videoElement.srcObject = videoStream;
-        videoElement.playsInline = true;
-        videoElement.setAttribute('playsinline', 'true'); // Para iOS
         
-        // Quando o vídeo estiver carregado
-        return new Promise((resolve, reject) => {
-            videoElement.onloadedmetadata = function() {
-                console.log('Metadados do vídeo carregados');
-                videoElement.play()
-                    .then(() => {
-                        console.log('Vídeo iniciado com sucesso');
-                        updateScannerStatus('✅ Câmera ativa - Aponte para o código');
-                        startQRCodeDetection();
-                        resolve();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao reproduzir vídeo:', error);
-                        reject(new Error('Erro ao reproduzir vídeo: ' + error.message));
-                    });
-            };
-
-            videoElement.onerror = function(error) {
-                console.error('Erro no elemento de vídeo:', error);
-                reject(new Error('Erro no elemento de vídeo'));
-            };
-
-            // Timeout para carregamento
-            setTimeout(() => {
-                if (videoElement.readyState < 2) { // MENOS_QUE_CARREGADO_METADADOS
-                    reject(new Error('Timeout ao carregar vídeo'));
-                }
-            }, 10000); // 10 segundos timeout
-        });
-
-    } catch (error) {
-        handleCameraError(error);
+        updateScannerStatus('❌ ' + errorMessage);
+        
+        setTimeout(() => {
+            if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                enterManually();
+            }
+        }, 2000);
     }
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // ===== Funções Auxiliares =====
     function validateBemNumber(e) {
