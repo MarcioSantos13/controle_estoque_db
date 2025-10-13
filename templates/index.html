@@ -2,104 +2,111 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <title>Sistema de Controle Patrimonial - CEAD</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <style>
-    .scanner-container {
-      position: relative;
-      width: 100%;
-      height: 400px;
-      background: #000;
-      overflow: hidden;
-    }
-    
-    .scanner-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .scan-line {
-      position: absolute;
-      top: 50%;
-      left: 10%;
-      width: 80%;
-      height: 3px;
-      background: #ff0000;
-      opacity: 0.7;
-      animation: scan 2s ease-in-out infinite;
-    }
-    
-    @keyframes scan {
-      0% { top: 25%; }
-      50% { top: 75%; }
-      100% { top: 25%; }
-    }
-    
-    .scanner-frame {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      height: 200px;
-      border: 3px solid #00ff00;
-      background: transparent;
-      z-index: 10;
-    }
-
-    /* Estilos para o Quagga */
-    #interactive.viewport {
-      position: relative;
-      width: 100%;
-      height: auto;
-    }
-
-    #interactive.viewport > canvas, #interactive.viewport > video {
-      max-width: 100%;
-      width: 100%;
-    }
-
-    canvas.drawing, canvas.drawingBuffer {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Sistema de Controle Patrimonial - CEAD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .scanner-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .scanner-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: #ff0000;
+            opacity: 0.7;
+            animation: scan 2s ease-in-out infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: 25%;
+            }
+            50% {
+                top: 75%;
+            }
+            100% {
+                top: 25%;
+            }
+        }
+        
+        .scanner-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 200px;
+            border: 3px solid #00ff00;
+            background: transparent;
+            z-index: 10;
+        }
+        /* Estilos para o Quagga */
+        
+        #interactive.viewport {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+        
+        #interactive.viewport>canvas,
+        #interactive.viewport>video {
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        canvas.drawing,
+        canvas.drawingBuffer {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
-  <!-- Header Moderno -->
-  <header class="bg-primary text-white shadow-sm">
-    <div class="container py-4">
-      <div class="row align-items-center">
-        <div class="col-md-8">
-          <h1 class="h2 mb-1 fw-bold">
-            <i class="bi bi-building-gear me-2"></i>Controle Patrimonial - CEAD
-          </h1>
-          <p class="mb-0 opacity-75">Gerencie seus bens de forma simples e organizada</p>
-        </div>
-        <div class="col-md-4 text-md-end">
-          <div class="d-flex align-items-center justify-content-md-end gap-2">
-            <!-- Contador de Bens -->
-            <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1">
-              <small>
+    <!-- Header Moderno -->
+    <header class="bg-primary text-white shadow-sm">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h2 mb-1 fw-bold">
+                        <i class="bi bi-building-gear me-2"></i>Controle Patrimonial - CEAD
+                    </h1>
+                    <p class="mb-0 opacity-75">Gerencie seus bens de forma simples e organizada</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end gap-2">
+                        <!-- Contador de Bens -->
+                        <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1">
+                            <small>
                 <i class="bi bi-database me-1"></i>
                 <span id="total-bens">{{ total_count|number_format }}</span> bens
               </small>
-            </div>
-            <!-- ✅ BOTÃO DE AJUDA FORA DO DROPDOWN -->
-            <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
-              <i class="bi bi-question-circle me-1"></i>Ajuda
-            </a>
-            <!-- Dropdown do Usuário -->
-            <div class="dropdown">
-              <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+                        </div>
+                        <!-- ✅ BOTÃO DE AJUDA FORA DO DROPDOWN -->
+                        <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
+                            <i class="bi bi-question-circle me-1"></i>Ajuda
+                        </a>
+                        <!-- Dropdown do Usuário -->
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle me-1"></i>
                 {% if session.usuario_nome %}
                 {{ session.usuario_nome }}
@@ -107,9 +114,9 @@
                 Usuário
                 {% endif %}
               </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <span class="dropdown-item-text">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <span class="dropdown-item-text">
                     <small class="text-muted">
                       <i class="bi bi-envelope me-1"></i>
                       {% if session.usuario_email %}
@@ -119,1187 +126,1405 @@
                       {% endif %}
                     </small>
                   </span>
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{{ url_for('perfil') }}">
-                    <i class="bi bi-person me-2"></i>Meu Perfil
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
-                    <i class="bi bi-gear me-2"></i>Gestão Completa
-                  </a>
-                </li>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('perfil') }}">
+                                        <i class="bi bi-person me-2"></i>Meu Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
+                                        <i class="bi bi-gear me-2"></i>Gestão Completa
+                                    </a>
+                                </li>
 
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li>
-                  <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
-                    <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
-                  </a>
-                </li>
-              </ul>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  {% if mensagem_sucesso %}
-  <div class="container mt-3">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <i class="bi bi-check-circle-fill me-2"></i>
-      {{ mensagem_sucesso }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-  {% endif %}
-
-  <main class="container py-5">
-    <!-- Card de Busca Moderno -->
-    <div class="card shadow-lg border-0 rounded-3 mb-4">
-      <div class="card-header bg-white py-3 border-0">
-        <h2 class="h5 mb-0 text-center">
-          <i class="bi bi-search-heart text-primary me-2"></i>
-          Localizar Bem Patrimonial
-        </h2>
-      </div>
-      <div class="card-body p-3">
-        {% if mensagem %}
-        <div
-          class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3"
-          role="alert">
-          <div class="d-flex align-items-center">
-            {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-            <i class="bi bi-check-circle-fill me-2"></i>
-            {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-            <i class="bi bi-exclamation-circle-fill me-2"></i>
-            {% else %}
-            <i class="bi bi-info-circle-fill me-2"></i>
-            {% endif %}
-            <span>{{ mensagem }}</span>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {% if mensagem_sucesso %}
+    <div class="container mt-3">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ mensagem_sucesso }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 
-        <!-- FORMULÁRIO CORRIGIDO: action alterado para url_for('index') -->
-        <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
-          <div class="col-md-5">
-            <label for="numero_bem" class="form-label fw-semibold">
+    <main class="container py-5">
+        <!-- Card de Busca Moderno -->
+        <div class="card shadow-lg border-0 rounded-3 mb-4">
+            <div class="card-header bg-white py-3 border-0">
+                <h2 class="h5 mb-0 text-center">
+                    <i class="bi bi-search-heart text-primary me-2"></i> Localizar Bem Patrimonial
+                </h2>
+            </div>
+            <div class="card-body p-3">
+                {% if mensagem %}
+                <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
+                    <div class="d-flex align-items-center">
+                        {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
+                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
+                        <span>{{ mensagem }}</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                <!-- FORMULÁRIO CORRIGIDO: action alterado para url_for('index') -->
+                <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
+                    <div class="col-md-5">
+                        <label for="numero_bem" class="form-label fw-semibold">
               <i class="bi bi-upc-scan me-1"></i>Número do Bem
             </label>
-            <div class="input-group">
-              <input type="text" name="numero_bem" id="numero_bem" class="form-control form-control"
-                placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
-              <button type="button" class="btn btn-outline-secondary" id="btnCamera" title="Escanear código de barras">
+                        <div class="input-group">
+                            <input type="text" name="numero_bem" id="numero_bem" class="form-control form-control" placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
+                            <button type="button" class="btn btn-outline-secondary" id="btnCamera" title="Escanear código de barras">
                 <i class="bi bi-camera"></i>
               </button>
-            </div>
-            <div class="form-text">Digite apenas números, letras ou hífen, ou use a câmera</div>
-          </div>
+                        </div>
+                        <div class="form-text">Digite apenas números, letras ou hífen, ou use a câmera</div>
+                    </div>
 
-          <div class="col-md-5">
-            <label for="localizacao" class="form-label fw-semibold">
+                    <div class="col-md-5">
+                        <label for="localizacao" class="form-label fw-semibold">
               <i class="bi bi-geo-alt me-1"></i>Localização
             </label>
-            <input type="text" name="localizacao" id="localizacao" class="form-control form-control"
-              placeholder="Ex: Almoxarifado Central, Sala 101">
-            <div class="form-text">Opcional - atualiza a localização</div>
-          </div>
+                        <input type="text" name="localizacao" id="localizacao" class="form-control form-control" placeholder="Ex: Almoxarifado Central, Sala 101">
+                        <div class="form-text">Opcional - atualiza a localização</div>
+                    </div>
 
-          <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100" id="btnLocalizar" style="height: 42px;">
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100" id="btnLocalizar" style="height: 42px;">
               <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
               <i class="bi bi-search"></i>
             </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Cards de Estatísticas -->
-    <div class="row g-4 mb-5">
-      <div class="col-md-6">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="card-body text-center p-4">
-            <div
-              class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3"
-              style="width: 60px; height: 60px;">
-              <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                    </div>
+                </form>
             </div>
-            <h3 class="h2 fw-bold text-success mb-1" id="count-localizados">{{ localizados_count|number_format }}</h3>
-            <p class="text-muted mb-2">Bens Localizados</p>
-            <div class="d-flex gap-2 justify-content-center">
-              <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-success btn-sm">
-                <i class="bi bi-list-ul me-1"></i>Visualizar
-              </a>
-              <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-success btn-sm">
-                <i class="bi bi-download me-1"></i>Exportar
-              </a>
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div class="col-md-6">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="card-body text-center p-4">
-            <div
-              class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3"
-              style="width: 60px; height: 60px;">
-              <i class="bi bi-exclamation-circle-fill text-warning fs-3"></i>
+        <!-- Cards de Estatísticas -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                        </div>
+                        <h3 class="h2 fw-bold text-success mb-1" id="count-localizados">{{ localizados_count|number_format }}</h3>
+                        <p class="text-muted mb-2">Bens Localizados</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-list-ul me-1"></i>Visualizar
+                            </a>
+                            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-success btn-sm">
+                                <i class="bi bi-download me-1"></i>Exportar
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="h2 fw-bold text-warning mb-1" id="count-pendentes">{{ nao_localizados_count|number_format }}</h3>
-            <p class="text-muted mb-2">Bens Pendentes</p>
-            <div class="d-flex gap-2 justify-content-center">
-              <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-warning btn-sm">
-                <i class="bi bi-list-ul me-1"></i>Visualizar
-              </a>
-              <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-warning btn-sm">
-                <i class="bi bi-download me-1"></i>Exportar
-              </a>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-exclamation-circle-fill text-warning fs-3"></i>
+                        </div>
+                        <h3 class="h2 fw-bold text-warning mb-1" id="count-pendentes">{{ nao_localizados_count|number_format }}</h3>
+                        <p class="text-muted mb-2">Bens Pendentes</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-list-ul me-1"></i>Visualizar
+                            </a>
+                            <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-download me-1"></i>Exportar
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Ações Rápidas - VERSÃO ATUALIZADA -->
-    <div class="text-center mb-4">
-      <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
-      <div class="d-flex flex-wrap justify-content-center gap-2">
-        <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
-          <i class="bi bi-check-circle me-1"></i>Localizados
-        </a>
-        <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
-          <i class="bi bi-clock-history me-1"></i>Pendentes
-        </a>
-        <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-success">
-          <i class="bi bi-download me-1"></i>Exportar Localizados
-        </a>
-        <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
-          <i class="bi bi-download me-1"></i>Exportar Pendentes
-        </a>
-        <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-dark">
-          <i class="bi bi-gear me-1"></i>Gestão Completa
-        </a>
-        <a href="{{ url_for('relatorio_localidades') }}" class="btn btn-outline-info">
-          <i class="bi bi-map me-1"></i>Relatório por Localidade
-        </a>
-        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
+        <!-- Ações Rápidas - VERSÃO ATUALIZADA -->
+        <div class="text-center mb-4">
+            <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-check-circle me-1"></i>Localizados
+                </a>
+                <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-clock-history me-1"></i>Pendentes
+                </a>
+                <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-success">
+                    <i class="bi bi-download me-1"></i>Exportar Localizados
+                </a>
+                <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
+                    <i class="bi bi-download me-1"></i>Exportar Pendentes
+                </a>
+                <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-gear me-1"></i>Gestão Completa
+                </a>
+                <a href="{{ url_for('relatorio_localidades') }}" class="btn btn-outline-info">
+                    <i class="bi bi-map me-1"></i>Relatório por Localidade
+                </a>
+                <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
           <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
         </button>
 
-      </div>
-    </div>
-
-    <!-- Resumo rápido -->
-    <div class="text-center text-muted small mb-4">
-      <em>Resumo:</em>
-      {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }} •
-      {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
-    </div>
-  </main>
-
-  <!-- Modal de Importação -->
-  <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-3">
-        <div class="modal-header bg-info text-white rounded-top-3">
-          <h5 class="modal-title" id="importModalLabel">
-            <i class="bi bi-file-earmark-excel me-2"></i>Importar do Excel
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
         </div>
-        <div class="modal-body p-4">
-          <div class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle me-2"></i>
-            <strong>Atenção:</strong> Esta ação irá recriar todo o banco de dados.
-          </div>
 
-          <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}" enctype="multipart/form-data"
-            autocomplete="off">
-            <div class="mb-3">
-              <label for="excel_file" class="form-label fw-semibold">
+        <!-- Resumo rápido -->
+        <div class="text-center text-muted small mb-4">
+            <em>Resumo:</em> {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }} • {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
+        </div>
+    </main>
+
+    <!-- Modal de Importação -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-3">
+                <div class="modal-header bg-info text-white rounded-top-3">
+                    <h5 class="modal-title" id="importModalLabel">
+                        <i class="bi bi-file-earmark-excel me-2"></i>Importar do Excel
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Atenção:</strong> Esta ação irá recriar todo o banco de dados.
+                    </div>
+
+                    <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}" enctype="multipart/form-data" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="excel_file" class="form-label fw-semibold">
                 <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo Excel
               </label>
-              <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
-              <div class="form-text">Formatos suportados: .xlsx, .xls</div>
-            </div>
+                            <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
+                            <div class="form-text">Formatos suportados: .xlsx, .xls</div>
+                        </div>
 
-            <div class="mb-3">
-              <label for="aba_nome" class="form-label fw-semibold">
+                        <div class="mb-3">
+                            <label for="aba_nome" class="form-label fw-semibold">
                 <i class="bi bi-grid me-1"></i>Nome da aba
               </label>
-              <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque" required>
-              <div class="form-text">Nome da aba onde estão os dados</div>
-            </div>
+                            <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque" required>
+                            <div class="form-text">Nome da aba onde estão os dados</div>
+                        </div>
 
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="backup" name="backup" checked>
-              <label class="form-check-label" for="backup">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="backup" name="backup" checked>
+                            <label class="form-check-label" for="backup">
                 <i class="bi bi-shield-check me-1"></i>Criar backup do banco atual
               </label>
-            </div>
+                        </div>
 
-            <div id="importStatus" class="d-none">
-              <div class="progress mb-3">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                  style="width: 0%"></div>
-              </div>
-              <div id="statusMessage" class="small"></div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <div id="importStatus" class="d-none">
+                            <div class="progress mb-3">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div id="statusMessage" class="small"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="bi bi-x-circle me-1"></i>Cancelar
           </button>
-          <!-- Botão fora do form, mas enviando o form via HTML5 -->
-          <button type="submit" class="btn btn-info" id="btnImportar" form="importForm">
+                    <!-- Botão fora do form, mas enviando o form via HTML5 -->
+                    <button type="submit" class="btn btn-info" id="btnImportar" form="importForm">
             <i class="bi bi-upload me-1"></i>Importar
           </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de Detalhes do Bem com CRUD -->
-  <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content border-0 shadow-lg rounded-3">
-        <div class="modal-header bg-primary text-white rounded-top-3">
-          <h5 class="modal-title" id="resultadoModalLabel">
-            <i class="bi bi-info-circle me-2"></i>Gestão do Bem Patrimonial
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body p-4">
-
-          {% if bem_detalhes %}
-          <div id="detalhesBem">
-            <div class="row g-4">
-              <!-- Cabeçalho com número do bem -->
-              <div class="col-12">
-                <div class="bg-light rounded-3 p-3">
-                  <h6 class="mb-1 text-primary fw-semibold">
-                    <i class="bi bi-upc-scan me-2"></i>Número do Bem
-                  </h6>
-                  <p class="fs-4 fw-bold mb-0">{{ bem_detalhes.numero }}</p>
                 </div>
-              </div>
-
-              <!-- Nome do Item -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-tag me-2"></i>Nome do Item
-                  </h6>
-                  <p class="fs-5 mb-0">{{ bem_detalhes.nome }}</p>
-                </div>
-              </div>
-
-              <!-- Situação -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-info-circle me-2"></i>Situação
-                  </h6>
-                  <p class="mb-0">
-                    {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %}
-                    <span class="badge bg-success fs-6 p-2">
-                      <i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO
-                    </span>
-                    {% else %}
-                    <span class="badge bg-warning fs-6 p-2">
-                      <i class="bi bi-clock-history me-1"></i>{{ bem_detalhes.situacao }}
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Localização -->
-              <div class="col-12">
-                <div class="border rounded-3 p-3">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-geo-alt me-2"></i>Localização
-                  </h6>
-                  <p class="fs-5 mb-0">
-                    {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
-                    <span class="text-success">
-                      <i class="bi bi-geo-alt-fill me-1"></i>{{ bem_detalhes.localizacao }}
-                    </span>
-                    {% else %}
-                    <span class="text-muted">
-                      <i class="bi bi-geo-alt me-1"></i>Localização não informada
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- NOVOS CAMPOS ADICIONADOS AQUI -->
-              <!-- Responsável -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-person me-2"></i>Responsável
-                  </h6>
-                  <p class="mb-0">
-                    {% if bem_detalhes.responsavel and bem_detalhes.responsavel != 'Não informado' %}
-                    <span class="text-success">
-                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.responsavel }}
-                    </span>
-                    {% else %}
-                    <span class="text-muted">
-                      <i class="bi bi-person me-1"></i>Não informado
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Auditor -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-person-badge me-2"></i>Auditor
-                  </h6>
-                  <p class="mb-0">
-                    {% if bem_detalhes.auditor and bem_detalhes.auditor != 'Não informado' %}
-                    <span class="text-info">
-                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.auditor }}
-                    </span>
-                    {% else %}
-                    <span class="text-muted">
-                      <i class="bi bi-person me-1"></i>Não informado
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Data Última Vistoria -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-calendar-check me-2"></i>Data Última Vistoria
-                  </h6>
-                  <p class="mb-0">
-                    {% if bem_detalhes.data_ultima_vistoria and bem_detalhes.data_ultima_vistoria != 'Não informada' %}
-                    <span class="text-dark">
-                      <i class="bi bi-calendar-event me-1"></i>{{ bem_detalhes.data_ultima_vistoria }}
-                    </span>
-                    {% else %}
-                    <span class="text-muted">
-                      <i class="bi bi-calendar me-1"></i>Não informada
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Data Vistoria Atual -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-calendar-event me-2"></i>Data Vistoria Atual
-                  </h6>
-                  <p class="mb-0">
-                    {% if bem_detalhes.data_vistoria_atual and bem_detalhes.data_vistoria_atual != 'Não informada' %}
-                    <span class="text-dark">
-                      <i class="bi bi-calendar-check me-1"></i>{{ bem_detalhes.data_vistoria_atual }}
-                    </span>
-                    {% else %}
-                    <span class="text-muted">
-                      <i class="bi bi-calendar me-1"></i>Não informada
-                    </span>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Datas do Sistema -->
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-calendar-plus me-2"></i>Data de Criação
-                  </h6>
-                  <p class="mb-0 text-muted">
-                    <i class="bi bi-clock me-1"></i>
-                    {{ bem_detalhes.data_criacao[:10] if bem_detalhes.data_criacao else 'N/A' }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="border rounded-3 p-3 h-100">
-                  <h6 class="text-primary fw-semibold mb-2">
-                    <i class="bi bi-calendar-event me-2"></i>Última Localização
-                  </h6>
-                  <p class="mb-0 text-muted">
-                    <i class="bi bi-clock me-1"></i>
-                    {{ bem_detalhes.data_localizacao[:10] if bem_detalhes.data_localizacao else 'Nunca localizado' }}
-                  </p>
-                </div>
-              </div>
-
-              <!-- Informações Adicionais -->
-              <div class="col-12">
-                <div class="bg-light rounded-3 p-3">
-                  <h6 class="text-muted mb-2">
-                    <i class="bi bi-lightbulb me-2"></i>Informações
-                  </h6>
-                  <p class="small text-muted mb-0">
-                    {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %}
-                    ✅ Este bem já foi localizado e está devidamente registrado no sistema.
-                    {% else %}
-                    ⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
+    </div>
 
-          {% else %}
-          <!-- Estado de erro -->
-          <div class="text-center py-5">
-            <i class="bi bi-exclamation-triangle display-4 text-warning mb-3"></i>
-            <h4 class="text-warning mb-3">Bem não encontrado</h4>
-            <p class="text-muted mb-4">
-              O número do bem informado não foi encontrado em nosso sistema.
-              Verifique o número e tente novamente.
-            </p>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+    <!-- Modal de Detalhes do Bem com CRUD -->
+    <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-3">
+                <div class="modal-header bg-primary text-white rounded-top-3">
+                    <h5 class="modal-title" id="resultadoModalLabel">
+                        <i class="bi bi-info-circle me-2"></i>Gestão do Bem Patrimonial
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+
+                    {% if bem_detalhes %}
+                    <div id="detalhesBem">
+                        <div class="row g-4">
+                            <!-- Cabeçalho com número do bem -->
+                            <div class="col-12">
+                                <div class="bg-light rounded-3 p-3">
+                                    <h6 class="mb-1 text-primary fw-semibold">
+                                        <i class="bi bi-upc-scan me-2"></i>Número do Bem
+                                    </h6>
+                                    <p class="fs-4 fw-bold mb-0">{{ bem_detalhes.numero }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Nome do Item -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-tag me-2"></i>Nome do Item
+                                    </h6>
+                                    <p class="fs-5 mb-0">{{ bem_detalhes.nome }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Situação -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-info-circle me-2"></i>Situação
+                                    </h6>
+                                    <p class="mb-0">
+                                        {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %}
+                                        <span class="badge bg-success fs-6 p-2">
+                      <i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO
+                    </span> {% else %}
+                                        <span class="badge bg-warning fs-6 p-2">
+                      <i class="bi bi-clock-history me-1"></i>{{ bem_detalhes.situacao }}
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Localização -->
+                            <div class="col-12">
+                                <div class="border rounded-3 p-3">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-geo-alt me-2"></i>Localização
+                                    </h6>
+                                    <p class="fs-5 mb-0">
+                                        {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
+                                        <span class="text-success">
+                      <i class="bi bi-geo-alt-fill me-1"></i>{{ bem_detalhes.localizacao }}
+                    </span> {% else %}
+                                        <span class="text-muted">
+                      <i class="bi bi-geo-alt me-1"></i>Localização não informada
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- NOVOS CAMPOS ADICIONADOS AQUI -->
+                            <!-- Responsável -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-person me-2"></i>Responsável
+                                    </h6>
+                                    <p class="mb-0">
+                                        {% if bem_detalhes.responsavel and bem_detalhes.responsavel != 'Não informado' %}
+                                        <span class="text-success">
+                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.responsavel }}
+                    </span> {% else %}
+                                        <span class="text-muted">
+                      <i class="bi bi-person me-1"></i>Não informado
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Auditor -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-person-badge me-2"></i>Auditor
+                                    </h6>
+                                    <p class="mb-0">
+                                        {% if bem_detalhes.auditor and bem_detalhes.auditor != 'Não informado' %}
+                                        <span class="text-info">
+                      <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.auditor }}
+                    </span> {% else %}
+                                        <span class="text-muted">
+                      <i class="bi bi-person me-1"></i>Não informado
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Data Última Vistoria -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-calendar-check me-2"></i>Data Última Vistoria
+                                    </h6>
+                                    <p class="mb-0">
+                                        {% if bem_detalhes.data_ultima_vistoria and bem_detalhes.data_ultima_vistoria != 'Não informada' %}
+                                        <span class="text-dark">
+                      <i class="bi bi-calendar-event me-1"></i>{{ bem_detalhes.data_ultima_vistoria }}
+                    </span> {% else %}
+                                        <span class="text-muted">
+                      <i class="bi bi-calendar me-1"></i>Não informada
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Data Vistoria Atual -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-calendar-event me-2"></i>Data Vistoria Atual
+                                    </h6>
+                                    <p class="mb-0">
+                                        {% if bem_detalhes.data_vistoria_atual and bem_detalhes.data_vistoria_atual != 'Não informada' %}
+                                        <span class="text-dark">
+                      <i class="bi bi-calendar-check me-1"></i>{{ bem_detalhes.data_vistoria_atual }}
+                    </span> {% else %}
+                                        <span class="text-muted">
+                      <i class="bi bi-calendar me-1"></i>Não informada
+                    </span> {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Datas do Sistema -->
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-calendar-plus me-2"></i>Data de Criação
+                                    </h6>
+                                    <p class="mb-0 text-muted">
+                                        <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_criacao[:10] if bem_detalhes.data_criacao else 'N/A' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6 class="text-primary fw-semibold mb-2">
+                                        <i class="bi bi-calendar-event me-2"></i>Última Localização
+                                    </h6>
+                                    <p class="mb-0 text-muted">
+                                        <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_localizacao[:10] if bem_detalhes.data_localizacao else 'Nunca localizado' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Informações Adicionais -->
+                            <div class="col-12">
+                                <div class="bg-light rounded-3 p-3">
+                                    <h6 class="text-muted mb-2">
+                                        <i class="bi bi-lightbulb me-2"></i>Informações
+                                    </h6>
+                                    <p class="small text-muted mb-0">
+                                        {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %} ✅ Este bem já foi localizado e está devidamente registrado no sistema. {% else %} ⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar. {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- Estado de erro -->
+                    <div class="text-center py-5">
+                        <i class="bi bi-exclamation-triangle display-4 text-warning mb-3"></i>
+                        <h4 class="text-warning mb-3">Bem não encontrado</h4>
+                        <p class="text-muted mb-4">
+                            O número do bem informado não foi encontrado em nosso sistema. Verifique o número e tente novamente.
+                        </p>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
               <i class="bi bi-arrow-left me-1"></i>Voltar e tentar novamente
             </button>
-          </div>
-          {% endif %}
+                    </div>
+                    {% endif %}
 
-          <!-- Formulário de Edição (inicialmente oculto) -->
-          <div id="formEdicao" style="display: none;">
-            <form id="formEditarBem">
-              <input type="hidden" id="bem_id" name="bem_id">
+                    <!-- Formulário de Edição (inicialmente oculto) -->
+                    <div id="formEdicao" style="display: none;">
+                        <form id="formEditarBem">
+                            <input type="hidden" id="bem_id" name="bem_id">
 
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Número do Bem *</label>
-                  <input type="text" class="form-control" id="edt_numero" name="numero" required pattern="[A-Za-z0-9-]+"
-                    readonly>
-                </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Número do Bem *</label>
+                                    <input type="text" class="form-control" id="edt_numero" name="numero" required pattern="[A-Za-z0-9-]+" readonly>
+                                </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Situação *</label>
-                  <select class="form-select" id="edt_situacao" name="situacao" required>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Situação *</label>
+                                    <select class="form-select" id="edt_situacao" name="situacao" required>
                     <option value="Pendente">Pendente</option>
                     <option value="OK">Localizado</option>
                     <option value="Inativo">Inativo</option>
                     <option value="Manutenção">Em Manutenção</option>
                   </select>
-                </div>
+                                </div>
 
-                <div class="col-12">
-                  <label class="form-label fw-semibold">Nome do Item *</label>
-                  <input type="text" class="form-control" id="edt_nome" name="nome" required>
-                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Nome do Item *</label>
+                                    <input type="text" class="form-control" id="edt_nome" name="nome" required>
+                                </div>
 
-                <div class="col-12">
-                  <label class="form-label fw-semibold">Localização</label>
-                  <textarea class="form-control" id="edt_localizacao" name="localizacao" rows="2"
-                    placeholder="Ex: Almoxarifado Central, Prateleira B2"></textarea>
-                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Localização</label>
+                                    <textarea class="form-control" id="edt_localizacao" name="localizacao" rows="2" placeholder="Ex: Almoxarifado Central, Prateleira B2"></textarea>
+                                </div>
 
-                <!-- NOVOS CAMPOS NO FORMULÁRIO DE EDIÇÃO -->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Responsável</label>
-                  <input type="text" class="form-control" id="edt_responsavel" name="responsavel"
-                    placeholder="Nome do responsável">
-                </div>
+                                <!-- NOVOS CAMPOS NO FORMULÁRIO DE EDIÇÃO -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Responsável</label>
+                                    <input type="text" class="form-control" id="edt_responsavel" name="responsavel" placeholder="Nome do responsável">
+                                </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Auditor</label>
-                  <input type="text" class="form-control" id="edt_auditor" name="auditor" placeholder="Nome do auditor">
-                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Auditor</label>
+                                    <input type="text" class="form-control" id="edt_auditor" name="auditor" placeholder="Nome do auditor">
+                                </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Data Última Vistoria</label>
-                  <input type="date" class="form-control" id="edt_data_ultima_vistoria" name="data_ultima_vistoria">
-                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Data Última Vistoria</label>
+                                    <input type="date" class="form-control" id="edt_data_ultima_vistoria" name="data_ultima_vistoria">
+                                </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Data Vistoria Atual</label>
-                  <input type="date" class="form-control" id="edt_data_vistoria_atual" name="data_vistoria_atual">
-                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Data Vistoria Atual</label>
+                                    <input type="date" class="form-control" id="edt_data_vistoria_atual" name="data_vistoria_atual">
+                                </div>
 
-                <div class="col-12">
-                  <div class="alert alert-warning">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    Campos marcados com * são obrigatórios
-                  </div>
+                                <div class="col-12">
+                                    <div class="alert alert-warning">
+                                        <i class="bi bi-exclamation-triangle me-2"></i> Campos marcados com * são obrigatórios
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="modal-footer border-0">
-          <!-- Botões para Modo Visualização -->
-          <div id="botoesVisualizacao">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer border-0">
+                    <!-- Botões para Modo Visualização -->
+                    <div id="botoesVisualizacao">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               <i class="bi bi-x-circle me-1"></i>Fechar
             </button>
-            <button type="button" class="btn btn-warning" onclick="habilitarEdicao()">
+                        <button type="button" class="btn btn-warning" onclick="habilitarEdicao()">
               <i class="bi bi-pencil me-1"></i>Editar
             </button>
-            <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">
+                        <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">
               <i class="bi bi-trash me-1"></i>Excluir
             </button>
-          </div>
-        
-          <!-- Botões para Modo Edição -->
-          <div id="botoesEdicao" style="display: none;">
-            <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
+                    </div>
+
+                    <!-- Botões para Modo Edição -->
+                    <div id="botoesEdicao" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
               <i class="bi bi-x-circle me-1"></i>Cancelar
             </button>
-            <button type="button" class="btn btn-success" onclick="salvarEdicao()">
+                        <button type="button" class="btn btn-success" onclick="salvarEdicao()">
               <i class="bi bi-check-circle me-1"></i>Salvar
             </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de Confirmação de Exclusão -->
-  <div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirmar Exclusão</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Tem certeza que deseja excluir este bem patrimonial?</p>
-          <p class="text-muted small">Esta ação não pode ser desfeita.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" onclick="excluirBem()">Confirmar Exclusão</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
- <!-- Modal para Scanner - VERSÃO SIMPLIFICADA -->
-<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="scannerModalLabel">
-                    <i class="bi bi-upc-scan me-2"></i>Escanear Código
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-0">
-                <!-- Área do Scanner Simplificada -->
-                <div class="scanner-container">
-                    <video id="scanner-video" class="scanner-video" playsinline muted></video>
-                    <div class="scanner-frame"></div>
-                    <div class="scan-line"></div>
-                </div>
-
-                <!-- Mensagem de status -->
-                <div id="scanner-status" class="p-3 bg-dark text-white small">
-                    <i class="bi bi-info-circle me-1"></i>
-                    <span id="status-text">Preparando câmera...</span>
-                </div>
-
-                <!-- Resultado do scan -->
-                <div id="scan-result" class="p-3 bg-success text-white d-none">
-                    <i class="bi bi-check-circle me-1"></i>
-                    Código detectado: <strong id="scanned-code"></strong>
-                    <small class="ms-2 opacity-75" id="code-format"></small>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir este bem patrimonial?</p>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="excluirBem()">Confirmar Exclusão</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Scanner - VERSÃO SIMPLIFICADA -->
+    <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="scannerModalLabel">
+                        <i class="bi bi-upc-scan me-2"></i>Escanear Código
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <!-- Área do Scanner Simplificada -->
+                    <div class="scanner-container">
+                        <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                        <div class="scanner-frame"></div>
+                        <div class="scan-line"></div>
+                    </div>
+
+                    <!-- Mensagem de status -->
+                    <div id="scanner-status" class="p-3 bg-dark text-white small">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <span id="status-text">Preparando câmera...</span>
+                    </div>
+
+                    <!-- Resultado do scan -->
+                    <div id="scan-result" class="p-3 bg-success text-white d-none">
+                        <i class="bi bi-check-circle me-1"></i> Código detectado: <strong id="scanned-code"></strong>
+                        <small class="ms-2 opacity-75" id="code-format"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
                     <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
                 </button>
-                <button type="button" class="btn btn-warning" onclick="enterManually()">
+                    <button type="button" class="btn btn-warning" onclick="enterManually()">
                     <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
                 </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="stopScanner()">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="stopScanner()">
                     <i class="bi bi-x-circle me-1"></i>Fechar
                 </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white py-3 mt-5">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <p class="mb-0 small">
-            <i class="bi bi-c-circle me-1"></i> 2023 Sistema de Controle Patrimonial
-          </p>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 small">
+                        <i class="bi bi-c-circle me-1"></i> 2023 Sistema de Controle Patrimonial
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="opacity-75">Versão 1.0.0 • {{ total_count|number_format }} bens cadastrados</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 text-md-end">
-          <small class="opacity-75">Versão 1.0.0 • {{ total_count|number_format }} bens cadastrados</small>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Biblioteca jsQR para decodificar QR codes -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-  <!-- Biblioteca profissional para código de barras -->
-  <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Biblioteca ZXing para códigos de barras (mais confiável) -->
+    <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+    <!-- Biblioteca QuaggaJS para códigos de barras lineares -->
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <!-- jsQR como fallback para QR codes -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
-  <!-- Script de Abertura Automática do Modal -->
-  {% if bem_detalhes %}
-  <script>
-    console.log('DEBUG: Bem encontrado, preparando para abrir modal...');
-    console.log('DEBUG: Dados do bem:', {{ bem_detalhes | tojson | safe }});
+    <!-- Script de Abertura Automática do Modal -->
+    {% if bem_detalhes %}
+    <script>
+        console.log('DEBUG: Bem encontrado, preparando para abrir modal...');
+        console.log('DEBUG: Dados do bem:', {
+            {
+                bem_detalhes | tojson | safe
+            }
+        });
 
-    // Preencher os dados do bem
-    const bemAtual = {{ bem_detalhes | tojson | safe }};
-
-    // Aguardar o DOM estar completamente carregado
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('DEBUG: DOM carregado, tentando abrir modal...');
-
-      // Pequeno delay para garantir que tudo está pronto
-      setTimeout(function () {
-        const modalElement = document.getElementById('resultadoModal');
-
-        if (modalElement) {
-          console.log('DEBUG: Elemento do modal encontrado');
-
-          // Preencher os detalhes do bem
-          if (typeof preencherModalDetalhes === 'function' && bemAtual) {
-            preencherModalDetalhes(bemAtual);
-          }
-
-          // Criar instância do modal e abrir
-          try {
-            const modalInstance = new bootstrap.Modal(modalElement);
-            modalInstance.show();
-            console.log('DEBUG: Modal aberto com sucesso!');
-
-          } catch (error) {
-            console.error('DEBUG: Erro ao abrir modal:', error);
-          }
-
-        } else {
-          console.error('DEBUG: Elemento do modal não encontrado no DOM');
-        }
-      }, 300);
-    });
-  </script>
-  {% endif %}
-
-  <!-- Script Principal com Scanner Profissional -->
-  <script>
-    // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
-    function getApiBaseUrl() {
-        const currentUrl = window.location.origin;
-        if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
-            return '/api';
-        } else {
-            return '/api';
-        }
-    }
-
- // ===== Scanner Profissional Corrigido =====
-let scannerModalInstance = null;
-let videoStream = null;
-let usingFrontCamera = false;
-let isScanning = false;
-let currentScanner = null; // 'quagga' ou 'simple'
-
-// Inicialização quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM carregado - inicializando scanner...');
-    
-    // Inicializar o modal do scanner
-    const scannerModalElement = document.getElementById('scannerModal');
-    if (scannerModalElement) {
-        scannerModalInstance = new bootstrap.Modal(scannerModalElement);
-        console.log('Modal do scanner inicializado');
-    }
-
-    // Configurar botão da câmera
-    const btnCamera = document.getElementById('btnCamera');
-    if (btnCamera) {
-        btnCamera.addEventListener('click', openScanner);
-        console.log('Botão da câmera configurado');
-    }
-
-    // Configurar botão de trocar câmera
-    const switchCameraBtn = document.getElementById('switchCameraBtn');
-    if (switchCameraBtn) {
-        switchCameraBtn.addEventListener('click', switchCamera);
-    }
-
-    // Parar a câmera quando o modal for fechado
-    scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
-});
-
-// Scanner Corrigido - Versão Simplificada
-function openScanner() {
-    console.log('Abrindo scanner...');
-    
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
-        enterManually();
-        return;
-    }
-    
-    if (scannerModalInstance) {
-        scannerModalInstance.show();
-        updateScannerStatus('🔄 Iniciando câmera...');
-        
-        // Pequeno delay para o modal abrir completamente
-        setTimeout(() => {
-            startSimpleScanner();
-        }, 500);
-    }
-}
-
-// Scanner Simples e Funcional
-async function startSimpleScanner() {
-    try {
-        console.log('Iniciando scanner simples...');
-        stopScanner();
-
-        // Configuração básica da câmera
-        const constraints = {
-            video: {
-                facingMode: usingFrontCamera ? "user" : "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            },
-            audio: false
+        // Preencher os dados do bem
+        const bemAtual = {
+            {
+                bem_detalhes | tojson | safe
+            }
         };
 
-        console.log('Solicitando acesso à câmera...');
-        
-        // Solicitar acesso à câmera
-        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-        console.log('✅ Acesso à câmera concedido');
+        // Aguardar o DOM estar completamente carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DEBUG: DOM carregado, tentando abrir modal...');
 
-        const videoElement = document.getElementById('scanner-video');
-        if (!videoElement) {
-            throw new Error('Elemento de vídeo não encontrado');
+            // Pequeno delay para garantir que tudo está pronto
+            setTimeout(function() {
+                const modalElement = document.getElementById('resultadoModal');
+
+                if (modalElement) {
+                    console.log('DEBUG: Elemento do modal encontrado');
+
+                    // Preencher os detalhes do bem
+                    if (typeof preencherModalDetalhes === 'function' && bemAtual) {
+                        preencherModalDetalhes(bemAtual);
+                    }
+
+                    // Criar instância do modal e abrir
+                    try {
+                        const modalInstance = new bootstrap.Modal(modalElement);
+                        modalInstance.show();
+                        console.log('DEBUG: Modal aberto com sucesso!');
+
+                    } catch (error) {
+                        console.error('DEBUG: Erro ao abrir modal:', error);
+                    }
+
+                } else {
+                    console.error('DEBUG: Elemento do modal não encontrado no DOM');
+                }
+            }, 300);
+        });
+    </script>
+    {% endif %}
+
+    <!-- Script Principal com Scanner Profissional -->
+    <script>
+        // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
+        function getApiBaseUrl() {
+            const currentUrl = window.location.origin;
+            if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
+                return '/api';
+            } else {
+                return '/api';
+            }
         }
 
-        // Configurar o elemento de vídeo
-        videoElement.srcObject = videoStream;
-        videoElement.playsInline = true;
-        videoElement.setAttribute('playsinline', 'true');
-        
-        // Aguardar o vídeo estar pronto
-        videoElement.onloadedmetadata = function() {
-            console.log('Metadados do vídeo carregados');
-            videoElement.play()
-                .then(() => {
-                    console.log('Vídeo iniciado com sucesso');
-                    console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
-                    updateScannerStatus('✅ Câmera ativa - Aponte para o código');
-                    
-                    // Iniciar detecção dupla
-                    startDualDetection();
-                })
-                .catch(error => {
-                    console.error('Erro ao reproduzir vídeo:', error);
-                    throw new Error('Erro ao reproduzir vídeo: ' + error.message);
-                });
-        };
+        // ===== Scanner Profissional Corrigido =====
+        let scannerModalInstance = null;
+        let videoStream = null;
+        let usingFrontCamera = false;
+        let isScanning = false;
+        let currentScanner = null; // 'quagga' ou 'simple'
 
-        videoElement.onerror = function(error) {
-            console.error('Erro no elemento de vídeo:', error);
-            updateScannerStatus('❌ Erro na câmera');
-        };
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado - inicializando scanner...');
 
-    } catch (error) {
-        console.error('Erro detalhado:', error);
-        handleCameraError(error);
-    }
-}
+            // Inicializar o modal do scanner
+            const scannerModalElement = document.getElementById('scannerModal');
+            if (scannerModalElement) {
+                scannerModalInstance = new bootstrap.Modal(scannerModalElement);
+                console.log('Modal do scanner inicializado');
+            }
 
-// Detecção Dupla: QR Code + Tentativa de Código de Barras
-function startDualDetection() {
-    const videoElement = document.getElementById('scanner-video');
-    if (!videoElement) return;
+            // Configurar botão da câmera
+            const btnCamera = document.getElementById('btnCamera');
+            if (btnCamera) {
+                btnCamera.addEventListener('click', openScanner);
+                console.log('Botão da câmera configurado');
+            }
 
-    console.log('Iniciando detecção dupla...');
-    currentScanner = 'simple';
+            // Configurar botão de trocar câmera
+            const switchCameraBtn = document.getElementById('switchCameraBtn');
+            if (switchCameraBtn) {
+                switchCameraBtn.addEventListener('click', switchCamera);
+            }
 
-    // Criar canvas para processamento
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    let lastDetectionTime = 0;
-    const detectionInterval = 300; // ms entre detecções
+            // Parar a câmera quando o modal for fechado
+            scannerModalElement ? .addEventListener('hidden.bs.modal', stopScanner);
+        });
 
-    const scanFrame = () => {
-        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+        // Scanner Corrigido - Versão Simplificada
+        function openScanner() {
+            console.log('Abrindo scanner...');
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+                enterManually();
+                return;
+            }
+
+            if (scannerModalInstance) {
+                scannerModalInstance.show();
+                updateScannerStatus('🔄 Iniciando câmera...');
+
+                // Pequeno delay para o modal abrir completamente
+                setTimeout(() => {
+                    startSimpleScanner();
+                }, 500);
+            }
+        }
+
+        // Scanner Simples e Funcional
+        async function startSimpleScanner() {
             try {
-                // Configurar canvas
-                canvas.width = videoElement.videoWidth;
-                canvas.height = videoElement.videoHeight;
-                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                
-                // Obter dados da imagem
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                
-                // Tentativa 1: Detecção de QR Code
-                const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
-                    inversionAttempts: "dontInvert",
-                });
+                console.log('Iniciando scanner simples...');
+                stopScanner();
 
-                if (qrCode) {
-                    console.log('✅ QR Code detectado:', qrCode.data);
-                    handleBarcodeDetected(qrCode.data, 'QR Code');
-                    return;
+                // Configuração básica da câmera
+                const constraints = {
+                    video: {
+                        facingMode: usingFrontCamera ? "user" : "environment",
+                        width: {
+                            ideal: 1280
+                        },
+                        height: {
+                            ideal: 720
+                        }
+                    },
+                    audio: false
+                };
+
+                console.log('Solicitando acesso à câmera...');
+
+                // Solicitar acesso à câmera
+                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log('✅ Acesso à câmera concedido');
+
+                const videoElement = document.getElementById('scanner-video');
+                if (!videoElement) {
+                    throw new Error('Elemento de vídeo não encontrado');
                 }
 
-                // Tentativa 2: Detecção visual de código de barras (simplificada)
-                const currentTime = Date.now();
-                if (currentTime - lastDetectionTime > detectionInterval) {
-                    const barcodeCandidate = attemptVisualBarcodeDetection(imageData);
-                    if (barcodeCandidate) {
-                        console.log('📦 Possível código de barras detectado:', barcodeCandidate);
-                        lastDetectionTime = currentTime;
-                        // Não processar automaticamente - requer confirmação visual
+                // Configurar o elemento de vídeo
+                videoElement.srcObject = videoStream;
+                videoElement.playsInline = true;
+                videoElement.setAttribute('playsinline', 'true');
+
+                // Aguardar o vídeo estar pronto
+                videoElement.onloadedmetadata = function() {
+                    console.log('Metadados do vídeo carregados');
+                    videoElement.play()
+                        .then(() => {
+                            console.log('Vídeo iniciado com sucesso');
+                            console.log(`Dimensões do vídeo: ${videoElement.videoWidth}x${videoElement.videoHeight}`);
+                            updateScannerStatus('✅ Câmera ativa - Aponte para o código');
+
+                            // Iniciar detecção dupla
+                            startDualDetection();
+                        })
+                        .catch(error => {
+                            console.error('Erro ao reproduzir vídeo:', error);
+                            throw new Error('Erro ao reproduzir vídeo: ' + error.message);
+                        });
+                };
+
+                videoElement.onerror = function(error) {
+                    console.error('Erro no elemento de vídeo:', error);
+                    updateScannerStatus('❌ Erro na câmera');
+                };
+
+            } catch (error) {
+                console.error('Erro detalhado:', error);
+                handleCameraError(error);
+            }
+        }
+
+        // Detecção Profissional: Código de Barras PRIMEIRO
+        function startDualDetection() {
+            const videoElement = document.getElementById('scanner-video');
+            if (!videoElement) return;
+
+            console.log('Iniciando detecção focada em códigos de barras...');
+            updateScannerStatus('🔍 Procurando códigos de barras...');
+
+            // Prioridade 1: Tentar ZXing (melhor para códigos de barras)
+            if (typeof ZXing !== 'undefined') {
+                startZXingScanner();
+                return;
+            }
+
+            // Prioridade 2: Tentar QuaggaJS  
+            if (tryStartQuagga()) {
+                return;
+            }
+
+            // Fallback: Scanner básico com foco em códigos de barras
+            startBasicBarcodeScanner();
+        }
+
+        // Scanner ZXing (mais preciso para códigos de barras)
+        function startZXingScanner() {
+            try {
+                console.log('Iniciando ZXing scanner...');
+                const codeReader = new ZXing.BrowserMultiFormatReader();
+                currentScanner = 'zxing';
+
+                // Configurar hints para códigos de barras
+                const hints = new Map();
+                hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
+                    ZXing.BarcodeFormat.CODE_128,
+                    ZXing.BarcodeFormat.CODE_39,
+                    ZXing.BarcodeFormat.EAN_13,
+                    ZXing.BarcodeFormat.EAN_8,
+                    ZXing.BarcodeFormat.UPC_A,
+                    ZXing.BarcodeFormat.CODE_93,
+                    ZXing.BarcodeFormat.ITF,
+                    ZXing.BarcodeFormat.CODABAR,
+                    // QR Code como última opção
+                    ZXing.BarcodeFormat.QR_CODE
+                ]);
+
+                hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+
+                const videoElement = document.getElementById('scanner-video');
+
+                codeReader.decodeFromVideoDevice(undefined, videoElement, (result, err) => {
+                    if (result) {
+                        const format = result.getBarcodeFormat();
+                        const code = result.getText();
+
+                        console.log('✅ ZXing detectou:', code, 'Formato:', format);
+
+                        // Verificar se é código de barras (não QR)
+                        if (format !== ZXing.BarcodeFormat.QR_CODE) {
+                            updateScannerStatus('📦 Código de barras detectado!');
+                        } else {
+                            updateScannerStatus('🔲 QR Code detectado!');
+                        }
+
+                        handleBarcodeDetected(code, format.toString());
+
+                    } else if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.log('ZXing erro:', err);
+                    }
+                });
+
+                updateScannerStatus('✅ ZXing ativo - Aponte para código de barras');
+
+            } catch (error) {
+                console.log('Erro no ZXing, tentando Quagga...', error);
+                if (!tryStartQuagga()) {
+                    startBasicBarcodeScanner();
+                }
+            }
+        }
+
+        // Scanner básico melhorado para códigos de barras
+        function startBasicBarcodeScanner() {
+            const videoElement = document.getElementById('scanner-video');
+            if (!videoElement) return;
+
+            console.log('Iniciando scanner básico focado em códigos de barras...');
+            currentScanner = 'basic';
+
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            let scanCount = 0;
+
+            const scanFrame = () => {
+                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                    try {
+                        canvas.width = videoElement.videoWidth;
+                        canvas.height = videoElement.videoHeight;
+                        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                        scanCount++;
+
+                        // A cada 10 frames, tentar detectar padrões de código de barras
+                        if (scanCount % 10 === 0) {
+                            const barcodeResult = detectBarcodePatterns(imageData);
+                            if (barcodeResult) {
+                                updateScannerStatus('📦 Padrão detectado - mantenha firme!');
+                            }
+                        }
+
+                        // Fallback: Tentar QR Code apenas se nada mais funcionar
+                        if (scanCount % 30 === 0 && typeof jsQR !== 'undefined') {
+                            const qrCode = jsQR(imageData.data, imageData.width, imageData.height, {
+                                inversionAttempts: "dontInvert",
+                            });
+
+                            if (qrCode) {
+                                console.log('📱 QR Code detectado como fallback:', qrCode.data);
+                                handleBarcodeDetected(qrCode.data, 'QR Code');
+                                return;
+                            }
+                        }
+
+                    } catch (error) {
+                        console.log('Erro na detecção básica:', error);
+                    }
+                }
+
+                if (currentScanner === 'basic') {
+                    requestAnimationFrame(scanFrame);
+                }
+            };
+
+            scanFrame();
+            updateScannerStatus('🔍 Scanner básico ativo - Aponte para o código');
+        }
+
+        // Detectar padrões visuais de códigos de barras
+        function detectBarcodePatterns(imageData) {
+            try {
+                const width = imageData.width;
+                const height = imageData.height;
+                const data = imageData.data;
+
+                // Analisar múltiplas linhas (não só o centro)
+                const linesToScan = [
+                    Math.floor(height * 0.4), // 40% da altura
+                    Math.floor(height * 0.5), // Centro
+                    Math.floor(height * 0.6) // 60% da altura
+                ];
+
+                for (const y of linesToScan) {
+                    const pattern = analyzeScanLine(data, width, y);
+
+                    // Se encontrar padrão forte de código de barras
+                    if (pattern.isBarcode && pattern.confidence > 0.7) {
+                        return {
+                            detected: true,
+                            line: y,
+                            confidence: pattern.confidence
+                        };
                     }
                 }
 
             } catch (error) {
-                console.log('Erro na detecção:', error);
+                console.log('Erro na detecção de padrões:', error);
             }
-        }
-        
-        // Continuar scanning
-        if (currentScanner === 'simple') {
-            requestAnimationFrame(scanFrame);
-        }
-    };
 
-    // Iniciar loop de detecção
-    scanFrame();
-}
-
-// Tentativa de detecção visual de código de barras
-function attemptVisualBarcodeDetection(imageData) {
-    try {
-        // Análise simplificada para padrões lineares
-        const centerY = Math.floor(imageData.height / 2);
-        const scanLine = [];
-        
-        // Analisar linha central
-        for (let x = 0; x < imageData.width; x += 2) {
-            const index = (centerY * imageData.width + x) * 4;
-            const r = imageData.data[index];
-            const g = imageData.data[index + 1];
-            const b = imageData.data[index + 2];
-            const brightness = (r + g + b) / 3;
-            scanLine.push(brightness < 128); // true para escuro, false para claro
+            return null;
         }
-        
-        // Procurar por padrões de alternância (código de barras)
-        let transitions = 0;
-        let lastValue = scanLine[0];
-        
-        for (let i = 1; i < scanLine.length; i++) {
-            if (scanLine[i] !== lastValue) {
-                transitions++;
-                lastValue = scanLine[i];
+
+        // Analisar linha para padrões de código de barras
+        function analyzeScanLine(data, width, y) {
+            const scanLine = [];
+
+            // Converter linha para preto/branco
+            for (let x = 0; x < width; x += 2) { // Pular pixels para performance
+                const index = (y * width + x) * 4;
+                const r = data[index];
+                const g = data[index + 1];
+                const b = data[index + 2];
+                const brightness = (r + g + b) / 3;
+                scanLine.push(brightness < 120); // true = escuro, false = claro
             }
-        }
-        
-        // Se houver muitas transições, pode ser um código de barras
-        if (transitions > 20) {
-            return "Padrão detectado - use QR Code para melhor precisão";
-        }
-        
-    } catch (error) {
-        console.log('Erro na detecção visual:', error);
-    }
-    
-    return null;
-}
 
-// Tentar iniciar Quagga como alternativa
-function tryStartQuagga() {
-    if (typeof Quagga === 'undefined') {
-        console.log('Quagga não disponível');
-        return false;
-    }
-    
-    try {
-        console.log('Tentando iniciar Quagga...');
-        const videoElement = document.getElementById('scanner-video');
-        
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: videoElement,
-                constraints: {
-                    facingMode: usingFrontCamera ? "user" : "environment",
-                    width: { min: 640, ideal: 1280, max: 1920 },
-                    height: { min: 480, ideal: 720, max: 1080 }
+            // Contar transições e padrões
+            let transitions = 0;
+            let lastValue = scanLine[0];
+            const segments = [];
+            let currentSegmentLength = 1;
+
+            for (let i = 1; i < scanLine.length; i++) {
+                if (scanLine[i] !== lastValue) {
+                    transitions++;
+                    segments.push(currentSegmentLength);
+                    currentSegmentLength = 1;
+                    lastValue = scanLine[i];
+                } else {
+                    currentSegmentLength++;
                 }
-            },
-            decoder: {
-                readers: ["code_128_reader", "ean_reader", "code_39_reader"]
-            },
-            locate: true,
-        }, function(err) {
-            if (err) {
-                console.log('Quagga não pôde ser inicializado:', err);
+            }
+
+            // Análise de padrão
+            const transitionDensity = transitions / scanLine.length;
+            const hasRegularPattern = segments.length > 10 && segments.length < 100;
+            const avgSegmentLength = segments.reduce((a, b) => a + b, 0) / segments.length;
+
+            // Código de barras típico tem:
+            // - 20-80 transições por linha
+            // - Segmentos com tamanho relativamente uniforme
+            // - Densidade de transição entre 0.1 e 0.4
+
+            const isBarcode = transitions > 20 &&
+                transitions < 80 &&
+                transitionDensity > 0.1 &&
+                transitionDensity < 0.4 &&
+                hasRegularPattern &&
+                avgSegmentLength > 2;
+
+            const confidence = isBarcode ? Math.min(0.9, transitionDensity * 2) : 0;
+
+            return {
+                isBarcode,
+                confidence,
+                transitions,
+                density: transitionDensity
+            };
+        }
+
+        // Tentativa de detecção visual de código de barras
+        function attemptVisualBarcodeDetection(imageData) {
+            try {
+                // Análise simplificada para padrões lineares
+                const centerY = Math.floor(imageData.height / 2);
+                const scanLine = [];
+
+                // Analisar linha central
+                for (let x = 0; x < imageData.width; x += 2) {
+                    const index = (centerY * imageData.width + x) * 4;
+                    const r = imageData.data[index];
+                    const g = imageData.data[index + 1];
+                    const b = imageData.data[index + 2];
+                    const brightness = (r + g + b) / 3;
+                    scanLine.push(brightness < 128); // true para escuro, false para claro
+                }
+
+                // Procurar por padrões de alternância (código de barras)
+                let transitions = 0;
+                let lastValue = scanLine[0];
+
+                for (let i = 1; i < scanLine.length; i++) {
+                    if (scanLine[i] !== lastValue) {
+                        transitions++;
+                        lastValue = scanLine[i];
+                    }
+                }
+
+                // Se houver muitas transições, pode ser um código de barras
+                if (transitions > 20) {
+                    return "Padrão detectado - use QR Code para melhor precisão";
+                }
+
+            } catch (error) {
+                console.log('Erro na detecção visual:', error);
+            }
+
+            return null;
+        }
+
+        // Quagga otimizado para códigos de barras
+        function tryStartQuagga() {
+            if (typeof Quagga === 'undefined') {
+                console.log('Quagga não disponível');
+                return false;
+            }
+
+            try {
+                console.log('Iniciando Quagga com configuração otimizada para códigos de barras...');
+                const videoElement = document.getElementById('scanner-video');
+
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: videoElement,
+                        constraints: {
+                            facingMode: usingFrontCamera ? "user" : "environment",
+                            width: {
+                                min: 640,
+                                ideal: 1280,
+                                max: 1920
+                            },
+                            height: {
+                                min: 480,
+                                ideal: 720,
+                                max: 1080
+                            }
+                        }
+                    },
+                    locator: {
+                        patchSize: "medium",
+                        halfSample: true
+                    },
+                    numOfWorkers: 2,
+                    frequency: 10,
+                    decoder: {
+                        readers: [
+                            // CÓDIGOS DE BARRAS LINEARES (prioridade)
+                            "code_128_reader", // Mais comum
+                            "ean_reader", // EAN-13, EAN-8
+                            "ean_8_reader", // EAN-8 específico
+                            "code_39_reader", // CODE-39
+                            "code_39_vin_reader", // CODE-39 VIN
+                            "codabar_reader", // Codabar
+                            "upc_reader", // UPC-A
+                            "upc_e_reader", // UPC-E
+                            "i2of5_reader", // Interleaved 2 of 5
+                            "2of5_reader", // Standard 2 of 5
+                            "code_93_reader" // CODE-93
+                        ],
+                        debug: {
+                            showCanvas: false,
+                            showPatches: false,
+                            showFoundPatches: false,
+                            showSkeleton: false,
+                            showLabels: false,
+                            showPatchLabels: false,
+                            showRemainingPatchLabels: false,
+                            boxFromPatches: {
+                                showTransformed: false,
+                                showTransformedBox: false,
+                                showBB: false
+                            }
+                        }
+                    },
+                    locate: true,
+                }, function(err) {
+                    if (err) {
+                        console.log('Quagga erro na inicialização:', err);
+                        return false;
+                    }
+
+                    console.log('✅ Quagga inicializado - focado em códigos de barras');
+                    Quagga.start();
+                    currentScanner = 'quagga';
+                    updateScannerStatus('📦 Quagga ativo - Aponte para código de barras');
+
+                    // Handler para detecção
+                    Quagga.onDetected(function(result) {
+                        if (result && result.codeResult && result.codeResult.code) {
+                            const code = result.codeResult.code;
+                            const format = result.codeResult.format || 'Código de Barras';
+
+                            console.log('🎯 Quagga detectou código de barras:', code, 'Formato:', format);
+
+                            // Verificar qualidade da detecção
+                            const confidence = result.codeResult.decodedCodes ?
+                                result.codeResult.decodedCodes.length / 10 : 0.5;
+
+                            if (confidence > 0.3) {
+                                updateScannerStatus('✅ Código de barras detectado!');
+                                handleBarcodeDetected(code, format);
+                            } else {
+                                console.log('Baixa confiança, ignorando detecção');
+                            }
+                        }
+                    });
+
+                    // Handler para processos (debug)
+                    Quagga.onProcessed(function(result) {
+                        // Log apenas se houver detecção parcial
+                        if (result && result.codeResult) {
+                            console.log('Quagga processando...', result.codeResult.format);
+                        }
+                    });
+                });
+
+                return true;
+            } catch (error) {
+                console.log('Erro crítico no Quagga:', error);
+                return false;
+            }
+        }
+
+        // Processar código detectado
+        function handleBarcodeDetected(code, format = 'Desconhecido') {
+            if (!code) return;
+
+            console.log('🎯 Código processado:', code, 'Formato:', format);
+
+            // Limpar e validar o código
+            const cleanCode = cleanBarcodeData(code);
+
+            if (!isValidBarcode(cleanCode)) {
+                console.log('Código inválido:', cleanCode);
+                updateScannerStatus('❌ Código inválido - tente novamente');
                 return;
             }
-            
-            console.log('Quagga inicializado com sucesso');
-            Quagga.start();
-            currentScanner = 'quagga';
-            
-            Quagga.onDetected(function(result) {
-                if (result && result.codeResult) {
-                    console.log('Quagga detectou:', result.codeResult.code);
-                    handleBarcodeDetected(result.codeResult.code, result.codeResult.format);
-                }
-            });
-        });
-        
-        return true;
-    } catch (error) {
-        console.log('Erro no Quagga:', error);
-        return false;
-    }
-}
 
-// Processar código detectado
-function handleBarcodeDetected(code, format = 'Desconhecido') {
-    if (!code) return;
-    
-    console.log('🎯 Código processado:', code, 'Formato:', format);
-    
-    // Limpar e validar o código
-    const cleanCode = cleanBarcodeData(code);
-    
-    if (!isValidBarcode(cleanCode)) {
-        console.log('Código inválido:', cleanCode);
-        updateScannerStatus('❌ Código inválido - tente novamente');
-        return;
-    }
-    
-    // Mostrar resultado
-    const scannedCodeElement = document.getElementById('scanned-code');
-    const codeFormatElement = document.getElementById('code-format');
-    const scanResultElement = document.getElementById('scan-result');
-    
-    if (scannedCodeElement && scanResultElement) {
-        scannedCodeElement.textContent = cleanCode;
-        if (codeFormatElement) {
-            codeFormatElement.textContent = `(${format})`;
-        }
-        scanResultElement.classList.remove('d-none');
-        updateScannerStatus('✅ Código detectado!');
-        
-        // Vibrar se suportado (para mobile)
-        if (navigator.vibrate) {
-            navigator.vibrate(200);
-        }
-        
-        // Preencher o campo e fechar após breve delay
-        setTimeout(() => {
-            const numeroBemField = document.getElementById('numero_bem');
-            if (numeroBemField) {
-                numeroBemField.value = cleanCode;
-                numeroBemField.focus();
+            // Mostrar resultado
+            const scannedCodeElement = document.getElementById('scanned-code');
+            const codeFormatElement = document.getElementById('code-format');
+            const scanResultElement = document.getElementById('scan-result');
+
+            if (scannedCodeElement && scanResultElement) {
+                scannedCodeElement.textContent = cleanCode;
+                if (codeFormatElement) {
+                    codeFormatElement.textContent = `(${format})`;
+                }
+                scanResultElement.classList.remove('d-none');
+                updateScannerStatus('✅ Código detectado!');
+
+                // Vibrar se suportado (para mobile)
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+
+                // Preencher o campo e fechar após breve delay
+                setTimeout(() => {
+                    const numeroBemField = document.getElementById('numero_bem');
+                    if (numeroBemField) {
+                        numeroBemField.value = cleanCode;
+                        numeroBemField.focus();
+                    }
+
+                    stopScanner();
+
+                    if (scannerModalInstance) {
+                        scannerModalInstance.hide();
+                    }
+
+                }, 1500);
             }
-            
+        }
+
+        // Limpar dados do código de barras
+        function cleanBarcodeData(code) {
+            return code.toString()
+                .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
+                .trim();
+        }
+
+        // Validar código de barras
+        function isValidBarcode(code) {
+            if (!code || code.length < 2) return false;
+
+            // Permitir letras, números e hífen
+            const validPattern = /^[a-zA-Z0-9\-]+$/;
+            return validPattern.test(code);
+        }
+
+        // Parar scanner completamente
+        function stopScanner() {
+            console.log('Parando todos os scanners...');
+
+            // Parar ZXing se estiver ativo
+            if (currentScanner === 'zxing' && typeof ZXing !== 'undefined') {
+                try {
+                    // ZXing usa promises, então tentamos parar de forma segura
+                    console.log('Parando ZXing scanner...');
+                } catch (error) {
+                    console.log('Erro ao parar ZXing:', error);
+                }
+            }
+
+            // Parar Quagga se estiver ativo
+            if (currentScanner === 'quagga' && typeof Quagga !== 'undefined') {
+                try {
+                    Quagga.stop();
+                    Quagga.offDetected();
+                    Quagga.offProcessed();
+                    console.log('✅ Quagga parado');
+                } catch (error) {
+                    console.log('Erro ao parar Quagga:', error);
+                }
+            }
+
+            currentScanner = null;
+
+            // Parar stream de vídeo
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => {
+                    track.stop();
+                    console.log('Track parada:', track.kind);
+                });
+                videoStream = null;
+            }
+
+            // Limpar resultado
+            const scanResult = document.getElementById('scan-result');
+            if (scanResult) {
+                scanResult.classList.add('d-none');
+            }
+
+            // Limpar elemento de vídeo
+            const videoElement = document.getElementById('scanner-video');
+            if (videoElement) {
+                videoElement.srcObject = null;
+            }
+
+            updateScannerStatus('⏹️ Scanner parado');
+        }
+
+        // Trocar câmera
+        function switchCamera() {
+            console.log('Trocando câmera...');
+            usingFrontCamera = !usingFrontCamera;
             stopScanner();
-            
+
+            setTimeout(() => {
+                startSimpleScanner();
+            }, 500);
+
+            updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
+        }
+
+        function updateScannerStatus(message) {
+            const statusElement = document.getElementById('status-text');
+            if (statusElement) {
+                statusElement.textContent = message;
+                console.log('Status:', message);
+            }
+        }
+
+        function enterManually() {
+            console.log('Alternando para entrada manual...');
+            stopScanner();
+
             if (scannerModalInstance) {
                 scannerModalInstance.hide();
             }
-            
-        }, 1500);
-    }
-}
 
-// Limpar dados do código de barras
-function cleanBarcodeData(code) {
-    return code.toString()
-        .replace(/[^a-zA-Z0-9\-]/g, '') // Manter apenas letras, números e hífen
-        .trim();
-}
-
-// Validar código de barras
-function isValidBarcode(code) {
-    if (!code || code.length < 2) return false;
-    
-    // Permitir letras, números e hífen
-    const validPattern = /^[a-zA-Z0-9\-]+$/;
-    return validPattern.test(code);
-}
-
-// Parar scanner completamente
-function stopScanner() {
-    console.log('Parando scanner...');
-    
-    // Parar Quagga se estiver ativo
-    if (currentScanner === 'quagga' && typeof Quagga !== 'undefined') {
-        try {
-            Quagga.stop();
-            Quagga.offDetected();
-            console.log('Quagga parado');
-        } catch (error) {
-            console.log('Erro ao parar Quagga:', error);
+            setTimeout(() => {
+                const numeroBemField = document.getElementById('numero_bem');
+                if (numeroBemField) {
+                    numeroBemField.focus();
+                    numeroBemField.select();
+                }
+            }, 300);
         }
-    }
-    
-    currentScanner = null;
-    
-    // Parar stream de vídeo
-    if (videoStream) {
-        videoStream.getTracks().forEach(track => {
-            track.stop();
-            console.log('Track parada:', track.kind);
+
+        function handleCameraError(error) {
+            console.error('Erro detalhado na câmera:', error);
+            let errorMessage = 'Erro ao acessar a câmera: ';
+
+            if (error.name === 'NotAllowedError') {
+                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+            } else if (error.name === 'NotSupportedError') {
+                errorMessage = 'Seu navegador não suporta esta funcionalidade.';
+            } else if (error.name === 'NotReadableError') {
+                errorMessage = 'Câmera já está em uso por outro aplicativo.';
+            } else if (error.name === 'OverconstrainedError') {
+                errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
+            } else {
+                errorMessage += error.message;
+            }
+
+            updateScannerStatus('❌ ' + errorMessage);
+
+            setTimeout(() => {
+                if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                    enterManually();
+                } else {
+                    stopScanner();
+                }
+            }, 2000);
+        }
+
+        // ===== Funções Auxiliares =====
+        function validateBemNumber(e) {
+            const valor = e.target.value;
+            const btn = document.getElementById('btnLocalizar');
+            if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
+                e.target.classList.add('is-invalid');
+                if (btn) btn.disabled = true;
+            } else {
+                e.target.classList.remove('is-invalid');
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function aplicarFocoCampoBusca() {
+            const campoBusca = document.getElementById('numero_bem');
+            if (!campoBusca) return;
+            const modaisAbertos = document.querySelectorAll('.modal.show');
+            if (modaisAbertos.length === 0) {
+                campoBusca.focus();
+                campoBusca.select();
+            }
+        }
+
+        // Event listeners adicionais
+        document.addEventListener('hidden.bs.modal', function() {
+            setTimeout(aplicarFocoCampoBusca, 50);
         });
-        videoStream = null;
-    }
-    
-    // Limpar resultado
-    const scanResult = document.getElementById('scan-result');
-    if (scanResult) {
-        scanResult.classList.add('d-none');
-    }
-    
-    // Limpar elemento de vídeo
-    const videoElement = document.getElementById('scanner-video');
-    if (videoElement) {
-        videoElement.srcObject = null;
-    }
-}
 
-// Trocar câmera
-function switchCamera() {
-    console.log('Trocando câmera...');
-    usingFrontCamera = !usingFrontCamera;
-    stopScanner();
-    
-    setTimeout(() => {
-        startSimpleScanner();
-    }, 500);
-    
-    updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Usando câmera frontal' : 'Usando câmera traseira'));
-}
+        // ===== CRUD (Modal de resultados) =====
+        let bemAtual = null;
 
-function updateScannerStatus(message) {
-    const statusElement = document.getElementById('status-text');
-    if (statusElement) {
-        statusElement.textContent = message;
-        console.log('Status:', message);
-    }
-}
+        function preencherModalDetalhes(dados) {
+            console.log('Preenchendo modal com dados:', dados);
+            bemAtual = dados;
 
-function enterManually() {
-    console.log('Alternando para entrada manual...');
-    stopScanner();
-    
-    if (scannerModalInstance) {
-        scannerModalInstance.hide();
-    }
-    
-    setTimeout(() => {
-        const numeroBemField = document.getElementById('numero_bem');
-        if (numeroBemField) {
-            numeroBemField.focus();
-            numeroBemField.select();
-        }
-    }, 300);
-}
-
-function handleCameraError(error) {
-    console.error('Erro detalhado na câmera:', error);
-    let errorMessage = 'Erro ao acessar a câmera: ';
-    
-    if (error.name === 'NotAllowedError') {
-        errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
-    } else if (error.name === 'NotFoundError') {
-        errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
-    } else if (error.name === 'NotSupportedError') {
-        errorMessage = 'Seu navegador não suporta esta funcionalidade.';
-    } else if (error.name === 'NotReadableError') {
-        errorMessage = 'Câmera já está em uso por outro aplicativo.';
-    } else if (error.name === 'OverconstrainedError') {
-        errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
-    } else {
-        errorMessage += error.message;
-    }
-    
-    updateScannerStatus('❌ ' + errorMessage);
-    
-    setTimeout(() => {
-        if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
-            enterManually();
-        } else {
-            stopScanner();
-        }
-    }, 2000);
-}
-
-    // ===== Funções Auxiliares =====
-    function validateBemNumber(e) {
-        const valor = e.target.value;
-        const btn = document.getElementById('btnLocalizar');
-        if (valor && !/^[A-Za-z0-9-]+$/.test(valor)) {
-            e.target.classList.add('is-invalid');
-            if (btn) btn.disabled = true;
-        } else {
-            e.target.classList.remove('is-invalid');
-            if (btn) btn.disabled = false;
-        }
-    }
-
-    function aplicarFocoCampoBusca() {
-        const campoBusca = document.getElementById('numero_bem');
-        if (!campoBusca) return;
-        const modaisAbertos = document.querySelectorAll('.modal.show');
-        if (modaisAbertos.length === 0) {
-            campoBusca.focus();
-            campoBusca.select();
-        }
-    }
-
-    // Event listeners adicionais
-    document.addEventListener('hidden.bs.modal', function () {
-        setTimeout(aplicarFocoCampoBusca, 50);
-    });
-
-    // ===== CRUD (Modal de resultados) =====
-    let bemAtual = null;
-
-    function preencherModalDetalhes(dados) {
-        console.log('Preenchendo modal com dados:', dados);
-        bemAtual = dados;
-
-        const detalhesHTML = `
+            const detalhesHTML = `
         <div class="row g-4">
           <div class="col-12">
             <div class="bg-light rounded-3 p-3">
@@ -1537,6 +1762,7 @@ function handleCameraError(error) {
             alert('Erro de conexão ao excluir: ' + error.message);
         });
     }
-  </script>
+    </script>
 </body>
+
 </html>
