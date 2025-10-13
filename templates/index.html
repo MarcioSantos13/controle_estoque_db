@@ -65,13 +65,16 @@
         #interactive.viewport {
             position: relative;
             width: 100%;
-            height: auto;
+            height: 400px;
+            overflow: hidden;
         }
         
         #interactive.viewport>canvas,
         #interactive.viewport>video {
             max-width: 100%;
             width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         canvas.drawing,
@@ -114,6 +117,13 @@
             border-radius: 4px;
             font-size: 12px;
             z-index: 30;
+        }
+
+        /* Estilo alternativo para quando o Quagga não funciona */
+        .fallback-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -701,7 +711,7 @@
         </div>
     </div>
 
-    <!-- Modal para Scanner - VERSÃO OTIMIZADA PARA CÓDIGOS DE BARRAS -->
+    <!-- Modal para Scanner - VERSÃO CORRIGIDA -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -712,9 +722,13 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <!-- Área do Scanner com Overlay -->
+                    <!-- Área do Scanner com Fallback -->
                     <div class="scanner-container">
-                        <div id="interactive" class="viewport"></div>
+                        <!-- Elemento para Quagga -->
+                        <div id="interactive" class="viewport">
+                            <!-- Fallback: vídeo normal caso Quagga não funcione -->
+                            <video id="fallback-video" class="fallback-video d-none" playsinline muted></video>
+                        </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
                         <div class="scanner-guide"></div>
@@ -814,7 +828,7 @@
 
     <!-- Script Principal com Scanner Corrigido -->
     <script>
-        // ===== SCANNER OTIMIZADO PARA CÓDIGOS DE BARRAS =====
+        // ===== SCANNER CORRIGIDO - IMAGEM VISÍVEL =====
         let scannerModalInstance = null;
         let videoStream = null;
         let usingFrontCamera = false;
@@ -887,12 +901,8 @@
                 // Limpar código anterior
                 lastDetectedCode = '';
 
-                // Iniciar Quagga para códigos de barras
-                if (typeof Quagga !== 'undefined') {
-                    startQuaggaBarcodeScanner();
-                } else {
-                    updateScannerStatus('❌ Biblioteca Quagga não carregada');
-                }
+                // Primeiro tentar método simples com fallback
+                await startSimpleCameraWithQuagga();
 
             } catch (error) {
                 console.error('Erro ao acessar câmera:', error);
@@ -900,22 +910,62 @@
             }
         }
 
-        // Scanner Quagga otimizado para códigos de barras - CONFIGURAÇÃO CORRIGIDA
-        function startQuaggaBarcodeScanner() {
+        // Método simples com fallback - GARANTE QUE A IMAGEM APAREÇA
+        async function startSimpleCameraWithQuagga() {
+            try {
+                console.log('Iniciando câmera simples...');
+                
+                const constraints = {
+                    video: {
+                        facingMode: usingFrontCamera ? "user" : "environment",
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+
+                // Primeiro iniciar a câmera normalmente
+                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log('✅ Câmera acessada com sucesso');
+
+                // Mostrar vídeo de fallback primeiro
+                const fallbackVideo = document.getElementById('fallback-video');
+                if (fallbackVideo) {
+                    fallbackVideo.srcObject = videoStream;
+                    fallbackVideo.classList.remove('d-none');
+                    await fallbackVideo.play();
+                    console.log('✅ Vídeo de fallback iniciado');
+                }
+
+                updateScannerStatus('✅ Câmera ativa - Iniciando detector...');
+
+                // Agora tentar iniciar o Quagga
+                if (typeof Quagga !== 'undefined') {
+                    startQuaggaWithExistingStream();
+                } else {
+                    updateScannerStatus('❌ Biblioteca Quagga não carregada');
+                }
+
+            } catch (error) {
+                console.error('Erro na câmera simples:', error);
+                handleCameraError(error);
+            }
+        }
+
+        // Quagga com stream existente - CONFIGURAÇÃO CORRIGIDA
+        function startQuaggaWithExistingStream() {
             if (typeof Quagga === 'undefined') {
                 console.log('Quagga não disponível');
-                updateScannerStatus('❌ Biblioteca Quagga não carregada');
                 return;
             }
 
             try {
-                console.log('Iniciando Quagga com configuração otimizada...');
+                console.log('Iniciando Quagga com configuração corrigida...');
 
                 Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
-                        target: document.querySelector('#interactive'),
                         constraints: {
                             facingMode: usingFrontCamera ? "user" : "environment",
                             width: { min: 640, ideal: 1280, max: 1920 },
@@ -924,19 +974,21 @@
                         area: {
                             top: "25%",
                             right: "10%",
-                            left: "10%",
+                            left: "10%", 
                             bottom: "25%"
-                        }
+                        },
+                        target: document.querySelector('#interactive')
                     },
                     locator: {
                         patchSize: "medium",
                         halfSample: true
                     },
-                    numOfWorkers: 2,
+                    numOfWorkers: 1, // Reduzir para melhor compatibilidade
+                    frequency: 10,
                     decoder: {
                         readers: [
                             "code_128_reader",
-                            "ean_reader",
+                            "ean_reader", 
                             "ean_8_reader",
                             "code_39_reader",
                             "code_39_vin_reader",
@@ -951,8 +1003,9 @@
                     locate: true,
                 }, function(err) {
                     if (err) {
-                        console.log('Quagga erro na inicialização:', err);
-                        updateScannerStatus('❌ Erro na inicialização: ' + err.message);
+                        console.log('Quagga erro:', err);
+                        updateScannerStatus('⚠️ Detector com problemas, mas câmera ativa');
+                        updateDebugInfo('Quagga erro: ' + err.message);
                         return;
                     }
 
@@ -961,8 +1014,14 @@
                     currentScanner = 'quagga';
                     quaggaInitialized = true;
                     
+                    // Esconder vídeo de fallback se Quagga funcionar
+                    const fallbackVideo = document.getElementById('fallback-video');
+                    if (fallbackVideo) {
+                        fallbackVideo.classList.add('d-none');
+                    }
+                    
                     updateScannerStatus('📦 Scanner ativo - Aponte para o código de barras');
-                    updateDebugInfo('Quagga iniciado - aguardando códigos...');
+                    updateDebugInfo('Quagga ativo - detectando...');
 
                     // Configurar detecção
                     Quagga.onDetected(function(result) {
@@ -994,39 +1053,12 @@
                         }
                     });
 
-                    // Feedback do processo
-                    Quagga.onProcessed(function(result) {
-                        if (result) {
-                            const ctx = Quagga.canvas.ctx.overlay;
-                            const canvas = Quagga.canvas.dom.overlay;
-
-                            if (result.boxes) {
-                                ctx.clearRect(0, 0, parseInt(canvas.width), parseInt(canvas.height));
-                                ctx.strokeStyle = '#00FF00';
-                                ctx.lineWidth = 2;
-
-                                result.boxes.forEach(function(box) {
-                                    ctx.beginPath();
-                                    ctx.moveTo(box[0][0], box[0][1]);
-                                    ctx.lineTo(box[1][0], box[1][1]);
-                                    ctx.lineTo(box[2][0], box[2][1]);
-                                    ctx.lineTo(box[3][0], box[3][1]);
-                                    ctx.lineTo(box[0][0], box[0][1]);
-                                    ctx.stroke();
-                                });
-                            }
-
-                            if (result.codeResult && result.codeResult.code) {
-                                updateDebugInfo(`Processando: ${result.codeResult.code}`);
-                            }
-                        }
-                    });
-
                 });
 
             } catch (error) {
                 console.error('Erro crítico no Quagga:', error);
-                updateScannerStatus('❌ Erro crítico no scanner');
+                updateScannerStatus('⚠️ Erro no detector, mas câmera ativa');
+                updateDebugInfo('Erro Quagga: ' + error.message);
             }
         }
 
@@ -1114,10 +1146,24 @@
             currentScanner = null;
             lastDetectedCode = '';
             
+            // Parar stream de vídeo
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                videoStream = null;
+            }
+            
             // Limpar elementos visuais
             const scanResult = document.getElementById('scan-result');
             if (scanResult) {
                 scanResult.classList.add('d-none');
+            }
+            
+            const fallbackVideo = document.getElementById('fallback-video');
+            if (fallbackVideo) {
+                fallbackVideo.srcObject = null;
+                fallbackVideo.classList.add('d-none');
             }
             
             updateScannerStatus('⏹️ Scanner parado');
@@ -1444,5 +1490,6 @@
         }
     </script>
 </body>
-
 </html>
+
+
