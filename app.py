@@ -47,8 +47,76 @@ class Config:
     EXPORT_CHUNK_SIZE = 1000
 
 app = Flask(__name__)
-app.secret_key = '123'  # Altere para uma chave segura
+app.secret_key = 'sua-chave-segura-aqui'  # Altere para uma chave segura em produção
 app.config.from_object(Config)
+
+# ==============================
+# Configuração de Segurança
+# ==============================
+try:
+    from flask_talisman import Talisman
+    
+    # Configuração de Content Security Policy
+    csp = {
+        'default-src': [
+            '\'self\'',
+            'https://cdn.jsdelivr.net',
+            'https://cdnjs.cloudflare.com'
+        ],
+        'script-src': [
+            '\'self\'',
+            'https://cdn.jsdelivr.net',
+            '\'unsafe-inline\'',
+            '\'unsafe-eval\''
+        ],
+        'style-src': [
+            '\'self\'',
+            'https://cdn.jsdelivr.net',
+            '\'unsafe-inline\''
+        ],
+        'img-src': [
+            '\'self\'',
+            'data:',
+            'blob:',
+            'https:'
+        ],
+        'media-src': [
+            '\'self\'',
+            'blob:',
+            'data:'
+        ],
+        'connect-src': [
+            '\'self\''
+        ]
+    }
+
+    # Configurar Talisman baseado no ambiente
+    if not app.debug:
+        # Produção - forçar HTTPS
+        Talisman(
+            app,
+            content_security_policy=csp,
+            force_https=True,
+            session_cookie_secure=True,
+            strict_transport_security=True,
+            frame_options='DENY'
+        )
+        logger.info("Modo produção: Segurança HTTPS ativada")
+    else:
+        # Desenvolvimento - permitir HTTP
+        Talisman(
+            app,
+            content_security_policy=csp,
+            force_https=False,
+            session_cookie_secure=False,
+            strict_transport_security=False
+        )
+        logger.info("Modo desenvolvimento: Executando em HTTP")
+        
+except ImportError:
+    logger.warning("Flask-Talisman não instalado. Executando sem segurança HTTPS.")
+    # Fallback sem Talisman
+    pass
 
 # ==============================
 # Serviços e Validações
@@ -426,7 +494,8 @@ def criar_tabela_usuarios_se_nao_existir():
                     ativo INTEGER DEFAULT 1,
                     criado_por INTEGER,
                     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    ultimo_login TIMESTAMP
+                    ultimo_login TIMESTAMP,
+                    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
             
@@ -672,10 +741,8 @@ def importar_excel():
 # ==============================
 # Rotas CRUD Unificadas
 # ==============================
-# No endpoint que cria novos bens, adicione validação:
-
 @app.route('/api/bens', methods=['POST'])
-@login_required  # Adicionar esta linha para exigir autenticação
+@login_required
 def criar_bem():
     try:
         dados = request.get_json()
@@ -736,7 +803,6 @@ def criar_bem():
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
     
 @app.route('/api/bens/<numero_bem>')
-
 def api_obter_bem(numero_bem):
     """API para obter dados de um bem pelo número"""
     try:
@@ -886,9 +952,8 @@ def perfil():
                          usuario_tipo=session.get('usuario_tipo'))
 
 # ==============================
-# ROTAS DE AJUDA E SUPORTE - MOVIDAS PARA AQUI
+# ROTAS DE AJUDA E SUPORTE
 # ==============================
-
 @app.route('/ajuda')
 def ajuda():
     """Página central de ajuda do sistema"""
@@ -973,7 +1038,6 @@ def api_ajuda_contato():
         return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
 
 @app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
-# @login_required
 @admin_required
 def cadastrar_usuario():
     """Página para cadastrar novos usuários"""
@@ -1069,7 +1133,6 @@ def cadastrar_usuario():
 # ROTA PARA EDITAR USUÁRIO
 # ==============================
 @app.route('/usuarios/editar/<int:usuario_id>', methods=['GET', 'POST'])
-@login_required
 @admin_required
 def editar_usuario(usuario_id):
     """Página para editar usuário existente"""
@@ -1166,7 +1229,7 @@ def editar_usuario(usuario_id):
             return redirect(url_for('listar_usuarios'))
         
         else:
-            # GET - Carregar dados do usuário (seu código original está bom)
+            # GET - Carregar dados do usuário
             cursor.execute('''
                 SELECT id, email, nome, tipo, departamento, telefone, ativo, data_criacao
                 FROM usuarios WHERE id = ?
@@ -1186,7 +1249,7 @@ def editar_usuario(usuario_id):
                 'tipo': usuario[3],
                 'departamento': usuario[4],
                 'telefone': usuario[5],
-                'ativo': bool(usuario[6]),  # **CORREÇÃO: Converter para boolean**
+                'ativo': bool(usuario[6]),
                 'data_criacao': usuario[7]
             }
             
@@ -1209,12 +1272,10 @@ def editar_usuario(usuario_id):
         if conn:
             conn.close()
 
-
 # ==============================
 # ROTA PARA EXCLUIR USUÁRIO
 # ==============================
 @app.route('/usuarios/excluir/<int:usuario_id>')
-@login_required
 @admin_required
 def excluir_usuario(usuario_id):
     """Excluir usuário do sistema"""
@@ -1250,7 +1311,6 @@ def excluir_usuario(usuario_id):
             conn.close()
     
     return redirect(url_for('listar_usuarios'))
-
 
 @app.route('/usuarios')
 @login_required
@@ -1634,8 +1694,6 @@ def sistema_crud():
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
  
- 
-        
 @app.route('/api/bens/id/<int:bem_id>')
 @login_required
 def api_obter_bem_por_id(bem_id):
@@ -1751,7 +1809,30 @@ if app.debug:
             return jsonify({'error': str(e)})
 
 # ==============================
-# Inicialização
+# Configuração SSL/HTTPS
+# ==============================
+def criar_contexto_ssl():
+    """Cria contexto SSL para HTTPS"""
+    try:
+        # Verificar se existem certificados
+        cert_file = 'cert.pem'
+        key_file = 'key.pem'
+        
+        if os.path.exists(cert_file) and os.path.exists(key_file):
+            context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+            context.load_cert_chain(cert_file, key_file)
+            logger.info("✅ Certificados SSL carregados com sucesso")
+            return context
+        else:
+            logger.warning("⚠️ Certificados SSL não encontrados. Executando em HTTP.")
+            return None
+            
+    except Exception as e:
+        logger.error(f"❌ Erro ao configurar SSL: {str(e)}")
+        return None
+
+# ==============================
+# Inicialização - VERSÃO CORRIGIDA
 # ==============================
 if __name__ == '__main__':
     # Garantir que a tabela de usuários existe
@@ -1763,4 +1844,28 @@ if __name__ == '__main__':
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
-    app.run(debug=True)
+    # CONFIGURAÇÃO SIMPLIFICADA - SEM HTTPS PARA EVITAR PROBLEMAS
+    try:
+        # Sempre usar HTTP na porta 5000 para desenvolvimento
+        host = '0.0.0.0'  # Acessível de qualquer IP
+        port = 5000       # Porta que não requer admin
+        
+        logger.info(f"🚀 Iniciando servidor em http://{host}:{port}")
+        logger.info("📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000")
+        
+        app.run(
+            debug=True,
+            host=host,
+            port=port,
+            threaded=True
+        )
+        
+    except Exception as e:
+        logger.error(f"❌ Erro ao iniciar servidor: {str(e)}")
+        
+        # Tentar porta alternativa se 5000 estiver ocupada
+        try:
+            logger.info("🔄 Tentando porta alternativa 5001...")
+            app.run(debug=True, host='0.0.0.0', port=5001)
+        except:
+            logger.error("💥 Não foi possível iniciar o servidor")

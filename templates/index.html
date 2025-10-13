@@ -884,74 +884,37 @@
 
 
 
-
-function openScanner() {
+    
+    function openScanner() {
     console.log('Abrindo scanner...');
     
-    // REMOVER ou MODIFICAR esta validação restritiva:
+    // Verificação simplificada - permitir em HTTP para desenvolvimento
     const isSecure = window.location.protocol === 'https:';
     const isLocalhost = window.location.hostname === 'localhost' || 
                        window.location.hostname === '127.0.0.1';
     
-    // Comentar esta verificação temporariamente:
-    // if (!isSecure && !isLocalhost) {
-    //     alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
-    //     return;
-    // }
+    if (!isSecure && !isLocalhost) {
+        console.warn('⚠️ Acesso via HTTP - câmera pode não funcionar em alguns navegadores');
+        // Não bloquear, apenas avisar
+    }
     
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
+        enterManually();
         return;
     }
     
-    // Restante do código...
+    // Mostrar o modal primeiro
+    if (scannerModalInstance) {
+        scannerModalInstance.show();
+        updateScannerStatus('🔄 Iniciando câmera...');
+        
+        // Pequeno delay para o modal abrir completamente
+        setTimeout(() => {
+            startSimpleScanner();
+        }, 500);
+    }
 }
-
-
-
-
-
-
-    
-    // // ===== FUNÇÃO OPENSCANNER MODIFICADA - REMOVIDA VERIFICAÇÃO HTTPS =====
-    // function openScanner() {
-    //     console.log('Abrindo scanner...');
-        
-    //     // VERIFICAÇÃO HTTPS REMOVIDA - Permitir câmera em HTTP temporariamente
-    //     // const isSecure = window.location.protocol === 'https:';
-    //     // const isLocalhost = window.location.hostname === 'localhost' || 
-    //     //                    window.location.hostname === '127.0.0.1';
-        
-    //     // if (!isSecure && !isLocalhost) {
-    //     //     alert('⚠️ Para usar a câmera, o site deve ser acessado via HTTPS ou localhost.\n\nURL atual: ' + window.location.protocol + '//' + window.location.host);
-    //     //     return;
-    //     // }
-        
-    //     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    //         alert('⚠️ Seu navegador não suporta acesso à câmera.\n\nUse Chrome, Firefox ou Edge versões recentes.');
-    //         return;
-    //     }
-        
-    //     // Mostrar o modal primeiro
-    //     if (scannerModalInstance) {
-    //         scannerModalInstance.show();
-    //         updateScannerStatus('🔄 Iniciando câmera...');
-            
-    //         // Pequeno delay para o modal abrir completamente
-    //         setTimeout(() => {
-    //             startSimpleScanner();
-    //         }, 300);
-    //     }
-    // }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1184,6 +1147,87 @@ function openScanner() {
             }
         }, 300);
     }
+
+   async function startSimpleScanner() {
+    try {
+        console.log('Iniciando scanner simples...');
+        
+        // Parar qualquer scanner anterior
+        stopScanner();
+
+        // Tentar diferentes configurações de câmera
+        const constraints = {
+            video: {
+                facingMode: usingFrontCamera ? "user" : "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        };
+
+        console.log('Solicitando acesso à câmera com constraints:', constraints);
+        
+        // Solicitar acesso à câmera
+        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+        console.log('✅ Acesso à câmera concedido');
+
+        const videoElement = document.getElementById('scanner-video');
+        if (!videoElement) {
+            throw new Error('Elemento de vídeo não encontrado');
+        }
+
+        // Configurar o elemento de vídeo
+        videoElement.srcObject = videoStream;
+        videoElement.playsInline = true;
+        videoElement.setAttribute('playsinline', 'true'); // Para iOS
+        
+        // Quando o vídeo estiver carregado
+        return new Promise((resolve, reject) => {
+            videoElement.onloadedmetadata = function() {
+                console.log('Metadados do vídeo carregados');
+                videoElement.play()
+                    .then(() => {
+                        console.log('Vídeo iniciado com sucesso');
+                        updateScannerStatus('✅ Câmera ativa - Aponte para o código');
+                        startQRCodeDetection();
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao reproduzir vídeo:', error);
+                        reject(new Error('Erro ao reproduzir vídeo: ' + error.message));
+                    });
+            };
+
+            videoElement.onerror = function(error) {
+                console.error('Erro no elemento de vídeo:', error);
+                reject(new Error('Erro no elemento de vídeo'));
+            };
+
+            // Timeout para carregamento
+            setTimeout(() => {
+                if (videoElement.readyState < 2) { // MENOS_QUE_CARREGADO_METADADOS
+                    reject(new Error('Timeout ao carregar vídeo'));
+                }
+            }, 10000); // 10 segundos timeout
+        });
+
+    } catch (error) {
+        handleCameraError(error);
+    }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // ===== Funções Auxiliares =====
     function validateBemNumber(e) {
