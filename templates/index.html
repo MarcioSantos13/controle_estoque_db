@@ -15,6 +15,7 @@
             height: 400px;
             background: #000;
             overflow: hidden;
+            border-radius: 8px;
         }
         
         .scanner-video {
@@ -32,6 +33,7 @@
             background: #ff0000;
             opacity: 0.7;
             animation: scan 2s ease-in-out infinite;
+            z-index: 5;
         }
         
         @keyframes scan {
@@ -51,14 +53,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            height: 200px;
+            width: 80%;
+            height: 150px;
             border: 3px solid #00ff00;
             background: transparent;
             z-index: 10;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.3);
         }
-        /* Estilos para o Quagga */
         
+        /* Estilos para o Quagga */
         #interactive.viewport {
             position: relative;
             width: 100%;
@@ -76,9 +79,21 @@
             position: absolute;
             left: 0;
             top: 0;
+            z-index: 20;
         }
         
-        /* Estilos para overlay de detecção */
+        .scanner-guide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 2px;
+            background: #ff0000;
+            z-index: 15;
+            opacity: 0.6;
+        }
+        
         .detection-overlay {
             position: absolute;
             top: 0;
@@ -86,13 +101,19 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 20;
+            z-index: 25;
         }
         
-        .detection-box {
+        .debug-info {
             position: absolute;
-            border: 2px solid #00ff00;
-            background: rgba(0, 255, 0, 0.1);
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 30;
         }
     </style>
 </head>
@@ -693,10 +714,11 @@
                 <div class="modal-body p-0">
                     <!-- Área do Scanner com Overlay -->
                     <div class="scanner-container">
-                        <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                        <div id="interactive" class="viewport"></div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
-                        <div class="detection-overlay" id="detectionOverlay"></div>
+                        <div class="scanner-guide"></div>
+                        <div class="debug-info" id="debugInfo"></div>
                     </div>
 
                     <!-- Mensagem de status -->
@@ -746,10 +768,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Biblioteca QuaggaJS para códigos de barras lineares (PRINCIPAL) -->
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    <!-- ZXing como alternativa -->
-    <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
-    <!-- jsQR para QR codes (fallback) -->
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
     <!-- Script de Abertura Automática do Modal -->
     {% if bem_detalhes %}
@@ -794,7 +812,7 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal com Scanner Otimizado para Códigos de Barras -->
+    <!-- Script Principal com Scanner Corrigido -->
     <script>
         // ===== SCANNER OTIMIZADO PARA CÓDIGOS DE BARRAS =====
         let scannerModalInstance = null;
@@ -802,6 +820,8 @@
         let usingFrontCamera = false;
         let currentScanner = null;
         let quaggaInitialized = false;
+        let lastDetectedCode = '';
+        let detectionTimeout = null;
 
         // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
         function getApiBaseUrl() {
@@ -864,45 +884,15 @@
                 console.log('Iniciando scanner de códigos de barras...');
                 stopScanner();
 
-                const constraints = {
-                    video: {
-                        facingMode: usingFrontCamera ? "user" : "environment",
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: false
-                };
+                // Limpar código anterior
+                lastDetectedCode = '';
 
-                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-                console.log('✅ Acesso à câmera concedido');
-
-                const videoElement = document.getElementById('scanner-video');
-                if (!videoElement) {
-                    throw new Error('Elemento de vídeo não encontrado');
+                // Iniciar Quagga para códigos de barras
+                if (typeof Quagga !== 'undefined') {
+                    startQuaggaBarcodeScanner();
+                } else {
+                    updateScannerStatus('❌ Biblioteca Quagga não carregada');
                 }
-
-                videoElement.srcObject = videoStream;
-                videoElement.playsInline = true;
-                videoElement.setAttribute('playsinline', 'true');
-
-                videoElement.onloadedmetadata = function() {
-                    videoElement.play()
-                        .then(() => {
-                            console.log('Vídeo iniciado com sucesso');
-                            updateScannerStatus('✅ Câmera ativa - Aponte para o código de barras');
-                            
-                            // Priorizar Quagga para códigos de barras lineares
-                            if (typeof Quagga !== 'undefined') {
-                                startQuaggaBarcodeScanner();
-                            } else {
-                                startBasicBarcodeDetection();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Erro ao reproduzir vídeo:', error);
-                            handleCameraError(error);
-                        });
-                };
 
             } catch (error) {
                 console.error('Erro ao acessar câmera:', error);
@@ -910,48 +900,44 @@
             }
         }
 
-        // Scanner Quagga otimizado para códigos de barras
+        // Scanner Quagga otimizado para códigos de barras - CONFIGURAÇÃO CORRIGIDA
         function startQuaggaBarcodeScanner() {
             if (typeof Quagga === 'undefined') {
-                console.log('Quagga não disponível, usando detecção básica');
-                startBasicBarcodeDetection();
+                console.log('Quagga não disponível');
+                updateScannerStatus('❌ Biblioteca Quagga não carregada');
                 return;
             }
 
             try {
-                console.log('Iniciando Quagga para códigos de barras...');
-                const videoElement = document.getElementById('scanner-video');
+                console.log('Iniciando Quagga com configuração otimizada...');
 
                 Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
-                        target: videoElement,
+                        target: document.querySelector('#interactive'),
                         constraints: {
                             facingMode: usingFrontCamera ? "user" : "environment",
                             width: { min: 640, ideal: 1280, max: 1920 },
-                            height: { min: 480, ideal: 720, max: 1080 },
-                            aspectRatio: { min: 1, max: 2 }
+                            height: { min: 480, ideal: 720, max: 1080 }
                         },
                         area: {
                             top: "25%",
-                            right: "15%",
-                            left: "15%",
+                            right: "10%",
+                            left: "10%",
                             bottom: "25%"
                         }
                     },
                     locator: {
-                        patchSize: "large",
+                        patchSize: "medium",
                         halfSample: true
                     },
-                    numOfWorkers: navigator.hardwareConcurrency || 2,
-                    frequency: 15, // Aumentar frequência para melhor detecção
+                    numOfWorkers: 2,
                     decoder: {
                         readers: [
-                            // PRIORIDADE: Códigos de barras lineares
                             "code_128_reader",
                             "ean_reader",
-                            "ean_8_reader", 
+                            "ean_8_reader",
                             "code_39_reader",
                             "code_39_vin_reader",
                             "codabar_reader",
@@ -965,204 +951,83 @@
                     locate: true,
                 }, function(err) {
                     if (err) {
-                        console.log('Quagga erro:', err);
-                        updateScannerStatus('❌ Erro no scanner, usando modo básico');
-                        startBasicBarcodeDetection();
+                        console.log('Quagga erro na inicialização:', err);
+                        updateScannerStatus('❌ Erro na inicialização: ' + err.message);
                         return;
                     }
 
-                    console.log('✅ Quagga inicializado para códigos de barras');
+                    console.log('✅ Quagga inicializado com sucesso');
                     Quagga.start();
                     currentScanner = 'quagga';
                     quaggaInitialized = true;
+                    
                     updateScannerStatus('📦 Scanner ativo - Aponte para o código de barras');
+                    updateDebugInfo('Quagga iniciado - aguardando códigos...');
 
                     // Configurar detecção
                     Quagga.onDetected(function(result) {
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
-                            const format = result.codeResult.format || 'Código de Barras';
+                            const format = result.codeResult.format || 'Desconhecido';
                             
-                            console.log('🎯 Código de barras detectado:', code, 'Formato:', format);
-                            
+                            console.log('🎯 Quagga detectou:', code, 'Formato:', format);
+                            updateDebugInfo(`Detectado: ${code} (${format})`);
+
+                            // Evitar detecções duplicadas
+                            if (code === lastDetectedCode) {
+                                console.log('Código duplicado, ignorando...');
+                                return;
+                            }
+
+                            lastDetectedCode = code;
+
                             // Validar e processar o código
                             if (isValidBarcode(code)) {
                                 handleBarcodeDetected(code, format);
                                 
                                 // Parar temporariamente para evitar múltiplas leituras
-                                Quagga.stop();
-                                setTimeout(() => {
-                                    if (currentScanner === 'quagga') {
-                                        Quagga.start();
-                                    }
+                                clearTimeout(detectionTimeout);
+                                detectionTimeout = setTimeout(() => {
+                                    lastDetectedCode = '';
                                 }, 2000);
                             }
                         }
                     });
 
-                    // Feedback visual do processo
+                    // Feedback do processo
                     Quagga.onProcessed(function(result) {
                         if (result) {
-                            drawBarcodeDetectionOverlay(result);
+                            const ctx = Quagga.canvas.ctx.overlay;
+                            const canvas = Quagga.canvas.dom.overlay;
+
+                            if (result.boxes) {
+                                ctx.clearRect(0, 0, parseInt(canvas.width), parseInt(canvas.height));
+                                ctx.strokeStyle = '#00FF00';
+                                ctx.lineWidth = 2;
+
+                                result.boxes.forEach(function(box) {
+                                    ctx.beginPath();
+                                    ctx.moveTo(box[0][0], box[0][1]);
+                                    ctx.lineTo(box[1][0], box[1][1]);
+                                    ctx.lineTo(box[2][0], box[2][1]);
+                                    ctx.lineTo(box[3][0], box[3][1]);
+                                    ctx.lineTo(box[0][0], box[0][1]);
+                                    ctx.stroke();
+                                });
+                            }
+
+                            if (result.codeResult && result.codeResult.code) {
+                                updateDebugInfo(`Processando: ${result.codeResult.code}`);
+                            }
                         }
                     });
+
                 });
 
             } catch (error) {
                 console.error('Erro crítico no Quagga:', error);
-                startBasicBarcodeDetection();
+                updateScannerStatus('❌ Erro crítico no scanner');
             }
-        }
-
-        // Desenhar overlay de detecção (feedback visual)
-        function drawBarcodeDetectionOverlay(result) {
-            const canvas = document.querySelector('canvas.drawingBuffer');
-            if (!canvas || !result) return;
-
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (result.boxes) {
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#00ff00';
-                
-                result.boxes.forEach(box => {
-                    ctx.beginPath();
-                    ctx.moveTo(box[0][0], box[0][1]);
-                    for (let i = 1; i < box.length; i++) {
-                        ctx.lineTo(box[i][0], box[i][1]);
-                    }
-                    ctx.closePath();
-                    ctx.stroke();
-                });
-            }
-        }
-
-        // Detecção básica de códigos de barras (fallback)
-        function startBasicBarcodeDetection() {
-            console.log('Iniciando detecção básica de códigos de barras...');
-            currentScanner = 'basic';
-            
-            const videoElement = document.getElementById('scanner-video');
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            
-            function scanFrame() {
-                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA && currentScanner === 'basic') {
-                    try {
-                        canvas.width = videoElement.videoWidth;
-                        canvas.height = videoElement.videoHeight;
-                        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                        
-                        // Tentar detecção visual de padrões de código de barras
-                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                        const barcodePattern = detectBarcodePattern(imageData);
-                        
-                        if (barcodePattern && barcodePattern.confidence > 0.7) {
-                            updateScannerStatus('📦 Padrão de código detectado - ajuste o foco');
-                        }
-                        
-                    } catch (error) {
-                        console.log('Erro na detecção básica:', error);
-                    }
-                    
-                    requestAnimationFrame(scanFrame);
-                }
-            }
-            
-            scanFrame();
-            updateScannerStatus('🔍 Modo básico ativo - Aponte para o código de barras');
-        }
-
-        // Detectar padrões visuais de código de barras
-        function detectBarcodePattern(imageData) {
-            const width = imageData.width;
-            const height = imageData.height;
-            const data = imageData.data;
-            
-            // Analisar múltiplas linhas horizontais
-            const scanLines = [
-                Math.floor(height * 0.4),
-                Math.floor(height * 0.5),
-                Math.floor(height * 0.6)
-            ];
-            
-            let bestResult = { confidence: 0 };
-            
-            for (const y of scanLines) {
-                const result = analyzeScanLine(data, width, y);
-                if (result.confidence > bestResult.confidence) {
-                    bestResult = result;
-                }
-            }
-            
-            return bestResult.confidence > 0 ? bestResult : null;
-        }
-
-        // Analisar linha individual para padrões de código de barras
-        function analyzeScanLine(data, width, y) {
-            const scanLine = [];
-            const step = Math.max(1, Math.floor(width / 400)); // Otimizar performance
-            
-            // Converter linha para preto/branco
-            for (let x = 0; x < width; x += step) {
-                const index = (y * width + x) * 4;
-                const r = data[index];
-                const g = data[index + 1];
-                const b = data[index + 2];
-                const brightness = (r + g + b) / 3;
-                scanLine.push(brightness < 100); // Threshold para preto
-            }
-            
-            // Contar transições
-            let transitions = 0;
-            let lastValue = scanLine[0];
-            const segments = [];
-            let currentSegmentLength = 1;
-            
-            for (let i = 1; i < scanLine.length; i++) {
-                if (scanLine[i] !== lastValue) {
-                    transitions++;
-                    segments.push(currentSegmentLength);
-                    currentSegmentLength = 1;
-                    lastValue = scanLine[i];
-                } else {
-                    currentSegmentLength++;
-                }
-            }
-            
-            // Análise de padrão de código de barras
-            const transitionDensity = transitions / scanLine.length;
-            const hasRegularPattern = segments.length > 15 && segments.length < 150;
-            const segmentVariance = calculateSegmentVariance(segments);
-            
-            // Códigos de barras têm padrões regulares com variância moderada
-            const isBarcode = transitions > 15 && 
-                             transitions < 100 && 
-                             transitionDensity > 0.1 && 
-                             transitionDensity < 0.5 &&
-                             hasRegularPattern &&
-                             segmentVariance < 5;
-            
-            const confidence = isBarcode ? 
-                Math.min(0.9, (transitions / 50) * (1 - segmentVariance / 10)) : 0;
-            
-            return {
-                isBarcode,
-                confidence,
-                transitions,
-                density: transitionDensity,
-                variance: segmentVariance
-            };
-        }
-
-        // Calcular variância dos segmentos
-        function calculateSegmentVariance(segments) {
-            if (segments.length < 2) return 10;
-            
-            const mean = segments.reduce((a, b) => a + b, 0) / segments.length;
-            const variance = segments.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / segments.length;
-            return Math.sqrt(variance);
         }
 
         // Processar código detectado
@@ -1230,6 +1095,9 @@
         function stopScanner() {
             console.log('Parando scanner...');
             
+            // Limpar timeout
+            clearTimeout(detectionTimeout);
+            
             // Parar Quagga
             if (currentScanner === 'quagga' && typeof Quagga !== 'undefined' && quaggaInitialized) {
                 try {
@@ -1244,14 +1112,7 @@
             }
             
             currentScanner = null;
-            
-            // Parar stream de vídeo
-            if (videoStream) {
-                videoStream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                videoStream = null;
-            }
+            lastDetectedCode = '';
             
             // Limpar elementos visuais
             const scanResult = document.getElementById('scan-result');
@@ -1259,12 +1120,8 @@
                 scanResult.classList.add('d-none');
             }
             
-            const videoElement = document.getElementById('scanner-video');
-            if (videoElement) {
-                videoElement.srcObject = null;
-            }
-            
             updateScannerStatus('⏹️ Scanner parado');
+            updateDebugInfo('Scanner parado');
         }
 
         // Trocar câmera
@@ -1286,6 +1143,14 @@
             if (statusElement) {
                 statusElement.textContent = message;
                 console.log('Status:', message);
+            }
+        }
+
+        // Atualizar informações de debug
+        function updateDebugInfo(message) {
+            const debugElement = document.getElementById('debugInfo');
+            if (debugElement) {
+                debugElement.textContent = message;
             }
         }
 
