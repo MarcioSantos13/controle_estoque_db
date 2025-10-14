@@ -601,7 +601,11 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                        <!-- Container principal para o scanner -->
+                        <div id="interactive" class="viewport scanner-viewport">
+                            <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                            <canvas class="scanner-canvas drawingBuffer" width="640" height="480"></canvas>
+                        </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
                     </div>
@@ -697,13 +701,15 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal CORRIGIDO - Scanner Funcional -->
+    <!-- Script Principal CORRIGIDO - Scanner Sincronizado -->
     <script>
-        // === SCANNER CORRIGIDO - VERSÃO SIMPLIFICADA E FUNCIONAL ===
+        // === SCANNER CORRIGIDO - VERSÃO SINCRONIZADA ===
         let scannerModalInstance = null;
         let videoStream = null;
         let quaggaInitialized = false;
         let currentFacingMode = 'environment';
+        let lastScanTime = 0;
+        const SCAN_COOLDOWN = 1000; // 1 segundo entre leituras
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM carregado - inicializando scanner...');
@@ -725,7 +731,7 @@
                     console.log('Modal aberto - iniciando scanner...');
                     setTimeout(() => {
                         startBarcodeScanner();
-                    }, 300);
+                    }, 500); // Aumentado para garantir que o modal está totalmente renderizado
                 });
                 
                 scannerModalElement.addEventListener('hidden.bs.modal', function() {
@@ -754,12 +760,13 @@
 
                 updateScannerStatus('🔍 Iniciando câmera...');
 
-                // Configurações simplificadas da câmera
+                // Configurações otimizadas da câmera
                 const constraints = {
                     video: {
                         facingMode: currentFacingMode,
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
+                        width: { ideal: 1280, max: 1920 },
+                        height: { ideal: 720, max: 1080 },
+                        frameRate: { ideal: 30 }
                     },
                     audio: false
                 };
@@ -770,10 +777,16 @@
                 const video = document.getElementById('scanner-video');
                 if (video) {
                     video.srcObject = videoStream;
-                    await video.play();
+                    
+                    // Aguardar o vídeo estar pronto
+                    await new Promise((resolve) => {
+                        video.onloadedmetadata = () => {
+                            video.play().then(resolve);
+                        };
+                    });
                 }
 
-                // Iniciar Quagga com configurações otimizadas
+                // Iniciar Quagga com configurações sincronizadas
                 iniciarQuagga();
 
             } catch (error) {
@@ -790,47 +803,85 @@
             }
 
             try {
-                console.log('Iniciando Quagga...');
+                console.log('Iniciando Quagga com configuração sincronizada...');
+
+                // Obter dimensões do vídeo
+                const video = document.getElementById('scanner-video');
+                const videoWidth = video.videoWidth || 640;
+                const videoHeight = video.videoHeight || 480;
 
                 Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
-                        target: document.querySelector('#scanner-video'),
+                        target: document.querySelector('#interactive'), // Usar o container principal
                         constraints: {
                             facingMode: currentFacingMode,
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 }
+                            width: videoWidth,
+                            height: videoHeight,
+                            aspectRatio: { min: 1, max: 2 }
+                        },
+                        area: {
+                            top: "20%",
+                            right: "15%",
+                            left: "15%",
+                            bottom: "20%"
                         }
                     },
                     decoder: {
                         readers: [
                             "code_128_reader",
                             "ean_reader",
-                            "code_39_reader"
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader"
                         ]
                     },
+                    locator: {
+                        patchSize: "medium",
+                        halfSample: true
+                    },
                     locate: true,
-                    frequency: 5 // Reduzir frequência para melhor performance
+                    frequency: 10, // Aumentar frequência para melhor responsividade
+                    numOfWorkers: navigator.hardwareConcurrency || 4,
+                    multiple: false
                 }, function(err) {
                     if (err) {
                         console.error('Erro ao inicializar Quagga:', err);
-                        updateScannerStatus('❌ Erro no scanner');
+                        updateScannerStatus('❌ Erro no scanner: ' + err.message);
                         return;
                     }
 
                     console.log('✅ Quagga inicializado com sucesso');
+                    console.log('Dimensões do vídeo:', video.videoWidth, 'x', video.videoHeight);
+                    
                     Quagga.start();
                     quaggaInitialized = true;
                     
                     updateScannerStatus('📷 Scanner ativo - Aponte para o código de barras');
 
-                    // Configurar detecção única
+                    // Configurar detecção com debounce
                     Quagga.onDetected(function(result) {
+                        const now = Date.now();
+                        if (now - lastScanTime < SCAN_COOLDOWN) {
+                            return; // Ignorar leituras muito rápidas
+                        }
+                        
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
-                            console.log('✅ Código detectado:', code);
+                            console.log('✅ Código detectado:', code, 'Formato:', result.codeResult.format);
+                            lastScanTime = now;
                             onScanSuccess(code);
+                        }
+                    });
+
+                    // Debug: mostrar processamento
+                    Quagga.onProcessed(function(result) {
+                        if (result) {
+                            drawDebugOverlay(result);
                         }
                     });
 
@@ -839,6 +890,35 @@
             } catch (error) {
                 console.error('Erro crítico no Quagga:', error);
                 updateScannerStatus('❌ Erro crítico no scanner');
+            }
+        }
+
+        function drawDebugOverlay(result) {
+            const drawingCtx = Quagga.canvas.ctx.overlay;
+            const drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result && result.boxes) {
+                drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                
+                // Desenhar caixas de detecção para debug
+                drawingCtx.strokeStyle = "#00FF00";
+                drawingCtx.lineWidth = 2;
+                
+                result.boxes.filter(function(box) {
+                    return box !== result.box;
+                }).forEach(function(box) {
+                    Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: "green", lineWidth: 2});
+                });
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: "blue", lineWidth: 3});
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    drawingCtx.font = "18px Arial";
+                    drawingCtx.fillStyle = "green";
+                    drawingCtx.fillText(result.codeResult.code, 10, 20);
+                }
             }
         }
 
@@ -869,9 +949,9 @@
                 scanResultElement.classList.remove('d-none');
                 
                 // Feedback háptico
-                if (navigator.vibrate) navigator.vibrate(100);
+                if (navigator.vibrate) navigator.vibrate(200);
                 
-                // Parar scanner imediatamente
+                // Parar scanner imediatamente para evitar múltiplas leituras
                 stopBarcodeScanner();
             }
         }
@@ -884,6 +964,7 @@
                 try {
                     Quagga.stop();
                     Quagga.offDetected();
+                    Quagga.offProcessed();
                     quaggaInitialized = false;
                     console.log('✅ Quagga parado');
                 } catch (error) {
@@ -904,6 +985,8 @@
             if (video) {
                 video.srcObject = null;
             }
+            
+            lastScanTime = 0;
         }
 
         function usarCodigoLido() {
@@ -915,6 +998,7 @@
             if (numeroBemField) {
                 numeroBemField.value = code;
                 numeroBemField.focus();
+                numeroBemField.select();
             }
             
             if (scannerModalInstance) {
@@ -976,6 +1060,8 @@
                 errorMessage = 'Nenhuma câmera encontrada.';
             } else if (error.name === 'NotSupportedError') {
                 errorMessage = 'Navegador não suporta acesso à câmera.';
+            } else if (error.name === 'OverconstrainedError') {
+                errorMessage = 'Não foi possível atender às restrições da câmera. Tente trocar de câmera.';
             } else {
                 errorMessage += error.message;
             }
