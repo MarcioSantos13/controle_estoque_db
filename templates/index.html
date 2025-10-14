@@ -768,34 +768,39 @@
         /* FIM openScanner */
 
         /* INÍCIO startBarcodeScanner */
-        async function startBarcodeScanner() {
-            try {
-                console.log('Iniciando scanner de código de barras...');
-                stopBarcodeScanner();
+async function startBarcodeScanner() {
+    try {
+        console.log('Iniciando scanner de código de barras...');
+        stopBarcodeScanner();
 
-                // Primeiro, garantir que temos permissão da câmera
-                const constraints = {
-                    video: {
-                        facingMode: usingFrontCamera ? "user" : "environment",
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: false
-                };
-
-                console.log('Solicitando permissão da câmera...');
-                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-                console.log('✅ Câmera acessada com sucesso');
-
-                // Iniciar Quagga para leitura de código de barras
-                startQuaggaScanner();
-
-            } catch (error) {
-                console.error('Erro ao acessar câmera:', error);
-                handleCameraError(error);
-            }
+        // Verificar se o navegador suporta mediaDevices
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            throw new Error('Seu navegador não suporta acesso à câmera. Tente usar Chrome, Firefox ou Edge.');
         }
-        /* FIM startBarcodeScanner */
+
+        // Primeiro, garantir que temos permissão da câmera
+        const constraints = {
+            video: {
+                facingMode: usingFrontCamera ? "user" : "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        };
+
+        console.log('Solicitando permissão da câmera...');
+        videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+        console.log('✅ Câmera acessada com sucesso');
+
+        // Iniciar Quagga para leitura de código de barras
+        startQuaggaScanner();
+
+    } catch (error) {
+        console.error('Erro ao acessar câmera:', error);
+        handleCameraError(error);
+    }
+}
+/* FIM startBarcodeScanner */
 
         /* INÍCIO startQuaggaScanner */
         function startQuaggaScanner() {
@@ -1073,34 +1078,37 @@
         }
         /* FIM enterManually */
 
-        /* INÍCIO handleCameraError */
-        function handleCameraError(error) {
-            console.error('❌ Erro na câmera:', error);
-            let errorMessage = 'Erro ao acessar a câmera. ';
-            
-            if (error.name === 'NotAllowedError') {
-                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
-            } else if (error.name === 'NotSupportedError') {
-                errorMessage = 'Seu navegador não suporta acesso à câmera.';
-            } else if (error.name === 'NotReadableError') {
-                errorMessage = 'Câmera já está em uso por outro aplicativo.';
-            } else if (error.name === 'OverconstrainedError') {
-                errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
-            } else {
-                errorMessage += error.message;
-            }
-            
-            updateScannerStatus('❌ ' + errorMessage);
-            
-            setTimeout(() => {
-                if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
-                    enterManually();
-                }
-            }, 1000);
+       /* INÍCIO handleCameraError */
+function handleCameraError(error) {
+    console.error('❌ Erro na câmera:', error);
+    let errorMessage = 'Erro ao acessar a câmera. ';
+    
+    if (error.name === 'NotAllowedError') {
+        errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do seu navegador.';
+    } else if (error.name === 'NotFoundError') {
+        errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+    } else if (error.name === 'NotSupportedError') {
+        errorMessage = 'Seu navegador não suporta acesso à câmera. Tente usar Chrome, Firefox ou Edge.';
+    } else if (error.name === 'NotReadableError') {
+        errorMessage = 'Câmera já está em uso por outro aplicativo.';
+    } else if (error.name === 'OverconstrainedError') {
+        errorMessage = 'Não foi possível encontrar uma câmera com as configurações solicitadas.';
+    } else if (error.message.includes('não suporta acesso à câmera')) {
+        errorMessage = error.message;
+    } else {
+        errorMessage += error.message;
+    }
+    
+    updateScannerStatus('❌ ' + errorMessage);
+    updateDebugInfo('Erro: ' + error.name);
+    
+    setTimeout(() => {
+        if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+            enterManually();
         }
-        /* FIM handleCameraError */
+    }, 1000);
+}
+/* FIM handleCameraError */
 
         // === FIM CÓDIGO JAVASCRIPT DO SCANNER ===
 
@@ -1360,7 +1368,7 @@
                 alert('Erro de conexão ao excluir: ' + error.message);
             });
         }
-        
+
         /* FIM excluirBem */
     </script>
 </body>
