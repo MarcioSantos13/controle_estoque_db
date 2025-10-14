@@ -589,62 +589,52 @@
         </div>
     </div>
 
-    <!-- === INÍCIO MODAL DO SCANNER === -->
-    <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="scannerModalLabel">
-                        <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- === MODAL DO SCANNER ATUALIZADO === -->
+<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="scannerModalLabel">
+                    <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="stopScanner()"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="scanner-container">
+                    <video id="scanner-video" class="scanner-video" playsinline muted></video>
+                    <div class="scanner-frame"></div>
+                    <div class="scan-line"></div>
                 </div>
-                <div class="modal-body p-0">
-                    <!-- Área do Scanner -->
-                    <div class="scanner-container">
-                        <div class="scanner-frame"></div>
-                        <div class="scan-line"></div>
-                        <div class="debug-info" id="debugInfo">Iniciando...</div>
-                    </div>
-
-                    <!-- Dicas de uso -->
-                    <div class="scanner-tips">
-                        <strong>Dicas para melhor leitura:</strong>
-                        <ul class="mb-0 mt-1">
-                            <li>Mantenha o código bem iluminado</li>
-                            <li>Posicione o código dentro do quadro verde</li>
-                            <li>Evite reflexos e sombras</li>
-                            <li>Mantenha o dispositivo estável</li>
-                        </ul>
-                    </div>
-
-                    <!-- Mensagem de status -->
-                    <div id="scanner-status" class="p-3 bg-dark text-white small">
-                        <i class="bi bi-info-circle me-1"></i>
-                        <span id="status-text">Preparando câmera...</span>
-                    </div>
-
-                    <!-- Resultado do scan -->
-                    <div id="scan-result" class="p-3 bg-success text-white d-none">
-                        <i class="bi bi-check-circle me-1"></i> Código detectado: <strong id="scanned-code"></strong>
-                        <small class="ms-2 opacity-75" id="code-format"></small>
-                    </div>
+                <div id="scanner-status" class="p-3 bg-dark text-white small">
+                    <i class="bi bi-info-circle me-1"></i>
+                    <span id="status-text">Preparando scanner...</span>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn">
-                        <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
+                <div id="scan-result" class="p-3 bg-success text-white d-none">
+                    <i class="bi bi-check-circle me-1"></i>
+                    Código lido: <strong id="scanned-code"></strong>
+                    <button type="button" class="btn btn-light btn-sm ms-2" onclick="usarCodigoLido()">
+                        <i class="bi bi-check me-1"></i>Usar
                     </button>
-                    <button type="button" class="btn btn-warning" onclick="enterManually()">
-                        <i class="bi bi-keyboard me-1"></i>Digitar Manualmente
-                    </button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="stopBarcodeScanner()">
-                        <i class="bi bi-x-circle me-1"></i>Fechar
+                    <button type="button" class="btn btn-outline-light btn-sm ms-1" onclick="lerNovamente()">
+                        <i class="bi bi-arrow-repeat me-1"></i>Ler Outro
                     </button>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn" onclick="switchCamera()">
+                    <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="enterManually()">
+                    <i class="bi bi-keyboard me-1"></i>Digitar
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="stopScanner()">
+                    <i class="bi bi-x-circle me-1"></i>Fechar
+                </button>
+            </div>
         </div>
     </div>
-    <!-- === FIM MODAL DO SCANNER === -->
+</div>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-3 mt-5">

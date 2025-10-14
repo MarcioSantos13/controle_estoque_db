@@ -151,10 +151,6 @@ header {
 
 .is-invalid {
   border-color: var(--danger) !important;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right calc(0.375em + 0.1875rem) center;
-  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 /* Ícones animados */
@@ -181,304 +177,60 @@ footer {
   margin-top: auto;
 }
 
-/* ===== ESTILOS ESPECÍFICOS PARA PÁGINAS DE VISUALIZAÇÃO ===== */
-
-/* Tabelas responsivas */
-.table-responsive {
-  border-radius: var(--border-radius);
+/* ===== ESTILOS DO SCANNER ATUALIZADOS ===== */
+.scanner-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #000;
   overflow: hidden;
+  border-radius: 10px;
 }
 
-.table {
-  margin-bottom: 0;
-  border-collapse: separate;
-  border-spacing: 0;
+.scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.table th {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-bottom: 2px solid var(--primary);
-  font-weight: 600;
-  padding: 1rem 0.75rem;
-  white-space: nowrap;
+.scan-line {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background: #00ff00;
+  opacity: 0.8;
+  animation: scan 2s ease-in-out infinite;
+  box-shadow: 0 0 10px #00ff00;
 }
 
-.table td {
-  padding: 0.75rem;
-  vertical-align: middle;
-  border-bottom: 1px solid #eee;
+@keyframes scan {
+  0% { top: 20%; }
+  50% { top: 80%; }
+  100% { top: 20%; }
 }
 
-.table-hover tbody tr:hover {
-  background-color: rgba(13, 110, 253, 0.05);
+.scanner-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 150px;
+  border: 3px solid #00ff00;
+  background: transparent;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
 }
 
-/* Badges nas tabelas */
-.table .badge {
-  font-size: 0.75em;
-  padding: 0.4em 0.6em;
+/* Botões do scanner */
+#scan-result .btn {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
 }
 
-/* Botões de ação */
-.btn-group-vertical {
-  gap: 0.5rem;
-}
-
-/* Estados vazios */
-.empty-state {
-  padding: 3rem 1rem;
-  text-align: center;
-}
-
-.empty-state .display-1 {
-  opacity: 0.5;
-}
-
-/* Responsividade para tabelas */
-@media (max-width: 768px) {
-  .table-responsive {
-    font-size: 0.875rem;
-  }
-  
-  .table th,
-  .table td {
-    padding: 0.5rem 0.25rem;
-  }
-  
-  .table th:first-child,
-  .table td:first-child {
-    padding-left: 0.5rem;
-  }
-  
-  .table th:last-child,
-  .table td:last-child {
-    padding-right: 0.5rem;
-  }
-  
-  /* Esconder colunas menos importantes em mobile */
-  .table td:nth-child(3),  /* Localização */
-  .table th:nth-child(3) {
-    display: none;
-  }
-}
-
-/* Melhorias para telas muito pequenas */
-@media (max-width: 576px) {
-  .container {
-    padding: 0.5rem;
-  }
-  
-  .btn {
-    font-size: 0.875rem;
-    padding: 0.375rem 0.75rem;
-  }
-  
-  .btn i {
-    margin-right: 0.25rem;
-  }
-}
-
-/* Efeitos de hover para botões */
-.btn-success {
-  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%);
-  border-color: var(--success);
-}
-
-.btn-success:hover {
-  background: linear-gradient(135deg, #0f6848 0%, var(--success) 100%);
-  transform: translateY(-1px);
-}
-
-.btn-warning {
-  background: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
-  border-color: var(--warning);
-  color: #000;
-}
-
-.btn-warning:hover {
-  background: linear-gradient(135deg, #e0a800 0%, var(--warning) 100%);
-  color: #000;
-  transform: translateY(-1px);
-}
-
-/* Animações suaves */
-.table tr {
-  transition: all 0.2s ease;
-}
-
-.table tr:hover {
-  transform: translateX(4px);
-}
-
-/* Scroll suave para tabelas grandes */
-.table-responsive {
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-/* Custom scrollbar */
-.table-responsive::-webkit-scrollbar {
-  width: 8px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb:hover {
-  background: #0b5ed7;
-}
-
-/* ===== ESTILOS ESPECÍFICOS PARA O MODAL ===== */
-
-.modal-content {
-  border: none;
-  box-shadow: var(--box-shadow);
-}
-
-.modal-header {
-  background: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-title {
-  font-weight: 600;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
-.modal-footer {
-  border-top: 1px solid #eee;
-  padding: 1rem 1.5rem;
-}
-
-/* Cards dentro do modal */
-.modal .card {
-  border: 1px solid #e9ecef;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
-}
-
-.modal .card:hover {
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-/* Badges no modal */
-.modal .badge {
-  font-size: 0.9em;
-  padding: 0.5em 1em;
-}
-
-/* Estados vazios no modal */
-.modal .empty-state {
-  padding: 2rem;
-}
-
-/* Animações do modal */
-.modal.fade .modal-dialog {
-  transform: translateY(-50px);
-  transition: transform 0.3s ease-out;
-}
-
-.modal.show .modal-dialog {
-  transform: translateY(0);
-}
-
-/* Responsividade do modal */
-@media (max-width: 768px) {
-  .modal-dialog {
-    margin: 0.5rem;
-  }
-  
-  .modal-content {
-    border-radius: 0.75rem;
-  }
-  
-  .modal-body {
-    padding: 1rem;
-  }
-  
-  .modal-footer {
-    padding: 0.75rem 1rem;
-  }
-}
-
-/* ===== ESTILOS PARA CARDS DE ESTATÍSTICAS ===== */
-.stat-card {
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-}
-
-.stat-icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  margin: 0 auto 1rem;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1;
-}
-
-/* ===== ANIMAÇÕES ESPECIAIS ===== */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.btn-primary {
-  animation: pulse 2s infinite;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card {
-  animation: slideIn 0.6s ease-out;
-}
-
-/* ===== MELHORIAS DE ACESSIBILIDADE ===== */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-/* ===== ESTADOS DE CARREGAMENTO ===== */
+/* Estados de loading */
 .loading {
   position: relative;
   overflow: hidden;
@@ -505,560 +257,161 @@ footer {
   100% { left: 100%; }
 }
 
-/* Estilos para instruções de fechamento */
-.instructions-list {
-    list-style: none;
-    padding: 0;
-}
-
-.instructions-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.instructions-list li:last-child {
-    border-bottom: none;
-}
-
-.shortcut-key {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    margin: 0 0.5rem;
-    background: #6c757d;
-    color: white;
-    border-radius: 0.25rem;
-    font-family: monospace;
-    font-size: 0.9em;
-}
-
-
-/* Estilos para o scanner de câmera */
-#scanner-container {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-  background-color: #000;
-}
-
-#scanner-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#scanner-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.scanning-line {
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  background: rgba(0, 255, 0, 0.7);
-  top: 50%;
-  animation: scan 2s linear infinite;
-}
-
-@keyframes scan {
-  0% { top: 20%; }
-  50% { top: 80%; }
-  100% { top: 20%; }
-}
-
-.corner {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: #00ff00;
-  border-style: solid;
-}
-
-.corner-tl {
-  top: 20%;
-  left: 25%;
-  border-width: 3px 0 0 3px;
-}
-
-.corner-tr {
-  top: 20%;
-  right: 25%;
-  border-width: 3px 3px 0 0;
-}
-
-.corner-bl {
-  bottom: 20%;
-  left: 25%;
-  border-width: 0 0 3px 3px;
-}
-
-.corner-br {
-  bottom: 20%;
-  right: 25%;
-  border-width: 0 3px 3px 0;
-}
-
-#scanner-status {
-  margin-top: 15px;
-  text-align: center;
-  color: white;
-}
-
-/* Estilos gerais para melhorar a aparência em dispositivos móveis */
-@media (max-width: 768px) {
-  .input-group {
-    flex-wrap: nowrap;
-  }
-  
-  #btnCamera {
-    white-space: nowrap;
-  }
-  
-  .card-body {
-    padding: 1rem;
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* Melhorias de acessibilidade para o scanner */
-#scanner-container:focus {
-  outline: 2px solid #0d6efd;
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
-/* Ajustes para modo escuro (se aplicável) */
-@media (prefers-color-scheme: dark) {
-  #scanner-overlay {
-    filter: invert(1);
-  }
+/* Cards de estatísticas */
+.stat-card {
+  transition: all 0.3s ease;
 }
 
-/* Ajustes de alinhamento para o formulário de busca */
-#searchForm .form-label {
-  margin-bottom: 0.5rem;
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 }
 
-#searchForm .col-md-2 {
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: 0.7rem;
-}
-
-/* Ajuste para telas menores */
-@media (max-width: 768px) {
-  #searchForm .col-md-2 {
-    padding-bottom: 0;
-    margin-top: 1rem;
-  }
-  
-  #btnLocalizar {
-    margin-top: 0 !important;
-  }
-}
-
-/* Ajustes de tamanho proporcional para os elementos */
-.card {
-  transform: scale(0.98);
-  transform-origin: top center;
-}
-
-.card-header .h5 {
-  font-size: 1.2rem;
-}
-
-.form-control {
-  padding: 0.6rem 0.8rem;
-  font-size: 0.95rem;
-  height: calc(2em + 1rem + 2px);
-}
-
-.btn {
-  padding: 0.6rem 0.8rem;
-  font-size: 0.95rem;
-}
-
-#btnCamera {
-  padding: 0.6rem;
-}
-
-#btnCamera i {
-  font-size: 1.1rem;
-}
-
-#btnLocalizar i {
-  font-size: 1.1rem;
-  line-height: 1;  /* Garante que o ícone não "puxe" altura extra */
-}
-
-/* Ajuste específico para o container de busca */
-#searchForm .col-md-5 {
-  flex: 0 0 auto;
-  width: 38%;
-}
-
-#searchForm .col-md-2 {
-  flex: 0 0 auto;
-  width: 24%;
-}
-
-/* Ajuste para os cards de estatísticas */
-.card-body.text-center.p-4 {
-  padding: 1.8rem !important;
-}
-
-.d-inline-flex.align-items-center.justice-content-center {
-  width: 55px !important;
-  height: 55px !important;
-}
-
-.d-inline-flex.align-items-center.justice-content-center i {
-  font-size: 1.7rem !important;
-}
-
-.h2.fw-bold {
-  font-size: 2rem !important;
-}
-
-/* Ajuste para ações rápidas */
-.text-center.mb-4 .btn {
-  font-size: 0.9rem;
-  padding: 0.5rem 0.8rem;
-}
-
-/* Ajustes para o botão localizar */
-#btnLocalizar {
+.stat-icon {
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 46px;         /* Garante mesma altura do input */
-  padding: 0;           /* Remove padding que afeta o alinhamento */
-  box-sizing: border-box; /* Garante que height inclui tudo */
+  border-radius: 50%;
+  margin: 0 auto 1rem;
 }
 
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
 
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-  .card {
-    transform: scale(1);
+/* Animações especiais */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.btn-primary {
+  animation: pulse 2s infinite;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
-  #searchForm .col-md-5,
-  #searchForm .col-md-2 {
-    width: 100%;
-  }
-  
-  #searchForm .col-md-2 {
-    margin-top: 1rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Ajuste para garantir que os inputs tenham altura igual */
-#searchForm .form-control {
-  height: 46px;
+.card {
+  animation: slideIn 0.6s ease-out;
 }
 
-#searchForm .input-group {
-  height: 46px;
-}
-
-#searchForm .btn {
-  height: 46px;
-}
-
-/* Estilos para a tabela do relatório */
+/* Tabelas responsivas */
 .table-responsive {
-    max-height: 600px;
-    overflow-y: auto;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .table th {
-    position: sticky;
-    top: 0;
-    background-color: #f8f9fa;
-    z-index: 10;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 2px solid var(--primary);
+  font-weight: 600;
+  padding: 1rem 0.75rem;
 }
 
-/* Melhorias na paginação */
-.pagination {
-    margin-bottom: 0;
+.table-hover tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
 }
 
-/* Badges personalizados */
-.badge-localizado {
-    background-color: #198754;
-    color: white;
+/* Estados vazios */
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
 }
 
-.badge-pendente {
-    background-color: #ffc107;
-    color: black;
+.empty-state .display-1 {
+  opacity: 0.5;
 }
 
-/* ✅ ESTILOS MELHORADOS PARA O SCANNER */
-#scanner-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background: #000;
-    overflow: hidden;
-}
-
-#scanner-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#scanner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.corner {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-color: #00ff00;
-    border-style: solid;
-    border-width: 0;
-}
-
-.corner-tl {
-    top: 20px;
-    left: 20px;
-    border-top-width: 3px;
-    border-left-width: 3px;
-}
-
-.corner-tr {
-    top: 20px;
-    right: 20px;
-    border-top-width: 3px;
-    border-right-width: 3px;
-}
-
-.corner-bl {
-    bottom: 20px;
-    left: 20px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-}
-
-.corner-br {
-    bottom: 20px;
-    right: 20px;
-    border-bottom-width: 3px;
-    border-right-width: 3px;
-}
-
-.scanning-line {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    width: 80%;
-    height: 2px;
-    background: #00ff00;
-    animation: scan 2s linear infinite;
-    box-shadow: 0 0 10px #00ff00;
-}
-
-@keyframes scan {
-    0% {
-        top: 20%;
-    }
-    50% {
-        top: 80%;
-    }
-    100% {
-        top: 20%;
-    }
-}
-
-/* ✅ ESTILOS PARA OS STATUS */
-.bg-success {
-    background: linear-gradient(135deg, #28a745, #20c997) !important;
-}
-
-.bg-danger {
-    background: linear-gradient(135deg, #dc3545, #fd7e14) !important;
-}
-
-.bg-warning {
-    background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
-}
-
-/* ✅ RESPONSIVIDADE PARA MOBILE */
+/* Melhorias para mobile */
 @media (max-width: 576px) {
-    #scanner-container {
-        height: 250px;
-    }
-    
-    .modal-footer {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .modal-footer .btn {
-        width: 100%;
-    }
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .scanner-container {
+    height: 250px;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
 }
 
+/* Gradientes para botões */
+.btn-success {
+  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%);
+  border-color: var(--success);
+}
 
-/* === ESTILOS GERAIS DO SISTEMA === */
+.btn-success:hover {
+  background: linear-gradient(135deg, #0f6848 0%, var(--success) 100%);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
+  border-color: var(--warning);
+  color: #000;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #e0a800 0%, var(--warning) 100%);
+  color: #000;
+}
+
+/* Estilos para detalhes do bem */
 .bem-detail-card {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
 }
 
 .bem-detail-card h6 {
-    color: #495057;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
 }
 
 .bem-detail-card p {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* === ESTILOS DO SCANNER === */
-.scanner-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    background: #000;
-    overflow: hidden;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Canvas do Quagga */
-.scanner-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-}
-
-.scanner-video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-    background: #000;
-}
-
-.scanner-frame {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    height: 120px;
-    border: 3px solid #00ff00;
-    background: transparent;
-    z-index: 10;
-    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-}
-
-.scan-line {
-    position: absolute;
-    top: 50%;
-    left: 15%;
-    width: 70%;
-    height: 3px;
-    background: #ff0000;
-    opacity: 0.7;
-    animation: scan 2s ease-in-out infinite;
-    z-index: 5;
-    pointer-events: none;
-}
-
-@keyframes scan {
-    0% {
-        top: 30%;
-    }
-    50% {
-        top: 70%;
-    }
-    100% {
-        top: 30%;
-    }
-}
-
-.scanner-guide {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 2px;
-    background: #ff0000;
-    z-index: 15;
-    opacity: 0.6;
-}
-
-.debug-info {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    z-index: 30;
-}
-
-.scanner-tips {
-    background: #f8f9fa;
-    border-left: 4px solid #007bff;
-    padding: 10px 15px;
-    margin: 10px 0;
-    font-size: 14px;
-}
-
-/* Mensagem de fallback se o vídeo não carregar */
-.scanner-container:empty::after {
-    content: "🔄 Iniciando câmera...";
-    color: white;
-    font-size: 18px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* === AJUSTES RESPONSIVOS === */
-@media (max-width: 768px) {
-    .scanner-container {
-        height: 300px;
-    }
-    
-    .scanner-frame {
-        width: 80%;
-        height: 100px;
-    }
-}
-
-/* Estilos para elementos do Html5Qrcode (se necessário) */
-#html5qr-code-full-region {
-    width: 100%;
-    height: 100%;
-}
-
-.html5-qrcode-element {
-    display: none; /* Esconder botões padrão */
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0;
 }
