@@ -845,12 +845,14 @@
     <script>
 // === INÍCIO CÓDIGO JAVASCRIPT DO SCANNER ===
 
-// ===== SCANNER SIMPLIFICADO E ROBUSTO =====
+// ===== SCANNER COM BARCODEDETECTOR NATIVO =====
 let scannerModalInstance = null;
 let videoStream = null;
 let usingFrontCamera = false;
 let lastDetectedCode = '';
 let detectionTimeout = null;
+let barcodeDetector = null;
+let scanInterval = null;
 
 // ===== FUNÇÕES DE CONFIGURAÇÃO DE API =====
 /* INÍCIO getApiBaseUrl */
@@ -888,8 +890,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Parar scanner quando modal fechar
     scannerModalElement?.addEventListener('hidden.bs.modal', stopScanner);
+
+    // Verificar suporte ao BarcodeDetector
+    checkBarcodeDetectorSupport();
 });
 /* FIM DOMContentLoaded - Inicialização do Scanner */
+
+/* INÍCIO checkBarcodeDetectorSupport */
+function checkBarcodeDetectorSupport() {
+    if ('BarcodeDetector' in window) {
+        console.log('✅ BarcodeDetector suportado');
+        // Inicializar o detector de códigos de barras
+        barcodeDetector = new BarcodeDetector({
+            formats: [
+                'code_128', 'code_39', 'code_93', 'codabar', 'ean_13', 
+                'ean_8', 'itf', 'upc_a', 'upc_e'
+            ]
+        });
+        updateDebugInfo('Scanner pronto - aguardando ativação');
+    } else {
+        console.log('❌ BarcodeDetector não suportado');
+        updateDebugInfo('Scanner básico - use entrada manual');
+        // Não impedir o uso, apenas avisar
+        setTimeout(() => {
+            console.log('Usando modo câmera básica');
+        }, 1000);
+    }
+}
+/* FIM checkBarcodeDetectorSupport */
 
 /* INÍCIO openScanner */
 function openScanner() {
@@ -905,26 +933,26 @@ function openScanner() {
         scannerModalInstance.show();
         updateScannerStatus('🔄 Iniciando câmera...');
 
-        // Usar método simples sem biblioteca externa
         setTimeout(() => {
-            startSimpleScanner();
+            startBarcodeScanner();
         }, 500);
     }
 }
 /* FIM openScanner */
 
-/* INÍCIO startSimpleScanner */
-async function startSimpleScanner() {
+/* INÍCIO startBarcodeScanner */
+async function startBarcodeScanner() {
     try {
-        console.log('Iniciando scanner simples...');
+        console.log('Iniciando scanner de código de barras...');
         stopScanner();
 
-        // Configuração básica da câmera
+        // Configuração otimizada para códigos de barras
         const constraints = {
             video: {
                 facingMode: usingFrontCamera ? "user" : "environment",
                 width: { ideal: 1280 },
-                height: { ideal: 720 }
+                height: { ideal: 720 },
+                aspectRatio: { ideal: 1.777777778 } // 16:9
             },
             audio: false
         };
@@ -937,14 +965,15 @@ async function startSimpleScanner() {
         // Mostrar vídeo
         const scannerContainer = document.querySelector('.scanner-container');
         if (scannerContainer) {
-            // Criar elemento de vídeo se não existir
-            let videoElement = scannerContainer.querySelector('#simple-scanner-video');
+            // Criar/obter elemento de vídeo
+            let videoElement = scannerContainer.querySelector('#barcode-scanner-video');
             if (!videoElement) {
                 videoElement = document.createElement('video');
-                videoElement.id = 'simple-scanner-video';
+                videoElement.id = 'barcode-scanner-video';
                 videoElement.className = 'scanner-video';
                 videoElement.setAttribute('playsinline', 'true');
                 videoElement.setAttribute('autoplay', 'true');
+                videoElement.setAttribute('muted', 'true');
                 scannerContainer.appendChild(videoElement);
             }
             
@@ -953,10 +982,20 @@ async function startSimpleScanner() {
             try {
                 await videoElement.play();
                 console.log('✅ Vídeo iniciado');
-                updateScannerStatus('📷 Câmera ativa - Posicione o código de barras no quadro');
-                updateDebugInfo('Scanner ativo - use boa iluminação');
+                updateScannerStatus('📷 Scanner ativo - Aponte para o código de barras');
+                updateDebugInfo('Posicione o código dentro do quadro verde');
+
+                // Iniciar detecção se BarcodeDetector estiver disponível
+                if (barcodeDetector) {
+                    startBarcodeDetection(videoElement);
+                } else {
+                    updateScannerStatus('📷 Câmera ativa - Use entrada manual');
+                    updateDebugInfo('Digite o código após visualizar');
+                }
+
             } catch (error) {
                 console.error('Erro ao reproduzir vídeo:', error);
+                handleCameraError(error);
             }
         }
 
@@ -965,14 +1004,147 @@ async function startSimpleScanner() {
         handleCameraError(error);
     }
 }
-/* FIM startSimpleScanner */
+/* FIM startBarcodeScanner */
+
+/* INÍCIO startBarcodeDetection */
+function startBarcodeDetection(videoElement) {
+    console.log('Iniciando detecção de código de barras...');
+    
+    // Limpar intervalo anterior
+    if (scanInterval) {
+        clearInterval(scanInterval);
+    }
+    
+    // Verificar detecção a cada 500ms
+    scanInterval = setInterval(async () => {
+        try {
+            if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                const barcodes = await barcodeDetector.detect(videoElement);
+                
+                if (barcodes.length > 0) {
+                    const barcode = barcodes[0];
+                    console.log('📦 Código detectado:', barcode.rawValue);
+                    
+                    // Evitar detecções duplicadas
+                    if (barcode.rawValue !== lastDetectedCode) {
+                        lastDetectedCode = barcode.rawValue;
+                        handleBarcodeDetected(barcode.rawValue, barcode.format);
+                    }
+                }
+            }
+        } catch (error) {
+            // Ignorar erros de detecção (ocorrem frequentemente quando não há código)
+            if (!error.toString().includes('No barcode')) {
+                console.warn('Erro na detecção:', error);
+            }
+        }
+    }, 500);
+}
+/* FIM startBarcodeDetection */
+
+/* INÍCIO handleBarcodeDetected */
+function handleBarcodeDetected(code, format = 'Desconhecido') {
+    if (!code) return;
+    
+    console.log('🎯 Processando código:', code, 'Formato:', format);
+    
+    const cleanCode = cleanBarcodeData(code);
+    
+    if (!isValidBarcode(cleanCode)) {
+        console.log('❌ Código inválido após limpeza:', cleanCode);
+        updateScannerStatus('❌ Código inválido - tente novamente');
+        return;
+    }
+    
+    // Validação adicional de comprimento
+    if (cleanCode.length < 3 || cleanCode.length > 50) {
+        console.log('❌ Comprimento inválido:', cleanCode.length);
+        updateScannerStatus('❌ Código muito curto/longo');
+        return;
+    }
+    
+    // Mostrar resultado
+    const scannedCodeElement = document.getElementById('scanned-code');
+    const codeFormatElement = document.getElementById('code-format');
+    const scanResultElement = document.getElementById('scan-result');
+    
+    if (scannedCodeElement && scanResultElement) {
+        scannedCodeElement.textContent = cleanCode;
+        if (codeFormatElement) {
+            codeFormatElement.textContent = `(${format})`;
+        }
+        scanResultElement.classList.remove('d-none');
+        updateScannerStatus('✅ Código detectado!');
+        updateDebugInfo('✅ Código válido!');
+        
+        // Feedback háptico
+        if (navigator.vibrate) {
+            navigator.vibrate(100);
+        }
+        
+        // Preencher campo e fechar modal
+        setTimeout(() => {
+            const numeroBemField = document.getElementById('numero_bem');
+            if (numeroBemField) {
+                numeroBemField.value = cleanCode;
+                numeroBemField.focus();
+                numeroBemField.select();
+            }
+            
+            stopScanner();
+            scannerModalInstance?.hide();
+            
+        }, 1500);
+    }
+}
+/* FIM handleBarcodeDetected */
+
+/* INÍCIO cleanBarcodeData */
+function cleanBarcodeData(code) {
+    if (!code) return '';
+    
+    return code.toString()
+        .replace(/[^a-zA-Z0-9\-_]/g, '')
+        .replace(/\s+/g, '')
+        .trim();
+}
+/* FIM cleanBarcodeData */
+
+/* INÍCIO isValidBarcode */
+function isValidBarcode(code) {
+    if (!code || code.length < 2) {
+        console.log('❌ Código vazio ou muito curto');
+        return false;
+    }
+    
+    // Verificar padrão básico
+    const validPattern = /^[a-zA-Z0-9\-_]+$/;
+    if (!validPattern.test(code)) {
+        console.log('❌ Caracteres inválidos no código');
+        return false;
+    }
+    
+    // Verificar se não é apenas números repetidos
+    if (/^(\d)\1+$/.test(code)) {
+        console.log('❌ Código com números repetidos');
+        return false;
+    }
+    
+    console.log('✅ Código válido:', code);
+    return true;
+}
+/* FIM isValidBarcode */
 
 /* INÍCIO stopScanner */
 function stopScanner() {
     console.log('🛑 Parando scanner...');
     
-    // Limpar timeout
+    // Limpar timeouts e intervalos
     clearTimeout(detectionTimeout);
+    if (scanInterval) {
+        clearInterval(scanInterval);
+        scanInterval = null;
+    }
     
     // Parar stream de vídeo
     if (videoStream) {
@@ -983,7 +1155,7 @@ function stopScanner() {
     }
     
     // Limpar elemento de vídeo
-    const videoElement = document.getElementById('simple-scanner-video');
+    const videoElement = document.getElementById('barcode-scanner-video');
     if (videoElement) {
         videoElement.srcObject = null;
     }
@@ -1008,7 +1180,7 @@ function switchCamera() {
     stopScanner();
     
     setTimeout(() => {
-        startSimpleScanner();
+        startBarcodeScanner();
     }, 500);
     
     updateScannerStatus('🔄 ' + (usingFrontCamera ? 'Câmera frontal' : 'Câmera traseira'));
@@ -1070,14 +1242,12 @@ function handleCameraError(error) {
     
     updateScannerStatus('❌ ' + errorMessage);
     
-    // Oferecer entrada manual após 2 segundos
+    // Oferecer entrada manual
     setTimeout(() => {
         if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
             enterManually();
-        } else {
-            stopScanner();
         }
-    }, 2000);
+    }, 1000);
 }
 /* FIM handleCameraError */
 
