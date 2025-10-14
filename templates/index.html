@@ -1112,6 +1112,252 @@ function handleCameraError(error) {
 }
 /* FIM handleCameraError */
 
+// ===== SISTEMA DE SCANNER SIMPLIFICADO E FUNCIONAL =====
+let scannerModalInstance = null;
+let videoStream = null;
+let scanningInterval = null;
+let currentFacingMode = 'environment';
+let isScanning = false;
+
+function inicializarScanner() {
+    const scannerModalElement = document.getElementById('scannerModal');
+    if (scannerModalElement) {
+        scannerModalInstance = new bootstrap.Modal(scannerModalElement);
+        
+        scannerModalElement.addEventListener('shown.bs.modal', function () {
+            console.log('📷 Modal aberto - iniciando scanner');
+            startScanner();
+        });
+        
+        scannerModalElement.addEventListener('hidden.bs.modal', function () {
+            console.log('📷 Modal fechado - parando scanner');
+            stopScanner();
+        });
+    }
+}
+
+function openScanner() {
+    console.log('📷 Abrindo scanner...');
+    
+    if (scannerModalInstance) {
+        document.getElementById('scan-result').classList.add('d-none');
+        document.getElementById('scanner-status').classList.remove('d-none');
+        document.getElementById('status-text').textContent = 'Preparando scanner...';
+        
+        scannerModalInstance.show();
+    } else {
+        enterManually();
+    }
+}
+
+async function startScanner() {
+    console.log('🎬 Iniciando scanner...');
+    
+    if (isScanning) return;
+    
+    const video = document.getElementById('scanner-video');
+    const statusText = document.getElementById('status-text');
+    
+    if (!video) return;
+
+    try {
+        if (videoStream) {
+            videoStream.getTracks().forEach(track => track.stop());
+        }
+
+        statusText.textContent = 'Solicitando acesso à câmera...';
+        
+        videoStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: currentFacingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        });
+
+        video.srcObject = videoStream;
+        
+        await new Promise((resolve) => {
+            video.onloadedmetadata = () => {
+                video.play();
+                resolve();
+            };
+        });
+
+        statusText.textContent = 'Scanner pronto - aponte para o código de barras';
+        isScanning = true;
+        
+        startQRDetection();
+        
+    } catch (error) {
+        console.error('❌ Erro ao acessar câmera:', error);
+        statusText.textContent = 'Erro ao acessar câmera';
+        
+        setTimeout(() => {
+            if (scannerModalInstance) {
+                scannerModalInstance.hide();
+            }
+            enterManually();
+        }, 2000);
+    }
+}
+
+function startQRDetection() {
+    if (!isScanning) return;
+    
+    const video = document.getElementById('scanner-video');
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    
+    scanningInterval = setInterval(() => {
+        if (!isScanning || video.readyState !== video.HAVE_ENOUGH_DATA) {
+            return;
+        }
+        
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        
+        try {
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: "dontInvert",
+            });
+            
+            if (code) {
+                console.log('✅ Código detectado:', code.data);
+                onScanSuccess(code.data);
+            }
+        } catch (error) {
+            console.log('⚠️ Erro na detecção QR:', error);
+        }
+    }, 100);
+}
+
+function onScanSuccess(code) {
+    if (!isScanning) return;
+    
+    console.log('🎯 Código escaneado com sucesso:', code);
+    
+    stopQRDetection();
+    isScanning = false;
+    
+    const resultDiv = document.getElementById('scan-result');
+    const statusDiv = document.getElementById('scanner-status');
+    const codeElement = document.getElementById('scanned-code');
+    
+    codeElement.textContent = code;
+    statusDiv.classList.add('d-none');
+    resultDiv.classList.remove('d-none');
+    
+    if (navigator.vibrate) {
+        navigator.vibrate(200);
+    }
+}
+
+function usarCodigoLido() {
+    const code = document.getElementById('scanned-code').textContent;
+    console.log('📝 Usando código:', code);
+    
+    document.getElementById('numero_bem').value = code;
+    stopScanner();
+    
+    if (scannerModalInstance) {
+        scannerModalInstance.hide();
+    }
+    
+    mostrarMensagem('success', `Código ${code} inserido!`);
+    document.getElementById('numero_bem').focus();
+}
+
+function lerNovamente() {
+    console.log('🔄 Reiniciando scanner...');
+    
+    document.getElementById('scan-result').classList.add('d-none');
+    document.getElementById('scanner-status').classList.remove('d-none');
+    document.getElementById('status-text').textContent = 'Preparando scanner...';
+    
+    isScanning = false;
+    stopQRDetection();
+    
+    setTimeout(() => {
+        startScanner();
+    }, 500);
+}
+
+function switchCamera() {
+    console.log('🔄 Trocando câmera...');
+    
+    currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+    document.getElementById('status-text').textContent = 'Trocando câmera...';
+    
+    isScanning = false;
+    stopQRDetection();
+    
+    setTimeout(() => {
+        startScanner();
+    }, 500);
+}
+
+function stopQRDetection() {
+    if (scanningInterval) {
+        clearInterval(scanningInterval);
+        scanningInterval = null;
+    }
+}
+
+function stopScanner() {
+    console.log('🛑 Parando scanner...');
+    
+    isScanning = false;
+    stopQRDetection();
+    
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => {
+            track.stop();
+        });
+        videoStream = null;
+    }
+    
+    const video = document.getElementById('scanner-video');
+    if (video) {
+        video.srcObject = null;
+    }
+}
+
+function enterManually() {
+    console.log('⌨️ Modo digitação manual');
+    
+    stopScanner();
+    
+    if (scannerModalInstance) {
+        scannerModalInstance.hide();
+    }
+    
+    document.getElementById('numero_bem').focus();
+    document.getElementById('numero_bem').select();
+}
+
+// Inicializar scanner quando o DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    inicializarScanner();
+    
+    // Configurar botão da câmera
+    const btnCamera = document.getElementById('btnCamera');
+    if (btnCamera) {
+        btnCamera.addEventListener('click', openScanner);
+    }
+});
+
+
+
+
+
+
+
+
         // === FIM CÓDIGO JAVASCRIPT DO SCANNER ===
 
         // ===== CRUD (Modal de resultados) =====
