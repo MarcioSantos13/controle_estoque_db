@@ -767,30 +767,42 @@
         }
         /* FIM openScanner */
 
-        /* INÍCIO startBarcodeScanner */
+ /* INÍCIO startBarcodeScanner */
 async function startBarcodeScanner() {
     try {
         console.log('Iniciando scanner de código de barras...');
         stopBarcodeScanner();
 
-        // Verificar se o navegador suporta mediaDevices
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error('Seu navegador não suporta acesso à câmera. Tente usar Chrome, Firefox ou Edge.');
+        // Verificação robusta de suporte à câmera
+        if (!navigator.mediaDevices) {
+            throw new Error('navigator.mediaDevices não está disponível. Use um navegador moderno como Chrome, Firefox ou Edge.');
         }
 
-        // Primeiro, garantir que temos permissão da câmera
+        if (!navigator.mediaDevices.getUserMedia) {
+            throw new Error('navigator.mediaDevices.getUserMedia não está disponível. O acesso à câmera não é suportado.');
+        }
+
+        updateScannerStatus('🔍 Verificando câmera...');
+        updateDebugInfo('Solicitando permissão...');
+
+        // Configurações de fallback para diferentes navegadores
         const constraints = {
             video: {
                 facingMode: usingFrontCamera ? "user" : "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
+                width: { min: 640, ideal: 1280, max: 1920 },
+                height: { min: 480, ideal: 720, max: 1080 }
             },
             audio: false
         };
 
-        console.log('Solicitando permissão da câmera...');
+        console.log('Solicitando permissão da câmera com constraints:', constraints);
+        
         videoStream = await navigator.mediaDevices.getUserMedia(constraints);
         console.log('✅ Câmera acessada com sucesso');
+        
+        if (!videoStream) {
+            throw new Error('Stream de vídeo não foi criado');
+        }
 
         // Iniciar Quagga para leitura de código de barras
         startQuaggaScanner();
