@@ -8,11 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Quagga necessário para o scanner -->
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     
     <style>
-        /* Otimizações Mobile para Scanner - PRESERVAR */
+        /* Otimizações Mobile para Scanner */
         @media (max-width: 768px) {
             .scanner-container {
                 height: 300px !important;
@@ -47,7 +46,7 @@
             }
         }
 
-        /* Debug visual - PRESERVAR */
+        /* Debug visual */
         .debug-overlay {
             position: absolute;
             top: 10px;
@@ -396,7 +395,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-geo-alt me-2"></i>Localização
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
                                         <span class="text-success">
@@ -414,7 +413,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-person me-2"></i>Responsável
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.responsavel and bem_detalhes.responsavel != 'Não informado' %}
                                         <span class="text-success">
@@ -432,7 +431,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-person-badge me-2"></i>Auditor
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.auditor and bem_detalhes.auditor != 'Não informado' %}
                                         <span class="text-info">
@@ -450,7 +449,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-calendar-check me-2"></i>Data Última Vistoria
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.data_ultima_vistoria and bem_detalhes.data_ultima_vistoria != 'Não informada' %}
                                         <span class="text-dark">
@@ -468,7 +467,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-calendar-event me-2"></i>Data Vistoria Atual
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.data_vistoria_atual and bem_detalhes.data_vistoria_atual != 'Não informada' %}
                                         <span class="text-dark">
@@ -486,7 +485,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-calendar-plus me-2"></i>Data de Criação
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0 text-muted">
                                         <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_criacao[:10] if bem_detalhes.data_criacao else 'N/A' }}
                                     </p>
@@ -497,7 +496,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-calendar-event me-2"></i>Última Localização
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0 text-muted">
                                         <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_localizacao[:10] if bem_detalhes.data_localizacao else 'Nunca localizado' }}
                                     </p>
@@ -509,7 +508,7 @@
                                 <div class="bg-light rounded-3 p-3">
                                     <h6 class="text-muted mb-2">
                                         <i class="bi bi-lightbulb me-2"></i>Informações
-                                    </h06>
+                                    </h6>
                                     <p class="small text-muted mb-0">
                                         {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %} ✅ Este bem já foi localizado e está devidamente registrado no sistema. {% else %} ⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar. {% endif %}
                                     </p>
@@ -1189,7 +1188,7 @@
                         <div class="bem-detail-card">
                             <h6 class="text-primary fw-semibold mb-2">
                                 <i class="bi bi-info-circle me-2"></i>Situação
-                            </h06>
+                            </h6>
                             <p class="mb-0">
                                 ${dados.situacao === 'OK'
                                 ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
@@ -1203,7 +1202,7 @@
                         <div class="bem-detail-card">
                             <h6 class="text-primary fw-semibold mb-2">
                                 <i class="bi bi-geo-alt me-2"></i>Localização
-                            </h06>
+                            </h6>
                             <p class="mb-0">
                                 ${dados.localizacao && dados.localizacao !== 'Não informada'
                                 ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
