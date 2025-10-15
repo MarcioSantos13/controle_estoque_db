@@ -415,3 +415,34 @@ footer {
   font-weight: 500;
   margin-bottom: 0;
 }
+
+/* Otimizações Mobile para Scanner */
+@media (max-width: 768px) {
+    .scanner-container {
+        height: 300px !important; /* Menor altura para mobile */
+    }
+    
+    .scanner-frame {
+        width: 85% !important;
+        height: 180px !important;
+    }
+    
+    .scan-line {
+        animation-duration: 1.2s !important; /* Mais lento para mobile */
+    }
+    
+    .scanner-guide {
+        font-size: 12px !important;
+        padding: 8px !important;
+    }
+    
+    #scanner-status, #scan-result {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+    
+    .modal-footer .btn {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+    }
+}
