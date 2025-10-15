@@ -589,13 +589,13 @@
         </div>
     </div>
 
-    <!-- === MODAL DO SCANNER OTIMIZADO PARA ETIQUETAS PATRIMONIAIS === -->
+    <!-- === MODAL DO SCANNER CORRIGIDO === -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="scannerModalLabel">
-                        <i class="bi bi-upc-scan me-2"></i>Escanear Código Patrimonial
+                        <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -608,11 +608,10 @@
                         </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
-                        <div class="scanner-guide">Posicione a etiqueta dentro do quadro</div>
                     </div>
                     <div id="scanner-status" class="p-3 bg-dark text-white small">
                         <i class="bi bi-info-circle me-1"></i>
-                        <span id="status-text">Preparando scanner para etiquetas metálicas...</span>
+                        <span id="status-text">Preparando scanner...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
                         <i class="bi bi-check-circle me-1"></i>
@@ -626,9 +625,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-warning" onclick="toggleDebugMode()">
-                        <i class="bi bi-bug me-1"></i>Debug
-                    </button>
                     <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn" onclick="switchCamera()">
                         <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
                     </button>
@@ -705,19 +701,18 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal OTIMIZADO - Scanner para Etiquetas Patrimoniais -->
+    <!-- Script Principal CORRIGIDO - Scanner Sincronizado -->
     <script>
-        // === SCANNER OTIMIZADO PARA ETIQUETAS PATRIMONIAIS ===
+        // === SCANNER CORRIGIDO - VERSÃO SINCRONIZADA ===
         let scannerModalInstance = null;
         let videoStream = null;
         let quaggaInitialized = false;
         let currentFacingMode = 'environment';
         let lastScanTime = 0;
-        let debugMode = false;
         const SCAN_COOLDOWN = 1000; // 1 segundo entre leituras
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado - inicializando scanner patrimonial...');
+            console.log('DOM carregado - inicializando scanner...');
             inicializarScanner();
             
             // Configurar botão da câmera
@@ -733,10 +728,10 @@
                 scannerModalInstance = new bootstrap.Modal(scannerModalElement);
                 
                 scannerModalElement.addEventListener('shown.bs.modal', function() {
-                    console.log('Modal aberto - iniciando scanner patrimonial...');
+                    console.log('Modal aberto - iniciando scanner...');
                     setTimeout(() => {
                         startBarcodeScanner();
-                    }, 500);
+                    }, 500); // Aumentado para garantir que o modal está totalmente renderizado
                 });
                 
                 scannerModalElement.addEventListener('hidden.bs.modal', function() {
@@ -747,12 +742,12 @@
         }
 
         function openScanner() {
-            console.log('Abrindo scanner patrimonial...');
+            console.log('Abrindo scanner...');
             if (scannerModalInstance) {
                 // Resetar estado do modal
                 document.getElementById('scan-result').classList.add('d-none');
                 document.getElementById('scanner-status').classList.remove('d-none');
-                document.getElementById('status-text').textContent = 'Preparando scanner para etiquetas metálicas...';
+                document.getElementById('status-text').textContent = 'Preparando scanner...';
                 
                 scannerModalInstance.show();
             }
@@ -760,12 +755,12 @@
 
         async function startBarcodeScanner() {
             try {
-                console.log('Iniciando scanner patrimonial...');
+                console.log('Iniciando scanner...');
                 stopBarcodeScanner(); // Garantir limpeza prévia
 
-                updateScannerStatus('🔍 Iniciando câmera para etiquetas metálicas...');
+                updateScannerStatus('🔍 Iniciando câmera...');
 
-                // Configurações otimizadas da câmera para etiquetas metálicas
+                // Configurações otimizadas da câmera
                 const constraints = {
                     video: {
                         facingMode: currentFacingMode,
@@ -791,7 +786,7 @@
                     });
                 }
 
-                // Iniciar Quagga com configurações otimizadas para patrimônio
+                // Iniciar Quagga com configurações sincronizadas
                 iniciarQuagga();
 
             } catch (error) {
@@ -808,7 +803,7 @@
             }
 
             try {
-                console.log('Iniciando Quagga otimizado para etiquetas patrimoniais...');
+                console.log('Iniciando Quagga com configuração sincronizada...');
 
                 // Obter dimensões do vídeo
                 const video = document.getElementById('scanner-video');
@@ -819,7 +814,7 @@
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
-                        target: document.querySelector('#interactive'),
+                        target: document.querySelector('#interactive'), // Usar o container principal
                         constraints: {
                             facingMode: currentFacingMode,
                             width: videoWidth,
@@ -827,85 +822,66 @@
                             aspectRatio: { min: 1, max: 2 }
                         },
                         area: {
-                            // Área maior para melhor detecção de etiquetas metálicas
-                            top: "15%",
-                            right: "10%",
-                            left: "10%",
-                            bottom: "15%"
+                            top: "20%",
+                            right: "15%",
+                            left: "15%",
+                            bottom: "20%"
                         }
                     },
                     decoder: {
                         readers: [
-                            // Priorizar code_128 e code_39 (mais comuns em patrimônio)
                             "code_128_reader",
-                            "code_39_reader",
-                            "code_39_vin_reader",
                             "ean_reader",
                             "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
                             "codabar_reader",
                             "upc_reader",
                             "upc_e_reader"
-                        ],
-                        multiple: false
+                        ]
                     },
                     locator: {
-                        patchSize: "large", // Aumentar para etiquetas metálicas
-                        halfSample: false   // Desativar para melhor qualidade
+                        patchSize: "medium",
+                        halfSample: true
                     },
                     locate: true,
-                    frequency: 15, // Aumentar frequência de verificação
-                    numOfWorkers: navigator.hardwareConcurrency || 2
+                    frequency: 10, // Aumentar frequência para melhor responsividade
+                    numOfWorkers: navigator.hardwareConcurrency || 4,
+                    multiple: false
                 }, function(err) {
                     if (err) {
                         console.error('Erro ao inicializar Quagga:', err);
                         updateScannerStatus('❌ Erro no scanner: ' + err.message);
-                        
-                        // Tentar configuração alternativa mais simples
-                        setTimeout(() => {
-                            iniciarQuaggaSimplificado();
-                        }, 1000);
                         return;
                     }
 
-                    console.log('✅ Quagga otimizado inicializado com sucesso');
+                    console.log('✅ Quagga inicializado com sucesso');
                     console.log('Dimensões do vídeo:', video.videoWidth, 'x', video.videoHeight);
                     
                     Quagga.start();
                     quaggaInitialized = true;
                     
-                    updateScannerStatus('📷 Scanner otimizado ativo - Aproxime a etiqueta');
+                    updateScannerStatus('📷 Scanner ativo - Aponte para o código de barras');
 
-                    // Configurar detecção com tratamento melhorado
+                    // Configurar detecção com debounce
                     Quagga.onDetected(function(result) {
                         const now = Date.now();
                         if (now - lastScanTime < SCAN_COOLDOWN) {
-                            return;
+                            return; // Ignorar leituras muito rápidas
                         }
                         
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
-                            const format = result.codeResult.format || 'Desconhecido';
-                            const confidence = result.codeResult.decoded ? result.codeResult.decoded.confidence : 0;
-                            
-                            console.log('✅ Código detectado:', code, 'Formato:', format, 'Confiança:', confidence);
-                            
-                            // Filtro de qualidade - exigir confiança mínima
-                            if (confidence < 0.3) {
-                                console.log('❌ Confiança muito baixa, ignorando...');
-                                return;
-                            }
-                            
+                            console.log('✅ Código detectado:', code, 'Formato:', result.codeResult.format);
                             lastScanTime = now;
                             onScanSuccess(code);
                         }
                     });
 
-                    // Debug avançado para troubleshooting
+                    // Debug: mostrar processamento
                     Quagga.onProcessed(function(result) {
-                        drawDebugOverlay(result);
-                        
-                        if (debugMode && result && result.codeResult && result.codeResult.code) {
-                            console.log('Debug - Código processado:', result.codeResult.code);
+                        if (result) {
+                            drawDebugOverlay(result);
                         }
                     });
 
@@ -914,64 +890,10 @@
             } catch (error) {
                 console.error('Erro crítico no Quagga:', error);
                 updateScannerStatus('❌ Erro crítico no scanner');
-                
-                // Fallback para configuração simples
-                setTimeout(() => {
-                    iniciarQuaggaSimplificado();
-                }, 500);
-            }
-        }
-
-        // Configuração alternativa simplificada
-        function iniciarQuaggaSimplificado() {
-            console.log('Tentando configuração simplificada...');
-            updateScannerStatus('🔄 Tentando configuração alternativa...');
-            
-            try {
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: document.querySelector('#interactive'),
-                        constraints: {
-                            facingMode: currentFacingMode,
-                            width: 640,
-                            height: 480
-                        }
-                    },
-                    decoder: {
-                        readers: ["code_128_reader", "code_39_reader"]
-                    },
-                    locate: true,
-                    frequency: 10
-                }, function(err) {
-                    if (err) {
-                        console.error('Erro na configuração simplificada:', err);
-                        updateScannerStatus('❌ Falha no scanner. Use digitação manual.');
-                        return;
-                    }
-                    
-                    Quagga.start();
-                    quaggaInitialized = true;
-                    updateScannerStatus('📷 Scanner básico ativo');
-                    
-                    Quagga.onDetected(function(result) {
-                        if (result && result.codeResult && result.codeResult.code) {
-                            const code = result.codeResult.code;
-                            console.log('Código detectado (simples):', code);
-                            onScanSuccess(code);
-                        }
-                    });
-                });
-            } catch (error) {
-                console.error('Erro na configuração simplificada:', error);
-                updateScannerStatus('❌ Scanner indisponível');
             }
         }
 
         function drawDebugOverlay(result) {
-            if (!debugMode) return;
-            
             const drawingCtx = Quagga.canvas.ctx.overlay;
             const drawingCanvas = Quagga.canvas.dom.overlay;
 
@@ -1003,52 +925,19 @@
         function onScanSuccess(code) {
             if (!code) return;
             
-            console.log('🎯 Processando código patrimonial:', code);
+            console.log('🎯 Processando código:', code);
             
-            // Limpar e validar código - ajustado para códigos patrimoniais
+            // Limpar e validar código
             const cleanCode = code.toString()
-                .replace(/[^a-zA-Z0-9\-_\s]/g, '') // Permitir espaços também
-                .replace(/\s+/g, ' ')
+                .replace(/[^a-zA-Z0-9\-_]/g, '')
+                .replace(/\s+/g, '')
                 .trim();
             
-            // Validação específica para códigos patrimoniais
-            if (!isValidPatrimonialCode(cleanCode)) {
-                console.log('❌ Código patrimonial inválido:', cleanCode);
-                updateScannerStatus('❌ Código inválido - formato incorreto');
-                
-                // Tentar limpar mais agressivamente
-                const aggressiveClean = cleanCode.replace(/[^a-zA-Z0-9]/g, '');
-                if (isValidPatrimonialCode(aggressiveClean)) {
-                    console.log('✅ Código válido após limpeza agressiva:', aggressiveClean);
-                    processValidCode(aggressiveClean);
-                }
+            if (cleanCode.length < 2) {
+                console.log('❌ Código inválido');
                 return;
             }
             
-            processValidCode(cleanCode);
-        }
-
-        // Validação específica para códigos patrimoniais
-        function isValidPatrimonialCode(code) {
-            if (!code || code.length < 2) {
-                return false;
-            }
-            
-            // Padrões comuns em códigos patrimoniais
-            const patrimonialPatterns = [
-                /^\d+$/,                          // Apenas números
-                /^[A-Za-z]+\d+$/,                 // Letras + números
-                /^\d+[A-Za-z]+$/,                 // Números + letras
-                /^[A-Za-z]+\-\d+$/,               // Letras - números
-                /^\d+\-[A-Za-z]+$/,               // Números - letras
-                /^[A-Za-z0-9\-_]+$/               // Caracteres alfanuméricos com hífen/underscore
-            ];
-            
-            return patrimonialPatterns.some(pattern => pattern.test(code));
-        }
-
-        // Processar código válido
-        function processValidCode(cleanCode) {
             // Mostrar resultado
             const scannedCodeElement = document.getElementById('scanned-code');
             const scanResultElement = document.getElementById('scan-result');
@@ -1062,13 +951,8 @@
                 // Feedback háptico
                 if (navigator.vibrate) navigator.vibrate(200);
                 
-                // Parar scanner
+                // Parar scanner imediatamente para evitar múltiplas leituras
                 stopBarcodeScanner();
-                
-                // Auto-confirmação após 2 segundos
-                setTimeout(() => {
-                    usarCodigoLido();
-                }, 2000);
             }
         }
 
@@ -1107,7 +991,7 @@
 
         function usarCodigoLido() {
             const code = document.getElementById('scanned-code').textContent;
-            console.log('📝 Usando código patrimonial:', code);
+            console.log('📝 Usando código:', code);
             
             // Preencher campo e fechar modal
             const numeroBemField = document.getElementById('numero_bem');
@@ -1141,23 +1025,6 @@
             
             // Reiniciar com nova câmera
             startBarcodeScanner();
-        }
-
-        function toggleDebugMode() {
-            debugMode = !debugMode;
-            const debugBtn = document.querySelector('button[onclick="toggleDebugMode()"]');
-            
-            if (debugMode) {
-                debugBtn.classList.remove('btn-outline-warning');
-                debugBtn.classList.add('btn-warning');
-                updateScannerStatus('🔧 Modo debug ativado');
-                console.log('Modo debug ativado');
-            } else {
-                debugBtn.classList.remove('btn-warning');
-                debugBtn.classList.add('btn-outline-warning');
-                updateScannerStatus('📷 Scanner ativo');
-                console.log('Modo debug desativado');
-            }
         }
 
         function enterManually() {
@@ -1366,7 +1233,7 @@
 
                 console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
 
-                const apiBase = window.location.origin;
+                const apiBase = window.location.origin; // Usar a mesma origem
                 
                 fetch(`${apiBase}/api/bens/${bem_id}`, {
                     method: 'PUT',
