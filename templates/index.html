@@ -9,43 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    
-    <style>
-        /* Otimizações Mobile para Scanner */
-        @media (max-width: 768px) {
-            .scanner-container {
-                height: 300px !important;
-            }
-            
-            .scanner-frame {
-                width: 85% !important;
-                height: 180px !important;
-            }
-            
-            .scan-line {
-                animation-duration: 1.2s !important;
-            }
-            
-            .scanner-guide {
-                font-size: 12px !important;
-                padding: 8px !important;
-            }
-            
-            #scanner-status, #scan-result {
-                padding: 12px !important;
-                font-size: 14px !important;
-            }
-            
-            .modal-footer .btn {
-                padding: 8px 12px !important;
-                font-size: 14px !important;
-            }
-            
-            .scanner-viewport {
-                height: 100% !important;
-            }
-        }
-    </style>
 </head>
 
 <body class="bg-light">
@@ -382,7 +345,7 @@
                                 <div class="bem-detail-card">
                                     <h6 class="text-primary fw-semibold mb-2">
                                         <i class="bi bi-geo-alt me-2"></i>Localização
-                                    </h06>
+                                    </h6>
                                     <p class="mb-0">
                                         {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
                                         <span class="text-success">
@@ -626,7 +589,7 @@
         </div>
     </div>
 
-    <!-- === MODAL DO SCANNER MOBILE OTIMIZADO === -->
+    <!-- === MODAL DO SCANNER COM SUPORTE A INTERLEAVED 2 OF 5 === -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -643,11 +606,11 @@
                         </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
-                        <div class="scanner-guide">Posicione o código dentro do quadro</div>
+                        <div class="scanner-guide">Posicione o código Interleaved 2 of 5 dentro do quadro</div>
                     </div>
                     <div id="scanner-status" class="p-3 bg-dark text-white small">
                         <i class="bi bi-info-circle me-1"></i>
-                        <span id="status-text">Preparando scanner mobile...</span>
+                        <span id="status-text">Preparando scanner para Interleaved 2 of 5...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
                         <i class="bi bi-check-circle me-1"></i>
@@ -737,18 +700,18 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal MOBILE OTIMIZADO -->
+    <!-- Script Principal COM SUPORTE A INTERLEAVED 2 OF 5 -->
     <script>
-        // === SCANNER MOBILE OTIMIZADO ===
+        // === SCANNER COM SUPORTE A INTERLEAVED 2 OF 5 ===
         let scannerModalInstance = null;
         let videoStream = null;
         let quaggaInitialized = false;
         let currentFacingMode = 'environment';
         let lastScanTime = 0;
-        const SCAN_COOLDOWN = 800; // Reduzido para mobile
+        const SCAN_COOLDOWN = 1000; // 1 segundo entre leituras
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado - inicializando scanner mobile...');
+            console.log('DOM carregado - inicializando scanner com suporte a Interleaved 2 of 5...');
             inicializarScanner();
             
             // Configurar botão da câmera
@@ -764,10 +727,10 @@
                 scannerModalInstance = new bootstrap.Modal(scannerModalElement);
                 
                 scannerModalElement.addEventListener('shown.bs.modal', function() {
-                    console.log('Modal aberto - iniciando scanner mobile...');
+                    console.log('Modal aberto - iniciando scanner...');
                     setTimeout(() => {
                         startBarcodeScanner();
-                    }, 300);
+                    }, 500);
                 });
                 
                 scannerModalElement.addEventListener('hidden.bs.modal', function() {
@@ -778,12 +741,12 @@
         }
 
         function openScanner() {
-            console.log('Abrindo scanner mobile...');
+            console.log('Abrindo scanner...');
             if (scannerModalInstance) {
                 // Resetar estado do modal
                 document.getElementById('scan-result').classList.add('d-none');
                 document.getElementById('scanner-status').classList.remove('d-none');
-                document.getElementById('status-text').textContent = 'Preparando scanner mobile...';
+                document.getElementById('status-text').textContent = 'Preparando scanner para Interleaved 2 of 5...';
                 
                 scannerModalInstance.show();
             }
@@ -791,61 +754,47 @@
 
         async function startBarcodeScanner() {
             try {
-                console.log('Iniciando scanner mobile otimizado...');
-                stopBarcodeScanner();
+                console.log('Iniciando scanner com suporte a Interleaved 2 of 5...');
+                stopBarcodeScanner(); // Garantir limpeza prévia
 
-                updateScannerStatus('📱 Iniciando câmera mobile...');
+                updateScannerStatus('🔍 Iniciando câmera para Interleaved 2 of 5...');
 
-                // Configurações MOBILE otimizadas
+                // Configurações otimizadas para Interleaved 2 of 5
                 const constraints = {
                     video: {
                         facingMode: currentFacingMode,
-                        width: { min: 320, ideal: 1280, max: 1920 },
-                        height: { min: 240, ideal: 720, max: 1080 },
-                        frameRate: { ideal: 30, max: 60 },
-                        aspectRatio: { ideal: 1.7777777778 }
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        focusMode: 'continuous' // Foco contínuo para melhor leitura
                     },
                     audio: false
                 };
 
-                try {
-                    videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-                } catch (error) {
-                    console.log('Tentativa 1 falhou, tentando configuração mais simples...');
-                    constraints.video = {
-                        facingMode: currentFacingMode,
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
-                    };
-                    videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-                }
-
-                console.log('✅ Câmera mobile acessada com sucesso');
+                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log('✅ Câmera acessada com sucesso');
                 
                 const video = document.getElementById('scanner-video');
                 if (video) {
                     video.srcObject = videoStream;
                     
+                    // Aguardar o vídeo estar pronto
                     await new Promise((resolve) => {
                         video.onloadedmetadata = () => {
-                            video.play().then(resolve).catch(err => {
-                                console.log('Erro no play, tentando sem áudio:', err);
-                                video.muted = true;
-                                video.play().then(resolve);
-                            });
+                            video.play().then(resolve);
                         };
                     });
                 }
 
-                iniciarQuaggaMobile();
+                // Iniciar Quagga com suporte a Interleaved 2 of 5
+                iniciarQuagga();
 
             } catch (error) {
-                console.error('Erro ao acessar câmera mobile:', error);
+                console.error('Erro ao acessar câmera:', error);
                 handleCameraError(error);
             }
         }
 
-        function iniciarQuaggaMobile() {
+        function iniciarQuagga() {
             if (typeof Quagga === 'undefined') {
                 console.error('Quagga não carregado');
                 updateScannerStatus('❌ Biblioteca não carregada');
@@ -853,69 +802,66 @@
             }
 
             try {
-                console.log('Iniciando Quagga com configurações MOBILE...');
+                console.log('Iniciando Quagga com suporte a Interleaved 2 of 5...');
 
-                const config = {
+                Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
                         target: document.querySelector('#interactive'),
                         constraints: {
                             facingMode: currentFacingMode,
-                            width: { min: 320, ideal: 640, max: 1280 },
-                            height: { min: 240, ideal: 480, max: 720 },
-                            aspectRatio: { min: 1, max: 2 }
+                            width: 640,
+                            height: 480
                         },
                         area: {
-                            top: "10%",
-                            right: "5%",
-                            left: "5%",
-                            bottom: "10%"
-                        },
-                        singleChannel: false
+                            // Área de detecção otimizada para Interleaved 2 of 5
+                            top: "20%",
+                            right: "15%",
+                            left: "15%",
+                            bottom: "20%"
+                        }
                     },
                     decoder: {
                         readers: [
-                            "i2of5_reader",
-                            "code_128_reader",
-                            "code_39_reader",
-                            "code_39_vin_reader",
-                            "ean_reader",
-                            "ean_8_reader",
-                            "upc_reader",
-                            "upc_e_reader",
-                            "codabar_reader"
-                        ],
-                        multiple: false
+                            "i2of5_reader",           // Interleaved 2 of 5 - ESSENCIAL
+                            "code_128_reader",        // Código 128
+                            "code_39_reader",         // Código 39
+                            "code_39_vin_reader",     // Código 39 VIN
+                            "ean_reader",             // EAN
+                            "ean_8_reader",           // EAN-8
+                            "upc_reader",             // UPC
+                            "upc_e_reader",           // UPC-E
+                            "codabar_reader"          // Codabar
+                        ]
                     },
                     locator: {
                         patchSize: "medium",
-                        halfSample: true,
-                        willReadFrequently: true
+                        halfSample: true
                     },
                     locate: true,
-                    frequency: 20,
-                    numOfWorkers: navigator.hardwareConcurrency ? Math.min(2, navigator.hardwareConcurrency) : 1
-                };
-
-                Quagga.init(config, function(err) {
+                    frequency: 10,
+                    numOfWorkers: 2
+                }, function(err) {
                     if (err) {
-                        console.error('Erro ao inicializar Quagga mobile:', err);
-                        updateScannerStatus('❌ Erro: ' + err.message);
+                        console.error('Erro ao inicializar Quagga:', err);
+                        updateScannerStatus('❌ Erro no scanner: ' + err.message);
                         
+                        // Tentar configuração alternativa sem locator
                         setTimeout(() => {
-                            iniciarQuaggaUltraSimples();
-                        }, 500);
+                            iniciarQuaggaSimplificado();
+                        }, 1000);
                         return;
                     }
 
-                    console.log('✅ Quagga mobile inicializado com sucesso');
+                    console.log('✅ Quagga com Interleaved 2 of 5 inicializado com sucesso');
                     
                     Quagga.start();
                     quaggaInitialized = true;
                     
-                    updateScannerStatus('📱 Scanner mobile ativo - Aproxime o código');
+                    updateScannerStatus('📷 Scanner ativo - Aponte para o código Interleaved 2 of 5');
 
+                    // Configurar detecção
                     Quagga.onDetected(function(result) {
                         const now = Date.now();
                         if (now - lastScanTime < SCAN_COOLDOWN) {
@@ -925,14 +871,7 @@
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
                             const format = result.codeResult.format || 'Desconhecido';
-                            const confidence = result.codeResult.decoded ? result.codeResult.decoded.confidence : 0;
-                            
-                            console.log('📱 Código detectado:', code, 'Formato:', format, 'Confiança:', confidence);
-                            
-                            if (confidence < 0.1) {
-                                console.log('⚠️  Confiança baixa, mas aceitando...');
-                            }
-                            
+                            console.log('✅ Código detectado:', code, 'Formato:', format);
                             lastScanTime = now;
                             onScanSuccess(code, format);
                         }
@@ -941,18 +880,15 @@
                 });
 
             } catch (error) {
-                console.error('Erro crítico no Quagga mobile:', error);
-                updateScannerStatus('❌ Erro crítico');
-                
-                setTimeout(() => {
-                    iniciarQuaggaUltraSimples();
-                }, 500);
+                console.error('Erro crítico no Quagga:', error);
+                updateScannerStatus('❌ Erro crítico no scanner');
             }
         }
 
-        function iniciarQuaggaUltraSimples() {
-            console.log('🔧 Tentando configuração ULTRA SIMPLES...');
-            updateScannerStatus('🔄 Configuração ultra simples...');
+        // Configuração alternativa simplificada
+        function iniciarQuaggaSimplificado() {
+            console.log('Tentando configuração simplificada...');
+            updateScannerStatus('🔄 Tentando configuração alternativa...');
             
             try {
                 Quagga.init({
@@ -961,35 +897,42 @@
                         type: "LiveStream",
                         target: document.querySelector('#interactive'),
                         constraints: {
-                            facingMode: currentFacingMode
+                            facingMode: currentFacingMode,
+                            width: 640,
+                            height: 480
                         }
                     },
                     decoder: {
-                        readers: ["i2of5_reader", "code_128_reader", "code_39_reader"]
+                        readers: [
+                            "i2of5_reader",      // Interleaved 2 of 5
+                            "code_128_reader",   // Código 128
+                            "code_39_reader"     // Código 39
+                        ]
                     },
                     locate: true,
-                    frequency: 15
+                    frequency: 10
                 }, function(err) {
                     if (err) {
-                        console.error('Erro na configuração ultra simples:', err);
-                        updateScannerStatus('❌ Use digitação manual');
+                        console.error('Erro na configuração simplificada:', err);
+                        updateScannerStatus('❌ Falha no scanner. Use digitação manual.');
                         return;
                     }
                     
                     Quagga.start();
                     quaggaInitialized = true;
-                    updateScannerStatus('📱 Scanner básico ativo');
+                    updateScannerStatus('📷 Scanner básico ativo (com Interleaved 2 of 5)');
                     
                     Quagga.onDetected(function(result) {
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
-                            console.log('📱 Código (simples):', code);
-                            onScanSuccess(code, 'Desconhecido');
+                            const format = result.codeResult.format || 'Desconhecido';
+                            console.log('Código detectado (simples):', code, 'Formato:', format);
+                            onScanSuccess(code, format);
                         }
                     });
                 });
             } catch (error) {
-                console.error('Erro final:', error);
+                console.error('Erro na configuração simplificada:', error);
                 updateScannerStatus('❌ Scanner indisponível');
             }
         }
@@ -997,47 +940,49 @@
         function onScanSuccess(code, format) {
             if (!code) return;
             
-            console.log('🎯 Processando código mobile:', code, 'Formato:', format);
+            console.log('🎯 Processando código:', code, 'Formato:', format);
             
-            let cleanCode = code.toString()
-                .replace(/[^a-zA-Z0-9\-_\s]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
+            // Limpar e validar código - tratamento especial para Interleaved 2 of 5
+            let cleanCode = code.toString().trim();
             
-            if (cleanCode.length < 1) {
-                console.log('❌ Código muito curto');
+            // Interleaved 2 of 5 geralmente contém apenas números
+            if (format === 'i2of5') {
+                cleanCode = cleanCode.replace(/[^0-9]/g, '');
+            } else {
+                cleanCode = cleanCode.replace(/[^a-zA-Z0-9\-_]/g, '');
+            }
+            
+            if (cleanCode.length < 2) {
+                console.log('❌ Código inválido');
                 return;
             }
             
+            // Mostrar resultado com informação do formato
             const scannedCodeElement = document.getElementById('scanned-code');
             const scanResultElement = document.getElementById('scan-result');
             const statusElement = document.getElementById('scanner-status');
             
             if (scannedCodeElement && scanResultElement && statusElement) {
-                scannedCodeElement.textContent = `${cleanCode}${format !== 'Desconhecido' ? ` (${format})` : ''}`;
+                scannedCodeElement.textContent = `${cleanCode} (${format})`;
                 statusElement.classList.add('d-none');
                 scanResultElement.classList.remove('d-none');
                 
-                if (navigator.vibrate) {
-                    navigator.vibrate(50);
-                }
+                // Feedback háptico
+                if (navigator.vibrate) navigator.vibrate(100);
                 
-                setTimeout(() => {
-                    if (!document.getElementById('scan-result').classList.contains('d-none')) {
-                        usarCodigoLido();
-                    }
-                }, 1500);
+                // Parar scanner
+                stopBarcodeScanner();
             }
         }
 
         function stopBarcodeScanner() {
-            console.log('🛑 Parando scanner mobile...');
+            console.log('🛑 Parando scanner...');
             
+            // Parar Quagga
             if (typeof Quagga !== 'undefined' && quaggaInitialized) {
                 try {
                     Quagga.stop();
                     Quagga.offDetected();
-                    Quagga.offProcessed();
                     quaggaInitialized = false;
                     console.log('✅ Quagga parado');
                 } catch (error) {
@@ -1045,6 +990,7 @@
                 }
             }
             
+            // Parar stream de vídeo
             if (videoStream) {
                 videoStream.getTracks().forEach(track => {
                     track.stop();
@@ -1052,6 +998,7 @@
                 videoStream = null;
             }
             
+            // Limpar elemento de vídeo
             const video = document.getElementById('scanner-video');
             if (video) {
                 video.srcObject = null;
@@ -1064,10 +1011,12 @@
             const codeElement = document.getElementById('scanned-code');
             let code = codeElement.textContent;
             
+            // Remover o formato do código (ex: "123456 (i2of5)" -> "123456")
             code = code.split(' (')[0];
             
-            console.log('📝 Usando código mobile:', code);
+            console.log('📝 Usando código:', code);
             
+            // Preencher campo e fechar modal
             const numeroBemField = document.getElementById('numero_bem');
             if (numeroBemField) {
                 numeroBemField.value = code;
@@ -1083,10 +1032,12 @@
         function lerNovamente() {
             console.log('🔄 Reiniciando scanner...');
             
+            // Resetar UI
             document.getElementById('scan-result').classList.add('d-none');
             document.getElementById('scanner-status').classList.remove('d-none');
             document.getElementById('status-text').textContent = 'Preparando scanner...';
             
+            // Reiniciar scanner
             startBarcodeScanner();
         }
 
@@ -1095,6 +1046,7 @@
             currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
             updateScannerStatus('🔄 Trocando câmera...');
             
+            // Reiniciar com nova câmera
             startBarcodeScanner();
         }
 
@@ -1106,6 +1058,7 @@
                 scannerModalInstance.hide();
             }
             
+            // Focar no campo de entrada
             const numeroBemField = document.getElementById('numero_bem');
             if (numeroBemField) {
                 numeroBemField.focus();
@@ -1242,6 +1195,7 @@
                 document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
                 document.getElementById('edt_situacao').value = bemAtual.situacao;
 
+                // Novos campos
                 document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
                 document.getElementById('edt_auditor').value = bemAtual.auditor || '';
                 document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
@@ -1276,6 +1230,7 @@
                 const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
                 const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
 
+                // Validações
                 if (isNaN(bem_id) || bem_id <= 0) {
                     alert('ID do bem inválido');
                     return;
@@ -1388,4 +1343,5 @@
         }
     </script>
 </body>
+
 </html>
