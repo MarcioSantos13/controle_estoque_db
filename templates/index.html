@@ -8,61 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Quagga para leitor de código de barras -->
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    
-    <style>
-        /* Otimizações Mobile para Scanner */
-        @media (max-width: 768px) {
-            .scanner-container {
-                height: 300px !important;
-            }
-            
-            .scanner-frame {
-                width: 85% !important;
-                height: 180px !important;
-            }
-            
-            .scan-line {
-                animation-duration: 1.2s !important;
-            }
-            
-            .scanner-guide {
-                font-size: 12px !important;
-                padding: 8px !important;
-            }
-            
-            #scanner-status, #scan-result {
-                padding: 12px !important;
-                font-size: 14px !important;
-            }
-            
-            .modal-footer .btn {
-                padding: 8px 12px !important;
-                font-size: 14px !important;
-            }
-            
-            .scanner-viewport {
-                height: 100% !important;
-            }
-        }
-
-        /* Debug visual */
-        .debug-overlay {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.7);
-            color: #00ff00;
-            padding: 5px;
-            font-size: 10px;
-            z-index: 1000;
-            border-radius: 3px;
-        }
-    </style>
 </head>
 
 <body class="bg-light">
-    <!-- Header Moderno -->
+    <!-- Header -->
     <header class="bg-primary text-white shadow-sm">
         <div class="container py-4">
             <div class="row align-items-center">
@@ -74,18 +25,15 @@
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="d-flex align-items-center justify-content-md-end gap-2">
-                        <!-- Contador de Bens -->
                         <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1">
                             <small>
                                 <i class="bi bi-database me-1"></i>
                                 <span id="total-bens">{{ total_count|number_format }}</span> bens
                             </small>
                         </div>
-                        <!-- ✅ BOTÃO DE AJUDA FORA DO DROPDOWN -->
                         <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
                             <i class="bi bi-question-circle me-1"></i>Ajuda
                         </a>
-                        <!-- Dropdown do Usuário -->
                         <div class="dropdown">
                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-1"></i>
@@ -108,9 +56,7 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('perfil') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -121,9 +67,7 @@
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
                                     </a>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -147,7 +91,7 @@
     {% endif %}
 
     <main class="container py-5">
-        <!-- Card de Busca Moderno -->
+        <!-- Card de Busca -->
         <div class="card shadow-lg border-0 rounded-3 mb-4">
             <div class="card-header bg-white py-3 border-0">
                 <h2 class="h5 mb-0 text-center">
@@ -159,9 +103,12 @@
                 <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
                     <div class="d-flex align-items-center">
                         {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
+                        <i class="bi bi-check-circle-fill me-2"></i> 
+                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> 
+                        {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> 
+                        {% endif %}
                         <span>{{ mensagem }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -174,7 +121,7 @@
                             <i class="bi bi-upc-scan me-1"></i>Número do Bem
                         </label>
                         <div class="input-group">
-                            <input type="text" name="numero_bem" id="numero_bem" class="form-control form-control" placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
+                            <input type="text" name="numero_bem" id="numero_bem" class="form-control" placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
                             <button type="button" class="btn btn-outline-secondary" id="btnCamera" title="Escanear código de barras">
                                 <i class="bi bi-camera"></i>
                             </button>
@@ -186,12 +133,12 @@
                         <label for="localizacao" class="form-label fw-semibold">
                             <i class="bi bi-geo-alt me-1"></i>Localização
                         </label>
-                        <input type="text" name="localizacao" id="localizacao" class="form-control form-control" placeholder="Ex: Almoxarifado Central, Sala 101">
+                        <input type="text" name="localizacao" id="localizacao" class="form-control" placeholder="Ex: Almoxarifado Central, Sala 101">
                         <div class="form-text">Opcional - atualiza a localização</div>
                     </div>
 
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100" id="btnLocalizar" style="height: 42px;">
+                        <button type="submit" class="btn btn-primary w-100" id="btnLocalizar">
                             <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
                             <i class="bi bi-search"></i>
                         </button>
@@ -337,7 +284,7 @@
         </div>
     </div>
 
-    <!-- Modal de Detalhes do Bem com CRUD -->
+    <!-- Modal de Detalhes do Bem -->
     <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg rounded-3">
@@ -348,298 +295,18 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-
-                    {% if bem_detalhes %}
-                    <div id="detalhesBem">
-                        <div class="row g-4">
-                            <!-- Cabeçalho com número do bem -->
-                            <div class="col-12">
-                                <div class="bg-light rounded-3 p-3">
-                                    <h6 class="mb-1 text-primary fw-semibold">
-                                        <i class="bi bi-upc-scan me-2"></i>Número do Bem
-                                    </h6>
-                                    <p class="fs-4 fw-bold mb-0">{{ bem_detalhes.numero }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Nome do Item -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-tag me-2"></i>Nome do Item
-                                    </h6>
-                                    <p class="text-dark mb-0">{{ bem_detalhes.nome }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Situação -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-info-circle me-2"></i>Situação
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %}
-                                        <span class="badge bg-success fs-6 p-2">
-                                            <i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO
-                                        </span> {% else %}
-                                        <span class="badge bg-warning fs-6 p-2">
-                                            <i class="bi bi-clock-history me-1"></i>{{ bem_detalhes.situacao }}
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Localização -->
-                            <div class="col-12">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-geo-alt me-2"></i>Localização
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.localizacao and bem_detalhes.localizacao != 'Não informada' %}
-                                        <span class="text-success">
-                                            <i class="bi bi-geo-alt-fill me-1"></i>{{ bem_detalhes.localizacao }}
-                                        </span> {% else %}
-                                        <span class="text-muted">
-                                            <i class="bi bi-geo-alt me-1"></i>Localização não informada
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Responsável -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-person me-2"></i>Responsável
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.responsavel and bem_detalhes.responsavel != 'Não informado' %}
-                                        <span class="text-success">
-                                            <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.responsavel }}
-                                        </span> {% else %}
-                                        <span class="text-muted">
-                                            <i class="bi bi-person me-1"></i>Não informado
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Auditor -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-person-badge me-2"></i>Auditor
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.auditor and bem_detalhes.auditor != 'Não informado' %}
-                                        <span class="text-info">
-                                            <i class="bi bi-person-check me-1"></i>{{ bem_detalhes.auditor }}
-                                        </span> {% else %}
-                                        <span class="text-muted">
-                                            <i class="bi bi-person me-1"></i>Não informado
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Data Última Vistoria -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-calendar-check me-2"></i>Data Última Vistoria
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.data_ultima_vistoria and bem_detalhes.data_ultima_vistoria != 'Não informada' %}
-                                        <span class="text-dark">
-                                            <i class="bi bi-calendar-event me-1"></i>{{ bem_detalhes.data_ultima_vistoria }}
-                                        </span> {% else %}
-                                        <span class="text-muted">
-                                            <i class="bi bi-calendar me-1"></i>Não informada
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Data Vistoria Atual -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-calendar-event me-2"></i>Data Vistoria Atual
-                                    </h6>
-                                    <p class="mb-0">
-                                        {% if bem_detalhes.data_vistoria_atual and bem_detalhes.data_vistoria_atual != 'Não informada' %}
-                                        <span class="text-dark">
-                                            <i class="bi bi-calendar-check me-1"></i>{{ bem_detalhes.data_vistoria_atual }}
-                                        </span> {% else %}
-                                        <span class="text-muted">
-                                            <i class="bi bi-calendar me-1"></i>Não informada
-                                        </span> {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Datas do Sistema -->
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-calendar-plus me-2"></i>Data de Criação
-                                    </h6>
-                                    <p class="mb-0 text-muted">
-                                        <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_criacao[:10] if bem_detalhes.data_criacao else 'N/A' }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="bem-detail-card">
-                                    <h6 class="text-primary fw-semibold mb-2">
-                                        <i class="bi bi-calendar-event me-2"></i>Última Localização
-                                    </h6>
-                                    <p class="mb-0 text-muted">
-                                        <i class="bi bi-clock me-1"></i> {{ bem_detalhes.data_localizacao[:10] if bem_detalhes.data_localizacao else 'Nunca localizado' }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Informações Adicionais -->
-                            <div class="col-12">
-                                <div class="bg-light rounded-3 p-3">
-                                    <h6 class="text-muted mb-2">
-                                        <i class="bi bi-lightbulb me-2"></i>Informações
-                                    </h6>
-                                    <p class="small text-muted mb-0">
-                                        {% if bem_detalhes.situacao and 'OK' in bem_detalhes.situacao %} ✅ Este bem já foi localizado e está devidamente registrado no sistema. {% else %} ⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar. {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {% else %}
-                    <!-- Estado de erro -->
-                    <div class="text-center py-5">
-                        <i class="bi bi-exclamation-triangle display-4 text-warning mb-3"></i>
-                        <h4 class="text-warning mb-3">Bem não encontrado</h4>
-                        <p class="text-muted mb-4">
-                            O número do bem informado não foi encontrado em nosso sistema. Verifique o número e tente novamente.
-                        </p>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                            <i class="bi bi-arrow-left me-1"></i>Voltar e tentar novamente
-                        </button>
-                    </div>
-                    {% endif %}
-
-                    <!-- Formulário de Edição (inicialmente oculto) -->
-                    <div id="formEdicao" style="display: none;">
-                        <form id="formEditarBem">
-                            <input type="hidden" id="bem_id" name="bem_id">
-
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Número do Bem *</label>
-                                    <input type="text" class="form-control" id="edt_numero" name="numero" required pattern="[A-Za-z0-9-]+" readonly>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Situação *</label>
-                                    <select class="form-select" id="edt_situacao" name="situacao" required>
-                                        <option value="Pendente">Pendente</option>
-                                        <option value="OK">Localizado</option>
-                                        <option value="Inativo">Inativo</option>
-                                        <option value="Manutenção">Em Manutenção</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label fw-semibold">Nome do Item *</label>
-                                    <input type="text" class="form-control" id="edt_nome" name="nome" required>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label fw-semibold">Localização</label>
-                                    <textarea class="form-control" id="edt_localizacao" name="localizacao" rows="2" placeholder="Ex: Almoxarifado Central, Prateleira B2"></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Responsável</label>
-                                    <input type="text" class="form-control" id="edt_responsavel" name="responsavel" placeholder="Nome do responsável">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Auditor</label>
-                                    <input type="text" class="form-control" id="edt_auditor" name="auditor" placeholder="Nome do auditor">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Data Última Vistoria</label>
-                                    <input type="date" class="form-control" id="edt_data_ultima_vistoria" name="data_ultima_vistoria">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Data Vistoria Atual</label>
-                                    <input type="date" class="form-control" id="edt_data_vistoria_atual" name="data_vistoria_atual">
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="alert alert-warning">
-                                        <i class="bi bi-exclamation-triangle me-2"></i> Campos marcados com * são obrigatórios
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <!-- Conteúdo dinâmico via JavaScript -->
                 </div>
                 <div class="modal-footer border-0">
-                    <!-- Botões para Modo Visualização -->
-                    <div id="botoesVisualizacao">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-1"></i>Fechar
-                        </button>
-                        <button type="button" class="btn btn-warning" onclick="habilitarEdicao()">
-                            <i class="bi bi-pencil me-1"></i>Editar
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">
-                            <i class="bi bi-trash me-1"></i>Excluir
-                        </button>
-                    </div>
-
-                    <!-- Botões para Modo Edição -->
-                    <div id="botoesEdicao" style="display: none;">
-                        <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
-                            <i class="bi bi-x-circle me-1"></i>Cancelar
-                        </button>
-                        <button type="button" class="btn btn-success" onclick="salvarEdicao()">
-                            <i class="bi bi-check-circle me-1"></i>Salvar
-                        </button>
-                    </div>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Fechar
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão -->
-    <div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirmar Exclusão</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Tem certeza que deseja excluir este bem patrimonial?</p>
-                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" onclick="excluirBem()">Confirmar Exclusão</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- === MODAL DO SCANNER COM DEBUG === -->
+    <!-- Modal do Scanner -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -651,9 +318,9 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <div id="interactive" class="viewport scanner-viewport">
+                        <div id="scanner-viewport" class="scanner-viewport">
                             <video id="scanner-video" class="scanner-video" playsinline muted></video>
-                            <div class="debug-overlay" id="debugInfo">Estado: Iniciando...</div>
+                            <canvas id="scanner-canvas" class="scanner-canvas"></canvas>
                         </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
@@ -666,22 +333,19 @@
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
                         <i class="bi bi-check-circle me-1"></i>
                         Código lido: <strong id="scanned-code"></strong>
-                        <button type="button" class="btn btn-light btn-sm ms-2" onclick="usarCodigoLido()">
+                        <button type="button" class="btn btn-light btn-sm ms-2" id="usar-codigo-btn">
                             <i class="bi bi-check me-1"></i>Usar
                         </button>
-                        <button type="button" class="btn btn-outline-light btn-sm ms-1" onclick="lerNovamente()">
+                        <button type="button" class="btn btn-outline-light btn-sm ms-1" id="ler-outro-btn">
                             <i class="bi bi-arrow-repeat me-1"></i>Ler Outro
                         </button>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-warning" onclick="toggleDebug()">
-                        <i class="bi bi-bug me-1"></i>Debug
-                    </button>
-                    <button type="button" class="btn btn-outline-secondary" id="switchCameraBtn" onclick="switchCamera()">
+                    <button type="button" class="btn btn-outline-secondary" id="trocar-camera-btn">
                         <i class="bi bi-camera-reverse me-1"></i>Trocar Câmera
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="enterManually()">
+                    <button type="button" class="btn btn-secondary" id="digitar-manual-btn">
                         <i class="bi bi-keyboard me-1"></i>Digitar
                     </button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -711,694 +375,344 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script de Abertura Automática do Modal -->
-    {% if bem_detalhes %}
     <script>
-        console.log('DEBUG: Bem encontrado, preparando para abrir modal...');
-        console.log('DEBUG: Dados do bem:', {{ bem_detalhes | tojson | safe }});
+        // ===== SISTEMA DE SCANNER SIMPLIFICADO =====
+        class BarcodeScanner {
+            constructor() {
+                this.stream = null;
+                this.quaggaInitialized = false;
+                this.currentFacingMode = 'environment';
+                this.scannerModal = null;
+                this.isScanning = false;
+            }
 
-        // Preencher os dados do bem
-        const bemAtual = {{ bem_detalhes | tojson | safe }};
+            initialize() {
+                console.log('Inicializando scanner...');
+                this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+                
+                // Event listeners
+                document.getElementById('btnCamera').addEventListener('click', () => this.openScanner());
+                document.getElementById('trocar-camera-btn').addEventListener('click', () => this.switchCamera());
+                document.getElementById('digitar-manual-btn').addEventListener('click', () => this.enterManually());
+                document.getElementById('usar-codigo-btn').addEventListener('click', () => this.useScannedCode());
+                document.getElementById('ler-outro-btn').addEventListener('click', () => this.scanAgain());
+                
+                // Modal events
+                document.getElementById('scannerModal').addEventListener('shown.bs.modal', () => {
+                    console.log('Modal aberto - iniciando scanner');
+                    setTimeout(() => this.startScanner(), 300);
+                });
+                
+                document.getElementById('scannerModal').addEventListener('hidden.bs.modal', () => {
+                    console.log('Modal fechado - parando scanner');
+                    this.stopScanner();
+                });
+            }
 
-        // Aguardar o DOM estar completamente carregado
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DEBUG: DOM carregado, tentando abrir modal...');
+            async openScanner() {
+                console.log('Abrindo scanner...');
+                this.updateStatus('Preparando scanner...');
+                this.hideResult();
+                this.scannerModal.show();
+            }
 
-            // Pequeno delay para garantir que tudo está pronto
-            setTimeout(function() {
-                const modalElement = document.getElementById('resultadoModal');
+            async startScanner() {
+                try {
+                    console.log('Iniciando câmera...');
+                    this.updateStatus('🔄 Acessando câmera...');
+                    
+                    await this.stopScanner();
 
-                if (modalElement) {
-                    console.log('DEBUG: Elemento do modal encontrado');
+                    const constraints = {
+                        video: {
+                            facingMode: this.currentFacingMode,
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
+                        },
+                        audio: false
+                    };
 
-                    // Preencher os detalhes do bem
-                    if (typeof preencherModalDetalhes === 'function' && bemAtual) {
-                        preencherModalDetalhes(bemAtual);
-                    }
+                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    console.log('✅ Câmera acessada com sucesso');
 
-                    // Criar instância do modal e abrir
-                    try {
-                        const modalInstance = new bootstrap.Modal(modalElement);
-                        modalInstance.show();
-                        console.log('DEBUG: Modal aberto com sucesso!');
+                    const video = document.getElementById('scanner-video');
+                    video.srcObject = this.stream;
 
-                    } catch (error) {
-                        console.error('DEBUG: Erro ao abrir modal:', error);
-                    }
+                    await video.play();
+                    this.updateStatus('📷 Scanner ativo - Aponte para o código');
 
-                } else {
-                    console.error('DEBUG: Elemento do modal não encontrado no DOM');
+                    // Iniciar Quagga
+                    this.startQuagga();
+
+                } catch (error) {
+                    console.error('❌ Erro na câmera:', error);
+                    this.handleCameraError(error);
                 }
-            }, 300);
-        });
-    </script>
-    {% endif %}
+            }
 
-    <!-- Script Principal COM DEBUG E MÚLTIPLAS ESTRATÉGIAS -->
-    <script>
-        // === SCANNER COM DEBUG E FALLBACKS ===
-        let scannerModalInstance = null;
-        let videoStream = null;
-        let quaggaInitialized = false;
-        let currentFacingMode = 'environment';
-        let lastScanTime = 0;
-        let debugMode = false;
-        let currentConfig = 0;
-        const SCAN_COOLDOWN = 800;
+            startQuagga() {
+                if (typeof Quagga === 'undefined') {
+                    console.error('Quagga não carregado');
+                    this.updateStatus('❌ Biblioteca não carregada');
+                    return;
+                }
 
-        // CONFIGURAÇÕES DIFERENTES PARA TESTAR
-        const configs = [
-            {
-                name: "Configuração Mobile Agressiva",
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#interactive'),
-                    constraints: {
-                        facingMode: currentFacingMode,
-                        width: { min: 320, ideal: 640, max: 1280 },
-                        height: { min: 240, ideal: 480, max: 720 }
+                const config = {
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.getElementById('scanner-video'),
+                        constraints: {
+                            facingMode: this.currentFacingMode
+                        }
                     },
-                    area: { top: "15%", right: "10%", left: "10%", bottom: "15%" }
-                },
-                decoder: {
-                    readers: ["i2of5_reader", "code_128_reader", "code_39_reader"],
-                    multiple: false
-                },
-                locator: {
-                    patchSize: "medium",
-                    halfSample: true
-                },
-                locate: true,
-                frequency: 20
-            },
-            {
-                name: "Configuração Alta Sensibilidade",
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream", 
-                    target: document.querySelector('#interactive'),
-                    constraints: {
-                        facingMode: currentFacingMode
+                    decoder: {
+                        readers: [
+                            "code_128_reader",
+                            "ean_reader",
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader"
+                        ]
                     },
-                    area: { top: "10%", right: "5%", left: "5%", bottom: "10%" }
-                },
-                decoder: {
-                    readers: ["i2of5_reader", "code_128_reader", "code_39_reader"],
-                    multiple: false
-                },
-                locate: true,
-                frequency: 25,
-                numOfWorkers: 1
-            },
-            {
-                name: "Configuração Ultra Simples", 
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#interactive'),
-                    constraints: {
-                        facingMode: currentFacingMode
+                    locator: {
+                        patchSize: "medium",
+                        halfSample: true
+                    },
+                    numOfWorkers: 2,
+                    frequency: 10,
+                    debug: {
+                        showCanvas: true,
+                        showPatches: true,
+                        showFoundPatches: true,
+                        showSkeleton: true,
+                        showLabels: true,
+                        showPatchLabels: true,
+                        showRemainingPatchLabels: true,
+                        boxFromPatches: {
+                            showTransformed: true,
+                            showTransformedBox: true,
+                            showBB: true
+                        }
                     }
-                },
-                decoder: {
-                    readers: ["i2of5_reader", "code_128_reader"]
-                },
-                locate: true,
-                frequency: 15
-            }
-        ];
-
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado - inicializando scanner...');
-            inicializarScanner();
-            
-            const btnCamera = document.getElementById('btnCamera');
-            if (btnCamera) {
-                btnCamera.addEventListener('click', openScanner);
-            }
-        });
-
-        function inicializarScanner() {
-            const scannerModalElement = document.getElementById('scannerModal');
-            if (scannerModalElement) {
-                scannerModalInstance = new bootstrap.Modal(scannerModalElement);
-                
-                scannerModalElement.addEventListener('shown.bs.modal', function() {
-                    console.log('Modal aberto - iniciando scanner...');
-                    setTimeout(() => {
-                        startBarcodeScanner();
-                    }, 300);
-                });
-                
-                scannerModalElement.addEventListener('hidden.bs.modal', function() {
-                    console.log('Modal fechado - parando scanner...');
-                    stopBarcodeScanner();
-                });
-            }
-        }
-
-        function openScanner() {
-            console.log('Abrindo scanner...');
-            if (scannerModalInstance) {
-                document.getElementById('scan-result').classList.add('d-none');
-                document.getElementById('scanner-status').classList.remove('d-none');
-                document.getElementById('status-text').textContent = 'Preparando scanner...';
-                currentConfig = 0;
-                
-                scannerModalInstance.show();
-            }
-        }
-
-        async function startBarcodeScanner() {
-            try {
-                console.log('Iniciando scanner...');
-                stopBarcodeScanner();
-
-                updateScannerStatus('🔍 Iniciando câmera...');
-                updateDebugInfo('Solicitando permissão da câmera...');
-
-                const constraints = {
-                    video: {
-                        facingMode: currentFacingMode,
-                        width: { min: 320, ideal: 640, max: 1280 },
-                        height: { min: 240, ideal: 480, max: 720 }
-                    },
-                    audio: false
                 };
 
-                videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-                console.log('✅ Câmera acessada com sucesso');
-                updateDebugInfo('Câmera OK - Iniciando Quagga...');
-                
-                const video = document.getElementById('scanner-video');
-                if (video) {
-                    video.srcObject = videoStream;
-                    
-                    await new Promise((resolve) => {
-                        video.onloadedmetadata = () => {
-                            video.play().then(resolve).catch(err => {
-                                console.log('Erro no play:', err);
-                                video.muted = true;
-                                video.play().then(resolve);
-                            });
-                        };
-                    });
-                }
-
-                iniciarQuaggaComConfigAtual();
-
-            } catch (error) {
-                console.error('Erro ao acessar câmera:', error);
-                handleCameraError(error);
-            }
-        }
-
-        function iniciarQuaggaComConfigAtual() {
-            if (currentConfig >= configs.length) {
-                console.error('Todas as configurações falharam');
-                updateScannerStatus('❌ Todas as configurações falharam');
-                updateDebugInfo('FALHA TOTAL - Use digitação manual');
-                return;
-            }
-
-            const config = configs[currentConfig];
-            console.log(`Tentando configuração ${currentConfig + 1}: ${config.name}`);
-            updateScannerStatus(`🔄 Tentando ${config.name}...`);
-            updateDebugInfo(`Config ${currentConfig + 1}: ${config.name}`);
-
-            if (typeof Quagga === 'undefined') {
-                console.error('Quagga não carregado');
-                updateScannerStatus('❌ Biblioteca não carregada');
-                return;
-            }
-
-            try {
-                Quagga.init(config, function(err) {
+                Quagga.init(config, (err) => {
                     if (err) {
-                        console.error(`Erro na configuração ${currentConfig + 1}:`, err);
-                        updateDebugInfo(`FALHA Config ${currentConfig + 1}: ${err.message}`);
-                        
-                        // Tentar próxima configuração
-                        currentConfig++;
-                        setTimeout(() => {
-                            iniciarQuaggaComConfigAtual();
-                        }, 1000);
+                        console.error('Erro ao inicializar Quagga:', err);
+                        this.updateStatus('❌ Erro no scanner');
                         return;
                     }
 
-                    console.log(`✅ ${config.name} inicializada com sucesso`);
-                    updateDebugInfo(`SUCESSO Config ${currentConfig + 1}`);
-                    
+                    console.log('✅ Quagga inicializado com sucesso');
                     Quagga.start();
-                    quaggaInitialized = true;
-                    
-                    updateScannerStatus('📷 Scanner ativo - Aponte para o código');
+                    this.quaggaInitialized = true;
+                    this.isScanning = true;
 
-                    Quagga.onDetected(function(result) {
-                        const now = Date.now();
-                        if (now - lastScanTime < SCAN_COOLDOWN) {
-                            return;
-                        }
+                    Quagga.onDetected((result) => {
+                        if (!this.isScanning) return;
+
+                        const code = result.codeResult.code;
+                        console.log('✅ Código detectado:', code);
                         
-                        if (result && result.codeResult && result.codeResult.code) {
-                            const code = result.codeResult.code;
-                            const format = result.codeResult.format || 'Desconhecido';
-                            const confidence = result.codeResult.decoded ? result.codeResult.decoded.confidence : 0;
-                            
-                            console.log(`✅ Código detectado (Config ${currentConfig + 1}):`, code, 'Formato:', format, 'Confiança:', confidence);
-                            updateDebugInfo(`DETECTADO: ${code} (${format}) - Conf: ${confidence}`);
-                            
-                            lastScanTime = now;
-                            onScanSuccess(code, format);
+                        if (this.isValidBarcode(code)) {
+                            this.onScanSuccess(code);
                         }
                     });
-
-                    // Debug do processamento
-                    Quagga.onProcessed(function(result) {
-                        if (debugMode && result) {
-                            const boxes = result.boxes || [];
-                            const box = result.box;
-                            updateDebugInfo(`Processando... Boxes: ${boxes.length} ${box ? '✓' : '✗'}`);
-                        }
-                    });
-
                 });
-
-            } catch (error) {
-                console.error(`Erro crítico na configuração ${currentConfig + 1}:`, error);
-                currentConfig++;
-                setTimeout(() => {
-                    iniciarQuaggaComConfigAtual();
-                }, 500);
             }
-        }
 
-        function onScanSuccess(code, format) {
-            if (!code) return;
-            
-            console.log('🎯 Processando código:', code, 'Formato:', format);
-            updateDebugInfo(`SUCESSO: ${code}`);
-            
-            let cleanCode = code.toString()
-                .replace(/[^a-zA-Z0-9\-_\s]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-            
-            if (cleanCode.length < 1) {
-                console.log('❌ Código muito curto');
-                return;
+            isValidBarcode(code) {
+                if (!code) return false;
+                // Validar código - apenas números, letras e hífen
+                return /^[A-Za-z0-9\-]+$/.test(code) && code.length >= 1;
             }
-            
-            const scannedCodeElement = document.getElementById('scanned-code');
-            const scanResultElement = document.getElementById('scan-result');
-            const statusElement = document.getElementById('scanner-status');
-            
-            if (scannedCodeElement && scanResultElement && statusElement) {
-                scannedCodeElement.textContent = `${cleanCode}${format !== 'Desconhecido' ? ` (${format})` : ''}`;
-                statusElement.classList.add('d-none');
-                scanResultElement.classList.remove('d-none');
+
+            onScanSuccess(code) {
+                this.isScanning = false;
                 
+                // Limpar e formatar código
+                const cleanCode = code.toString().trim();
+                
+                console.log('🎯 Código processado:', cleanCode);
+                
+                // Mostrar resultado
+                document.getElementById('scanned-code').textContent = cleanCode;
+                document.getElementById('scanner-status').classList.add('d-none');
+                document.getElementById('scan-result').classList.remove('d-none');
+                
+                // Vibrar se suportado
                 if (navigator.vibrate) {
-                    navigator.vibrate(50);
+                    navigator.vibrate(200);
                 }
-            }
-        }
-
-        function stopBarcodeScanner() {
-            console.log('🛑 Parando scanner...');
-            
-            if (typeof Quagga !== 'undefined' && quaggaInitialized) {
-                try {
-                    Quagga.stop();
-                    Quagga.offDetected();
-                    Quagga.offProcessed();
-                    quaggaInitialized = false;
-                    console.log('✅ Quagga parado');
-                } catch (error) {
-                    console.log('Erro ao parar Quagga:', error);
-                }
-            }
-            
-            if (videoStream) {
-                videoStream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                videoStream = null;
-            }
-            
-            const video = document.getElementById('scanner-video');
-            if (video) {
-                video.srcObject = null;
-            }
-            
-            lastScanTime = 0;
-        }
-
-        function usarCodigoLido() {
-            const codeElement = document.getElementById('scanned-code');
-            let code = codeElement.textContent;
-            
-            code = code.split(' (')[0];
-            
-            console.log('📝 Usando código:', code);
-            
-            const numeroBemField = document.getElementById('numero_bem');
-            if (numeroBemField) {
-                numeroBemField.value = code;
-                numeroBemField.focus();
-                numeroBemField.select();
-            }
-            
-            if (scannerModalInstance) {
-                scannerModalInstance.hide();
-            }
-        }
-
-        function lerNovamente() {
-            console.log('🔄 Reiniciando scanner...');
-            
-            document.getElementById('scan-result').classList.add('d-none');
-            document.getElementById('scanner-status').classList.remove('d-none');
-            document.getElementById('status-text').textContent = 'Reiniciando scanner...';
-            currentConfig = 0;
-            
-            startBarcodeScanner();
-        }
-
-        function switchCamera() {
-            console.log('🔄 Trocando câmera...');
-            currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
-            updateScannerStatus('🔄 Trocando câmera...');
-            currentConfig = 0;
-            
-            startBarcodeScanner();
-        }
-
-        function toggleDebug() {
-            debugMode = !debugMode;
-            const debugOverlay = document.getElementById('debugInfo');
-            if (debugOverlay) {
-                debugOverlay.style.display = debugMode ? 'block' : 'none';
-            }
-            updateDebugInfo(debugMode ? 'MODO DEBUG ATIVADO' : 'MODO DEBUG DESATIVADO');
-        }
-
-        function updateDebugInfo(message) {
-            if (!debugMode) return;
-            const debugElement = document.getElementById('debugInfo');
-            if (debugElement) {
-                debugElement.textContent = message;
-            }
-        }
-
-        function enterManually() {
-            console.log('⌨️ Modo digitação manual');
-            stopBarcodeScanner();
-            
-            if (scannerModalInstance) {
-                scannerModalInstance.hide();
-            }
-            
-            const numeroBemField = document.getElementById('numero_bem');
-            if (numeroBemField) {
-                numeroBemField.focus();
-                numeroBemField.select();
-            }
-        }
-
-        function updateScannerStatus(message) {
-            const statusElement = document.getElementById('status-text');
-            if (statusElement) {
-                statusElement.textContent = message;
-            }
-        }
-
-        function handleCameraError(error) {
-            console.error('❌ Erro na câmera:', error);
-            let errorMessage = 'Erro ao acessar a câmera. ';
-            
-            if (error.name === 'NotAllowedError') {
-                errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage = 'Nenhuma câmera encontrada.';
-            } else if (error.name === 'NotSupportedError') {
-                errorMessage = 'Navegador não suporta acesso à câmera.';
-            } else {
-                errorMessage += error.message;
-            }
-            
-            updateScannerStatus('❌ ' + errorMessage);
-            
-            setTimeout(() => {
-                if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
-                    enterManually();
-                }
-            }, 1000);
-        }
-
-        // ===== CRUD (Modal de resultados) =====
-        let bemAtual = null;
-
-        function preencherModalDetalhes(dados) {
-            console.log('Preenchendo modal com dados:', dados);
-            bemAtual = dados;
-
-            const detalhesHTML = `
-                <div class="row g-4">
-                    <div class="col-12">
-                        <div class="bg-light rounded-3 p-3">
-                            <h6 class="mb-1 text-primary fw-semibold">
-                                <i class="bi bi-upc-scan me-2"></i>Número do Bem
-                            </h6>
-                            <p class="fs-4 fw-bold mb-0">${dados.numero}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="bem-detail-card">
-                            <h6 class="text-primary fw-semibold mb-2">
-                                <i class="bi bi-tag me-2"></i>Nome do Item
-                            </h6>
-                            <p class="text-dark mb-0">${dados.nome}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="bem-detail-card">
-                            <h6 class="text-primary fw-semibold mb-2">
-                                <i class="bi bi-info-circle me-2"></i>Situação
-                            </h6>
-                            <p class="mb-0">
-                                ${dados.situacao === 'OK'
-                                ? '<span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle-fill me-1"></i>LOCALIZADO</span>'
-                                : `<span class="badge bg-warning fs-6 p-2"><i class="bi bi-clock-history me-1"></i>${dados.situacao}</span>`
-                                }
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="bem-detail-card">
-                            <h6 class="text-primary fw-semibold mb-2">
-                                <i class="bi bi-geo-alt me-2"></i>Localização
-                            </h6>
-                            <p class="mb-0">
-                                ${dados.localizacao && dados.localizacao !== 'Não informada'
-                                ? `<span class="text-success"><i class="bi bi-geo-alt-fill me-1"></i>${dados.localizacao}</span>`
-                                : '<span class="text-muted"><i class="bi bi-geo-alt me-1"></i>Localização não informada</span>'
-                                }
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="bg-light rounded-3 p-3">
-                            <h6 class="text-muted mb-2">
-                                <i class="bi bi-lightbulb me-2"></i>Informações
-                            </h06>
-                            <p class="small text-muted mb-0">
-                                ${dados.situacao === 'OK'
-                                ? '✅ Este bem já foi localizado e está devidamente registrado no sistema.'
-                                : '⏳ Este bem ainda não foi localizado. Utilize o campo de localização para atualizar.'
-                                }
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            const detalhesBemElement = document.getElementById('detalhesBem');
-            if (detalhesBemElement) {
-                detalhesBemElement.innerHTML = detalhesHTML;
-            }
-
-            const botoesVisualizacao = document.getElementById('botoesVisualizacao');
-            const botoesEdicao = document.getElementById('botoesEdicao');
-            const formEdicao = document.getElementById('formEdicao');
-
-            if (botoesVisualizacao) botoesVisualizacao.style.display = 'flex';
-            if (botoesEdicao) botoesEdicao.style.display = 'none';
-            if (detalhesBemElement) detalhesBemElement.style.display = 'block';
-            if (formEdicao) formEdicao.style.display = 'none';
-        }
-
-        function habilitarEdicao() {
-            console.log('habilitarEdicao chamada');
-            if (!bemAtual) {
-                alert('Erro: Dados do bem não carregados. Por favor, recarregue a página e tente novamente.');
-                return;
-            }
-            try {
-                document.getElementById('bem_id').value = bemAtual.id;
-                document.getElementById('edt_numero').value = bemAtual.numero;
-                document.getElementById('edt_nome').value = bemAtual.nome;
-                document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
-                document.getElementById('edt_situacao').value = bemAtual.situacao;
-
-                document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
-                document.getElementById('edt_auditor').value = bemAtual.auditor || '';
-                document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
-                document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
-
-                document.getElementById('detalhesBem').style.display = 'none';
-                document.getElementById('formEdicao').style.display = 'block';
-                document.getElementById('botoesVisualizacao').style.display = 'none';
-                document.getElementById('botoesEdicao').style.display = 'flex';
-            } catch (error) {
-                console.error('Erro ao habilitar edição:', error);
-                alert('Erro ao carregar formulário de edição.');
-            }
-        }
-
-        function cancelarEdicao() {
-            document.getElementById('detalhesBem').style.display = 'block';
-            document.getElementById('formEdicao').style.display = 'none';
-            document.getElementById('botoesVisualizacao').style.display = 'flex';
-            document.getElementById('botoesEdicao').style.display = 'none';
-        }
-
-        function salvarEdicao() {
-            try {
-                const bem_id = parseInt(document.getElementById('bem_id').value);
-                const numero = document.getElementById('edt_numero').value.trim();
-                const nome = document.getElementById('edt_nome').value.trim();
-                const localizacao = document.getElementById('edt_localizacao').value.trim();
-                const situacao = document.getElementById('edt_situacao').value;
-                const responsavel = document.getElementById('edt_responsavel').value.trim();
-                const auditor = document.getElementById('edt_auditor').value.trim();
-                const data_ultima_vistoria = document.getElementById('edt_data_ultima_vistoria').value;
-                const data_vistoria_atual = document.getElementById('edt_data_vistoria_atual').value;
-
-                if (isNaN(bem_id) || bem_id <= 0) {
-                    alert('ID do bem inválido');
-                    return;
-                }
-
-                if (!numero || !nome || !situacao) {
-                    alert('Campos obrigatórios não preenchidos');
-                    return;
-                }
-
-                const dadosAtualizacao = {
-                    numero: numero,
-                    nome: nome,
-                    localizacao: localizacao,
-                    situacao: situacao,
-                    responsavel: responsavel,
-                    auditor: auditor,
-                    data_ultima_vistoria: data_ultima_vistoria,
-                    data_vistoria_atual: data_vistoria_atual
-                };
-
-                console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
-
-                const apiBase = window.location.origin;
                 
-                fetch(`${apiBase}/api/bens/${bem_id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dadosAtualizacao)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Resposta da API:', data);
-
-                    if (data.success) {
-                        alert(data.message || 'Bem atualizado com sucesso!');
-
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('resultadoModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-
-                    } else {
-                        alert('Erro: ' + (data.message || 'Erro desconhecido ao atualizar bem'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro na requisição:', error);
-                    alert('Erro: ' + error.message);
-                });
-
-            } catch (error) {
-                console.error('Erro ao processar edição:', error);
-                alert('Erro inesperado: ' + error.message);
-            }
-        }
-
-        function confirmarExclusao() {
-            if (!bemAtual) {
-                alert('Dados do bem não disponíveis para exclusão.');
-                return;
-            }
-            new bootstrap.Modal(document.getElementById('confirmacaoExclusaoModal')).show();
-        }
-
-        function excluirBem() {
-            if (!bemAtual || !bemAtual.id) {
-                alert('Erro: ID do bem não disponível.');
-                return;
+                // Parar temporariamente o scanner
+                Quagga.stop();
             }
 
-            const bem_id = bemAtual.id;
-            const apiBase = window.location.origin;
-            
-            fetch(`${apiBase}/api/bens/${bem_id}`, { 
-                method: 'DELETE' 
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP ${response.status}`);
+            useScannedCode() {
+                const code = document.getElementById('scanned-code').textContent;
+                console.log('📝 Usando código:', code);
+                
+                const numeroBemField = document.getElementById('numero_bem');
+                if (numeroBemField) {
+                    numeroBemField.value = code;
+                    numeroBemField.focus();
                 }
-                return response.json();
-            })
-            .then(data => {
-                bootstrap.Modal.getInstance(document.getElementById('confirmacaoExclusaoModal')).hide();
-                bootstrap.Modal.getInstance(document.getElementById('resultadoModal')).hide();
+                
+                this.scannerModal.hide();
+            }
 
-                if (data.success) {
-                    alert(data.message || 'Bem excluído com sucesso!');
-                    window.location.reload();
+            scanAgain() {
+                console.log('🔄 Reiniciando scanner...');
+                this.hideResult();
+                this.isScanning = true;
+                
+                if (this.quaggaInitialized) {
+                    Quagga.start();
+                }
+                
+                this.updateStatus('📷 Scanner ativo - Aponte para o código');
+            }
+
+            async switchCamera() {
+                console.log('🔄 Trocando câmera...');
+                this.currentFacingMode = this.currentFacingMode === 'environment' ? 'user' : 'environment';
+                this.updateStatus('🔄 Trocando câmera...');
+                await this.startScanner();
+            }
+
+            enterManually() {
+                console.log('⌨️ Modo digitação manual');
+                this.stopScanner();
+                this.scannerModal.hide();
+                
+                const numeroBemField = document.getElementById('numero_bem');
+                if (numeroBemField) {
+                    numeroBemField.focus();
+                    numeroBemField.select();
+                }
+            }
+
+            async stopScanner() {
+                console.log('🛑 Parando scanner...');
+                this.isScanning = false;
+                
+                // Parar Quagga
+                if (typeof Quagga !== 'undefined' && this.quaggaInitialized) {
+                    try {
+                        Quagga.stop();
+                        Quagga.offDetected();
+                        this.quaggaInitialized = false;
+                    } catch (error) {
+                        console.log('Erro ao parar Quagga:', error);
+                    }
+                }
+                
+                // Parar stream de vídeo
+                if (this.stream) {
+                    this.stream.getTracks().forEach(track => track.stop());
+                    this.stream = null;
+                }
+                
+                const video = document.getElementById('scanner-video');
+                if (video) {
+                    video.srcObject = null;
+                }
+            }
+
+            updateStatus(message) {
+                const statusElement = document.getElementById('status-text');
+                if (statusElement) {
+                    statusElement.textContent = message;
+                }
+            }
+
+            hideResult() {
+                document.getElementById('scan-result').classList.add('d-none');
+                document.getElementById('scanner-status').classList.remove('d-none');
+            }
+
+            handleCameraError(error) {
+                let errorMessage = 'Erro ao acessar a câmera. ';
+                
+                if (error.name === 'NotAllowedError') {
+                    errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage = 'Nenhuma câmera encontrada.';
+                } else if (error.name === 'NotSupportedError') {
+                    errorMessage = 'Navegador não suporta acesso à câmera.';
                 } else {
-                    alert('Erro: ' + data.message);
+                    errorMessage += error.message;
                 }
-            })
-            .catch(error => {
-                console.error('Erro na exclusão:', error);
-                alert('Erro de conexão ao excluir: ' + error.message);
-            });
+                
+                this.updateStatus('❌ ' + errorMessage);
+                
+                setTimeout(() => {
+                    if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                        this.enterManually();
+                    }
+                }, 1000);
+            }
+        }
+
+        // ===== SISTEMA PRINCIPAL =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar scanner
+            const scanner = new BarcodeScanner();
+            scanner.initialize();
+            
+            // Configurar formulário
+            const searchForm = document.getElementById('searchForm');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    const submitBtn = document.getElementById('btnLocalizar');
+                    const spinner = document.getElementById('loadingSpinner');
+                    
+                    if (submitBtn && spinner) {
+                        submitBtn.disabled = true;
+                        spinner.classList.remove('d-none');
+                    }
+                });
+            }
+
+            {% if bem_detalhes %}
+            // Abrir modal de resultados se houver dados
+            setTimeout(() => {
+                const modalElement = document.getElementById('resultadoModal');
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                    
+                    // Preencher conteúdo do modal
+                    const modalBody = modalElement.querySelector('.modal-body');
+                    if (modalBody) {
+                        modalBody.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Bem encontrado! Número: <strong>{{ bem_detalhes.numero }}</strong>
+                            </div>
+                            <div class="text-center">
+                                <a href="{{ url_for('sistema_crud') }}" class="btn btn-primary">
+                                    <i class="bi bi-gear me-1"></i>Ir para Gestão Completa
+                                </a>
+                            </div>
+                        `;
+                    }
+                }
+            }, 500);
+            {% endif %}
+        });
+
+        // Funções globais para compatibilidade
+        function openScanner() {
+            // Compatibilidade com chamadas antigas
+            const scanner = new BarcodeScanner();
+            scanner.openScanner();
         }
     </script>
 </body>
