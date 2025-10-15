@@ -589,25 +589,24 @@
         </div>
     </div>
 
-    <!-- === MODAL DO SCANNER CORRIGIDO === -->
+    <!-- === MODAL DO SCANNER SIMPLIFICADO E FUNCIONAL === -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="scannerModalLabel">
-                        <i class="bi bi-upc-scan me-2"></i>Escanear Código de Barras
+                        <i class="bi bi-upc-scan me-2"></i>Escanear Código Patrimonial
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <!-- Container principal para o scanner -->
                         <div id="interactive" class="viewport scanner-viewport">
                             <video id="scanner-video" class="scanner-video" playsinline muted></video>
-                            <canvas class="scanner-canvas drawingBuffer" width="640" height="480"></canvas>
                         </div>
                         <div class="scanner-frame"></div>
                         <div class="scan-line"></div>
+                        <div class="scanner-guide">Posicione a etiqueta dentro do quadro</div>
                     </div>
                     <div id="scanner-status" class="p-3 bg-dark text-white small">
                         <i class="bi bi-info-circle me-1"></i>
@@ -701,9 +700,9 @@
     </script>
     {% endif %}
 
-    <!-- Script Principal CORRIGIDO - Scanner Sincronizado -->
+    <!-- Script Principal SIMPLIFICADO - Scanner Funcional -->
     <script>
-        // === SCANNER CORRIGIDO - VERSÃO SINCRONIZADA ===
+        // === SCANNER SIMPLIFICADO E FUNCIONAL ===
         let scannerModalInstance = null;
         let videoStream = null;
         let quaggaInitialized = false;
@@ -731,7 +730,7 @@
                     console.log('Modal aberto - iniciando scanner...');
                     setTimeout(() => {
                         startBarcodeScanner();
-                    }, 500); // Aumentado para garantir que o modal está totalmente renderizado
+                    }, 500);
                 });
                 
                 scannerModalElement.addEventListener('hidden.bs.modal', function() {
@@ -760,13 +759,12 @@
 
                 updateScannerStatus('🔍 Iniciando câmera...');
 
-                // Configurações otimizadas da câmera
+                // Configurações simplificadas da câmera
                 const constraints = {
                     video: {
                         facingMode: currentFacingMode,
-                        width: { ideal: 1280, max: 1920 },
-                        height: { ideal: 720, max: 1080 },
-                        frameRate: { ideal: 30 }
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
                     },
                     audio: false
                 };
@@ -786,7 +784,7 @@
                     });
                 }
 
-                // Iniciar Quagga com configurações sincronizadas
+                // Iniciar Quagga com configurações básicas
                 iniciarQuagga();
 
             } catch (error) {
@@ -803,51 +801,28 @@
             }
 
             try {
-                console.log('Iniciando Quagga com configuração sincronizada...');
-
-                // Obter dimensões do vídeo
-                const video = document.getElementById('scanner-video');
-                const videoWidth = video.videoWidth || 640;
-                const videoHeight = video.videoHeight || 480;
+                console.log('Iniciando Quagga...');
 
                 Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
-                        target: document.querySelector('#interactive'), // Usar o container principal
+                        target: document.querySelector('#interactive'),
                         constraints: {
                             facingMode: currentFacingMode,
-                            width: videoWidth,
-                            height: videoHeight,
-                            aspectRatio: { min: 1, max: 2 }
-                        },
-                        area: {
-                            top: "20%",
-                            right: "15%",
-                            left: "15%",
-                            bottom: "20%"
+                            width: 640,
+                            height: 480
                         }
                     },
                     decoder: {
                         readers: [
                             "code_128_reader",
-                            "ean_reader",
-                            "ean_8_reader",
                             "code_39_reader",
-                            "code_39_vin_reader",
-                            "codabar_reader",
-                            "upc_reader",
-                            "upc_e_reader"
+                            "ean_reader"
                         ]
                     },
-                    locator: {
-                        patchSize: "medium",
-                        halfSample: true
-                    },
                     locate: true,
-                    frequency: 10, // Aumentar frequência para melhor responsividade
-                    numOfWorkers: navigator.hardwareConcurrency || 4,
-                    multiple: false
+                    frequency: 10
                 }, function(err) {
                     if (err) {
                         console.error('Erro ao inicializar Quagga:', err);
@@ -856,32 +831,24 @@
                     }
 
                     console.log('✅ Quagga inicializado com sucesso');
-                    console.log('Dimensões do vídeo:', video.videoWidth, 'x', video.videoHeight);
                     
                     Quagga.start();
                     quaggaInitialized = true;
                     
                     updateScannerStatus('📷 Scanner ativo - Aponte para o código de barras');
 
-                    // Configurar detecção com debounce
+                    // Configurar detecção
                     Quagga.onDetected(function(result) {
                         const now = Date.now();
                         if (now - lastScanTime < SCAN_COOLDOWN) {
-                            return; // Ignorar leituras muito rápidas
+                            return;
                         }
                         
                         if (result && result.codeResult && result.codeResult.code) {
                             const code = result.codeResult.code;
-                            console.log('✅ Código detectado:', code, 'Formato:', result.codeResult.format);
+                            console.log('✅ Código detectado:', code);
                             lastScanTime = now;
                             onScanSuccess(code);
-                        }
-                    });
-
-                    // Debug: mostrar processamento
-                    Quagga.onProcessed(function(result) {
-                        if (result) {
-                            drawDebugOverlay(result);
                         }
                     });
 
@@ -890,35 +857,6 @@
             } catch (error) {
                 console.error('Erro crítico no Quagga:', error);
                 updateScannerStatus('❌ Erro crítico no scanner');
-            }
-        }
-
-        function drawDebugOverlay(result) {
-            const drawingCtx = Quagga.canvas.ctx.overlay;
-            const drawingCanvas = Quagga.canvas.dom.overlay;
-
-            if (result && result.boxes) {
-                drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
-                
-                // Desenhar caixas de detecção para debug
-                drawingCtx.strokeStyle = "#00FF00";
-                drawingCtx.lineWidth = 2;
-                
-                result.boxes.filter(function(box) {
-                    return box !== result.box;
-                }).forEach(function(box) {
-                    Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: "green", lineWidth: 2});
-                });
-
-                if (result.box) {
-                    Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: "blue", lineWidth: 3});
-                }
-
-                if (result.codeResult && result.codeResult.code) {
-                    drawingCtx.font = "18px Arial";
-                    drawingCtx.fillStyle = "green";
-                    drawingCtx.fillText(result.codeResult.code, 10, 20);
-                }
             }
         }
 
@@ -949,9 +887,9 @@
                 scanResultElement.classList.remove('d-none');
                 
                 // Feedback háptico
-                if (navigator.vibrate) navigator.vibrate(200);
+                if (navigator.vibrate) navigator.vibrate(100);
                 
-                // Parar scanner imediatamente para evitar múltiplas leituras
+                // Parar scanner
                 stopBarcodeScanner();
             }
         }
@@ -964,7 +902,6 @@
                 try {
                     Quagga.stop();
                     Quagga.offDetected();
-                    Quagga.offProcessed();
                     quaggaInitialized = false;
                     console.log('✅ Quagga parado');
                 } catch (error) {
@@ -1060,8 +997,6 @@
                 errorMessage = 'Nenhuma câmera encontrada.';
             } else if (error.name === 'NotSupportedError') {
                 errorMessage = 'Navegador não suporta acesso à câmera.';
-            } else if (error.name === 'OverconstrainedError') {
-                errorMessage = 'Não foi possível atender às restrições da câmera. Tente trocar de câmera.';
             } else {
                 errorMessage += error.message;
             }
@@ -1233,7 +1168,7 @@
 
                 console.log('Enviando para API - ID:', bem_id, 'Dados:', dadosAtualizacao);
 
-                const apiBase = window.location.origin; // Usar a mesma origem
+                const apiBase = window.location.origin;
                 
                 fetch(`${apiBase}/api/bens/${bem_id}`, {
                     method: 'PUT',
