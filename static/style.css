@@ -88,27 +88,31 @@ header {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ===== SCANNER ESTÁVEL ===== */
+/* ===== SCANNER OTIMIZADO PARA MOBILE ===== */
 .scanner-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 60vh; /* Usar altura relativa */
+  max-height: 500px;
+  min-height: 300px;
   background: #000;
   border-radius: 10px;
   overflow: hidden;
-  background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
-              linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
-              linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
-              linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background: 
+    radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.8) 100%),
+    linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+  background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+  background-position: center, 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
 .scanner-viewport {
   width: 100%;
   height: 100%;
   position: relative;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .scanner-video {
@@ -116,7 +120,8 @@ header {
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: scaleX(1); /* Corrige espelhamento em algumas câmeras */
+  transform: scaleX(1);
+  filter: contrast(1.1) brightness(1.1); /* Melhorar visibilidade */
 }
 
 .scanner-canvas {
@@ -126,29 +131,70 @@ header {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.7; /* Reduzido para melhor performance */
+  z-index: 10;
 }
 
-/* Melhoria na animação do scan-line */
+/* Área de scan otimizada */
+.scanner-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 40%;
+  border: 3px solid #00ff00;
+  background: transparent;
+  border-radius: 15px;
+  box-shadow: 
+    0 0 0 2000px rgba(0, 0, 0, 0.7), /* Overlay escuro */
+    0 0 30px rgba(0, 255, 0, 0.8),
+    inset 0 0 30px rgba(0, 255, 0, 0.4);
+  z-index: 5;
+  pointer-events: none;
+  animation: frame-pulse 2s ease-in-out infinite;
+}
+
+@keyframes frame-pulse {
+  0%, 100% { 
+    border-color: #00ff00;
+    box-shadow: 
+      0 0 0 2000px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(0, 255, 0, 0.8),
+      inset 0 0 30px rgba(0, 255, 0, 0.4);
+  }
+  50% { 
+    border-color: #00cc00;
+    box-shadow: 
+      0 0 0 2000px rgba(0, 0, 0, 0.7),
+      0 0 40px rgba(0, 255, 0, 1),
+      inset 0 0 40px rgba(0, 255, 0, 0.6);
+  }
+}
+
+/* Linha de scan mais visível */
 .scan-line {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, 
-      transparent 0%, 
-      #00ff00 20%, 
-      #00ff00 80%, 
-      transparent 100%);
-  animation: scan-animation 2s ease-in-out infinite;
-  box-shadow: 0 0 10px #00ff00;
-  z-index: 10;
+    transparent 0%, 
+    #00ff00 20%, 
+    #00ff00 50%,
+    #00ff00 80%, 
+    transparent 100%);
+  animation: scan-animation 2.5s ease-in-out infinite;
+  box-shadow: 
+    0 0 15px #00ff00,
+    0 0 30px #00ff00;
+  z-index: 6;
+  border-radius: 2px;
 }
 
 @keyframes scan-animation {
   0% { 
-    top: 0; 
+    top: 25%; 
     opacity: 0;
   }
   10% { 
@@ -158,40 +204,12 @@ header {
     opacity: 1;
   }
   100% { 
-    top: 100%; 
+    top: 75%; 
     opacity: 0;
   }
 }
 
-.scanner-frame {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 150px;
-  border: 3px solid #00ff00;
-  background: transparent;
-  border-radius: 10px;
-  box-shadow: 
-      0 0 20px rgba(0, 255, 0, 0.5),
-      inset 0 0 20px rgba(0, 255, 0, 0.2);
-  z-index: 5;
-  pointer-events: none;
-  animation: frame-pulse 2s ease-in-out infinite;
-}
-
-@keyframes frame-pulse {
-  0%, 100% { 
-    border-color: #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-  }
-  50% { 
-    border-color: #00cc00;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
-  }
-}
-
+/* Guia melhorada */
 .scanner-guide {
   position: absolute;
   bottom: 1rem;
@@ -199,25 +217,45 @@ header {
   right: 0;
   text-align: center;
   color: #fff;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 0.75rem;
-  font-size: 0.9rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  padding: 1rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   z-index: 10;
   pointer-events: none;
   backdrop-filter: blur(10px);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
-/* Estados do Scanner */
+/* Estados do status */
 #scanner-status {
-  background: #1a1a1a !important;
-  border-top: 1px solid #333;
+  background: linear-gradient(#2a2a2a, #1a1a1a) !important;
+  border-top: 1px solid #444;
   font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.status-message {
+  transition: all 0.3s ease;
+}
+
+.status-error {
+  color: #ff6b6b !important;
+}
+
+.status-success {
+  color: #51cf66 !important;
+}
+
+.status-loading {
+  color: #339af0 !important;
 }
 
 #scan-result {
-  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%) !important;
-  border-top: 1px solid #198754;
+  background: linear-gradient(135deg, #2b8a3e 0%, #2f9e44 100%) !important;
+  border-top: 1px solid #2b8a3e;
   animation: result-fadeIn 0.5s ease-out;
+  font-weight: 500;
 }
 
 @keyframes result-fadeIn {
@@ -231,70 +269,45 @@ header {
   }
 }
 
-/* Indicador de loading do scanner */
-.scanner-loading {
+/* Indicadores de foco */
+.scanner-focus-points {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  z-index: 20;
+  width: 80%;
+  height: 60%;
+  pointer-events: none;
+  z-index: 8;
 }
 
-.scanner-loading .spinner-border {
-  width: 3rem;
-  height: 3rem;
+.focus-point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 255, 0, 0.7);
+  animation: focus-point-pulse 2s infinite;
 }
 
-/* Melhorias de responsividade para mobile */
-@media (max-width: 768px) {
-  .scanner-container {
-    height: 250px;
-  }
-  
-  .scanner-frame {
-    width: 85%;
-    height: 120px;
-  }
-  
-  .scan-line {
-    height: 2px;
-    animation-duration: 1.5s;
-  }
-  
-  #scanner-status,
-  #scan-result {
-    font-size: 0.8rem;
-    padding: 0.75rem;
-  }
+.focus-point:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; }
+.focus-point:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; }
+.focus-point:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; }
+.focus-point:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+@keyframes focus-point-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }
 
-@media (max-width: 576px) {
-  .scanner-container {
-    height: 200px;
-  }
-  
-  .scanner-frame {
-    height: 100px;
-  }
-  
-  .scanner-guide {
-    font-size: 0.75rem;
-    padding: 0.5rem;
-  }
-}
-
-/* Modo de baixa performance */
-@media (prefers-reduced-motion: reduce) {
-  .scan-line,
-  .scanner-frame {
-    animation: none;
-  }
-  
-  .scan-line {
-    opacity: 0.6;
-  }
+/* Feedback visual do canvas */
+.canvas-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
 }
 
 /* Animações */
@@ -360,26 +373,76 @@ footer {
   }
 }
 
-/* Utilidades */
-.text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Otimizações para diferentes dispositivos */
+@media (max-width: 768px) and (orientation: portrait) {
+  .scanner-container {
+    height: 50vh;
+    max-height: 400px;
+  }
+  
+  .scanner-frame {
+    width: 80%;
+    height: 35%;
+  }
+  
+  .scan-line {
+    height: 3px;
+    animation-duration: 2s;
+  }
 }
 
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+@media (max-width: 768px) and (orientation: landscape) {
+  .scanner-container {
+    height: 70vh;
+    max-height: 300px;
+  }
+  
+  .scanner-frame {
+    width: 60%;
+    height: 50%;
+  }
+  
+  .scanner-guide {
+    bottom: 0.5rem;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
 }
 
-/* Badges */
-.badge {
-  font-size: 0.85em;
-  padding: 0.5em 0.75em;
-  border-radius: 0.5rem;
+@media (max-width: 576px) {
+  .scanner-container {
+    height: 45vh;
+    min-height: 250px;
+  }
+  
+  .scanner-frame {
+    width: 85%;
+    height: 30%;
+    border-width: 2px;
+  }
+  
+  .scan-line {
+    height: 2px;
+  }
+  
+  .scanner-guide {
+    font-size: 0.8rem;
+    padding: 0.75rem 0.5rem;
+  }
 }
 
-/* Acessibilidade */
+/* Melhorias de acessibilidade */
 @media (prefers-reduced-motion: reduce) {
+  .scan-line,
+  .scanner-frame,
+  .focus-point {
+    animation: none;
+  }
+  
+  .scan-line {
+    opacity: 0.6;
+  }
+  
   *,
   *::before,
   *::after {
@@ -444,6 +507,62 @@ footer {
   border-color: #0b5ed7;
 }
 
+/* Utilidades */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Badges */
+.badge {
+  font-size: 0.85em;
+  padding: 0.5em 0.75em;
+  border-radius: 0.5rem;
+}
+
+/* Estados de loading */
+.scanner-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  z-index: 20;
+  background: rgba(0,0,0,0.8);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.scanner-loading .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 3px;
+}
+
+/* Botões do scanner otimizados */
+.btn-scanner {
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.btn-scanner:active {
+  transform: scale(0.95);
+  border-color: var(--primary);
+}
+
+#trocar-camera-btn:disabled,
+#digitar-manual-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Melhorias para o scanner em diferentes condições de luz */
 .scanner-container.low-light {
   filter: brightness(1.2) contrast(1.1);
@@ -451,32 +570,6 @@ footer {
 
 .scanner-container.bright-light {
   filter: brightness(0.8) contrast(1.2);
-}
-
-/* Indicador de foco do scanner */
-.scanner-focus-indicator {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  animation: focus-pulse 2s infinite;
-  pointer-events: none;
-  z-index: 15;
-}
-
-@keyframes focus-pulse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 0.8;
-  }
 }
 
 /* Estados de erro do scanner */
