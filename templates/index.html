@@ -56,7 +56,9 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('perfil') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -67,7 +69,9 @@
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
                                     </a>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -103,12 +107,9 @@
                 <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
                     <div class="d-flex align-items-center">
                         {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i> 
-                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i> 
-                        {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i> 
-                        {% endif %}
+                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
                         <span>{{ mensagem }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -331,8 +332,7 @@
                         <span id="status-text">Preparando scanner...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
-                        <i class="bi bi-check-circle me-1"></i>
-                        Código lido: <strong id="scanned-code"></strong>
+                        <i class="bi bi-check-circle me-1"></i> Código lido: <strong id="scanned-code"></strong>
                         <button type="button" class="btn btn-light btn-sm ms-2" id="usar-codigo-btn">
                             <i class="bi bi-check me-1"></i>Usar
                         </button>
@@ -392,7 +392,7 @@
             initialize() {
                 console.log('🔧 Inicializando scanner...');
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
-                
+
                 // Event listeners
                 document.getElementById('btnCamera').addEventListener('click', () => this.openScanner());
                 document.getElementById('trocar-camera-btn').addEventListener('click', () => this.switchCamera());
@@ -408,7 +408,7 @@
                         this.handleCameraError(error);
                     });
                 });
-                
+
                 document.getElementById('scannerModal').addEventListener('hidden.bs.modal', () => {
                     console.log('🚪 Modal fechado - parando scanner');
                     this.cleanupScanner();
@@ -432,6 +432,8 @@
                     await this.cleanupScanner();
                     // FIM da limpeza
 
+                    this.updateStatus('🔄 Acessando câmera...');
+
                     const constraints = {
                         video: {
                             facingMode: this.currentFacingMode,
@@ -442,7 +444,8 @@
                         audio: false
                     };
 
-                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    // Usar getUserMedia com fallback
+                    this.stream = await this.getUserMediaWithFallback(constraints);
                     console.log('✅ Câmera acessada com sucesso');
 
                     const video = document.getElementById('scanner-video');
@@ -603,13 +606,13 @@
             useScannedCode() {
                 const code = document.getElementById('scanned-code').textContent;
                 console.log('📝 Usando código:', code);
-                
+
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.value = code;
                     numeroBemField.focus();
                 }
-                
+
                 this.scannerModal.hide();
             }
             // FIM da função useScannedCode
@@ -629,7 +632,7 @@
                 if (this.quaggaInitialized) {
                     Quagga.start();
                 }
-                
+
                 this.updateStatus('📷 Scanner ativo - Aponte para o código');
             }
             // FIM da função scanAgain
@@ -654,7 +657,7 @@
                 console.log('⌨️ Modo digitação manual');
                 this.cleanupScanner();
                 this.scannerModal.hide();
-                
+
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.focus();
@@ -685,7 +688,7 @@
                         console.warn('⚠️ Erro ao parar Quagga:', error);
                     }
                 }
-                
+
                 // Parar stream de vídeo
                 if (this.stream) {
                     this.stream.getTracks().forEach(track => {
@@ -694,7 +697,7 @@
                     });
                     this.stream = null;
                 }
-                
+
                 const video = document.getElementById('scanner-video');
                 if (video) {
                     video.srcObject = null;
@@ -720,8 +723,11 @@
 
             // INÍCIO da função handleCameraError
             handleCameraError(error) {
-                let errorMessage = 'Erro ao acessar a câmera. ';
-                
+                console.error('🚨 Erro detalhado da câmera:', error);
+
+                let errorMessage = '';
+                let troubleshoot = '';
+
                 if (error.name === 'NotAllowedError') {
                     errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do navegador.';
                 } else if (error.name === 'NotFoundError') {
@@ -731,14 +737,17 @@
                 } else if (error.name === 'NotReadableError') {
                     errorMessage = 'A câmera está sendo usada por outro aplicativo. Feche outros apps que possam estar usando a câmera.';
                 } else {
-                    errorMessage += error.message;
+                    errorMessage = 'Erro desconhecido: ' + (error.message || error.toString());
+                    troubleshoot = '1. Recarregue a página\n2. Tente outro navegador\n3. Verifique conexão de internet';
                 }
-                
+
                 this.updateStatus('❌ ' + errorMessage);
                 
                 // Mostrar alerta após um breve delay
                 setTimeout(() => {
-                    if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                    const fullMessage = `❌ ${errorMessage}\n\n🔧 Soluções:\n${troubleshoot}\n\n💡 Deseja digitar o código manualmente?`;
+
+                    if (confirm(fullMessage)) {
                         this.enterManually();
                     } else {
                         this.scannerModal.hide();
@@ -763,7 +772,7 @@
                 searchForm.addEventListener('submit', function(e) {
                     const submitBtn = document.getElementById('btnLocalizar');
                     const spinner = document.getElementById('loadingSpinner');
-                    
+
                     if (submitBtn && spinner) {
                         submitBtn.disabled = true;
                         spinner.classList.remove('d-none');
@@ -771,14 +780,16 @@
                 });
             }
 
-            {% if bem_detalhes %}
+            { %
+                if bem_detalhes %
+            }
             // Abrir modal de resultados se houver dados
             setTimeout(() => {
                 const modalElement = document.getElementById('resultadoModal');
                 if (modalElement) {
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
-                    
+
                     // Preencher conteúdo do modal
                     const modalBody = modalElement.querySelector('.modal-body');
                     if (modalBody) {
@@ -795,8 +806,8 @@
                         `;
                     }
                 }
-            }, 500);
-            {% endif %}
+            }, 500); { % endif %
+            }
         });
 
         // Funções globais para compatibilidade
@@ -807,4 +818,5 @@
         }
     </script>
 </body>
+
 </html>
