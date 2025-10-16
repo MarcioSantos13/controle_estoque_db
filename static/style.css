@@ -584,3 +584,100 @@ footer {
 .scanner-info {
   background: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%) !important;
 }
+
+/* ===== SCANNER SIMPLIFICADO ===== */
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.scanner-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Estilo para o vídeo do Html5Qrcode */
+#scanner-viewport video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Sobrescrever estilos problemáticos do Html5Qrcode */
+#scanner-viewport div:first-child {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.scanner-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 150px;
+    border: 3px solid #00ff00;
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.scan-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: red;
+    animation: scan-animation 1.5s infinite;
+    z-index: 6;
+}
+
+@keyframes scan-animation {
+    0% { top: 25%; }
+    50% { top: 50%; }
+    100% { top: 75%; }
+}
+
+.scanner-guide {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    z-index: 10;
+}
+
+/* Estados do Scanner */
+#scanner-status {
+    background: #1a1a1a !important;
+    border-top: 1px solid #333;
+}
+
+#scan-result {
+    background: var(--success) !important;
+    border-top: 1px solid #198754;
+}
+
+/* Remover qualquer tarja vermelha */
+#scanner-viewport canvas {
+    display: none !important;
+}
+
+/* Garantir que o vídeo fique visível */
+#html5-qrcode-button-camera-stop,
+#html5-qrcode-button-camera-start {
+    display: none !important;
+}
