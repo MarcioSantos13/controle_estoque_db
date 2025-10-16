@@ -484,7 +484,7 @@
                         halfSample: true
                     },
                     numOfWorkers: 2,
-                    frequency: 10,
+                    frequency: 25, // Processa 25 frames por segundo
                     debug: {
                         showCanvas: true,
                         showPatches: true,
@@ -534,24 +534,22 @@
 
             onScanSuccess(code) {
                 this.isScanning = false;
-                
-                // Limpar e formatar código
+
                 const cleanCode = code.toString().trim();
-                
                 console.log('🎯 Código processado:', cleanCode);
-                
-                // Mostrar resultado
+
                 document.getElementById('scanned-code').textContent = cleanCode;
                 document.getElementById('scanner-status').classList.add('d-none');
                 document.getElementById('scan-result').classList.remove('d-none');
-                
-                // Vibrar se suportado
+
                 if (navigator.vibrate) {
                     navigator.vibrate(200);
                 }
-                
-                // Parar temporariamente o scanner
-                Quagga.stop();
+
+                // Adicione um atraso antes de parar o scanner
+                setTimeout(() => {
+                    Quagga.stop();
+                }, 1000); // 1 segundo de atraso
             }
 
             useScannedCode() {
