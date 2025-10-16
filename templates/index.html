@@ -56,9 +56,7 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('perfil') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -69,9 +67,7 @@
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
                                     </a>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -107,9 +103,12 @@
                 <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
                     <div class="d-flex align-items-center">
                         {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
+                        <i class="bi bi-check-circle-fill me-2"></i> 
+                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> 
+                        {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> 
+                        {% endif %}
                         <span>{{ mensagem }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -332,7 +331,8 @@
                         <span id="status-text">Preparando scanner...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
-                        <i class="bi bi-check-circle me-1"></i> Código lido: <strong id="scanned-code"></strong>
+                        <i class="bi bi-check-circle me-1"></i>
+                        Código lido: <strong id="scanned-code"></strong>
                         <button type="button" class="btn btn-light btn-sm ms-2" id="usar-codigo-btn">
                             <i class="bi bi-check me-1"></i>Usar
                         </button>
@@ -376,7 +376,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ===== SISTEMA DE SCANNER ESTÁVEL =====
+        // ===== SISTEMA DE SCANNER SIMPLIFICADO =====
         class BarcodeScanner {
             constructor() {
                 this.stream = null;
@@ -384,15 +384,12 @@
                 this.currentFacingMode = 'environment';
                 this.scannerModal = null;
                 this.isScanning = false;
-                this.scanTimeout = null;
-                this.lastScannedCode = null;
-                this.scanCooldown = 2000; // 2 segundos entre leituras
             }
 
             initialize() {
-                console.log('🔧 Inicializando scanner...');
+                console.log('Inicializando scanner...');
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
-
+                
                 // Event listeners
                 document.getElementById('btnCamera').addEventListener('click', () => this.openScanner());
                 document.getElementById('trocar-camera-btn').addEventListener('click', () => this.switchCamera());
@@ -400,90 +397,64 @@
                 document.getElementById('usar-codigo-btn').addEventListener('click', () => this.useScannedCode());
                 document.getElementById('ler-outro-btn').addEventListener('click', () => this.scanAgain());
                 
-                // Modal events - INÍCIO dos eventos do modal
+                // Modal events
                 document.getElementById('scannerModal').addEventListener('shown.bs.modal', () => {
-                    console.log('📱 Modal aberto - iniciando scanner');
-                    this.startScanner().catch(error => {
-                        console.error('❌ Erro ao iniciar scanner:', error);
-                        this.handleCameraError(error);
-                    });
+                    console.log('Modal aberto - iniciando scanner');
+                    setTimeout(() => this.startScanner(), 300);
                 });
-
+                
                 document.getElementById('scannerModal').addEventListener('hidden.bs.modal', () => {
-                    console.log('🚪 Modal fechado - parando scanner');
-                    this.cleanupScanner();
+                    console.log('Modal fechado - parando scanner');
+                    this.stopScanner();
                 });
-                // FIM dos eventos do modal
             }
 
             async openScanner() {
-                console.log('📷 Abrindo scanner...');
-                this.updateStatus('🔧 Preparando scanner...');
+                console.log('Abrindo scanner...');
+                this.updateStatus('Preparando scanner...');
                 this.hideResult();
                 this.scannerModal.show();
             }
 
             async startScanner() {
                 try {
-                    console.log('🎬 Iniciando câmera...');
+                    console.log('Iniciando câmera...');
                     this.updateStatus('🔄 Acessando câmera...');
                     
-                    // Limpar scanner anterior - INÍCIO da limpeza
-                    await this.cleanupScanner();
-                    // FIM da limpeza
-
-                    this.updateStatus('🔄 Acessando câmera...');
+                    await this.stopScanner();
 
                     const constraints = {
                         video: {
                             facingMode: this.currentFacingMode,
                             width: { ideal: 1280 },
-                            height: { ideal: 720 },
-                            frameRate: { ideal: 15 } // Reduzido para melhor performance
+                            height: { ideal: 720 }
                         },
                         audio: false
                     };
 
-                    // Usar getUserMedia com fallback
-                    this.stream = await this.getUserMediaWithFallback(constraints);
+                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
                     console.log('✅ Câmera acessada com sucesso');
 
                     const video = document.getElementById('scanner-video');
                     video.srcObject = this.stream;
 
-                    // INÍCIO do tratamento de carregamento do vídeo
-                    await new Promise((resolve, reject) => {
-                        video.onloadedmetadata = () => {
-                            video.play().then(resolve).catch(reject);
-                        };
-                        video.onerror = reject;
-                    });
-                    // FIM do tratamento
-
+                    await video.play();
                     this.updateStatus('📷 Scanner ativo - Aponte para o código');
-                    this.isScanning = true;
 
-                    // Iniciar Quagga com delay para estabilização
-                    setTimeout(() => this.startQuagga(), 500);
+                    // Iniciar Quagga
+                    this.startQuagga();
 
                 } catch (error) {
                     console.error('❌ Erro na câmera:', error);
                     this.handleCameraError(error);
-                    throw error;
                 }
             }
 
-            // INÍCIO da função startQuagga
             startQuagga() {
                 if (typeof Quagga === 'undefined') {
                     console.error('Quagga não carregado');
                     this.updateStatus('❌ Biblioteca não carregada');
                     return;
-                }
-
-                if (this.quaggaInitialized) {
-                    console.log('⚠️ Quagga já inicializado, reiniciando...');
-                    Quagga.stop();
                 }
 
                 const config = {
@@ -492,279 +463,206 @@
                         type: "LiveStream",
                         target: document.getElementById('scanner-video'),
                         constraints: {
-                            facingMode: this.currentFacingMode,
-                            width: 640, // Reduzido para melhor performance
-                            height: 480
+                            facingMode: this.currentFacingMode
                         }
                     },
                     decoder: {
                         readers: [
                             "code_128_reader",
                             "ean_reader",
-                            "code_39_reader"
-                        ],
-                        multiple: false // Evita múltiplas leituras simultâneas
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader"
+                        ]
                     },
                     locator: {
                         patchSize: "medium",
-                        halfSample: false // Desativado para melhor performance
+                        halfSample: true
                     },
-                    numOfWorkers: 1, // Reduzido para mobile
-                    frequency: 10, // Reduzido de 25 para 10 frames/segundo
+                    numOfWorkers: 2,
+                    frequency: 25, // Processa 25 frames por segundo
                     debug: {
-                        drawBoundingBox: false,
-                        showFrequency: false,
-                        drawScanline: false,
-                        showPattern: false
+                        showCanvas: true,
+                        showPatches: true,
+                        showFoundPatches: true,
+                        showSkeleton: true,
+                        showLabels: true,
+                        showPatchLabels: true,
+                        showRemainingPatchLabels: true,
+                        boxFromPatches: {
+                            showTransformed: true,
+                            showTransformedBox: true,
+                            showBB: true
+                        }
                     }
                 };
 
                 Quagga.init(config, (err) => {
                     if (err) {
-                        console.error('❌ Erro ao inicializar Quagga:', err);
-                        this.updateStatus('❌ Erro no scanner: ' + err.message);
+                        console.error('Erro ao inicializar Quagga:', err);
+                        this.updateStatus('❌ Erro no scanner');
                         return;
                     }
 
                     console.log('✅ Quagga inicializado com sucesso');
                     Quagga.start();
                     this.quaggaInitialized = true;
+                    this.isScanning = true;
 
-                    // INÍCIO do evento onDetected
                     Quagga.onDetected((result) => {
-                        if (!this.isScanning) {
-                            console.log('⏸️ Scanner pausado, ignorando leitura');
-                            return;
-                        }
+                        if (!this.isScanning) return;
 
                         const code = result.codeResult.code;
-                        console.log('🔍 Código detectado:', code);
+                        console.log('✅ Código detectado:', code);
                         
-                        // Prevenir leituras duplicadas rápidas
-                        if (this.lastScannedCode === code && this.scanTimeout) {
-                            console.log('⏳ Código duplicado, ignorando...');
-                            return;
-                        }
-
                         if (this.isValidBarcode(code)) {
-                            this.lastScannedCode = code;
                             this.onScanSuccess(code);
-                            
-                            // Cooldown para evitar leituras múltiplas
-                            this.isScanning = false;
-                            this.scanTimeout = setTimeout(() => {
-                                this.isScanning = true;
-                                this.lastScannedCode = null;
-                            }, this.scanCooldown);
                         }
                     });
-                    // FIM do evento onDetected
                 });
             }
-            // FIM da função startQuagga
 
-            // INÍCIO da função isValidBarcode
             isValidBarcode(code) {
-                if (!code || typeof code !== 'string') {
-                    console.log('❌ Código inválido:', code);
-                    return false;
-                }
-                
-                const cleanCode = code.trim();
-                const isValid = /^[A-Za-z0-9\-]+$/.test(cleanCode) && cleanCode.length >= 1;
-                
-                if (!isValid) {
-                    console.log('❌ Formato de código inválido:', cleanCode);
-                }
-                
-                return isValid;
+                if (!code) return false;
+                // Validar código - apenas números, letras e hífen
+                return /^[A-Za-z0-9\-]+$/.test(code) && code.length >= 1;
             }
-            // FIM da função isValidBarcode
 
-            // INÍCIO da função onScanSuccess
             onScanSuccess(code) {
-                console.log('🎯 Código processado com sucesso:', code);
+                this.isScanning = false;
 
                 const cleanCode = code.toString().trim();
+                console.log('🎯 Código processado:', cleanCode);
+
                 document.getElementById('scanned-code').textContent = cleanCode;
                 document.getElementById('scanner-status').classList.add('d-none');
                 document.getElementById('scan-result').classList.remove('d-none');
 
-                // Feedback tátil
                 if (navigator.vibrate) {
                     navigator.vibrate(200);
                 }
 
-                // Parar temporariamente o scanner
-                if (this.quaggaInitialized) {
+                // Adicione um atraso antes de parar o scanner
+                setTimeout(() => {
                     Quagga.stop();
-                }
+                }, 1000); // 1 segundo de atraso
             }
-            // FIM da função onScanSuccess
 
-            // INÍCIO da função useScannedCode
             useScannedCode() {
                 const code = document.getElementById('scanned-code').textContent;
                 console.log('📝 Usando código:', code);
-
+                
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.value = code;
                     numeroBemField.focus();
                 }
-
+                
                 this.scannerModal.hide();
             }
-            // FIM da função useScannedCode
 
-            // INÍCIO da função scanAgain
             scanAgain() {
                 console.log('🔄 Reiniciando scanner...');
                 this.hideResult();
                 this.isScanning = true;
-                this.lastScannedCode = null;
-                
-                if (this.scanTimeout) {
-                    clearTimeout(this.scanTimeout);
-                    this.scanTimeout = null;
-                }
                 
                 if (this.quaggaInitialized) {
                     Quagga.start();
                 }
-
+                
                 this.updateStatus('📷 Scanner ativo - Aponte para o código');
             }
-            // FIM da função scanAgain
 
-            // INÍCIO da função switchCamera
             async switchCamera() {
                 console.log('🔄 Trocando câmera...');
                 this.currentFacingMode = this.currentFacingMode === 'environment' ? 'user' : 'environment';
                 this.updateStatus('🔄 Trocando câmera...');
-                
-                try {
-                    await this.startScanner();
-                } catch (error) {
-                    console.error('❌ Erro ao trocar câmera:', error);
-                    this.handleCameraError(error);
-                }
+                await this.startScanner();
             }
-            // FIM da função switchCamera
 
-            // INÍCIO da função enterManually
             enterManually() {
                 console.log('⌨️ Modo digitação manual');
-                this.cleanupScanner();
+                this.stopScanner();
                 this.scannerModal.hide();
-
+                
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.focus();
                     numeroBemField.select();
                 }
             }
-            // FIM da função enterManually
 
-            // INÍCIO da função cleanupScanner
-            async cleanupScanner() {
-                console.log('🧹 Limpando scanner...');
+            async stopScanner() {
+                console.log('🛑 Parando scanner...');
                 this.isScanning = false;
-                this.lastScannedCode = null;
-                
-                if (this.scanTimeout) {
-                    clearTimeout(this.scanTimeout);
-                    this.scanTimeout = null;
-                }
                 
                 // Parar Quagga
                 if (typeof Quagga !== 'undefined' && this.quaggaInitialized) {
                     try {
-                        Quagga.offDetected();
                         Quagga.stop();
+                        Quagga.offDetected();
                         this.quaggaInitialized = false;
-                        console.log('✅ Quagga parado com sucesso');
                     } catch (error) {
-                        console.warn('⚠️ Erro ao parar Quagga:', error);
+                        console.log('Erro ao parar Quagga:', error);
                     }
                 }
-
+                
                 // Parar stream de vídeo
                 if (this.stream) {
-                    this.stream.getTracks().forEach(track => {
-                        track.stop();
-                        console.log('✅ Track parada:', track.kind);
-                    });
+                    this.stream.getTracks().forEach(track => track.stop());
                     this.stream = null;
                 }
-
+                
                 const video = document.getElementById('scanner-video');
                 if (video) {
                     video.srcObject = null;
                 }
             }
-            // FIM da função cleanupScanner
 
-            // INÍCIO da função updateStatus
             updateStatus(message) {
                 const statusElement = document.getElementById('status-text');
                 if (statusElement) {
                     statusElement.textContent = message;
                 }
             }
-            // FIM da função updateStatus
 
-            // INÍCIO da função hideResult
             hideResult() {
                 document.getElementById('scan-result').classList.add('d-none');
                 document.getElementById('scanner-status').classList.remove('d-none');
             }
-            // FIM da função hideResult
 
-            // INÍCIO da função handleCameraError
             handleCameraError(error) {
-                console.error('🚨 Erro detalhado da câmera:', error);
-
-                let errorMessage = '';
-                let troubleshoot = '';
-
+                let errorMessage = 'Erro ao acessar a câmera. ';
+                
                 if (error.name === 'NotAllowedError') {
-                    errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações do navegador.';
+                    errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
                 } else if (error.name === 'NotFoundError') {
-                    errorMessage = 'Nenhuma câmera encontrada no dispositivo.';
+                    errorMessage = 'Nenhuma câmera encontrada.';
                 } else if (error.name === 'NotSupportedError') {
-                    errorMessage = 'Seu navegador não suporta acesso à câmera. Tente usar Chrome, Firefox ou Safari.';
-                } else if (error.name === 'NotReadableError') {
-                    errorMessage = 'A câmera está sendo usada por outro aplicativo. Feche outros apps que possam estar usando a câmera.';
+                    errorMessage = 'Navegador não suporta acesso à câmera.';
                 } else {
-                    errorMessage = 'Erro desconhecido: ' + (error.message || error.toString());
-                    troubleshoot = '1. Recarregue a página\n2. Tente outro navegador\n3. Verifique conexão de internet';
+                    errorMessage += error.message;
                 }
-
+                
                 this.updateStatus('❌ ' + errorMessage);
                 
-                // Mostrar alerta após um breve delay
                 setTimeout(() => {
-                    const fullMessage = `❌ ${errorMessage}\n\n🔧 Soluções:\n${troubleshoot}\n\n💡 Deseja digitar o código manualmente?`;
-
-                    if (confirm(fullMessage)) {
+                    if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
                         this.enterManually();
-                    } else {
-                        this.scannerModal.hide();
                     }
-                }, 500);
+                }, 1000);
             }
-            // FIM da função handleCameraError
         }
 
         // ===== SISTEMA PRINCIPAL =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Inicializando sistema...');
-            
-            // INÍCIO da inicialização do scanner
+            // Inicializar scanner
             const scanner = new BarcodeScanner();
             scanner.initialize();
-            // FIM da inicialização
             
             // Configurar formulário
             const searchForm = document.getElementById('searchForm');
@@ -772,7 +670,7 @@
                 searchForm.addEventListener('submit', function(e) {
                     const submitBtn = document.getElementById('btnLocalizar');
                     const spinner = document.getElementById('loadingSpinner');
-
+                    
                     if (submitBtn && spinner) {
                         submitBtn.disabled = true;
                         spinner.classList.remove('d-none');
@@ -780,16 +678,14 @@
                 });
             }
 
-            { %
-                if bem_detalhes %
-            }
+            {% if bem_detalhes %}
             // Abrir modal de resultados se houver dados
             setTimeout(() => {
                 const modalElement = document.getElementById('resultadoModal');
                 if (modalElement) {
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
-
+                    
                     // Preencher conteúdo do modal
                     const modalBody = modalElement.querySelector('.modal-body');
                     if (modalBody) {
@@ -806,8 +702,8 @@
                         `;
                     }
                 }
-            }, 500); { % endif %
-            }
+            }, 500);
+            {% endif %}
         });
 
         // Funções globais para compatibilidade
@@ -818,5 +714,4 @@
         }
     </script>
 </body>
-
 </html>
