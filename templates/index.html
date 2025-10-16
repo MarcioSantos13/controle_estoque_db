@@ -56,7 +56,9 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('perfil') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -67,7 +69,9 @@
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
                                     </a>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -103,12 +107,9 @@
                 <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
                     <div class="d-flex align-items-center">
                         {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i> 
-                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i> 
-                        {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i> 
-                        {% endif %}
+                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
                         <span>{{ mensagem }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -331,8 +332,7 @@
                         <span id="status-text">Preparando scanner...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
-                        <i class="bi bi-check-circle me-1"></i>
-                        Código lido: <strong id="scanned-code"></strong>
+                        <i class="bi bi-check-circle me-1"></i> Código lido: <strong id="scanned-code"></strong>
                         <button type="button" class="btn btn-light btn-sm ms-2" id="usar-codigo-btn">
                             <i class="bi bi-check me-1"></i>Usar
                         </button>
@@ -389,20 +389,20 @@
             initialize() {
                 console.log('Inicializando scanner...');
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
-                
+
                 // Event listeners
                 document.getElementById('btnCamera').addEventListener('click', () => this.openScanner());
                 document.getElementById('trocar-camera-btn').addEventListener('click', () => this.switchCamera());
                 document.getElementById('digitar-manual-btn').addEventListener('click', () => this.enterManually());
                 document.getElementById('usar-codigo-btn').addEventListener('click', () => this.useScannedCode());
                 document.getElementById('ler-outro-btn').addEventListener('click', () => this.scanAgain());
-                
+
                 // Modal events
                 document.getElementById('scannerModal').addEventListener('shown.bs.modal', () => {
                     console.log('Modal aberto - iniciando scanner');
                     setTimeout(() => this.startScanner(), 300);
                 });
-                
+
                 document.getElementById('scannerModal').addEventListener('hidden.bs.modal', () => {
                     console.log('Modal fechado - parando scanner');
                     this.stopScanner();
@@ -419,20 +419,32 @@
             async startScanner() {
                 try {
                     console.log('Iniciando câmera...');
-                    this.updateStatus('🔄 Acessando câmera...');
-                    
+                    this.updateStatus('🔄 Verificando suporte à câmera...');
+
+                    // Verificar suporte robusto à câmera
+                    if (!this.checkCameraSupport()) {
+                        throw new Error('Câmera não suportada neste navegador/contexto');
+                    }
+
                     await this.stopScanner();
+
+                    this.updateStatus('🔄 Acessando câmera...');
 
                     const constraints = {
                         video: {
                             facingMode: this.currentFacingMode,
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 }
+                            width: {
+                                ideal: 1280
+                            },
+                            height: {
+                                ideal: 720
+                            }
                         },
                         audio: false
                     };
 
-                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    // Usar getUserMedia com fallback
+                    this.stream = await this.getUserMediaWithFallback(constraints);
                     console.log('✅ Câmera acessada com sucesso');
 
                     const video = document.getElementById('scanner-video');
@@ -447,6 +459,114 @@
                 } catch (error) {
                     console.error('❌ Erro na câmera:', error);
                     this.handleCameraError(error);
+                }
+            }
+
+            checkCameraSupport() {
+                console.log('🔍 Verificando suporte à câmera...');
+
+                // Verificar protocolo seguro
+                const isSecure = location.protocol === 'https:' ||
+                    location.hostname === 'localhost' ||
+                    location.hostname === '127.0.0.1' ||
+                    location.hostname.includes('192.168.');
+
+                if (!isSecure) {
+                    console.error('❌ Câmera requer HTTPS ou localhost. Protocolo atual:', location.protocol);
+                    this.updateStatus('❌ Câmera requer HTTPS ou localhost');
+                    return false;
+                }
+
+                // Verificar navigator
+                if (typeof navigator === 'undefined') {
+                    console.error('❌ Navigator não disponível');
+                    return false;
+                }
+
+                // Verificar mediaDevices
+                if (!navigator.mediaDevices) {
+                    console.log('⚠️ mediaDevices não disponível, tentando polyfill...');
+                    this.setupMediaDevicesPolyfill();
+                }
+
+                // Verificar getUserMedia
+                if (navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+                    console.log('✅ navigator.mediaDevices.getUserMedia disponível');
+                    return true;
+                }
+
+                // Verificar APIs legadas
+                if (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+                    console.log('✅ getUserMedia legacy disponível, criando polyfill...');
+                    this.setupMediaDevicesPolyfill();
+                    return true;
+                }
+
+                console.error('❌ Nenhuma API de câmera encontrada');
+                return false;
+            }
+
+            setupMediaDevicesPolyfill() {
+                console.log('🔧 Configurando polyfill para mediaDevices...');
+
+                if (!navigator.mediaDevices) {
+                    navigator.mediaDevices = {};
+                }
+
+                if (!navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia = (constraints) => {
+                        const getUserMedia = navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia;
+
+                        if (!getUserMedia) {
+                            return Promise.reject(new Error('getUserMedia não suportado neste navegador'));
+                        }
+
+                        return new Promise((resolve, reject) => {
+                            getUserMedia.call(navigator, constraints, resolve, reject);
+                        });
+                    };
+                }
+            }
+
+            async getUserMediaWithFallback(constraints) {
+                console.log('📹 Tentando acessar câmera com constraints:', constraints);
+
+                try {
+                    // Tentativa 1: API moderna
+                    return await navigator.mediaDevices.getUserMedia(constraints);
+
+                } catch (error) {
+                    console.warn('⚠️ Falha com constraints ideais:', error.message);
+
+                    // Tentativa 2: Constraints básicas
+                    const basicConstraints = {
+                        video: {
+                            facingMode: this.currentFacingMode
+                        },
+                        audio: false
+                    };
+
+                    try {
+                        console.log('🔄 Tentando com constraints básicas...');
+                        return await navigator.mediaDevices.getUserMedia(basicConstraints);
+
+                    } catch (error2) {
+                        console.warn('⚠️ Falha com facingMode:', error2.message);
+
+                        // Tentativa 3: Apenas vídeo simples
+                        try {
+                            console.log('🔄 Tentando apenas com vídeo simples...');
+                            return await navigator.mediaDevices.getUserMedia({
+                                video: true
+                            });
+
+                        } catch (error3) {
+                            console.error('❌ Todas as tentativas falharam');
+                            throw new Error(`Falha ao acessar câmera: ${error3.message}`);
+                        }
+                    }
                 }
             }
 
@@ -518,7 +638,7 @@
 
                         const code = result.codeResult.code;
                         console.log('✅ Código detectado:', code);
-                        
+
                         if (this.isValidBarcode(code)) {
                             this.onScanSuccess(code);
                         }
@@ -555,13 +675,13 @@
             useScannedCode() {
                 const code = document.getElementById('scanned-code').textContent;
                 console.log('📝 Usando código:', code);
-                
+
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.value = code;
                     numeroBemField.focus();
                 }
-                
+
                 this.scannerModal.hide();
             }
 
@@ -569,11 +689,11 @@
                 console.log('🔄 Reiniciando scanner...');
                 this.hideResult();
                 this.isScanning = true;
-                
+
                 if (this.quaggaInitialized) {
                     Quagga.start();
                 }
-                
+
                 this.updateStatus('📷 Scanner ativo - Aponte para o código');
             }
 
@@ -588,7 +708,7 @@
                 console.log('⌨️ Modo digitação manual');
                 this.stopScanner();
                 this.scannerModal.hide();
-                
+
                 const numeroBemField = document.getElementById('numero_bem');
                 if (numeroBemField) {
                     numeroBemField.focus();
@@ -599,7 +719,7 @@
             async stopScanner() {
                 console.log('🛑 Parando scanner...');
                 this.isScanning = false;
-                
+
                 // Parar Quagga
                 if (typeof Quagga !== 'undefined' && this.quaggaInitialized) {
                     try {
@@ -610,13 +730,13 @@
                         console.log('Erro ao parar Quagga:', error);
                     }
                 }
-                
+
                 // Parar stream de vídeo
                 if (this.stream) {
                     this.stream.getTracks().forEach(track => track.stop());
                     this.stream = null;
                 }
-                
+
                 const video = document.getElementById('scanner-video');
                 if (video) {
                     video.srcObject = null;
@@ -636,25 +756,65 @@
             }
 
             handleCameraError(error) {
-                let errorMessage = 'Erro ao acessar a câmera. ';
-                
+                console.error('🚨 Erro detalhado da câmera:', error);
+
+                let errorMessage = '';
+                let troubleshoot = '';
+
                 if (error.name === 'NotAllowedError') {
-                    errorMessage = 'Permissão de câmera negada. Por favor, permita o acesso à câmera.';
+                    errorMessage = 'Permissão de câmera negada';
+                    troubleshoot = '1. Clique no ícone da câmera na barra de endereços\n2. Selecione "Permitir"\n3. Recarregue a página';
+
                 } else if (error.name === 'NotFoundError') {
-                    errorMessage = 'Nenhuma câmera encontrada.';
+                    errorMessage = 'Nenhuma câmera encontrada';
+                    troubleshoot = '1. Verifique se há uma câmera conectada\n2. Feche outros apps que podem estar usando a câmera\n3. Tente reiniciar o navegador';
+
                 } else if (error.name === 'NotSupportedError') {
-                    errorMessage = 'Navegador não suporta acesso à câmera.';
+                    errorMessage = 'Navegador não suporta câmera';
+                    troubleshoot = '1. Use Chrome, Firefox ou Edge atualizados\n2. Verifique se está em HTTPS ou localhost\n3. Tente outro navegador';
+
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage = 'Câmera em uso por outro app';
+                    troubleshoot = '1. Feche outros apps/abas que usam câmera\n2. Reinicie o navegador\n3. Tente novamente';
+
+                } else if (error.message && error.message.includes('getUserMedia')) {
+                    errorMessage = 'API de câmera não disponível';
+                    troubleshoot = '1. Verifique se está em HTTPS (não HTTP)\n2. Use localhost para testes\n3. Atualize seu navegador';
+
                 } else {
-                    errorMessage += error.message;
+                    errorMessage = 'Erro desconhecido: ' + (error.message || error.toString());
+                    troubleshoot = '1. Recarregue a página\n2. Tente outro navegador\n3. Verifique conexão de internet';
                 }
-                
+
                 this.updateStatus('❌ ' + errorMessage);
-                
+
+                // Mostrar diagnóstico detalhado
+                console.group('🔧 Diagnóstico da Câmera');
+                console.log('📍 Protocolo:', location.protocol);
+                console.log('🌐 Host:', location.hostname);
+                console.log('🔒 Contexto seguro:', location.protocol === 'https:' || location.hostname === 'localhost');
+                console.log('📹 MediaDevices:', !!navigator.mediaDevices);
+                console.log('🎥 getUserMedia:', !!navigator.mediaDevices ? .getUserMedia);
+                console.log('📱 User Agent:', navigator.userAgent);
+                console.groupEnd();
+
                 setTimeout(() => {
-                    if (confirm(errorMessage + '\n\nDeseja digitar o código manualmente?')) {
+                    const fullMessage = `❌ ${errorMessage}\n\n🔧 Soluções:\n${troubleshoot}\n\n💡 Deseja digitar o código manualmente?`;
+
+                    if (confirm(fullMessage)) {
                         this.enterManually();
+                    } else {
+                        // Mostrar informações técnicas adicionais
+                        const techInfo = `\n\n🔍 Informações Técnicas:\n` +
+                            `• Protocolo: ${location.protocol}\n` +
+                            `• Host: ${location.hostname}\n` +
+                            `• MediaDevices: ${!!navigator.mediaDevices}\n` +
+                            `• getUserMedia: ${!!navigator.mediaDevices?.getUserMedia}\n` +
+                            `• Erro: ${error.name || 'Desconhecido'}`;
+
+                        alert('ℹ️ Para desenvolvedores:' + techInfo);
                     }
-                }, 1000);
+                }, 1500);
             }
         }
 
@@ -663,14 +823,14 @@
             // Inicializar scanner
             const scanner = new BarcodeScanner();
             scanner.initialize();
-            
+
             // Configurar formulário
             const searchForm = document.getElementById('searchForm');
             if (searchForm) {
                 searchForm.addEventListener('submit', function(e) {
                     const submitBtn = document.getElementById('btnLocalizar');
                     const spinner = document.getElementById('loadingSpinner');
-                    
+
                     if (submitBtn && spinner) {
                         submitBtn.disabled = true;
                         spinner.classList.remove('d-none');
@@ -678,14 +838,16 @@
                 });
             }
 
-            {% if bem_detalhes %}
+            { %
+                if bem_detalhes %
+            }
             // Abrir modal de resultados se houver dados
             setTimeout(() => {
                 const modalElement = document.getElementById('resultadoModal');
                 if (modalElement) {
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
-                    
+
                     // Preencher conteúdo do modal
                     const modalBody = modalElement.querySelector('.modal-body');
                     if (modalBody) {
@@ -702,8 +864,8 @@
                         `;
                     }
                 }
-            }, 500);
-            {% endif %}
+            }, 500); { % endif %
+            }
         });
 
         // Funções globais para compatibilidade
@@ -714,4 +876,5 @@
         }
     </script>
 </body>
+
 </html>
