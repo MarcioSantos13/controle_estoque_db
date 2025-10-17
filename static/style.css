@@ -351,3 +351,95 @@ footer {
   background: linear-gradient(135deg, #0b5ed7 0%, var(--primary) 100%);
   border-color: #0b5ed7;
 }
+
+/* ===== MELHORIAS PARA ETIQUETAS METÁLICAS ===== */
+
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 320px; /* Altura aumentada para metal */
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #333;
+}
+
+/* Overlay com instruções para metal */
+.metal-scan-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.metal-tips {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 10px;
+    font-size: 0.8rem;
+}
+
+.metal-tips i {
+    color: #ffd700; /* Dourado para metal */
+    margin-right: 5px;
+}
+
+/* Indicador de confirmação */
+.confidence-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    margin-left: 5px;
+}
+
+/* Filtros específicos para metal */
+.metal-video {
+    filter: contrast(1.4) brightness(0.9) saturate(1.3) !important;
+}
+
+/* Status específico para metal */
+#scanner-status.metal-scanning {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
+    color: #e2e8f0;
+}
+
+/* Loading para metal */
+.scanner-loading.metal-optimized {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: #ffd700;
+}
+
+.scanner-loading.metal-optimized i {
+    color: #ffd700;
+    animation: metal-pulse 2s infinite;
+}
+
+@keyframes metal-pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Botões otimizados */
+.btn-metal {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+    color: #000;
+    border: 1px solid #ffd700;
+}
+
+.btn-metal:hover {
+    background: linear-gradient(135deg, #ffed4a 0%, #ffd700 100%);
+    color: #000;
+}
