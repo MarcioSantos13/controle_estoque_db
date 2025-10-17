@@ -1600,13 +1600,18 @@ def sistema_crud():
                 query_where += " AND situacao = 'OK'"
             elif situacao_filtro == 'Pendente':
                 query_where += " AND (situacao != 'OK' OR situacao IS NULL OR situacao = '')"
+
+        # Aplicar filtro de responsável (busca exata)
+        responsavel = request.args.get('responsavel', '').strip()
+        if responsavel:
+            query_where += " AND responsavel = ?"
+            params.append(responsavel)
         
         # Aplicar filtro de busca
         if termo_busca:
             query_where += " AND (nome LIKE ? OR numero LIKE ?)"
             termo_like = f"%{termo_busca}%"
             params.extend([termo_like, termo_like])
-        
         # Contar total de registros
         count_query = f"SELECT COUNT(*) FROM bens {query_where}"
         cursor.execute(count_query, params)
