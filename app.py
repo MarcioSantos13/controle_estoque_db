@@ -739,8 +739,9 @@ def importar_excel():
                              **carregar_dados_bancos())
 
 # ==============================
-# Rotas CRUD Unificadas
+# Rotas CRUD Unificadas - CORRIGIDAS
 # ==============================
+
 @app.route('/api/bens', methods=['POST'])
 @login_required
 def criar_bem():
@@ -801,22 +802,51 @@ def criar_bem():
     except Exception as e:
         print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
-    
-@app.route('/api/bens/<numero_bem>')
-def api_obter_bem(numero_bem):
-    """API para obter dados de um bem pelo número"""
+
+# ==============================
+# ROTAS DA API CORRIGIDAS - ADICIONANDO ROTAS FALTANTES
+# ==============================
+
+@app.route('/api/bens/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem_por_id(bem_id):
+    """API para obter dados de um bem pelo ID - ROTA CORRIGIDA"""
     try:
-        bem = obter_bem_por_numero(DB_PATH, numero_bem)
+        print(f"🔍 Buscando bem por ID: {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, numero, nome, situacao, localizacao, responsavel, 
+                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+            FROM bens WHERE id = ?
+        ''', (bem_id,))
+        
+        bem = cursor.fetchone()
+        conn.close()
         
         if bem:
-            return jsonify({'success': True, 'data': bem})
+            # Converter para dicionário
+            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
+            bem_dict = dict(zip(colunas, bem))
+            
+            # Converter datas para string se necessário
+            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
+                if bem_dict[campo]:
+                    bem_dict[campo] = str(bem_dict[campo])
+            
+            print(f"✅ Bem encontrado: {bem_dict['numero']} - {bem_dict['nome']}")
+            return jsonify({'success': True, 'data': bem_dict})
         else:
-            return jsonify({'success': False, 'message': 'Bem não encontrado'})
+            print(f"❌ Bem não encontrado: ID {bem_id}")
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
-        logger.error(f"Erro ao obter bem {numero_bem}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)})
-    
+        print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
 def api_editar_bem(bem_id):
@@ -868,12 +898,50 @@ def api_editar_bem(bem_id):
 def api_excluir_bem(bem_id):
     """API para excluir um bem"""
     try:
-        sucesso, mensagem = excluir_bem(DB_PATH, bem_id)
-        return jsonify({'success': sucesso, 'message': mensagem})
+        print(f"🗑️ Excluindo bem ID: {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se o bem existe
+        cursor.execute("SELECT numero, nome FROM bens WHERE id = ?", (bem_id,))
+        bem = cursor.fetchone()
+        
+        if not bem:
+            conn.close()
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+        
+        # Excluir o bem
+        cursor.execute("DELETE FROM bens WHERE id = ?", (bem_id,))
+        conn.commit()
+        conn.close()
+        
+        print(f"✅ Bem {bem_id} excluído com sucesso: {bem[0]} - {bem[1]}")
+        return jsonify({'success': True, 'message': 'Bem excluído com sucesso!'})
         
     except Exception as e:
-        logger.error(f"Erro ao excluir bem {bem_id}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)})
+        print(f"💥 Erro ao excluir bem {bem_id}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/bens/<numero_bem>', methods=['GET'])
+@login_required
+def api_obter_bem_por_numero(numero_bem):
+    """API para obter dados de um bem pelo número"""
+    try:
+        print(f"🔍 Buscando bem por número: {numero_bem}")
+        
+        bem = obter_bem_por_numero(DB_PATH, numero_bem)
+        
+        if bem:
+            print(f"✅ Bem encontrado: {bem['numero']} - {bem['nome']}")
+            return jsonify({'success': True, 'data': bem})
+        else:
+            print(f"❌ Bem não encontrado: {numero_bem}")
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+            
+    except Exception as e:
+        print(f"💥 Erro ao obter bem {numero_bem}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/verificar-numero', methods=['GET'])
 def api_verificar_numero():
@@ -1699,42 +1767,6 @@ def sistema_crud():
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
  
-@app.route('/api/bens/id/<int:bem_id>')
-@login_required
-def api_obter_bem_por_id(bem_id):
-    """API para obter dados de um bem pelo ID"""
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            SELECT id, numero, nome, situacao, localizacao, responsavel, 
-                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
-            FROM bens WHERE id = ?
-        ''', (bem_id,))
-        
-        bem = cursor.fetchone()
-        conn.close()
-        
-        if bem:
-            # Converter para dicionário
-            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
-                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
-            bem_dict = dict(zip(colunas, bem))
-            
-            # Converter datas para string se necessário
-            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
-                if bem_dict[campo]:
-                    bem_dict[campo] = str(bem_dict[campo])
-            
-            return jsonify({'success': True, 'data': bem_dict})
-        else:
-            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
-            
-    except Exception as e:
-        print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
 @app.route('/sair')
 def sair():
     """Página de encerramento do aplicativo"""
@@ -1812,29 +1844,6 @@ if app.debug:
             
         except Exception as e:
             return jsonify({'error': str(e)})
-
-# ==============================
-# Configuração SSL/HTTPS
-# ==============================
-def criar_contexto_ssl():
-    """Cria contexto SSL para HTTPS"""
-    try:
-        # Verificar se existem certificados
-        cert_file = 'cert.pem'
-        key_file = 'key.pem'
-        
-        if os.path.exists(cert_file) and os.path.exists(key_file):
-            context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-            context.load_cert_chain(cert_file, key_file)
-            logger.info("✅ Certificados SSL carregados com sucesso")
-            return context
-        else:
-            logger.warning("⚠️ Certificados SSL não encontrados. Executando em HTTP.")
-            return None
-            
-    except Exception as e:
-        logger.error(f"❌ Erro ao configurar SSL: {str(e)}")
-        return None
 
 # ==============================
 # Inicialização - VERSÃO CORRIGIDA
