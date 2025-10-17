@@ -8,34 +8,46 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .table-hover tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.075);
+        :root {
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --light-bg: #f5f7fb;
         }
-
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        
         .badge-status {
             font-size: 0.8em;
         }
-
+        
         .action-buttons {
             white-space: nowrap;
         }
-
+        
         .search-box {
             max-width: 400px;
         }
-
+        
         .pagination-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
         }
-
+        
         .id-indisponivel {
             color: #dc3545;
             font-style: italic;
         }
-
+        
         .debug-panel {
             background: #f8f9fa;
             padding: 15px;
@@ -43,86 +55,197 @@
             margin-top: 20px;
             border-left: 4px solid #007bff;
         }
+        
+        /* Estilos aprimorados */
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 1rem 1.25rem;
+        }
+        
+        .header-section {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .toolbar-section {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .search-container .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        
+        .search-container .form-control:focus + .input-group-text {
+            border-color: #80bdff;
+        }
+        
+        .search-container .input-group:hover {
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+        }
+        
+        .btn-modern {
+            border-radius: 0.375rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-1px);
+        }
+        
+        .table th {
+            font-weight: 600;
+            border-top: none;
+            color: #495057;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            padding: 0.75rem;
+        }
+        
+        .filter-badge {
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .user-dropdown .dropdown-toggle::after {
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 1rem;
+            }
+            
+            .toolbar-section {
+                padding: 1rem;
+            }
+            
+            .btn-group-responsive {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-group-responsive .btn {
+                margin-bottom: 0.5rem;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid py-3">
         <!-- Cabeçalho -->
-        <div class="row mb-4">
-            <div class="col">
-                <h1 class="h3">
-                    <i class="fas fa-database me-2"></i>Sistema CRUD - Gerenciamento de Bens
-                </h1>
-                <p class="text-muted">Gerencie todos os bens do patrimônio</p>
-            </div>
-            <div class="col-auto">
-                <div class="d-flex align-items-center gap-2">
-                    <!-- Botão Início -->
-                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-home me-1"></i>Início
-                    </a>
+        <div class="header-section">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-1">
+                        <i class="fas fa-database me-2 text-primary"></i>Sistema CRUD - Gerenciamento de Bens
+                    </h1>
+                    <p class="text-muted mb-0">Gerencie todos os bens do patrimônio de forma eficiente</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
+                        <!-- Botão Início -->
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-modern">
+                            <i class="fas fa-home me-1"></i>Início
+                        </a>
 
-                    <!-- Dropdown do Usuário -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-1"></i>
-                            {% if session.usuario_nome %}
-                            {{ session.usuario_nome }}
-                            {% else %}
-                            Usuário
-                            {% endif %}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <span class="dropdown-item-text">
-                                    <small class="text-muted">
-                                        <i class="fas fa-envelope me-1"></i>
-                                        {% if session.usuario_email %}
-                                        {{ session.usuario_email }}
-                                        {% else %}
-                                        E-mail não disponível
-                                        {% endif %}
-                                    </small>
-                                </span>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('perfil') }}">
-                                    <i class="fas fa-user-circle me-2"></i>Meu Perfil
-                                </a>
-                            </li>
+                        <!-- Dropdown do Usuário -->
+                        <div class="dropdown user-dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle btn-modern" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i>
+                                {% if session.usuario_nome %}
+                                {{ session.usuario_nome }}
+                                {% else %}
+                                Usuário
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <span class="dropdown-item-text">
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope me-1"></i>
+                                            {% if session.usuario_email %}
+                                            {{ session.usuario_email }}
+                                            {% else %}
+                                            E-mail não disponível
+                                            {% endif %}
+                                        </small>
+                                    </span>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('perfil') }}">
+                                        <i class="fas fa-user-circle me-2"></i>Meu Perfil
+                                    </a>
+                                </li>
 
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
-                                    <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">
-                                    <i class="fas fa-users me-2"></i>Gerenciar Usuários
-                                </a>
-                            </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
+                                        <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">
+                                        <i class="fas fa-users me-2"></i>Gerenciar Usuários
+                                    </a>
+                                </li>
 
-
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cog me-2"></i>Configurações
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Sair do Sistema
-                                </a>
-                            </li>
-                        </ul>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cog me-2"></i>Configurações
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Sair do Sistema
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,8 +253,8 @@
 
         <!-- Estatísticas -->
         <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card bg-primary text-white">
+            <div class="col-md-4 mb-3">
+                <div class="card stats-card bg-primary text-white">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
@@ -139,14 +262,14 @@
                                 <p class="card-text">Total de Bens</p>
                             </div>
                             <div class="align-self-center">
-                                <i class="fas fa-boxes fa-2x"></i>
+                                <i class="fas fa-boxes fa-2x opacity-75"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card bg-success text-white">
+            <div class="col-md-4 mb-3">
+                <div class="card stats-card bg-success text-white">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
@@ -154,14 +277,14 @@
                                 <p class="card-text">Bens Localizados</p>
                             </div>
                             <div class="align-self-center">
-                                <i class="fas fa-check-circle fa-2x"></i>
+                                <i class="fas fa-check-circle fa-2x opacity-75"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card bg-warning text-white">
+            <div class="col-md-4 mb-3">
+                <div class="card stats-card bg-warning text-white">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
@@ -169,7 +292,7 @@
                                 <p class="card-text">Bens Pendentes</p>
                             </div>
                             <div class="align-self-center">
-                                <i class="fas fa-clock fa-2x"></i>
+                                <i class="fas fa-clock fa-2x opacity-75"></i>
                             </div>
                         </div>
                     </div>
@@ -178,93 +301,103 @@
         </div>
 
         <!-- Barra de Ferramentas -->
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <!-- Busca -->
-                <form method="GET" class="d-flex flex-wrap gap-3">
-                    <div class="flex-grow-1">
-                        <div class="search-container position-relative">
-                            <div class="input-group shadow-sm">
-                                <span class="input-group-text bg-white border-end-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                <input type="text" name="q" class="form-control border-start-0 ps-0" 
-                                    placeholder="Buscar por nome ou número..."
-                                    value="{{ termo_busca }}"
-                                    style="border-left: none; box-shadow: none;">
+        <div class="toolbar-section">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <!-- Busca -->
+                    <form method="GET" class="row g-2">
+                        <div class="col-md-5">
+                            <div class="search-container position-relative">
+                                <div class="input-group shadow-sm">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" name="q" class="form-control border-start-0 ps-0" 
+                                        placeholder="Buscar por nome ou número..."
+                                        value="{{ termo_busca }}"
+                                        style="border-left: none; box-shadow: none;">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="search-container position-relative">
-                            <div class="input-group shadow-sm">
-                                <span class="input-group-text bg-white border-end-0">
-                                    <i class="fas fa-user text-muted"></i>
-                                </span>
-                                <input type="text" name="responsavel" class="form-control border-start-0 ps-0" 
-                                    placeholder="Filtrar por responsável..."
-                                    value="{{ request.args.get('responsavel', '') }}"
-                                    style="border-left: none; box-shadow: none;">
-                                {% if request.args.get('responsavel') %}
-                                <a href="{{ url_for('sistema_crud', q=termo_busca) }}" 
-                                    class="btn btn-link text-danger position-absolute end-0 top-50 translate-middle-y" 
-                                    style="z-index: 5;"
-                                    title="Limpar filtro de responsável">
-                                    <i class="fas fa-times-circle"></i>
-                                </a>
-                                {% endif %}
+                        <div class="col-md-5">
+                            <div class="search-container position-relative">
+                                <div class="input-group shadow-sm">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </span>
+                                    <input type="text" name="responsavel" class="form-control border-start-0 ps-0" 
+                                        placeholder="Filtrar por responsável..."
+                                        value="{{ request.args.get('responsavel', '') }}"
+                                        style="border-left: none; box-shadow: none;">
+                                    {% if request.args.get('responsavel') %}
+                                    <a href="{{ url_for('sistema_crud', q=termo_busca) }}" 
+                                        class="btn btn-link text-danger position-absolute end-0 top-50 translate-middle-y" 
+                                        style="z-index: 5;"
+                                        title="Limpar filtro de responsável">
+                                        <i class="fas fa-times-circle"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary px-4">
-                            <i class="fas fa-search me-1"></i>Pesquisar
-                        </button>
-                        <button type="button" class="btn btn-success" onclick="abrirModalNovoBem()">
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100 btn-modern">
+                                <i class="fas fa-search me-1"></i>Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <button type="button" class="btn btn-success btn-modern" id="btnNovoBem">
                             <i class="fas fa-plus me-1"></i>Novo Bem
                         </button>
-                        <div class="btn-group">
-                            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary">
-                                <i class="fas fa-download me-1"></i>Exportar Localizados
+                        <div class="btn-group btn-group-responsive">
+                            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary btn-modern">
+                                <i class="fas fa-download me-1"></i>Localizados
                             </a>
-                            <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
-                                <i class="fas fa-download me-1"></i>Exportar Pendentes
+                            <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning btn-modern">
+                                <i class="fas fa-download me-1"></i>Pendentes
                             </a>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-
-        <style>
-        .search-container .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-        }
-        .search-container .form-control:focus + .input-group-text {
-            border-color: #80bdff;
-        }
-        .search-container .input-group:hover {
-            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
-        }
-        </style>
-
-        <!-- Filtros -->
-        <div class="row mb-3">
-            <div class="col">
-                <div class="btn-group">
-                    <a href="{{ url_for('sistema_crud') }}"
-                        class="btn btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
-                        Todos
-                    </a>
-                    <a href="{{ url_for('sistema_crud', situacao='OK') }}"
-                        class="btn btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
-                        Localizados
-                    </a>
-                    <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
-                        class="btn btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
-                        Pendentes
-                    </a>
+            
+            <!-- Filtros -->
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="text-muted small">Filtrar por:</span>
+                        <div class="btn-group">
+                            <a href="{{ url_for('sistema_crud') }}"
+                                class="btn btn-sm btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
+                                Todos
+                            </a>
+                            <a href="{{ url_for('sistema_crud', situacao='OK') }}"
+                                class="btn btn-sm btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
+                                Localizados
+                            </a>
+                            <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
+                                class="btn btn-sm btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
+                                Pendentes
+                            </a>
+                        </div>
+                        
+                        {% if termo_busca or request.args.get('responsavel') %}
+                        <div class="ms-2">
+                            {% if termo_busca %}
+                            <span class="badge filter-badge">Busca: "{{ termo_busca }}"</span>
+                            {% endif %}
+                            {% if request.args.get('responsavel') %}
+                            <span class="badge filter-badge">Responsável: "{{ request.args.get('responsavel') }}"</span>
+                            {% endif %}
+                            <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-outline-danger ms-1">
+                                <i class="fas fa-times"></i> Limpar
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -273,14 +406,8 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title mb-0">
-                    <i class="fas fa-list me-1"></i>
+                    <i class="fas fa-list me-1 text-primary"></i>
                     Lista de Bens
-                    {% if termo_busca %}
-                    <span class="badge bg-info me-1">Busca: "{{ termo_busca }}"</span>
-                    {% endif %}
-                    {% if request.args.get('responsavel') %}
-                    <span class="badge bg-info">Responsável: "{{ request.args.get('responsavel') }}"</span>
-                    {% endif %}
                 </h5>
             </div>
             <div class="card-body p-0">
@@ -295,7 +422,7 @@
                                 <th>Localização</th>
                                 <th>Responsável</th>
                                 <th>Última Vistoria</th>
-                                <th>Ações</th>
+                                <th class="text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -342,7 +469,7 @@
                                     <span class="text-muted">N/A</span>
                                     {% endif %}
                                 </td>
-                                <td class="action-buttons">
+                                <td class="action-buttons text-center">
                                     {% if bem.id %}
                                     <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
                                         title="Editar">
@@ -437,7 +564,7 @@
         </div>
     </div>
 
-    <!-- Modal para Visualizar/Editar Bem - CORRIGIDO -->
+    <!-- Modal para Visualizar/Editar Bem -->
     <div class="modal fade" id="modalBem" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -556,7 +683,68 @@
         // VARIÁVEIS GLOBAIS
         let bemIdParaExcluir = null;
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+        // Adicionar event listener para o botão Novo Bem
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("✅ Sistema CRUD carregado com sucesso!");
+            
+            // Adicionar event listener para o botão Novo Bem
+            const btnNovoBem = document.getElementById('btnNovoBem');
+            if (btnNovoBem) {
+                btnNovoBem.addEventListener('click', abrirModalNovoBem);
+                console.log("✅ Event listener adicionado ao botão Novo Bem");
+            } else {
+                console.error("❌ Botão Novo Bem não encontrado");
+            }
+        });
+
+        // FUNÇÃO PARA NOVO BEM - CORRIGIDA
+        function abrirModalNovoBem(event) {
+            if (event) event.preventDefault();
+            console.log("➕ ABRINDO MODAL PARA NOVO BEM");
+
+            // Resetar o formulário e limpar todos os campos
+            const form = document.getElementById('formBem');
+            if (form) {
+                form.reset();
+            }
+            
+            // Limpar campos específicos
+            document.getElementById('modalBemTitle').textContent = 'Novo Bem';
+            document.getElementById('bemId').value = '';
+            document.getElementById('numero').value = '';
+            document.getElementById('nome').value = '';
+            document.getElementById('localizacao').value = '';
+            document.getElementById('responsavel').value = '';
+            document.getElementById('auditor').value = '';
+            document.getElementById('observacoes').value = '';
+            document.getElementById('situacao').value = 'Pendente';
+
+            // Habilitar todos os campos para edição
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.readOnly = false;
+            });
+
+            // Definir data atual como padrão para vistoria atual
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('data_vistoria_atual').value = hoje;
+            document.getElementById('data_ultima_vistoria').value = '';
+
+            document.getElementById('btnSalvar').style.display = 'block';
+
+            // Abrir o modal
+            const modalElement = document.getElementById('modalBem');
+            if (modalElement) {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+                console.log("✅ Modal Novo Bem aberto com sucesso");
+            } else {
+                console.error("❌ Elemento do modal não encontrado");
+            }
+        }
+
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -605,7 +793,7 @@
                 });
         }
 
-        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA
+        // FUNÇÃO PARA VISUALIZAR POR ID
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -646,7 +834,7 @@
                 });
         }
 
-        // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO - CORRIGIDA
+        // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
         function preencherModalEdicao(bem) {
             console.log("📝 Preenchendo modal de EDIÇÃO com:", bem);
 
@@ -718,152 +906,114 @@
             modal.show();
         }
 
-        // FUNÇÃO PARA NOVO BEM - CORRIGIDA
-        function abrirModalNovoBem(event) {
-            if (event) event.preventDefault();
-            console.log("➕ ABRINDO MODAL PARA NOVO BEM");
-
-            // Resetar o formulário e limpar todos os campos
-            const form = document.getElementById('formBem');
-            form.reset();
+        // FUNÇÃO SALVAR BEM
+        async function salvarBem() {
+            console.log("💾 INICIANDO SALVAMENTO DO BEM");
             
-            // Limpar campos específicos
-            document.getElementById('modalBemTitle').textContent = 'Novo Bem';
-            document.getElementById('bemId').value = '';
-            document.getElementById('numero').value = '';
-            document.getElementById('nome').value = '';
-            document.getElementById('localizacao').value = '';
-            document.getElementById('responsavel').value = '';
-            document.getElementById('auditor').value = '';
-            document.getElementById('observacoes').value = '';
-            document.getElementById('situacao').value = 'Pendente';
+            const formData = new FormData(document.getElementById('formBem'));
+            const bemId = document.getElementById('bemId').value;
 
-            // Habilitar todos os campos para edição
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => {
-                input.disabled = false;
-                input.readOnly = false;
-            });
-
-            // Definir data atual como padrão para vistoria atual
-            const hoje = new Date().toISOString().split('T')[0];
-            document.getElementById('data_vistoria_atual').value = hoje;
-            document.getElementById('data_ultima_vistoria').value = '';
-
-            document.getElementById('btnSalvar').style.display = 'block';
-
-            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
-            modal.show();
-        }
-
-   // FUNÇÃO SALVAR BEM - CORREÇÃO NO TRATAMENTO DE DATAS
-async function salvarBem() {
-    console.log("💾 INICIANDO SALVAMENTO DO BEM");
-    
-    const formData = new FormData(document.getElementById('formBem'));
-    const bemId = document.getElementById('bemId').value;
-
-    // Converter FormData para objeto JavaScript
-    const dados = {};
-    for (let [key, value] of formData.entries()) {
-        // Tratamento específico para campos de data vazios
-        if ((key === 'data_ultima_vistoria' || key === 'data_vistoria_atual') && value === '') {
-            dados[key] = null; // Enviar null para datas vazias
-        } else if (value === '' || value === null || value === undefined) {
-            dados[key] = ''; // String vazia para outros campos
-        } else {
-            dados[key] = typeof value === 'string' ? value.trim() : value;
-        }
-        console.log(`📋 Campo: ${key} =`, dados[key]);
-    }
-
-    console.log("📤 Dados completos a serem enviados:", dados);
-    console.log("🎯 ID do bem:", bemId || "NOVO BEM");
-
-    // Validar campos obrigatórios
-    if (!dados.numero || dados.numero === '') {
-        alert("❌ Campo obrigatório: Número do Bem deve ser preenchido.");
-        document.getElementById('numero').focus();
-        return;
-    }
-
-    if (!dados.nome || dados.nome === '') {
-        alert("❌ Campo obrigatório: Nome do Bem deve ser preenchido.");
-        document.getElementById('nome').focus();
-        return;
-    }
-
-    try {
-        let response;
-        let url;
-        let method;
-
-        // Mostrar loading no botão
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-        btnSalvar.disabled = true;
-
-        if (bemId && bemId !== '') {
-            // EDIÇÃO - usar ID
-            method = 'PUT';
-            url = `/api/bens/${bemId}`;
-            console.log(`📤 Enviando ${method} para ${url}`);
-        } else {
-            // NOVO BEM
-            method = 'POST';
-            url = '/api/bens';
-            console.log(`📤 Enviando ${method} para ${url}`);
-        }
-
-        response = await fetch(url, {
-            method: method,
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        });
-
-        console.log("📥 Status da resposta:", response.status);
-
-        const responseText = await response.text();
-        console.log("📥 Resposta bruta do servidor:", responseText);
-
-        let result;
-        try {
-            result = JSON.parse(responseText);
-        } catch (parseError) {
-            console.error("❌ Erro ao fazer parse do JSON:", parseError);
-            throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}...`);
-        }
-
-        console.log("📥 Resposta parseada:", result);
-
-        if (result.success) {
-            alert("✅ " + result.message);
-            bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
-            location.reload();
-        } else {
-            let mensagemErro = result.message || "Erro desconhecido";
-            if (result.errors) {
-                mensagemErro += "\nErros: " + JSON.stringify(result.errors);
+            // Converter FormData para objeto JavaScript
+            const dados = {};
+            for (let [key, value] of formData.entries()) {
+                // Tratamento específico para campos de data vazios
+                if ((key === 'data_ultima_vistoria' || key === 'data_vistoria_atual') && value === '') {
+                    dados[key] = null; // Enviar null para datas vazias
+                } else if (value === '' || value === null || value === undefined) {
+                    dados[key] = ''; // String vazia para outros campos
+                } else {
+                    dados[key] = typeof value === 'string' ? value.trim() : value;
+                }
+                console.log(`📋 Campo: ${key} =`, dados[key]);
             }
-            alert("❌ Erro: " + mensagemErro);
-            console.error("Erro detalhado:", result);
-        }
-    } catch (error) {
-        console.error("💥 Erro ao salvar:", error);
-        alert("❌ Erro: " + error.message);
-    } finally {
-        // Restaurar botão independente do resultado
-        const btnSalvar = document.getElementById('btnSalvar');
-        btnSalvar.innerHTML = 'Salvar Alterações';
-        btnSalvar.disabled = false;
-    }
-}
 
-        // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO - CORRIGIDA
+            console.log("📤 Dados completos a serem enviados:", dados);
+            console.log("🎯 ID do bem:", bemId || "NOVO BEM");
+
+            // Validar campos obrigatórios
+            if (!dados.numero || dados.numero === '') {
+                alert("❌ Campo obrigatório: Número do Bem deve ser preenchido.");
+                document.getElementById('numero').focus();
+                return;
+            }
+
+            if (!dados.nome || dados.nome === '') {
+                alert("❌ Campo obrigatório: Nome do Bem deve ser preenchido.");
+                document.getElementById('nome').focus();
+                return;
+            }
+
+            try {
+                let response;
+                let url;
+                let method;
+
+                // Mostrar loading no botão
+                const btnSalvar = document.getElementById('btnSalvar');
+                const originalText = btnSalvar.innerHTML;
+                btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                btnSalvar.disabled = true;
+
+                if (bemId && bemId !== '') {
+                    // EDIÇÃO - usar ID
+                    method = 'PUT';
+                    url = `/api/bens/${bemId}`;
+                    console.log(`📤 Enviando ${method} para ${url}`);
+                } else {
+                    // NOVO BEM
+                    method = 'POST';
+                    url = '/api/bens';
+                    console.log(`📤 Enviando ${method} para ${url}`);
+                }
+
+                response = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                console.log("📥 Status da resposta:", response.status);
+
+                const responseText = await response.text();
+                console.log("📥 Resposta bruta do servidor:", responseText);
+
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error("❌ Erro ao fazer parse do JSON:", parseError);
+                    throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}...`);
+                }
+
+                console.log("📥 Resposta parseada:", result);
+
+                if (result.success) {
+                    alert("✅ " + result.message);
+                    bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
+                    location.reload();
+                } else {
+                    let mensagemErro = result.message || "Erro desconhecido";
+                    if (result.errors) {
+                        mensagemErro += "\nErros: " + JSON.stringify(result.errors);
+                    }
+                    alert("❌ Erro: " + mensagemErro);
+                    console.error("Erro detalhado:", result);
+                }
+            } catch (error) {
+                console.error("💥 Erro ao salvar:", error);
+                alert("❌ Erro: " + error.message);
+            } finally {
+                // Restaurar botão independente do resultado
+                const btnSalvar = document.getElementById('btnSalvar');
+                btnSalvar.innerHTML = 'Salvar Alterações';
+                btnSalvar.disabled = false;
+            }
+        }
+
+        // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO
         function preencherModalVisualizacao(bem) {
             console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
 
@@ -967,11 +1117,6 @@ async function salvarBem() {
                 input.readOnly = false;
             });
             document.getElementById('btnSalvar').style.display = 'block';
-        });
-
-        // Executar quando página carregar
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log("✅ Sistema CRUD carregado com sucesso!");
         });
     </script>
 </body>
