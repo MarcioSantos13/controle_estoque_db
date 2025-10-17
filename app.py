@@ -847,6 +847,14 @@ def api_obter_bem_por_id(bem_id):
         print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# ROTA ALTERNATIVA PARA COMPATIBILIDADE - ESSA É A QUE O JAVASCRIPT ESTÁ TENTANDO ACESSAR
+@app.route('/api/bens/id/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem_por_id_alternativo(bem_id):
+    """Rota alternativa para compatibilidade com JavaScript - CORRIGINDO O ERRO 404"""
+    print(f"🔍 ROTA ALTERNATIVA - Buscando bem por ID: {bem_id}")
+    return api_obter_bem_por_id(bem_id)
+
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
 def api_editar_bem(bem_id):
