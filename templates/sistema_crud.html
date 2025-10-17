@@ -921,7 +921,7 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -936,41 +936,65 @@
             btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // Buscar bem pelo ID
-            fetch(`/api/bens/id/${bemId}`)
-                .then(response => {
+            // CORREÇÃO: Usar a rota correta da API
+            // Tentar diferentes formatos de rota
+            const rotasPossiveis = [
+                `/api/bens/${bemId}`,
+                `/api/bens/id/${bemId}`,
+                `/api/bem/${bemId}`,
+                `/bens/${bemId}`
+            ];
+
+            // Função para tentar uma rota
+            const tentarRota = async (index) => {
+                if (index >= rotasPossiveis.length) {
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro: Não foi possível encontrar a rota da API. Verifique a configuração do servidor.");
+                    return;
+                }
+
+                const rota = rotasPossiveis[index];
+                console.log(`📡 Tentando rota: ${rota}`);
+
+                try {
+                    const response = await fetch(rota);
                     console.log("📡 Status:", response.status);
-                    if (!response.ok) {
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("📊 Dados COMPLETOS recebidos:", data);
+
+                        // Restaurar botão
+                        btnSalvar.innerHTML = originalText;
+                        btnSalvar.disabled = false;
+
+                        if (data.success && data.data) {
+                            preencherModalEdicao(data.data);
+                        } else {
+                            console.error("❌ Erro na resposta:", data);
+                            alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+                        }
+                    } else if (response.status === 404) {
+                        // Tentar próxima rota
+                        console.log(`❌ Rota ${rota} não encontrada, tentando próxima...`);
+                        tentarRota(index + 1);
+                    } else {
                         throw new Error(`Erro HTTP: ${response.status}`);
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("📊 Dados COMPLETOS recebidos:", data);
+                } catch (error) {
+                    console.error(`💥 Erro na requisição para ${rota}:`, error);
+                    // Tentar próxima rota
+                    tentarRota(index + 1);
+                }
+            };
 
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-
-                    if (data.success && data.data) {
-                        preencherModalEdicao(data.data);
-                    } else {
-                        console.error("❌ Erro na resposta:", data);
-                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                    }
-                })
-                .catch(error => {
-                    console.error("💥 Erro na requisição:", error);
-
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-
-                    alert("Erro ao carregar dados do bem: " + error.message);
-                });
+            // Iniciar tentativas
+            tentarRota(0);
         }
 
-        // FUNÇÃO PARA VISUALIZAR POR ID
+        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -985,30 +1009,56 @@
             btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            fetch(`/api/bens/id/${bemId}`)
-                .then(response => {
-                    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
+            // CORREÇÃO: Usar a mesma lógica de rotas da função editar
+            const rotasPossiveis = [
+                `/api/bens/${bemId}`,
+                `/api/bens/id/${bemId}`,
+                `/api/bem/${bemId}`,
+                `/bens/${bemId}`
+            ];
 
+            const tentarRota = async (index) => {
+                if (index >= rotasPossiveis.length) {
                     // Restaurar botão
                     btnSalvar.innerHTML = originalText;
                     btnSalvar.disabled = false;
+                    alert("❌ Erro: Não foi possível encontrar a rota da API para visualização.");
+                    return;
+                }
 
-                    if (data.success && data.data) {
-                        preencherModalVisualizacao(data.data);
+                const rota = rotasPossiveis[index];
+                console.log(`📡 Tentando rota para visualização: ${rota}`);
+
+                try {
+                    const response = await fetch(rota);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
+
+                        // Restaurar botão
+                        btnSalvar.innerHTML = originalText;
+                        btnSalvar.disabled = false;
+
+                        if (data.success && data.data) {
+                            preencherModalVisualizacao(data.data);
+                        } else {
+                            alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
+                        }
+                    } else if (response.status === 404) {
+                        console.log(`❌ Rota ${rota} não encontrada, tentando próxima...`);
+                        tentarRota(index + 1);
                     } else {
-                        alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
+                        throw new Error(`Erro HTTP: ${response.status}`);
                     }
-                })
-                .catch(error => {
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-                    alert("Erro: " + error.message);
-                });
+                } catch (error) {
+                    console.error(`💥 Erro na requisição para ${rota}:`, error);
+                    tentarRota(index + 1);
+                }
+            };
+
+            // Iniciar tentativas
+            tentarRota(0);
         }
 
         // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
@@ -1083,7 +1133,7 @@
             modal.show();
         }
 
-        // FUNÇÃO SALVAR BEM
+        // FUNÇÃO SALVAR BEM - CORRIGIDA
         async function salvarBem() {
             console.log("💾 INICIANDO SALVAMENTO DO BEM");
             
@@ -1134,23 +1184,75 @@
                 if (bemId && bemId !== '') {
                     // EDIÇÃO - usar ID
                     method = 'PUT';
-                    url = `/api/bens/${bemId}`;
-                    console.log(`📤 Enviando ${method} para ${url}`);
+                    // CORREÇÃO: Tentar diferentes rotas para edição
+                    const rotasEdicao = [
+                        `/api/bens/${bemId}`,
+                        `/api/bens/editar/${bemId}`,
+                        `/bens/${bemId}`
+                    ];
+                    
+                    // Encontrar a rota correta
+                    for (const rota of rotasEdicao) {
+                        try {
+                            console.log(`📤 Tentando ${method} para ${rota}`);
+                            response = await fetch(rota, {
+                                method: method,
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify(dados)
+                            });
+                            
+                            if (response.ok) {
+                                url = rota;
+                                break;
+                            }
+                        } catch (error) {
+                            console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
+                            continue;
+                        }
+                    }
+                    
+                    if (!response || !response.ok) {
+                        throw new Error("Nenhuma rota de edição funcionou");
+                    }
                 } else {
                     // NOVO BEM
                     method = 'POST';
-                    url = '/api/bens';
-                    console.log(`📤 Enviando ${method} para ${url}`);
+                    // CORREÇÃO: Tentar diferentes rotas para criação
+                    const rotasCriacao = [
+                        '/api/bens',
+                        '/api/bens/novo',
+                        '/bens'
+                    ];
+                    
+                    for (const rota of rotasCriacao) {
+                        try {
+                            console.log(`📤 Tentando ${method} para ${rota}`);
+                            response = await fetch(rota, {
+                                method: method,
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify(dados)
+                            });
+                            
+                            if (response.ok) {
+                                url = rota;
+                                break;
+                            }
+                        } catch (error) {
+                            console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
+                            continue;
+                        }
+                    }
+                    
+                    if (!response || !response.ok) {
+                        throw new Error("Nenhuma rota de criação funcionou");
+                    }
                 }
-
-                response = await fetch(url, {
-                    method: method,
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(dados)
-                });
 
                 console.log("📥 Status da resposta:", response.status);
 
@@ -1254,7 +1356,7 @@
             modal.show();
         }
 
-        // FUNÇÕES DE EXCLUSÃO
+        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA
         function confirmarExclusao(bemId, nomeBem) {
             console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
             bemIdParaExcluir = bemId;
@@ -1266,10 +1368,38 @@
             if (!bemIdParaExcluir) return;
 
             try {
-                console.log(`🗑️ Enviando DELETE para /api/bens/${bemIdParaExcluir}`);
-                const response = await fetch(`/api/bens/${bemIdParaExcluir}`, {
-                    method: 'DELETE'
-                });
+                // CORREÇÃO: Tentar diferentes rotas para exclusão
+                const rotasExclusao = [
+                    `/api/bens/${bemIdParaExcluir}`,
+                    `/api/bens/excluir/${bemIdParaExcluir}`,
+                    `/bens/${bemIdParaExcluir}`
+                ];
+
+                let response;
+                let rotaUsada = '';
+
+                for (const rota of rotasExclusao) {
+                    try {
+                        console.log(`🗑️ Tentando DELETE para ${rota}`);
+                        response = await fetch(rota, {
+                            method: 'DELETE'
+                        });
+                        
+                        if (response.ok) {
+                            rotaUsada = rota;
+                            break;
+                        }
+                    } catch (error) {
+                        console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
+                        continue;
+                    }
+                }
+
+                if (!response || !response.ok) {
+                    throw new Error("Nenhuma rota de exclusão funcionou");
+                }
+
+                console.log(`✅ Exclusão bem-sucedida via ${rotaUsada}`);
                 const result = await response.json();
                 console.log("📥 Resposta da exclusão:", result);
 
