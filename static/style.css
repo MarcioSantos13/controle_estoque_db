@@ -554,3 +554,34 @@ footer {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
+
+/* Estados do Scanner - Correções */
+.scanner-container video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* Remover elementos do HTML5QRCode que causam problemas */
+#html5-qrcode-anchor-scan-type-change,
+#html5-qrcode-button-camera-stop,
+#html5-qrcode-button-camera-start {
+    display: none !important;
+}
+
+/* Melhorar visualização do scanner */
+#scanner-viewport {
+    position: relative;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Loading do scanner */
+.scanner-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    font-size: 1.1rem;
+}

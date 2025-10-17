@@ -1206,6 +1206,36 @@ def cadastrar_usuario():
     return render_template('cadastrar_usuario.html')
 
 # ==============================
+# ROTAS DA API CORRIGIDAS - ADICIONANDO ROTAS FALTANTES
+# ==============================
+
+@app.route('/api/bem/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem_por_id_compativel(bem_id):
+    """Rota alternativa para compatibilidade com JavaScript"""
+    return api_obter_bem_por_id(bem_id)
+
+@app.route('/api/bens/editar/<int:bem_id>', methods=['PUT'])
+@login_required
+def api_editar_bem_compativel(bem_id):
+    """Rota alternativa para edição"""
+    return api_editar_bem(bem_id)
+
+@app.route('/api/bens/excluir/<int:bem_id>', methods=['DELETE'])
+@login_required
+def api_excluir_bem_compativel(bem_id):
+    """Rota alternativa para exclusão"""
+    return api_excluir_bem(bem_id)
+
+@app.route('/api/bens/novo', methods=['POST'])
+@login_required
+def api_criar_bem_compativel():
+    """Rota alternativa para criação"""
+    return criar_bem()
+
+
+
+# ==============================
 # ROTA PARA EDITAR USUÁRIO
 # ==============================
 @app.route('/usuarios/editar/<int:usuario_id>', methods=['GET', 'POST'])
