@@ -13,151 +13,298 @@
             --success-color: #198754;
             --warning-color: #ffc107;
             --light-bg: #f5f7fb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         
         body {
             background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
         }
         
-        .table-hover tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.04);
+        .app-container {
+            max-width: 100%;
+            padding: 1.5rem;
         }
         
-        .badge-status {
-            font-size: 0.8em;
-        }
-        
-        .action-buttons {
-            white-space: nowrap;
-        }
-        
-        .search-box {
-            max-width: 400px;
-        }
-        
-        .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .id-indisponivel {
-            color: #dc3545;
-            font-style: italic;
-        }
-        
-        .debug-panel {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            border-left: 4px solid #007bff;
-        }
-        
-        /* Estilos aprimorados */
-        .card {
-            border: none;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            padding: 1rem 1.25rem;
-        }
-        
-        .header-section {
+        /* Header Modernizado */
+        .app-header {
             background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
             padding: 1.5rem;
             margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        .toolbar-section {
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
+        .app-title {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
         }
         
+        .app-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        
+        /* Cards de Estatísticas */
         .stats-card {
-            border-radius: 0.5rem;
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            height: 100%;
         }
         
         .stats-card:hover {
             transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .stats-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .stats-card .card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stats-card .card-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+        }
+        
+        /* Barra de Ferramentas */
+        .toolbar-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-container .input-group {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-container .form-control {
+            border: none;
+            padding: 0.75rem 1rem;
         }
         
         .search-container .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            box-shadow: none;
         }
         
-        .search-container .form-control:focus + .input-group-text {
-            border-color: #80bdff;
+        .search-container .input-group-text {
+            background: white;
+            border: none;
+            color: #64748b;
         }
         
-        .search-container .input-group:hover {
-            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
-        }
-        
+        /* Botões Modernos */
         .btn-modern {
-            border-radius: 0.375rem;
+            border-radius: 8px;
             font-weight: 500;
-            padding: 0.5rem 1rem;
+            padding: 0.625rem 1.25rem;
             transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn-modern:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+        
+        .btn-modern:active {
+            transform: translateY(0);
+        }
+        
+        .btn-modern i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Tabela Modernizada */
+        .data-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: #f8fafc;
+        }
+        
+        .data-table-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .table {
+            margin: 0;
         }
         
         .table th {
             font-weight: 600;
             border-top: none;
-            color: #495057;
-            font-size: 0.875rem;
+            color: #475569;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            padding: 1rem 0.75rem;
+            background-color: #f8fafc;
         }
         
         .table td {
             vertical-align: middle;
-            padding: 0.75rem;
+            padding: 1rem 0.75rem;
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(15, 118, 254, 0.04);
+        }
+        
+        /* Badges */
+        .badge-status {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
         }
         
         .filter-badge {
-            background-color: #e9ecef;
-            color: #495057;
+            background-color: #f1f5f9;
+            color: #475569;
             font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
         }
         
-        .user-dropdown .dropdown-toggle::after {
-            margin-left: 0.5rem;
+        /* Ações da Tabela */
+        .action-buttons {
+            white-space: nowrap;
         }
         
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Paginação */
+        .pagination-container {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: #f8fafc;
+        }
+        
+        .page-link {
+            border-radius: 6px;
+            margin: 0 2px;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .page-link:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        /* Dropdown de Usuário */
+        .user-dropdown .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .user-dropdown .dropdown-menu {
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        .user-dropdown .dropdown-item {
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .user-dropdown .dropdown-item:hover {
+            background-color: #f1f5f9;
+        }
+        
+        /* Estados Vazios */
+        .empty-state {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Responsividade */
         @media (max-width: 768px) {
-            .header-section {
+            .app-container {
                 padding: 1rem;
             }
             
+            .app-header {
+                padding: 1.25rem;
+            }
+            
             .toolbar-section {
+                padding: 1.25rem;
+            }
+            
+            .data-table-header {
                 padding: 1rem;
             }
             
             .btn-group-responsive {
-                flex-direction: column;
                 width: 100%;
             }
             
@@ -165,20 +312,57 @@
                 margin-bottom: 0.5rem;
                 width: 100%;
             }
+            
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+            
+            .action-buttons {
+                display: flex;
+                gap: 0.25rem;
+            }
+        }
+        
+        /* IDs Indisponíveis */
+        .id-indisponivel {
+            color: #dc3545;
+            font-style: italic;
+            font-size: 0.875rem;
+        }
+        
+        /* Modais */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid py-3">
-        <!-- Cabeçalho -->
-        <div class="header-section">
+    <div class="app-container">
+        <!-- Cabeçalho Modernizado -->
+        <div class="app-header">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h1 class="h3 mb-1">
+                    <h1 class="app-title">
                         <i class="fas fa-database me-2 text-primary"></i>Sistema CRUD - Gerenciamento de Bens
                     </h1>
-                    <p class="text-muted mb-0">Gerencie todos os bens do patrimônio de forma eficiente</p>
+                    <p class="app-subtitle">Gerencie todos os bens do patrimônio de forma eficiente</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
@@ -256,7 +440,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card stats-card bg-primary text-white">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h4 class="card-title">{{ total_count|number_format }}</h4>
                                 <p class="card-text">Total de Bens</p>
@@ -271,7 +455,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card stats-card bg-success text-white">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h4 class="card-title">{{ localizados_count|number_format }}</h4>
                                 <p class="card-text">Bens Localizados</p>
@@ -286,7 +470,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card stats-card bg-warning text-white">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
                                 <p class="card-text">Bens Pendentes</p>
@@ -307,28 +491,26 @@
                     <!-- Busca -->
                     <form method="GET" class="row g-2">
                         <div class="col-md-5">
-                            <div class="search-container position-relative">
-                                <div class="input-group shadow-sm">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-search text-muted"></i>
+                            <div class="search-container">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
                                     </span>
-                                    <input type="text" name="q" class="form-control border-start-0 ps-0" 
+                                    <input type="text" name="q" class="form-control" 
                                         placeholder="Buscar por nome ou número..."
-                                        value="{{ termo_busca }}"
-                                        style="border-left: none; box-shadow: none;">
+                                        value="{{ termo_busca }}">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div class="search-container position-relative">
-                                <div class="input-group shadow-sm">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-user text-muted"></i>
+                            <div class="search-container">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
                                     </span>
-                                    <input type="text" name="responsavel" class="form-control border-start-0 ps-0" 
+                                    <input type="text" name="responsavel" class="form-control" 
                                         placeholder="Filtrar por responsável..."
-                                        value="{{ request.args.get('responsavel', '') }}"
-                                        style="border-left: none; box-shadow: none;">
+                                        value="{{ request.args.get('responsavel', '') }}">
                                     {% if request.args.get('responsavel') %}
                                     <a href="{{ url_for('sistema_crud', q=termo_busca) }}" 
                                         class="btn btn-link text-danger position-absolute end-0 top-50 translate-middle-y" 
@@ -388,10 +570,10 @@
                         {% if termo_busca or request.args.get('responsavel') %}
                         <div class="ms-2">
                             {% if termo_busca %}
-                            <span class="badge filter-badge">Busca: "{{ termo_busca }}"</span>
+                            <span class="filter-badge">Busca: "{{ termo_busca }}"</span>
                             {% endif %}
                             {% if request.args.get('responsavel') %}
-                            <span class="badge filter-badge">Responsável: "{{ request.args.get('responsavel') }}"</span>
+                            <span class="filter-badge">Responsável: "{{ request.args.get('responsavel') }}"</span>
                             {% endif %}
                             <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-outline-danger ms-1">
                                 <i class="fas fa-times"></i> Limpar
@@ -404,120 +586,114 @@
         </div>
 
         <!-- Tabela de Bens -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
+        <div class="data-table-container">
+            <div class="data-table-header">
+                <h5 class="data-table-title">
                     <i class="fas fa-list me-1 text-primary"></i>
                     Lista de Bens
                 </h5>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Número</th>
-                                <th>Nome</th>
-                                <th>Situação</th>
-                                <th>Localização</th>
-                                <th>Responsável</th>
-                                <th>Última Vistoria</th>
-                                <th class="text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for bem in paginacao.dados %}
-                            <tr>
-                                <td>
-                                    {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
-                                    <strong>#{{ bem.id }}</strong>
-                                    {% else %}
-                                    <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
-                                        #---<br><small>Sem ID</small>
-                                    </span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="font-monospace">{{ bem.numero }}</span>
-                                </td>
-                                <td>{{ bem.nome }}</td>
-                                <td>
-                                    {% if bem.situacao == 'OK' %}
-                                    <span class="badge bg-success badge-status">Localizado</span>
-                                    {% else %}
-                                    <span class="badge bg-warning badge-status">Pendente</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.localizacao %}
-                                    {{ bem.localizacao }}
-                                    {% else %}
-                                    <span class="text-muted">Não informada</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.responsavel %}
-                                    {{ bem.responsavel }}
-                                    {% else %}
-                                    <span class="text-muted">Não informado</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if bem.data_ultima_vistoria %}
-                                    {{ bem.data_ultima_vistoria[:10] }}
-                                    {% else %}
-                                    <span class="text-muted">N/A</span>
-                                    {% endif %}
-                                </td>
-                                <td class="action-buttons text-center">
-                                    {% if bem.id %}
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editarBem({{ bem.id }})"
-                                        title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info" onclick="visualizarBem({{ bem.id }})"
-                                        title="Visualizar">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger"
-                                        onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    {% else %}
-                                    <span class="text-muted" title="ID não disponível">
-                                        <i class="fas fa-ban"></i> N/D
-                                    </span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <div class="text-muted">
-                                        <i class="fas fa-inbox fa-2x mb-2"></i>
-                                        <p>Nenhum bem encontrado</p>
-                                        {% if termo_busca %}
-                                        <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
-                                            Limpar busca
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Número</th>
+                            <th>Nome</th>
+                            <th>Situação</th>
+                            <th>Localização</th>
+                            <th>Responsável</th>
+                            <th>Última Vistoria</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bem in paginacao.dados %}
+                        <tr>
+                            <td>
+                                {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
+                                <strong>#{{ bem.id }}</strong>
+                                {% else %}
+                                <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
+                                    #---<br><small>Sem ID</small>
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="font-monospace">{{ bem.numero }}</span>
+                            </td>
+                            <td>{{ bem.nome }}</td>
+                            <td>
+                                {% if bem.situacao == 'OK' %}
+                                <span class="badge bg-success badge-status">Localizado</span>
+                                {% else %}
+                                <span class="badge bg-warning badge-status">Pendente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.localizacao %}
+                                {{ bem.localizacao }}
+                                {% else %}
+                                <span class="text-muted">Não informada</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.responsavel %}
+                                {{ bem.responsavel }}
+                                {% else %}
+                                <span class="text-muted">Não informado</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.data_ultima_vistoria %}
+                                {{ bem.data_ultima_vistoria[:10] }}
+                                {% else %}
+                                <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons text-center">
+                                {% if bem.id %}
+                                <button class="btn btn-sm btn-outline-primary action-btn" onclick="editarBem({{ bem.id }})"
+                                    title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info action-btn" onclick="visualizarBem({{ bem.id }})"
+                                    title="Visualizar">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger action-btn"
+                                    onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                {% else %}
+                                <span class="text-muted" title="ID não disponível">
+                                    <i class="fas fa-ban"></i> N/D
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Nenhum bem encontrado</p>
+                                {% if termo_busca %}
+                                <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
+                                    Limpar busca
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
-
-        <!-- Paginação -->
-        {% if paginacao.total_paginas > 1 %}
-        <div class="row mt-3">
-            <div class="col">
+            
+            <!-- Paginação -->
+            {% if paginacao.total_paginas > 1 %}
+            <div class="pagination-container">
                 <nav aria-label="Paginação">
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination justify-content-center mb-0">
                         {% if paginacao.pagina_atual > 1 %}
                         <li class="page-item">
                             <a class="page-link"
@@ -548,19 +724,19 @@
                     </ul>
                 </nav>
             </div>
-        </div>
-        {% endif %}
-
-        <!-- Informações de Paginação -->
-        <div class="row mt-2">
-            <div class="col text-center text-muted">
-                <small>
-                    Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
-                    registro{{ paginacao.total_registros|pluralize('', 's') }}
-                    {% if paginacao.total_paginas > 1 %}
-                    - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
-                    {% endif %}
-                </small>
+            {% endif %}
+            
+            <!-- Informações de Paginação -->
+            <div class="pagination-container">
+                <div class="text-center text-muted">
+                    <small>
+                        Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
+                        registro{{ paginacao.total_registros|pluralize('', 's') }}
+                        {% if paginacao.total_paginas > 1 %}
+                        - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
+                        {% endif %}
+                    </small>
+                </div>
             </div>
         </div>
     </div>
