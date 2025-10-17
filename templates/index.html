@@ -399,9 +399,10 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
     <script>
-        // ===== SCANNER COM ASPECT RATIO CONSISTENTE =====
-        class ConsistentAspectScanner {
+        // ===== SCANNER DE CÓDIGO DE BARRAS OTIMIZADO =====
+        class PatrimonioBarcodeScanner {
             constructor() {
                 this.html5QrCode = null;
                 this.scannerModal = null;
@@ -411,11 +412,10 @@
                 this.currentCameraIndex = 0;
                 this.scanAttempts = 0;
                 this.lastScannedCode = '';
-                this.consistentAspectRatio = 1.0; // Forçar aspect ratio quadrado
             }
 
             initialize() {
-                console.log('🔧 Inicializando scanner consistente...');
+                console.log('🔧 Inicializando scanner patrimonial...');
 
                 try {
                     this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
@@ -427,8 +427,8 @@
                     document.getElementById('ler-outro-btn').addEventListener('click', () => this.scanAgain());
 
                     document.getElementById('scannerModal').addEventListener('shown.bs.modal', () => {
-                        console.log('📱 Modal aberto - iniciando scanner consistente...');
-                        setTimeout(() => this.startConsistentScanner(), 500);
+                        console.log('📱 Modal aberto - iniciando scanner...');
+                        setTimeout(() => this.startScanner(), 400);
                     });
 
                     document.getElementById('scannerModal').addEventListener('hidden.bs.modal', () => {
@@ -448,31 +448,31 @@
                 this.scannerModal.show();
             }
 
-            async startConsistentScanner() {
+            async startScanner() {
                 try {
-                    console.log('🎬 Iniciando scanner com aspect ratio consistente...');
-                    this.updateStatus('Configurando câmera com dimensões fixas...');
+                    console.log('🎬 Iniciando scanner otimizado...');
+                    this.updateStatus('Otimizando câmera para códigos patrimoniais...');
 
                     await this.stopScanner();
 
-                    // Limpar viewport completamente
+                    // Limpar e mostrar loading
                     const viewport = document.getElementById('scanner-viewport');
-                    viewport.innerHTML = '<div class="scanner-loading"><i class="bi bi-aspect-ratio"></i><br>Configurando dimensões fixas...</div>';
+                    viewport.innerHTML = '<div class="scanner-loading"><i class="bi bi-upc-scan"></i><br>Otimizando para códigos de barras...</div>';
 
-                    // Aguardar estabilização
-                    await new Promise(resolve => setTimeout(resolve, 700));
+                    await new Promise(resolve => setTimeout(resolve, 600));
 
                     this.html5QrCode = new Html5Qrcode("scanner-viewport");
 
-                    // CONFIGURAÇÃO COM ASPECT RATIO FIXO E CONSISTENTE
+                    // CONFIGURAÇÃO SUPER OTIMIZADA PARA CÓDIGOS PATRIMONIAIS
                     const config = {
-                        fps: 12, // Reduzido para maior estabilidade
+                        fps: 15, // Aumentado para melhor captura
                         qrbox: {
-                            width: 260,  // Largura consistente
-                            height: 140  // Altura consistente
+                            width: 280,  // Área maior para captura
+                            height: 120  // Altura adequada para códigos de barras
                         },
-                        aspectRatio: 1.0, // FORÇAR ASPECT RATIO QUADRADO
+                        aspectRatio: 1.0,
                         focusMode: "continuous",
+                        // Configurações específicas para barcode
                         useBarCodeDetectorIfSupported: true,
                         experimentalFeatures: {
                             useBarCodeDetectorIfSupported: true
@@ -481,6 +481,8 @@
                             Html5QrcodeSupportedFormats.CODE_128,
                             Html5QrcodeSupportedFormats.CODE_39,
                             Html5QrcodeSupportedFormats.CODE_93,
+                            Html5QrcodeSupportedFormats.EAN_13,
+                            Html5QrcodeSupportedFormats.EAN_8,
                             Html5QrcodeSupportedFormats.UPC_A,
                             Html5QrcodeSupportedFormats.UPC_E,
                             Html5QrcodeSupportedFormats.QR_CODE
@@ -495,14 +497,13 @@
                             throw new Error('Nenhuma câmera detectada');
                         }
 
-                        // Selecionar câmera de forma consistente
-                        let selectedCamera = this.selectConsistentCamera();
+                        // ESTRATÉGIA INTELIGENTE DE SELEÇÃO DE CÂMERA
+                        let selectedCamera = this.selectBestCamera();
                         this.cameraId = selectedCamera.id;
                         this.currentCameraIndex = this.cameras.findIndex(cam => cam.id === selectedCamera.id);
 
-                        console.log('🎯 Câmera selecionada para consistência:', selectedCamera.label);
+                        console.log('🎯 Câmera selecionada:', selectedCamera.label);
 
-                        // INICIAR SCANNER COM CONFIGURAÇÃO FIXA
                         await this.html5QrCode.start(
                             selectedCamera.id,
                             config,
@@ -510,7 +511,7 @@
                                 this.onScanSuccess(decodedText);
                             },
                             (errorMessage) => {
-                                // Ignorar erros de não detecção
+                                // Não fazer nada - erros de não detecção são normais
                             }
                         ).catch(error => {
                             console.error('❌ Erro no start:', error);
@@ -519,14 +520,14 @@
 
                         this.isScanning = true;
                         this.scanAttempts = 0;
-                        this.updateStatus('Scanner consistente ativo - Dimensões fixas');
-                        console.log('✅ Scanner consistente iniciado');
+                        this.updateStatus('Scanner otimizado ativo - Aproxime o código da câmera');
+                        console.log('✅ Scanner otimizado iniciado');
 
-                        // APLICAR CONFIGURAÇÕES VISUAIS CONSISTENTES
+                        // Aplicar otimizações pós-inicialização
                         setTimeout(() => {
-                            this.applyConsistentViewport();
-                            this.forceFixedAspectRatio();
-                        }, 1000);
+                            this.applyPatrimonioOptimizations();
+                            this.hideRedLine(); // Remover a linha vermelha
+                        }, 800);
 
                     } catch (cameraError) {
                         console.error('❌ Erro de câmera:', cameraError);
@@ -539,26 +540,46 @@
                 }
             }
 
-            selectConsistentCamera() {
-                // Sempre escolher a mesma câmera para consistência
-                // Priorizar câmera traseira, senão primeira disponível
-                const backCamera = this.cameras.find(cam =>
+            selectBestCamera() {
+                // Prioridade 1: Câmera traseira com boa resolução
+                const backCameras = this.cameras.filter(cam =>
                     cam.label.toLowerCase().includes('back') ||
                     cam.label.toLowerCase().includes('traseira') ||
                     cam.label.toLowerCase().includes('rear') ||
-                    cam.label.includes('1')
+                    cam.label.includes('1') ||
+                    (cam.label.includes('0') && !cam.label.toLowerCase().includes('front'))
                 );
 
-                return backCamera || this.cameras[0];
+                if (backCameras.length > 0) {
+                    return backCameras[0];
+                }
+
+                // Prioridade 2: Câmera com maior resolução
+                const highResCameras = this.cameras.sort((a, b) => {
+                    const aRes = this.extractResolution(a.label);
+                    const bRes = this.extractResolution(b.label);
+                    return bRes - aRes;
+                });
+
+                return highResCameras[0];
             }
 
-            applyConsistentViewport() {
-                // FORÇAR DIMENSÕES FIXAS NO VIEWPORT
-                const viewport = document.getElementById('scanner-viewport');
-                const video = viewport.querySelector('video');
+            extractResolution(label) {
+                // Tentar extrair resolução do label da câmera
+                const match = label.match(/(\d+)x(\d+)/);
+                if (match) {
+                    return parseInt(match[1]) * parseInt(match[2]);
+                }
+                return 0;
+            }
 
-                if (video) {
-                    // Configurações agressivas para consistência
+            applyPatrimonioOptimizations() {
+                // 1. Remover completamente a linha vermelha do scanner
+                this.hideRedLine();
+
+                // 2. Otimizar o vídeo para melhor qualidade
+                const videos = document.querySelectorAll('#scanner-viewport video');
+                videos.forEach(video => {
                     video.style.cssText = `
                 width: 100% !important;
                 height: 100% !important;
@@ -568,72 +589,68 @@
                 top: 0 !important;
                 left: 0 !important;
                 transform: none !important;
-                border-radius: 0 !important;
-                background: #000 !important;
+                filter: contrast(1.2) brightness(1.1) !important;
             `;
 
-                    // Forçar redimensionamento consistente
-                    video.addEventListener('loadedmetadata', () => {
-                        this.forceFixedAspectRatio();
-                    });
-                }
-
-                // Remover elementos de controle
-                this.removeScannerControls();
-
-                // Aplicar overlay consistente
-                this.applyConsistentOverlay();
-            }
-
-            forceFixedAspectRatio() {
-                // Método agressivo para forçar aspect ratio consistente
-                const videos = document.querySelectorAll('#scanner-viewport video');
-                const canvases = document.querySelectorAll('#scanner-viewport canvas');
-
-                videos.forEach(video => {
-                    if (video.videoWidth && video.videoHeight) {
-                        console.log(`📐 Dimensões do vídeo: ${video.videoWidth}x${video.videoHeight}`);
-
-                        // Forçar aspect ratio consistente
-                        video.style.objectFit = 'cover';
-                        video.style.width = '100%';
-                        video.style.height = '100%';
+                    // Tentar forçar qualidade máxima
+                    if (video instanceof HTMLVideoElement) {
+                        video.playsInline = true;
+                        video.muted = true;
+                        video.setAttribute('autoplay', 'true');
                     }
                 });
 
+                // 3. Remover todos os elementos de UI do HTML5QRCode
+                const unwantedElements = document.querySelectorAll(
+                    '#scanner-viewport button, #scanner-viewport a, ' +
+                    '#html5-qrcode-anchor-scan-type-change, ' +
+                    '[class*="html5-qrcode"], ' +
+                    'canvas' // Remover o canvas que desenha a linha vermelha
+                );
+
+                unwantedElements.forEach(el => {
+                    el.style.display = 'none';
+                    el.remove();
+                });
+
+                // 4. Adicionar nosso próprio overlay personalizado
+                this.addCustomOverlay();
+            }
+
+            hideRedLine() {
+                // Método agressivo para remover a linha vermelha
+                const elements = document.querySelectorAll('*');
+                elements.forEach(element => {
+                    if (element.style && (
+                        element.style.backgroundColor === 'red' ||
+                        element.style.background === 'red' ||
+                        element.style.borderColor === 'red' ||
+                        element.classList.toString().includes('red') ||
+                        element.id.includes('line') ||
+                        element.id.includes('scan')
+                    )) {
+                        element.style.display = 'none';
+                        element.remove();
+                    }
+                });
+
+                // Remover qualquer canvas que possa estar desenhando a linha
+                const canvases = document.querySelectorAll('canvas');
                 canvases.forEach(canvas => {
-                    // Limpar qualquer canvas que possa estar causando variação
-                    const context = canvas.getContext('2d');
-                    context.clearRect(0, 0, canvas.width, canvas.height);
-                    canvas.style.display = 'none';
-                });
-
-                // Aplicar overlay com dimensões fixas
-                this.updateOverlayDimensions();
-            }
-
-            updateOverlayDimensions() {
-                const overlay = document.querySelector('.custom-patrimonio-overlay');
-                if (overlay) {
-                    const frame = overlay.querySelector('.scanner-frame-custom');
-                    if (frame) {
-                        // Dimensões fixas para o frame de scanning
-                        frame.style.width = '70%';
-                        frame.style.height = '140px';
-                        frame.style.position = 'absolute';
-                        frame.style.top = '50%';
-                        frame.style.left = '50%';
-                        frame.style.transform = 'translate(-50%, -50%)';
+                    if (canvas.width > 100 && canvas.height > 100) {
+                        const context = canvas.getContext('2d');
+                        context.clearRect(0, 0, canvas.width, canvas.height);
                     }
-                }
+                });
             }
 
-            applyConsistentOverlay() {
+            addCustomOverlay() {
+                // Adicionar overlay personalizado sem linha vermelha
                 const viewport = document.getElementById('scanner-viewport');
-                let overlay = viewport.querySelector('.custom-patrimonio-overlay');
+                const existingOverlay = viewport.querySelector('.custom-patrimonio-overlay');
 
-                if (!overlay) {
-                    overlay = document.createElement('div');
+                if (!existingOverlay) {
+                    const overlay = document.createElement('div');
                     overlay.className = 'custom-patrimonio-overlay';
                     overlay.innerHTML = `
                 <div class="scanner-frame-custom">
@@ -644,38 +661,13 @@
                     <div class="scan-guideline"></div>
                 </div>
                 <div class="scanner-instructions">
-                    <i class="bi bi-aspect-ratio"></i>
-                    <p>Área de scan consistente</p>
-                    <small>Mantenha o código dentro do retângulo</small>
-                </div>
-                <div class="scanner-dimensions">
-                    <span>Dimensões: 260x140px</span>
+                    <i class="bi bi-upc-scan"></i>
+                    <p>Posicione o código patrimonial dentro da área</p>
+                    <small>Mantenha estável para melhor leitura</small>
                 </div>
             `;
                     viewport.appendChild(overlay);
                 }
-
-                this.updateOverlayDimensions();
-            }
-
-            removeScannerControls() {
-                // Remover completamente todos os controles do HTML5QRCode
-                const selectors = [
-                    '#html5-qrcode-anchor-scan-type-change',
-                    '#html5-qrcode-button-camera-stop',
-                    '#html5-qrcode-button-camera-start',
-                    '#html5-qrcode-button-file-selection',
-                    '[class*="html5-qrcode"] button',
-                    '[class*="html5-qrcode"] a'
-                ];
-
-                selectors.forEach(selector => {
-                    const elements = document.querySelectorAll(selector);
-                    elements.forEach(el => {
-                        el.style.display = 'none';
-                        el.remove();
-                    });
-                });
             }
 
             async stopScanner() {
@@ -692,7 +684,7 @@
 
                 this.html5QrCode = null;
 
-                // Limpar viewport completamente
+                // Limpar viewport
                 const viewport = document.getElementById('scanner-viewport');
                 if (viewport) {
                     viewport.innerHTML = '';
@@ -705,10 +697,11 @@
                 this.scanAttempts++;
                 console.log(`🔍 Tentativa ${this.scanAttempts}:`, decodedText);
 
+                // VALIDAÇÃO AVANÇADA PARA CÓDIGOS PATRIMONIAIS
                 const codigoLimpo = this.cleanPatrimonioCode(decodedText);
 
                 if (this.isValidPatrimonioCode(codigoLimpo)) {
-                    // Prevenir leituras duplicadas
+                    // Prevenir leituras duplicadas rápidas
                     if (this.lastScannedCode === codigoLimpo && this.scanAttempts < 3) {
                         console.log('⚠️ Código duplicado - ignorando');
                         return;
@@ -718,32 +711,70 @@
                     this.isScanning = false;
                     this.showScanResult(codigoLimpo);
 
+                    // Feedback
                     if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                    this.playSuccessSound();
 
                 } else {
                     console.log('❌ Código inválido:', codigoLimpo);
-                    this.updateStatus(`Formato inválido (tentativa ${this.scanAttempts})`);
+                    this.updateStatus(`Código inválido (tentativa ${this.scanAttempts})`);
+
+                    // Feedback de erro suave
+                    if (navigator.vibrate) navigator.vibrate(100);
                 }
             }
 
             cleanPatrimonioCode(code) {
                 if (!code) return '';
-                return code.toString().trim().replace(/[^\w\s\-\.]/g, '').replace(/\s+/g, ' ').substring(0, 30);
+
+                // Limpeza agressiva para códigos patrimoniais
+                return code
+                    .toString()
+                    .trim()
+                    .replace(/[^\w\s\-\.]/g, '') // Remove caracteres especiais
+                    .replace(/\s+/g, ' ')        // Normaliza espaços
+                    .replace(/^0+/, '')          // Remove zeros à esquerda
+                    .substring(0, 50);           // Limita tamanho
             }
 
             isValidPatrimonioCode(code) {
-                if (!code || code.length < 2 || code.length > 25) return false;
+                if (!code || code.length < 2 || code.length > 30) {
+                    return false;
+                }
 
-                const patterns = [
+                // Padrões comuns de códigos patrimoniais
+                const patrimonioPatterns = [
                     /^\d+$/,                          // Apenas números
-                    /^[A-Za-z]+\-\d+$/,               // Letras-hífen-números
-                    /^\d+[A-Za-z]$/,                  // Números-letras
-                    /^[A-Za-z]+\d+$/,                 // Letras-números
-                    /^\d+\.\d+$/,                     // Números com ponto
-                    /^[A-Za-z]+\d+[A-Za-z]?$/         // Letras-números-letras
+                    /^[A-Za-z]+\-\d+$/,               // Letras-hífen-números (EX: ABC-123)
+                    /^\d+[A-Za-z]$/,                  // Números-letras (EX: 123A)
+                    /^[A-Za-z]+\d+$/,                 // Letras-números (EX: ABC123)
+                    /^\d+\.\d+$/,                     // Números com ponto (EX: 123.456)
+                    /^[A-Za-z]+\d+[A-Za-z]?$/         // Letras-números-letras opcional
                 ];
 
-                return patterns.some(pattern => pattern.test(code));
+                return patrimonioPatterns.some(pattern => pattern.test(code));
+            }
+
+            playSuccessSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+                    oscillator.type = 'sine';
+
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                } catch (error) {
+                    // Audio não essencial
+                }
             }
 
             showScanResult(code) {
@@ -755,6 +786,12 @@
                     scannedCodeElement.textContent = code;
                     scannerStatus.classList.add('d-none');
                     scanResult.classList.remove('d-none');
+
+                    // Estatísticas
+                    const statsElement = document.createElement('div');
+                    statsElement.className = 'small mt-2';
+                    statsElement.innerHTML = `<em>Lido na ${this.scanAttempts}ª tentativa</em>`;
+                    scanResult.appendChild(statsElement);
                 }
             }
 
@@ -777,7 +814,7 @@
                 this.hideResult();
                 this.isScanning = true;
                 this.scanAttempts = 0;
-                this.updateStatus('Scanner ativo - Dimensões consistentes');
+                this.updateStatus('Scanner ativo - Aponte para o próximo código');
             }
 
             async switchCamera() {
@@ -786,14 +823,11 @@
                     return;
                 }
 
-                this.updateStatus('Reiniciando com câmera alternativa...');
+                this.updateStatus('Trocando câmera...');
                 await this.stopScanner();
 
-                // Dar tempo para limpeza completa
-                await new Promise(resolve => setTimeout(resolve, 800));
-
                 this.currentCameraIndex = (this.currentCameraIndex + 1) % this.cameras.length;
-                this.startConsistentScanner();
+                setTimeout(() => this.startScanner(), 500);
             }
 
             enterManually() {
@@ -821,6 +855,10 @@
                 const scannerStatus = document.getElementById('scanner-status');
 
                 if (scanResult && scannerStatus) {
+                    // Remover estatísticas anteriores
+                    const stats = scanResult.querySelector('.small');
+                    if (stats) stats.remove();
+
                     scanResult.classList.add('d-none');
                     scannerStatus.classList.remove('d-none');
                 }
@@ -828,7 +866,7 @@
 
             handleCameraError(error) {
                 console.error('💥 Erro de câmera:', error);
-                this.updateStatus('❌ Use digitação manual');
+                this.updateStatus('❌ Erro na câmera - Use digitação manual');
 
                 const viewport = document.getElementById('scanner-viewport');
                 if (viewport) {
@@ -836,7 +874,8 @@
                 <div class="scanner-error-message p-4 text-center text-white">
                     <i class="bi bi-camera-video-off display-4 mb-3"></i>
                     <h5>Scanner Indisponível</h5>
-                    <button class="btn btn-warning btn-sm mt-2" onclick="consistentScanner.enterManually()">
+                    <p class="small">Use a digitação manual para o código patrimonial</p>
+                    <button class="btn btn-warning btn-sm mt-2" onclick="patrimonioScanner.enterManually()">
                         <i class="bi bi-keyboard"></i> Digitar Código
                     </button>
                 </div>
@@ -846,14 +885,15 @@
         }
 
         // Inicialização
-        let consistentScanner;
+        let patrimonioScanner;
 
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('🚀 Inicializando scanner consistente...');
+            console.log('🚀 Inicializando scanner patrimonial...');
 
-            consistentScanner = new ConsistentAspectScanner();
-            consistentScanner.initialize();
+            patrimonioScanner = new PatrimonioBarcodeScanner();
+            patrimonioScanner.initialize();
 
+            // Configurações do formulário
             const searchForm = document.getElementById('searchForm');
             if (searchForm) {
                 searchForm.addEventListener('submit', function (e) {
