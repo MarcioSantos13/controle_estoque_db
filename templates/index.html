@@ -35,16 +35,16 @@
     </div>
   </header>
 
-  <!-- Adicione isto no index.html, após o header e antes do main content -->
-{% if mensagem_sucesso %}
-<div class="container mt-3">
+  <!-- Mensagem de Sucesso -->
+  {% if mensagem_sucesso %}
+  <div class="container mt-3">
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        {{ mensagem_sucesso }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <i class="bi bi-check-circle-fill me-2"></i>
+      {{ mensagem_sucesso }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-</div>
-{% endif %}
+  </div>
+  {% endif %}
 
   <main class="container py-5">
     <!-- Card de Busca Moderno -->
@@ -169,8 +169,11 @@
         <a href="{{ url_for('novo_bem') }}" class="btn btn-outline-info">
           <i class="bi bi-plus-circle me-1"></i>Novo Bem
         </a>
+        <a href="{{ url_for('estatisticas') }}" class="btn btn-outline-dark">
+          <i class="bi bi-graph-up me-1"></i>Estatísticas
+        </a>
 
-        <!-- Novo Botão de Importação -->
+        <!-- Botão de Importação -->
         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
           <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
         </button>
@@ -250,9 +253,9 @@
     </div>
   </div>
 
-  <!-- Modal de Detalhes do Bem com CRUD -->
+  <!-- Modal de Detalhes do Bem com CRUD ATUALIZADO -->
   <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content border-0 shadow-lg rounded-3">
         <div class="modal-header bg-primary text-white rounded-top-3">
           <h5 class="modal-title" id="resultadoModalLabel">
@@ -306,8 +309,8 @@
               </div>
 
               <!-- Localização -->
-              <div class="col-12">
-                <div class="border rounded-3 p-3">
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
                   <h6 class="text-primary fw-semibold mb-2">
                     <i class="bi bi-geo-alt me-2"></i>Localização
                   </h6>
@@ -322,6 +325,89 @@
                     </span>
                     {% endif %}
                   </p>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-shield-check me-2"></i>Status
+                  </h6>
+                  <p class="mb-0">
+                    <span class="badge bg-info fs-6 p-2">
+                      {{ bem_detalhes.status or 'Ativo' }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Responsável -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-person me-2"></i>Responsável
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.responsavel or 'Não informado' }}</p>
+                </div>
+              </div>
+
+              <!-- Detentor -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-building me-2"></i>Detentor
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.detentor or 'Não informado' }}</p>
+                </div>
+              </div>
+
+              <!-- Lotação -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-geo me-2"></i>Lotação do Detentor
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.lotacao_detentor or 'Não informado' }}</p>
+                </div>
+              </div>
+
+              <!-- Auditor -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-person-check me-2"></i>Auditor
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.auditor or 'Não informado' }}</p>
+                </div>
+              </div>
+
+              <!-- Datas de Vistoria -->
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-calendar me-2"></i>Última Vistoria
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.data_ultima_vistoria|format_date }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-calendar-check me-2"></i>Vistoria Atual
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.data_vistoria_atual|format_date }}</p>
+                </div>
+              </div>
+
+              <!-- Observações -->
+              <div class="col-12">
+                <div class="border rounded-3 p-3">
+                  <h6 class="text-primary fw-semibold mb-2">
+                    <i class="bi bi-chat-text me-2"></i>Observações
+                  </h6>
+                  <p class="mb-0">{{ bem_detalhes.observacao or 'Nenhuma observação' }}</p>
                 </div>
               </div>
 
@@ -358,7 +444,7 @@
           </div>
           {% endif %}
 
-          <!-- Formulário de Edição (inicialmente oculto) -->
+          <!-- Formulário de Edição (inicialmente oculto) ATUALIZADO -->
           <div id="formEdicao" style="display: none;">
             <form id="formEditarBem">
               <input type="hidden" id="bem_id" name="bem_id">
@@ -377,6 +463,7 @@
                     <option value="OK">Localizado</option>
                     <option value="Inativo">Inativo</option>
                     <option value="Manutenção">Em Manutenção</option>
+                    <option value="Baixado">Baixado</option>
                   </select>
                 </div>
 
@@ -385,10 +472,60 @@
                   <input type="text" class="form-control" id="edt_nome" name="nome" required>
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-6">
                   <label class="form-label fw-semibold">Localização</label>
-                  <textarea class="form-control" id="edt_localizacao" name="localizacao" rows="2"
-                    placeholder="Ex: Almoxarifado Central, Prateleira B2"></textarea>
+                  <input type="text" class="form-control" id="edt_localizacao" name="localizacao"
+                    placeholder="Ex: Almoxarifado Central">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Status</label>
+                  <select class="form-select" id="edt_status" name="status">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                    <option value="Manutenção">Em Manutenção</option>
+                    <option value="Baixado">Baixado</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Responsável</label>
+                  <input type="text" class="form-control" id="edt_responsavel" name="responsavel"
+                    placeholder="Nome do responsável">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Detentor</label>
+                  <input type="text" class="form-control" id="edt_detentor" name="detentor"
+                    placeholder="Departamento ou setor">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Lotação do Detentor</label>
+                  <input type="text" class="form-control" id="edt_lotacao_detentor" name="lotacao_detentor"
+                    placeholder="Localização do detentor">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Auditor</label>
+                  <input type="text" class="form-control" id="edt_auditor" name="auditor"
+                    placeholder="Nome do auditor">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Data Última Vistoria</label>
+                  <input type="date" class="form-control" id="edt_data_ultima_vistoria" name="data_ultima_vistoria">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Data Vistoria Atual</label>
+                  <input type="date" class="form-control" id="edt_data_vistoria_atual" name="data_vistoria_atual">
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Observações</label>
+                  <textarea class="form-control" id="edt_observacao" name="observacao" rows="3"
+                    placeholder="Observações sobre o bem"></textarea>
                 </div>
 
                 <div class="col-12">
@@ -407,9 +544,6 @@
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               <i class="bi bi-x-circle me-1"></i>Fechar
             </button>
-            <!-- <!<button type="button" class="btn btn-outline-primary" onclick=window.location.href="/">
-              <i class="bi bi-arrow-repeat me-1"></i>Nova Busca
-            </button> -->
             <button type="button" class="btn btn-warning" onclick="habilitarEdicao()">
               <i class="bi bi-pencil me-1"></i>Editar
             </button>
@@ -462,7 +596,7 @@
           </p>
         </div>
         <div class="col-md-6 text-md-end">
-          <small class="opacity-75">Versão 1.0.0 • {{ total_count|number_format }} bens cadastrados</small>
+          <small class="opacity-75">Versão 2.0.0 • {{ total_count|number_format }} bens cadastrados</small>
         </div>
       </div>
     </div>
@@ -557,34 +691,31 @@
     {% endif %}
 
     // Atualizar contador total
-document.addEventListener('DOMContentLoaded', function () {
-  const total = {{ total_count }};  
-  const totalElement = document.getElementById('total-bens');
-  if (totalElement) {
-    totalElement.textContent = total.toLocaleString();
-  }
-
-  // Atualizar contadores individuais
-  document.getElementById('count-localizados').textContent = {{ localizados_count }};
-  document.getElementById('count-pendentes').textContent = {{ nao_localizados_count }};
-});
-
-
-    // Foco automático no campo de busca - versão melhorada
-document.addEventListener('DOMContentLoaded', function () {
-  // Aguardar um pouco mais para garantir que todos os elementos estejam renderizados
-  setTimeout(function() {
-    const campoBusca = document.getElementById('numero_bem');
-    if (campoBusca) {
-      // Verificar se não há modal aberto que possa roubar o foco
-      const modalAberto = document.querySelector('.modal.show');
-      if (!modalAberto) {
-        campoBusca.focus();
-        campoBusca.select(); // Seleciona todo o texto no campo
+    document.addEventListener('DOMContentLoaded', function () {
+      const total = {{ total_count }};  
+      const totalElement = document.getElementById('total-bens');
+      if (totalElement) {
+        totalElement.textContent = total.toLocaleString();
       }
-    }
-  }, 300); // Aumentei o tempo para 300ms para maior garantia
-});
+
+      // Atualizar contadores individuais
+      document.getElementById('count-localizados').textContent = {{ localizados_count }};
+      document.getElementById('count-pendentes').textContent = {{ nao_localizados_count }};
+    });
+
+    // Foco automático no campo de busca
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function() {
+        const campoBusca = document.getElementById('numero_bem');
+        if (campoBusca) {
+          const modalAberto = document.querySelector('.modal.show');
+          if (!modalAberto) {
+            campoBusca.focus();
+            campoBusca.select();
+          }
+        }
+      }, 300);
+    });
 
     // Drag and drop para arquivo
     const fileInput = document.getElementById('excel_file');
@@ -605,14 +736,14 @@ document.addEventListener('DOMContentLoaded', function () {
         fileLabel.classList.remove('dragover');
         if (e.dataTransfer.files.length) {
           fileInput.files = e.dataTransfer.files;
-          // Atualizar visualmente
           const fileName = e.dataTransfer.files[0].name;
           fileLabel.querySelector('.form-text').textContent = `Arquivo selecionado: ${fileName}`;
         }
       });
     }
+
     // ==============================================
-    // FUNÇÕES DO CRUD (JavaScript para o modal)
+    // FUNÇÕES DO CRUD ATUALIZADAS
     // ==============================================
 
     let bemAtual = null;
@@ -622,7 +753,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log(`[DEBUG] ${message}`, data || '');
     }
 
-    // Função para preencher o modal com dados do bem
+    // Função para preencher o modal com dados do bem - ATUALIZADA
     function preencherModalDetalhes(dados) {
       debug('Preenchendo modal com dados:', dados);
       bemAtual = dados;
@@ -660,9 +791,9 @@ document.addEventListener('DOMContentLoaded', function () {
               </p>
             </div>
           </div>
-          
-          <div class="col-12">
-            <div class="border rounded-3 p-3">
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
               <h6 class="text-primary fw-semibold mb-2">
                 <i class="bi bi-geo-alt me-2"></i>Localização
               </h6>
@@ -674,7 +805,81 @@ document.addEventListener('DOMContentLoaded', function () {
               </p>
             </div>
           </div>
-          
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-shield-check me-2"></i>Status
+              </h6>
+              <p class="mb-0">
+                <span class="badge bg-info fs-6 p-2">${dados.status || 'Ativo'}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-person me-2"></i>Responsável
+              </h6>
+              <p class="mb-0">${dados.responsavel || 'Não informado'}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-building me-2"></i>Detentor
+              </h6>
+              <p class="mb-0">${dados.detentor || 'Não informado'}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-geo me-2"></i>Lotação do Detentor
+              </h6>
+              <p class="mb-0">${dados.lotacao_detentor || 'Não informado'}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-person-check me-2"></i>Auditor
+              </h6>
+              <p class="mb-0">${dados.auditor || 'Não informado'}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-calendar me-2"></i>Última Vistoria
+              </h6>
+              <p class="mb-0">${dados.data_ultima_vistoria ? new Date(dados.data_ultima_vistoria).toLocaleDateString('pt-BR') : 'Não informada'}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-calendar-check me-2"></i>Vistoria Atual
+              </h6>
+              <p class="mb-0">${dados.data_vistoria_atual ? new Date(dados.data_vistoria_atual).toLocaleDateString('pt-BR') : 'Não informada'}</p>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="border rounded-3 p-3">
+              <h6 class="text-primary fw-semibold mb-2">
+                <i class="bi bi-chat-text me-2"></i>Observações
+              </h6>
+              <p class="mb-0">${dados.observacao || 'Nenhuma observação'}</p>
+            </div>
+          </div>
+
           <div class="col-12">
             <div class="bg-light rounded-3 p-3">
               <h6 class="text-muted mb-2">
@@ -704,7 +909,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('formEdicao').style.display = 'none';
     }
 
-    // Funções do CRUD
+    // Funções do CRUD ATUALIZADAS
     function habilitarEdicao() {
       debug('habilitarEdicao chamada');
       console.log('bemAtual disponível:', bemAtual);
@@ -716,12 +921,22 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       try {
-        // Preencher formulário
+        // Preencher formulário com todos os novos campos
         document.getElementById('bem_id').value = bemAtual.id;
         document.getElementById('edt_numero').value = bemAtual.numero;
         document.getElementById('edt_nome').value = bemAtual.nome;
         document.getElementById('edt_localizacao').value = bemAtual.localizacao || '';
         document.getElementById('edt_situacao').value = bemAtual.situacao;
+        document.getElementById('edt_status').value = bemAtual.status || 'Ativo';
+        document.getElementById('edt_responsavel').value = bemAtual.responsavel || '';
+        document.getElementById('edt_detentor').value = bemAtual.detentor || '';
+        document.getElementById('edt_lotacao_detentor').value = bemAtual.lotacao_detentor || '';
+        document.getElementById('edt_auditor').value = bemAtual.auditor || '';
+        document.getElementById('edt_observacao').value = bemAtual.observacao || '';
+        
+        // Format dates for input fields
+        document.getElementById('edt_data_ultima_vistoria').value = bemAtual.data_ultima_vistoria || '';
+        document.getElementById('edt_data_vistoria_atual').value = bemAtual.data_vistoria_atual || '';
 
         // Alternar visibilidade
         document.getElementById('detalhesBem').style.display = 'none';
@@ -752,8 +967,16 @@ document.addEventListener('DOMContentLoaded', function () {
           bem_id: parseInt(document.getElementById('bem_id').value),
           numero: document.getElementById('edt_numero').value,
           nome: document.getElementById('edt_nome').value,
+          situacao: document.getElementById('edt_situacao').value,
           localizacao: document.getElementById('edt_localizacao').value,
-          situacao: document.getElementById('edt_situacao').value
+          status: document.getElementById('edt_status').value,
+          responsavel: document.getElementById('edt_responsavel').value,
+          detentor: document.getElementById('edt_detentor').value,
+          lotacao_detentor: document.getElementById('edt_lotacao_detentor').value,
+          auditor: document.getElementById('edt_auditor').value,
+          data_ultima_vistoria: document.getElementById('edt_data_ultima_vistoria').value,
+          data_vistoria_atual: document.getElementById('edt_data_vistoria_atual').value,
+          observacao: document.getElementById('edt_observacao').value
         };
 
         debug('Dados do formulário para enviar:', formData);
@@ -833,65 +1056,53 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('DOMContentLoaded', function () {
       debug('Página carregada');
 
-     // Verificar se temos dados do bem na template
-{% if bem_detalhes %}
-bemAtual = {{ bem_detalhes | tojson | safe }};
-debug('bemAtual carregado da template', bemAtual);
-{% endif %}
+      // Verificar se temos dados do bem na template
+      {% if bem_detalhes %}
+      bemAtual = {{ bem_detalhes | tojson | safe }};
+      debug('bemAtual carregado da template', bemAtual);
+      {% endif %}
 
+      // Configurar evento do modal
+      const modal = document.getElementById('resultadoModal');
+      if (modal) {
+        modal.addEventListener('show.bs.modal', function () {
+          debug('Modal aberto');
+          if (bemAtual) {
+            preencherModalDetalhes(bemAtual);
+          }
+        });
+      }
 
-    // Configurar evento do modal
-    const modal = document.getElementById('resultadoModal');
-    if (modal) {
-      modal.addEventListener('show.bs.modal', function () {
-        debug('Modal aberto');
-        if (bemAtual) {
-          preencherModalDetalhes(bemAtual);
-        }
-      });
+      // Debug: Expor funções globalmente para teste
+      window.habilitarEdicao = habilitarEdicao;
+      window.bemAtual = bemAtual;
+    });
+
+    // Foco automático no campo de número do bem
+    function aplicarFocoCampoBusca() {
+      const campoBusca = document.getElementById('numero_bem');
+      
+      if (!campoBusca) return;
+      
+      const modaisAbertos = document.querySelectorAll('.modal.show');
+      
+      if (modaisAbertos.length === 0) {
+        campoBusca.focus();
+        campoBusca.select();
+        campoBusca.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
 
-    // Debug: Expor funções globalmente para teste
-    window.habilitarEdicao = habilitarEdicao;
-    window.bemAtual = bemAtual;
-});
+    // Executar quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(aplicarFocoCampoBusca, 100);
+    });
 
-
-// Foco automático no campo de número do bem - Solução Completa
-function aplicarFocoCampoBusca() {
-  const campoBusca = document.getElementById('numero_bem');
-  
-  if (!campoBusca) return;
-  
-  // Verificar se há algum modal aberto
-  const modaisAbertos = document.querySelectorAll('.modal.show');
-  
-  // Só aplicar foco se não houver modal aberto
-  if (modaisAbertos.length === 0) {
-    // Forçar o foco e selecionar o texto
-    campoBusca.focus();
-    campoBusca.select();
-    
-    // Rolagem suave até o campo (caso necessário)
-    campoBusca.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-// Executar quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function() {
-  // Executar após um pequeno delay para garantir que todos os elementos estejam renderizados
-  setTimeout(aplicarFocoCampoBusca, 100);
-});
-
-// Se estiver usando TurboLinks ou similar (opcional)
-document.addEventListener('turbolinks:load', aplicarFocoCampoBusca);
-
-// Reaplicar foco quando modais forem fechados
-document.addEventListener('hidden.bs.modal', function() {
-  setTimeout(aplicarFocoCampoBusca, 50);
-});
+    // Reaplicar foco quando modais forem fechados
+    document.addEventListener('hidden.bs.modal', function() {
+      setTimeout(aplicarFocoCampoBusca, 50);
+    });
 
   </script>
 </body>
-
 </html>

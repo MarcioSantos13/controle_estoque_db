@@ -1,0 +1,89 @@
+2025-10-18 00:14:49,485 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:14:49,501 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 00:14:49,501 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 00:14:49,501 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:14:50,042 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:14:50,051 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:14:50,054 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:14:57,098 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:14:57] "GET / HTTP/1.1" 200 -
+2025-10-18 00:14:57,165 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:14:57] "GET /static/style.css HTTP/1.1" 200 -
+2025-10-18 00:15:16,137 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:15:16] "GET /novo-bem HTTP/1.1" 200 -
+2025-10-18 00:15:16,159 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:15:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:15:59,579 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:15:59] "GET / HTTP/1.1" 200 -
+2025-10-18 00:15:59,602 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:15:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:16:03,620 - utils.logger - ERROR - Erro ao obter estatísticas: no such column: status
+2025-10-18 00:16:03,636 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:03] "GET /estatisticas HTTP/1.1" 200 -
+2025-10-18 00:16:30,099 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização', 'responsavel', 'detentor', 'lotacao detentor', 'data da ultima vistoria', 'data da vistoria atual', 'auditor', 'status', 'observação']
+2025-10-18 00:16:30,099 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-10-18 00:16:30,099 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-10-18 00:16:30,099 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-10-18 00:16:30,099 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-10-18 00:16:30,120 - utils.logger - INFO - Backup criado: relatorios/backup_controle_20251018_001630.db
+2025-10-18 00:16:30,120 - utils.logger - INFO - Iniciando importação do arquivo: temp\controle_patrimonialv2.xlsx
+2025-10-18 00:16:30,168 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização', 'responsavel', 'detentor', 'lotacao detentor', 'data da ultima vistoria', 'data da vistoria atual', 'auditor', 'status', 'observação']
+2025-10-18 00:16:30,168 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-10-18 00:16:30,168 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-10-18 00:16:30,168 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-10-18 00:16:30,168 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-10-18 00:16:30,168 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'localizacao': 'LOCALIZAÇÃO', 'situacao': 'SITUAÇÃO'}
+2025-10-18 00:16:30,171 - utils.logger - INFO - Tabela limpa para nova importação
+2025-10-18 00:16:30,204 - utils.logger - INFO - Registros processados: 100
+2025-10-18 00:16:30,211 - utils.logger - INFO - Registros processados: 200
+2025-10-18 00:16:30,217 - utils.logger - INFO - Registros processados: 300
+2025-10-18 00:16:30,226 - utils.logger - INFO - Registros processados: 400
+2025-10-18 00:16:30,232 - utils.logger - INFO - Registros processados: 500
+2025-10-18 00:16:30,240 - utils.logger - INFO - Registros processados: 600
+2025-10-18 00:16:30,246 - utils.logger - INFO - Registros processados: 700
+2025-10-18 00:16:30,547 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:30] "POST /importar-excel HTTP/1.1" 200 -
+2025-10-18 00:16:30,567 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:30] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:16:37,629 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:37] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-18 00:16:37,652 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:16:46,305 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:46] "GET / HTTP/1.1" 200 -
+2025-10-18 00:16:46,332 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:16:50,271 - utils.logger - INFO - Verificação do bem 254131: Encontrado
+2025-10-18 00:16:50,272 - utils.logger - ERROR - Erro ao marcar bem 254131 como localizado: no such column: data_atualizacao
+2025-10-18 00:16:50,274 - utils.logger - ERROR - Erro ao buscar detalhes do bem 254131: 'responsavel'
+2025-10-18 00:16:50,275 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:50] "POST / HTTP/1.1" 200 -
+2025-10-18 00:16:50,292 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:16:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:21:00,024 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\scripts\\check_database.py', reloading
+2025-10-18 00:21:00,106 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:21:00,685 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:21:00,695 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:21:00,697 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:28:11,225 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:28:11,245 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 00:28:11,245 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 00:28:11,246 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:28:11,815 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:28:11,823 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:28:11,827 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:28:22,862 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:22] "GET / HTTP/1.1" 200 -
+2025-10-18 00:28:22,878 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:24,062 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:24] "GET / HTTP/1.1" 200 -
+2025-10-18 00:28:24,088 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:33,434 - utils.logger - INFO - Verificação do bem 001: Não encontrado
+2025-10-18 00:28:33,435 - utils.logger - WARNING - Bem 001 não encontrado no banco
+2025-10-18 00:28:33,436 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:33] "POST / HTTP/1.1" 200 -
+2025-10-18 00:28:33,455 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:38,625 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:38] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-18 00:28:38,645 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:43,524 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:43] "GET / HTTP/1.1" 200 -
+2025-10-18 00:28:43,546 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:47,136 - utils.logger - INFO - Verificação do bem 254131: Encontrado
+2025-10-18 00:28:47,285 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:47] "POST / HTTP/1.1" 200 -
+2025-10-18 00:28:47,304 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:28:57,382 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:28:57] "GET /estatisticas HTTP/1.1" 200 -
+2025-10-18 00:29:06,190 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:29:06] "GET /novo-bem HTTP/1.1" 200 -
+2025-10-18 00:29:06,209 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:29:06] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:29:20,354 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:29:20] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-10-18 00:29:20,379 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:29:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:30:08,740 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:08] "GET /sair HTTP/1.1" 200 -
+2025-10-18 00:30:08,759 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:30:13,149 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:13] "GET / HTTP/1.1" 200 -
+2025-10-18 00:30:13,173 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:30:34,173 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:34] "GET / HTTP/1.1" 200 -
+2025-10-18 00:30:34,200 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:32:56,925 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251018-003256.xlsx (1 registros)
+2025-10-18 00:32:56,937 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:32:56] "GET /exportar/localizados HTTP/1.1" 200 -
