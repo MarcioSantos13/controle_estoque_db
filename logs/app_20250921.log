@@ -1,0 +1,426 @@
+2025-09-21 00:08:35,586 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:08:35,693 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:08:35,693 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:08:35,697 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:08:36,236 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:08:36,246 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:08:36,249 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:08:41,435 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:41] "GET / HTTP/1.1" 200 -
+2025-09-21 00:08:41,500 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:08:47,710 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:47] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-21 00:08:47,732 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:08:53,499 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:53] "GET / HTTP/1.1" 200 -
+2025-09-21 00:08:53,526 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:08:58,164 - utils.logger - INFO - Localização do bem 414816: Sala da Direção
+2025-09-21 00:08:58,165 - utils.logger - INFO - Verificação do bem 414816: Encontrado
+2025-09-21 00:08:58,415 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:58] "POST / HTTP/1.1" 200 -
+2025-09-21 00:08:58,436 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:08:58] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:13:22,974 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 00:13:23,057 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:13:23,818 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:13:23,828 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:13:23,831 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:13:24,866 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 00:13:24,961 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:13:25,605 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:13:25,613 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:13:25,617 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:13:26,657 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 00:13:26,734 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:13:27,269 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:13:27,278 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:13:27,280 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:13:39,440 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 00:13:39,521 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:13:40,076 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:13:40,085 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:13:40,088 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:14:50,931 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 00:14:51,001 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:14:51,548 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:14:51,557 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:14:51,559 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:15:12,840 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 00:15:12,917 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:15:13,473 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:15:13,482 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:15:13,484 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:15:19,574 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 00:15:19,652 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:15:20,303 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:15:20,312 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:15:20,315 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:20:14,618 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:20:14] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-21 00:20:14,655 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:20:14] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:20:14,674 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:20:14] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-21 00:20:14,690 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:20:14] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=cOxB6t5pXkBOOBUl1BoV HTTP/1.1" 200 -
+2025-09-21 00:21:04,340 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:21:04,362 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:21:04,363 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:21:04,364 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:21:04,898 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:21:04,906 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:21:04,910 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:21:10,459 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:21:10] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-21 00:21:10,484 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:21:10] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:21:10,485 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:21:10] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-21 00:21:10,514 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:21:10] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=8T6yURDL7C9H46Ydb45E HTTP/1.1" 200 -
+2025-09-21 00:25:10,344 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:10] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-21 00:25:10,362 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:10] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-21 00:25:10,363 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:10] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:25:10,371 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:10] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=8T6yURDL7C9H46Ydb45E HTTP/1.1[0m" 304 -
+2025-09-21 00:25:14,863 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:14] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-21 00:25:14,880 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:14] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:25:14,883 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:14] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-21 00:25:14,892 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:25:14] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=8T6yURDL7C9H46Ydb45E HTTP/1.1[0m" 304 -
+2025-09-21 00:25:40,225 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:25:40,248 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:25:40,248 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:25:40,250 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:25:40,769 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:25:40,778 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:25:40,781 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:26:07,581 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:26:07] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-21 00:26:07,753 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:26:07] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:26:07,753 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:26:07] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-21 00:26:07,850 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:26:07] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=rvoRnmKRKrFEHtxPMDUs HTTP/1.1" 200 -
+2025-09-21 00:30:21,548 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:30:21,567 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:30:21,567 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:30:21,568 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:30:22,108 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:30:22,118 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:30:22,121 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:30:27,776 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:30:27] "GET / HTTP/1.1" 200 -
+2025-09-21 00:30:27,814 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:30:27] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-21 00:30:41,819 - utils.logger - ERROR - Erro em /relatorio-localidades: name 'obter_localidades' is not defined
+2025-09-21 00:30:41,856 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:30:41] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 00:30:41,877 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:30:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:36:30,233 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 00:36:30,305 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:36:30,924 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:36:30,933 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:36:30,936 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:36:31,970 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 00:36:32,045 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:38:42,363 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:38:42,384 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:38:42,384 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:38:42,385 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:38:42,901 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:38:42,910 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:38:42,913 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:38:46,982 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:38:46] "GET / HTTP/1.1" 200 -
+2025-09-21 00:38:46,997 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:38:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:38:58,939 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:38:58] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 00:38:58,962 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:38:58] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:39:08,701 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:39:08,701 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:08] "GET /relatorio-localidades?localidade=Sala+CTIC&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:39:08,722 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:39:29,197 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:39:29,197 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:29] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:39:29,214 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:39:35,165 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:35] "GET / HTTP/1.1" 200 -
+2025-09-21 00:39:35,187 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:35] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:39:38,330 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:38] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-21 00:39:38,349 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:39:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:40:04,170 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:04] "GET / HTTP/1.1" 200 -
+2025-09-21 00:40:04,196 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:40:07,735 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:07] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 00:40:07,758 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:40:15,235 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:40:15,236 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:15] "GET /relatorio-localidades?localidade=Sala+da+Direção+1&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:40:15,256 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:40:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:44:47,638 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 00:44:47,717 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:55:13,338 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:55:13,359 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 00:55:13,359 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 00:55:13,360 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 00:55:13,909 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 00:55:13,918 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 00:55:13,920 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 00:55:21,420 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:21] "GET / HTTP/1.1" 200 -
+2025-09-21 00:55:21,439 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:55:29,525 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:29] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-21 00:55:29,547 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:55:34,832 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:34] "GET / HTTP/1.1" 200 -
+2025-09-21 00:55:34,854 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:55:37,645 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:37] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 00:55:37,666 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:55:42,047 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:55:42,047 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:42] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:55:42,069 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:42] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:55:54,892 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:55:54,893 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:54] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:55:54,911 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:55:54] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:56:04,595 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:56:04,596 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:04] "GET /relatorio-localidades?localidade=Secretaria&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 00:56:04,615 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:56:17,648 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:17] "GET / HTTP/1.1" 200 -
+2025-09-21 00:56:17,671 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:56:20,773 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:20] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 00:56:20,794 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:56:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 00:57:15,968 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,968 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,969 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,970 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,971 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,971 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:57:15,989 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:57:15] "GET /debug-localidades HTTP/1.1" 200 -
+2025-09-21 00:57:16,026 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:57:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 00:58:59,940 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,941 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,942 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,942 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,943 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,944 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 00:58:59,944 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 00:58:59] "GET /debug-localidades HTTP/1.1" 200 -
+2025-09-21 01:03:42,007 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:03:42,089 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:03:42,688 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:03:42,697 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:03:42,700 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:05:09,749 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:05:09,837 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:05:10,404 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:05:10,413 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:05:10,416 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:05:11,452 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:05:11,535 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:05:12,103 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:05:12,112 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:05:12,115 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:05:13,147 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:05:13,227 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:05:13,816 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:05:13,826 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:05:13,828 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:06:50,009 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:06:50,085 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:06:50,651 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:06:50,660 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:06:50,663 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:06:59,794 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:06:59,869 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:07:00,434 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:07:00,443 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:07:00,446 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:07:15,240 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:07:15,262 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:07:15,262 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:07:15,263 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:07:15,818 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:07:15,828 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:07:15,830 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:07:19,304 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:19] "GET / HTTP/1.1" 200 -
+2025-09-21 01:07:19,320 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:07:24,368 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:24] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-21 01:07:24,390 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:07:29,332 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:29] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-21 01:07:29,351 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:07:38,576 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:38] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 01:07:38,602 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:07:51,532 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:07:51,533 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:51] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:07:51,554 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:07:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:08:08,049 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:08:08] "GET /debug-localidades HTTP/1.1" 200 -
+2025-09-21 01:12:26,956 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:12:27,039 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:12:27,640 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:12:27,649 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:12:27,651 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:12:39,057 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:12:39,072 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:39] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:12:39,091 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:12:44,508 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:12:44,509 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:44] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:12:44,528 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:12:45,594 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:12:45,594 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:45] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:12:45,612 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:12:46,745 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:12:46,746 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:46] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:12:46,763 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:12:51,660 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:12:51,660 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:51] "GET /relatorio-localidades?localidade=Sala+CTIC&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:12:51,681 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:12:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:13:04,963 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:13:04,984 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:13:04,984 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:13:04,985 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:13:05,548 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:13:05,557 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:13:05,560 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:13:08,793 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:08] "GET / HTTP/1.1" 200 -
+2025-09-21 01:13:08,818 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:13:11,960 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:11] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-21 01:13:11,977 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:13:15,711 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:13:15,712 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:15] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-21 01:13:15,734 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:13:28,871 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:13:28] "GET /debug-localidades HTTP/1.1" 200 -
+2025-09-21 01:17:43,418 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:17:43,438 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:17:43,438 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:17:43,439 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:17:43,985 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:17:43,995 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:17:43,997 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:17:46,671 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:17:46] "GET / HTTP/1.1" 200 -
+2025-09-21 01:17:46,683 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:17:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:18:35,134 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:18:35,136 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:18:35] "GET /teste-localidade/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:18:35,170 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:18:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 01:25:28,919 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:25:28,938 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:25:28,938 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:25:28,939 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:25:29,468 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:25:29,476 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:25:29,478 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:25:32,156 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:25:32] "GET / HTTP/1.1" 200 -
+2025-09-21 01:25:32,286 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:25:32] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-21 01:25:32,373 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:25:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 01:25:40,588 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:25:40] "GET /diagnostico-localidade/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:25:40,623 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:25:40] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 01:32:09,531 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:32:09,608 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:44:05,739 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:44:05,759 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:44:05,759 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:44:05,761 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:44:06,302 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:44:06,313 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:44:06,316 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:44:11,678 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:44:11] "GET / HTTP/1.1" 200 -
+2025-09-21 01:44:11,693 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:44:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:44:40,104 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:44:40] "GET /teste-localidade-simples/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:45:10,160 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:45:10,200 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:45:10] "GET /relatorio-localidades?localidade=Sala+CTIC HTTP/1.1" 200 -
+2025-09-21 01:45:10,231 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:45:10] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-21 01:46:20,904 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:46:20] "GET /teste-localidade-simples/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:47:13,200 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 01:47:13,200 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:47:13] "GET /relatorio-localidades?localidade=Sala+CTIC HTTP/1.1" 200 -
+2025-09-21 01:47:13,221 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:47:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:50:01,075 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:50:01,154 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:50:01,719 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:50:01,728 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:50:01,732 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:50:05,806 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:50:05,880 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:50:06,448 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:50:06,458 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:50:06,461 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:50:43,932 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:50:44,005 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:50:44,589 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:50:44,598 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:50:44,600 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:50:45,634 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:50:45,712 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:50:46,306 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:50:46,317 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:50:46,320 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:50:51,395 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 01:50:51,494 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:50:52,131 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:50:52,144 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:50:52,147 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:52:33,344 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:52:33,420 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:52:33,967 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:52:33,977 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:52:33,980 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:52:37,035 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:52:37,108 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:52:37,650 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:52:37,659 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:52:37,662 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:53:25,232 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:53:25,313 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:53:25,913 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:53:25,924 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:53:25,927 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:53:36,067 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 01:53:36,170 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:53:36,762 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:53:36,773 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:53:36,776 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:54:30,069 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:54:30,089 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 01:54:30,090 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 01:54:30,091 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 01:54:30,623 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 01:54:30,631 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 01:54:30,634 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 01:54:34,853 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:54:34] "GET / HTTP/1.1" 200 -
+2025-09-21 01:54:34,869 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:54:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:54:59,217 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:54:59] "GET /teste-consulta-direta/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:54:59,250 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:54:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 01:55:26,928 - utils.logger - ERROR - Erro em /relatorio-localidades: name 'obter_bens_por_localidade_alternativa' is not defined
+2025-09-21 01:55:26,943 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:55:26] "GET /relatorio-localidades?localidade=Sala+CTIC HTTP/1.1" 200 -
+2025-09-21 01:55:26,969 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:55:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 01:55:34,589 - utils.logger - ERROR - Erro em /relatorio-localidades: name 'obter_bens_por_localidade_alternativa' is not defined
+2025-09-21 01:55:34,590 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:55:34] "GET /relatorio-localidades?localidade=Sala+CTIC HTTP/1.1" 200 -
+2025-09-21 01:55:34,623 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:55:34] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-21 01:56:17,161 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:56:17] "GET /teste-consulta-direta/Sala%20CTIC HTTP/1.1" 200 -
+2025-09-21 01:56:17,191 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 01:56:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-21 02:00:53,785 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 02:00:53,873 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 02:00:54,459 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 02:00:54,469 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 02:00:54,471 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 02:02:37,713 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-21 02:02:37,790 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 02:02:38,337 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 02:02:38,347 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 02:02:38,350 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 02:04:44,833 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-21 02:04:44,914 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 02:04:45,474 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 02:04:45,483 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 02:04:45,486 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 02:05:04,514 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 02:05:04,527 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:04] "GET /relatorio-localidades?localidade=Sala+CTIC HTTP/1.1" 200 -
+2025-09-21 02:05:04,549 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:05:22,711 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-21 02:05:22,712 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:22] "GET /relatorio-localidades?localidade=Sala+CTIC&por_pagina=50 HTTP/1.1" 200 -
+2025-09-21 02:05:22,735 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:05:50,271 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 02:05:50,287 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-21 02:05:50,287 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-21 02:05:50,288 - werkzeug - INFO -  * Restarting with stat
+2025-09-21 02:05:50,853 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-21 02:05:50,862 - werkzeug - WARNING -  * Debugger is active!
+2025-09-21 02:05:50,865 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-21 02:05:53,457 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:53] "GET / HTTP/1.1" 200 -
+2025-09-21 02:05:53,479 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:05:56,236 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:56] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-21 02:05:56,256 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:05:56] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:06:00,873 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:00] "GET / HTTP/1.1" 200 -
+2025-09-21 02:06:00,899 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:06:03,686 - utils.logger - INFO - Localização do bem 367248: Sala da Direção 1
+2025-09-21 02:06:03,686 - utils.logger - INFO - Verificação do bem 367248: Encontrado
+2025-09-21 02:06:03,802 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:03] "POST / HTTP/1.1" 200 -
+2025-09-21 02:06:03,823 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:06:16,533 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:16] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-21 02:06:16,555 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-21 02:06:33,356 - utils.logger - INFO - Localização do bem 2022001020: Sala da Direção
+2025-09-21 02:06:33,357 - utils.logger - INFO - Verificação do bem 2022001020: Encontrado
+2025-09-21 02:06:33,466 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:33] "POST / HTTP/1.1" 200 -
+2025-09-21 02:06:33,485 - werkzeug - INFO - 127.0.0.1 - - [21/Sep/2025 02:06:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
