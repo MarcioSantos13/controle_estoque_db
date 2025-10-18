@@ -277,26 +277,71 @@ def excluir_bem(db_path: str, bem_id: int):
         logger.error(f"Erro ao excluir bem {bem_id}: {str(e)}")
         return False, f"❌ Erro ao excluir bem: {str(e)}"
 
+
+
+
+
 def buscar_bens_por_nome(db_path: str, termo_busca: str):
-    """Busca bens por nome ou descrição"""
+    """Busca bens por nome, número, responsável ou detentor - BUSCA MELHORADA"""
     try:
         with get_db_connection(db_path) as conn:
             cursor = conn.cursor()
+            
+            # Limpar e preparar o termo de busca
+            termo_limpo = termo_busca.strip()
+            
+            # Buscar em múltiplos campos com OR
             cursor.execute("""
-                SELECT id, numero, nome, situacao, localizacao, responsavel, detentor, status
+                SELECT id, numero, nome, situacao, localizacao, responsavel, detentor, 
+                       lotacao_detentor, data_ultima_vistoria, data_vistoria_atual, 
+                       auditor, status, observacao, data_criacao, data_localizacao
                 FROM bens 
-                WHERE nome LIKE ? OR numero LIKE ? OR responsavel LIKE ? OR detentor LIKE ?
-                ORDER BY nome
+                WHERE 
+                    numero LIKE ? OR
+                    nome LIKE ? OR 
+                    responsavel LIKE ? OR 
+                    detentor LIKE ? OR
+                    localizacao LIKE ? OR
+                    auditor LIKE ? OR
+                    observacao LIKE ?
+                ORDER BY 
+                    CASE 
+                        WHEN numero = ? THEN 1
+                        WHEN numero LIKE ? THEN 2
+                        WHEN nome = ? THEN 3
+                        WHEN nome LIKE ? THEN 4
+                        ELSE 5
+                    END,
+                    numero
             """, (
-                f'%{termo_busca}%', f'%{termo_busca}%', 
-                f'%{termo_busca}%', f'%{termo_busca}%'
+                # Busca parcial para LIKE
+                f'%{termo_limpo}%',  # numero LIKE
+                f'%{termo_limpo}%',  # nome LIKE
+                f'%{termo_limpo}%',  # responsavel LIKE
+                f'%{termo_limpo}%',  # detentor LIKE
+                f'%{termo_limpo}%',  # localizacao LIKE
+                f'%{termo_limpo}%',  # auditor LIKE
+                f'%{termo_limpo}%',  # observacao LIKE
+                # Busca exata para ordenação
+                termo_limpo,         # numero exato
+                f'{termo_limpo}%',   # numero começando com
+                termo_limpo,         # nome exato
+                f'{termo_limpo}%'    # nome começando com
             ))
             
-            return [dict(row) for row in cursor.fetchall()]
+            resultados = [dict(row) for row in cursor.fetchall()]
+            logger.info(f"Busca por '{termo_busca}': {len(resultados)} resultados encontrados")
+            
+            return resultados
             
     except Exception as e:
         logger.error(f"Erro na busca por '{termo_busca}': {str(e)}")
         return []
+
+
+
+
+
 
 def obter_estatisticas_avancadas(db_path: str):
     """Obtém estatísticas avançadas do sistema"""

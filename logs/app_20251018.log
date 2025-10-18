@@ -87,3 +87,260 @@
 2025-10-18 00:30:34,200 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:30:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
 2025-10-18 00:32:56,925 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251018-003256.xlsx (1 registros)
 2025-10-18 00:32:56,937 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:32:56] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-10-18 00:50:15,588 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:50:15,608 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 00:50:15,609 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 00:50:15,610 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:50:16,166 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:50:16,175 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:50:16,178 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:50:51,552 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:50:51] "GET / HTTP/1.1" 200 -
+2025-10-18 00:50:51,729 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:50:51] "GET /static/style.css HTTP/1.1" 200 -
+2025-10-18 00:51:05,311 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:05] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-10-18 00:51:05,334 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:51:07,762 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:07] "GET / HTTP/1.1" 200 -
+2025-10-18 00:51:07,791 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:51:10,503 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:10] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-18 00:51:10,525 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:51:12,410 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:12] "GET / HTTP/1.1" 200 -
+2025-10-18 00:51:12,436 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:12] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:51:41,451 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:41] "GET /novo-bem HTTP/1.1" 200 -
+2025-10-18 00:51:41,474 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:51:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:54:35,930 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:35] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-18 00:54:35,949 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:35] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:54:35,950 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:35] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-18 00:54:35,959 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:35] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=O6XXXENoEd2sCJieAzo4 HTTP/1.1" 200 -
+2025-10-18 00:54:40,156 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:40] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-18 00:54:40,179 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:40] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:54:40,180 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:40] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-18 00:54:40,191 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:54:40] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=O6XXXENoEd2sCJieAzo4 HTTP/1.1[0m" 304 -
+2025-10-18 00:55:17,582 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:55:17] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-18 00:55:17,596 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:55:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:55:20,366 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:55:20] "GET / HTTP/1.1" 200 -
+2025-10-18 00:55:20,386 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:55:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:56:10,706 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 00:56:10,787 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:56:11,377 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:56:11,389 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:56:11,392 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:56:20,528 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 00:56:20,607 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:56:21,173 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:56:21,182 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:56:21,185 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:56:26,267 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 00:56:26,341 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:56:26,927 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:56:26,938 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:56:26,940 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:57:41,581 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:57:41,601 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 00:57:41,601 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 00:57:41,602 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 00:57:42,147 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 00:57:42,155 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 00:57:42,158 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 00:57:44,478 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:57:44] "GET / HTTP/1.1" 200 -
+2025-10-18 00:57:44,492 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:57:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:57:54,939 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:57:54,989 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:57:54] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 00:57:55,010 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:57:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:14,167 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:14,168 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:14] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 00:58:14,185 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:14] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:16,782 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:16,783 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:16] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 00:58:16,806 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:19,480 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:19,481 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:19] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 00:58:19,500 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:23,647 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:23,648 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:23] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 00:58:23,672 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:23] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:25,773 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:25,774 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:25] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 00:58:25,795 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:26,661 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:26,661 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:26] "GET /sistema-crud?status=Ativo HTTP/1.1" 200 -
+2025-10-18 00:58:26,686 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 00:58:27,430 - utils.logger - ERROR - Erro no sistema CRUD: name 'get_db_connection' is not defined
+2025-10-18 00:58:27,430 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:27] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 00:58:27,452 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 00:58:27] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:02:08,632 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 01:02:08,723 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:02:09,327 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:02:09,336 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:02:09,339 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:02:17,450 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 01:02:17,537 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:02:18,152 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:02:18,161 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:02:18,164 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:02:34,370 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 01:02:34,460 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:02:35,117 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:02:35,130 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:02:35,134 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:03:21,188 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:21] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 01:03:21,200 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:03:33,953 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:33] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:03:33,976 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:03:35,944 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:35] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:03:35,964 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:35] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:03:38,033 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:38] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:03:38,055 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:03:40,609 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:40] "GET /sistema-crud?status=Ativo HTTP/1.1" 200 -
+2025-10-18 01:03:40,630 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:03:50,888 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:50] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 01:03:50,910 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:03:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:04:04,588 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:04] "GET /estatisticas HTTP/1.1" 200 -
+2025-10-18 01:04:30,430 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:30] "GET /api/bem/1 HTTP/1.1" 200 -
+2025-10-18 01:04:34,614 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:34] "GET /api/bem/1 HTTP/1.1" 200 -
+2025-10-18 01:04:45,234 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:45] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:04:45,262 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:04:48,868 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:48] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:04:48,888 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:48] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:04:51,970 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:51] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:04:51,996 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:04:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:10,997 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:10] "GET /sistema-crud?pagina=2&por_pagina=50&q=&situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:05:11,019 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:16,926 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:16] "GET /sistema-crud?pagina=4&por_pagina=50&q=&situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:05:16,950 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:25,352 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:25] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 01:05:25,374 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:31,679 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:31] "GET /sistema-crud?status=Inativo HTTP/1.1" 200 -
+2025-10-18 01:05:31,691 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:31] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:41,573 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:41] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:05:41,594 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:53,270 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:53] "GET /sistema-crud?q=254131 HTTP/1.1" 200 -
+2025-10-18 01:05:53,302 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:05:58,549 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:05:58] "GET /api/bem/1 HTTP/1.1" 200 -
+2025-10-18 01:17:03,885 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:03] "GET /sistema-crud?q=254131 HTTP/1.1" 200 -
+2025-10-18 01:17:03,902 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:17:16,369 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:16] "GET /sistema-crud?q=254131&por_pagina=25&pagina=1 HTTP/1.1" 200 -
+2025-10-18 01:17:16,397 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:17:43,117 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:43] "GET /sistema-crud?q=416096 HTTP/1.1" 200 -
+2025-10-18 01:17:43,142 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:17:50,923 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:50] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:17:50,946 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:17:56,067 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:56] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:17:56,083 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:56] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:17:57,401 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:57] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:17:57,422 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:17:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:00,863 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:00] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:18:00,888 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:04,498 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:04] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:18:04,517 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:05,857 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:05] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:18:05,881 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:08,270 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:08] "GET /sistema-crud?situacao=Pendente&por_pagina=10&pagina=1 HTTP/1.1" 200 -
+2025-10-18 01:18:08,290 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:26,716 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:26] "GET /sistema-crud?q=254131 HTTP/1.1" 200 -
+2025-10-18 01:18:26,739 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:47,210 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:47] "GET /sistema-crud?q=416096 HTTP/1.1" 200 -
+2025-10-18 01:18:47,231 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:18:55,819 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:55] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:18:55,840 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:18:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:19:08,677 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:19:08] "GET /sistema-crud?q=2022001019 HTTP/1.1" 200 -
+2025-10-18 01:19:08,699 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:19:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:19:33,713 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:19:33] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:19:33,733 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:19:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:19:41,785 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:19:41] "GET /api/bem/1 HTTP/1.1" 200 -
+2025-10-18 01:28:46,137 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 01:28:46,221 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:28:46,813 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:28:46,822 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:28:46,825 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:28:53,939 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 01:28:54,018 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:28:54,652 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:28:54,664 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:28:54,669 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:29:29,113 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-10-18 01:29:29,198 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:29:29,761 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:29:29,770 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:29:29,773 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:29:34,860 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-10-18 01:29:34,933 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:29:35,530 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:29:35,541 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:29:35,543 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:29:53,782 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-10-18 01:29:53,864 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:30:24,101 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:30:24,121 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 01:30:24,122 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 01:30:24,123 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 01:30:24,661 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 01:30:24,671 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 01:30:24,674 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-18 01:35:24,118 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:35:24] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:35:24,142 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:35:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:00,810 - utils.logger - INFO - Busca por 'Henrique': 0 resultados encontrados
+2025-10-18 01:36:00,811 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:00] "GET /sistema-crud?q=Henrique HTTP/1.1" 200 -
+2025-10-18 01:36:00,837 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:19,580 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:19] "GET /sistema-crud?q= HTTP/1.1" 200 -
+2025-10-18 01:36:19,601 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:31,368 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:31] "GET /sistema-crud?pagina=3&por_pagina=50&q= HTTP/1.1" 200 -
+2025-10-18 01:36:31,391 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:31] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:37,904 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:37] "GET /api/bem/101 HTTP/1.1" 200 -
+2025-10-18 01:36:42,922 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:42] "GET /api/bem/101 HTTP/1.1" 200 -
+2025-10-18 01:36:52,691 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:52] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:36:52,720 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:52] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:54,528 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:54] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-18 01:36:54,552 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:54] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:36:59,015 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:59] "GET /sistema-crud?situacao=Pendente&por_pagina=10&pagina=1 HTTP/1.1" 200 -
+2025-10-18 01:36:59,038 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:36:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:37:04,998 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:04] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-18 01:37:05,024 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:37:12,799 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:12] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:37:12,824 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:12] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:37:21,916 - utils.logger - INFO - Busca por '254131': 1 resultados encontrados
+2025-10-18 01:37:21,917 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:21] "GET /sistema-crud?q=254131 HTTP/1.1" 200 -
+2025-10-18 01:37:21,940 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:37:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:00,129 - utils.logger - INFO - Busca por '254131': 1 resultados encontrados
+2025-10-18 01:51:00,190 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:00] "GET /sistema-crud?q=254131 HTTP/1.1" 200 -
+2025-10-18 01:51:00,206 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:03,717 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:03] "GET /sistema-crud?pagina=1 HTTP/1.1" 200 -
+2025-10-18 01:51:03,742 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:14,869 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:14] "GET /api/bem/1 HTTP/1.1" 200 -
+2025-10-18 01:51:25,953 - utils.logger - INFO - Busca por 'Não informado': 0 resultados encontrados
+2025-10-18 01:51:25,955 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:25] "GET /sistema-crud?q=Não+informado HTTP/1.1" 200 -
+2025-10-18 01:51:25,986 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:36,060 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:36] "GET /sistema-crud?q= HTTP/1.1" 200 -
+2025-10-18 01:51:36,088 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:38,658 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:38] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-18 01:51:38,681 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:43,485 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:43] "GET /sistema-crud?por_pagina=100&pagina=1 HTTP/1.1" 200 -
+2025-10-18 01:51:43,508 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:48,280 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:48] "GET /sistema-crud?pagina=3&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:51:48,305 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:48] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:54,523 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:54] "GET /sistema-crud?pagina=5&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:51:54,545 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:54] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:51:59,885 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:59] "GET /sistema-crud?pagina=6&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:51:59,906 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:51:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:52:04,301 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:04] "GET /api/bem/575 HTTP/1.1" 200 -
+2025-10-18 01:52:09,815 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:09] "GET /sistema-crud?pagina=8&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:52:09,841 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:09] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:52:17,478 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:17] "GET /sistema-crud?pagina=7&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:52:17,511 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:52:25,391 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251018-015225.xlsx (1 registros)
+2025-10-18 01:52:25,405 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:25] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-10-18 01:52:38,775 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:38] "GET /sistema-crud?pagina=8&por_pagina=100&q= HTTP/1.1" 200 -
+2025-10-18 01:52:38,802 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:52:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:04,534 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:04] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-10-18 01:53:04,559 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:06,680 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:06] "GET / HTTP/1.1" 200 -
+2025-10-18 01:53:06,704 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:06] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:11,499 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:11] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-18 01:53:11,522 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:17,630 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:17] "GET /visualizar/nao-localizados?pagina=1&por_pagina=500 HTTP/1.1" 200 -
+2025-10-18 01:53:17,652 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:21,222 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:21] "GET /visualizar/nao-localizados?pagina=2&por_pagina=500 HTTP/1.1" 200 -
+2025-10-18 01:53:21,247 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-18 01:53:25,510 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:25] "GET / HTTP/1.1" 200 -
+2025-10-18 01:53:25,531 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 01:53:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -

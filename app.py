@@ -521,6 +521,124 @@ def sair():
                          total_count=_carregar_dados_bancos().get('total_count', 0),
                          session_time="5min")
 
+
+
+
+@app.route('/sistema-crud')
+def sistema_crud():
+    """Sistema CRUD completo para gerenciamento de bens"""
+    if not os.path.exists(DB_PATH):
+        return render_template('sistema_crud.html', 
+                             mensagem="Banco de dados não encontrado.",
+                             paginacao={
+                                 'dados': [],
+                                 'pagina_atual': 1,
+                                 'por_pagina': 50,
+                                 'total_registros': 0,
+                                 'total_paginas': 0
+                             },
+                             total_count=0,
+                             localizados_count=0,
+                             nao_localizados_count=0,
+                             termo_busca='',
+                             situacao_filtro=None,
+                             status_filtro=None)
+
+    try:
+        # Obter parâmetros
+        pagina = request.args.get('pagina', 1, type=int)
+        por_pagina = request.args.get('por_pagina', 50, type=int)
+        termo_busca = request.args.get('q', '')
+        situacao_filtro = request.args.get('situacao')
+        status_filtro = request.args.get('status')
+        
+        # Validar parâmetros
+        pagina = max(1, pagina)
+        por_pagina = max(10, min(por_pagina, 200))
+        
+        # Se há termo de busca, usar a função de busca aprimorada
+        if termo_busca:
+            # Buscar usando a função existente do db_handler
+            resultados = db_handler.buscar_bens_por_nome(DB_PATH, termo_busca)
+            
+            # Aplicar filtros adicionais se existirem
+            if situacao_filtro:
+                resultados = [bem for bem in resultados if bem.get('situacao') == situacao_filtro]
+            
+            if status_filtro:
+                resultados = [bem for bem in resultados if bem.get('status') == status_filtro]
+            
+            # Aplicar paginação manualmente
+            total_registros = len(resultados)
+            total_paginas = (total_registros + por_pagina - 1) // por_pagina
+            
+            # Calcular índices para a página atual
+            inicio = (pagina - 1) * por_pagina
+            fim = inicio + por_pagina
+            dados_paginados = resultados[inicio:fim]
+            
+            paginacao = {
+                'dados': dados_paginados,
+                'pagina_atual': pagina,
+                'por_pagina': por_pagina,
+                'total_registros': total_registros,
+                'total_paginas': total_paginas
+            }
+        else:
+            # Sem termo de busca, usar filtros normais
+            if situacao_filtro == 'OK':
+                tipo = 'localizados'
+            elif situacao_filtro == 'Pendente':
+                tipo = 'nao-localizados'
+            else:
+                tipo = 'todos'
+            
+            # Usar a função existente do db_handler
+            paginacao = db_handler.obter_bens_paginados(DB_PATH, tipo, pagina, por_pagina)
+            
+            # Aplicar filtro de status se especificado
+            if status_filtro:
+                paginacao['dados'] = [bem for bem in paginacao['dados'] if bem.get('status') == status_filtro]
+                paginacao['total_registros'] = len(paginacao['dados'])
+                paginacao['total_paginas'] = (paginacao['total_registros'] + por_pagina - 1) // por_pagina
+        
+        # Obter contagens para os cards
+        contagens = db_handler.contar_bens(DB_PATH)
+        
+        return render_template('sistema_crud.html',
+                             paginacao=paginacao,
+                             total_count=contagens['total'],
+                             localizados_count=contagens['localizados'],
+                             nao_localizados_count=contagens['nao_localizados'],
+                             termo_busca=termo_busca,
+                             situacao_filtro=situacao_filtro,
+                             status_filtro=status_filtro)
+            
+    except Exception as e:
+        logger.error(f"Erro no sistema CRUD: {str(e)}")
+        return render_template('sistema_crud.html',
+                             mensagem=f"Erro ao carregar dados: {str(e)}",
+                             paginacao={
+                                 'dados': [],
+                                 'pagina_atual': 1,
+                                 'por_pagina': 50,
+                                 'total_registros': 0,
+                                 'total_paginas': 0
+                             },
+                             total_count=0,
+                             localizados_count=0,
+                             nao_localizados_count=0,
+                             termo_busca='',
+                             situacao_filtro=None,
+                             status_filtro=None)
+
+
+
+
+
+
+
+
 # ==============================
 # Inicialização
 # ==============================

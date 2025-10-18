@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema CRUD - Controle Patrimonial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.04);
+            cursor: pointer;
+        }
+
+        .badge-status {
+            font-size: 0.7em;
+            padding: 0.3em 0.5em;
+        }
+
+        .action-buttons {
+            white-space: nowrap;
+        }
+
+        .search-box {
+            max-width: 350px;
+        }
+
+        .card-stat {
+            border: none;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .card-stat:hover {
+            transform: translateY(-1px);
+        }
+
+        .filtro-ativo {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+
+        .table-responsive {
+            max-height: 500px;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .export-buttons .btn {
+            margin-left: 0.3rem;
+        }
+
+        /* Ajustes de tamanho de fonte */
+        .table {
+            font-size: 0.85rem;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .form-control, .form-select {
+            font-size: 0.85rem;
+        }
+
+        .modal-title {
+            font-size: 1rem;
+        }
+
+        .estatisticas-container {
+            font-size: 0.8rem;
+        }
+
+        .itens-por-pagina {
+            width: 120px;
+        }
+
+        .busca-rapida {
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-sm">
+        <div class="container py-2">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h5 mb-1 fw-bold">
+                        <i class="bi bi-database-gear me-2"></i>Sistema CRUD - Controle Patrimonial
+                    </h1>
+                    <p class="mb-0 opacity-75" style="font-size: 0.8rem;">Gerenciamento completo de bens patrimoniais</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end gap-1">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-house me-1"></i>Início
+                        </a>
+                        <a href="{{ url_for('estatisticas') }}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-graph-up me-1"></i>Estatísticas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-3">
+        <!-- Cartões de Estatísticas -->
+        <div class="row g-2 mb-3">
+            <div class="col-md-3">
+                <div class="card card-stat bg-white shadow-sm border-0">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="h4 fw-bold text-primary mb-0">{{ total_count|number_format }}</h3>
+                                <p class="text-muted mb-0" style="font-size: 0.75rem;">Total de Bens</p>
+                            </div>
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                <i class="bi bi-box-seam text-primary fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat bg-white shadow-sm border-0">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="h4 fw-bold text-success mb-0">{{ localizados_count|number_format }}</h3>
+                                <p class="text-muted mb-0" style="font-size: 0.75rem;">Bens Localizados</p>
+                            </div>
+                            <div class="bg-success bg-opacity-10 rounded-circle p-2">
+                                <i class="bi bi-check-circle text-success fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat bg-white shadow-sm border-0">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="h4 fw-bold text-warning mb-0">{{ nao_localizados_count|number_format }}</h3>
+                                <p class="text-muted mb-0" style="font-size: 0.75rem;">Bens Pendentes</p>
+                            </div>
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-2">
+                                <i class="bi bi-clock text-warning fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat bg-white shadow-sm border-0">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="h4 fw-bold text-info mb-0">{{ paginacao.total_registros|number_format }}</h3>
+                                <p class="text-muted mb-0" style="font-size: 0.75rem;">Filtrados</p>
+                            </div>
+                            <div class="bg-info bg-opacity-10 rounded-circle p-2">
+                                <i class="bi bi-funnel text-info fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Ferramentas -->
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body py-2">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-4">
+                        <!-- Busca Melhorada -->
+                        <form method="GET" class="d-flex" id="formBusca">
+                            <div class="input-group search-box">
+                                <span class="input-group-text bg-light border-end-0 py-1">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <input type="text" name="q" class="form-control border-start-0 py-1" 
+                                       placeholder="Buscar: número, nome, responsável..."
+                                       value="{{ termo_busca }}"
+                                       id="campoBusca">
+                                {% if termo_busca %}
+                                <button type="button" class="btn btn-outline-secondary py-1" 
+                                       onclick="limparBusca()" title="Limpar busca">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary py-1" title="Buscar">
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="form-text busca-rapida">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Busque por número, nome, responsável ou detentor
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <!-- Filtros Rápidos -->
+                        <div class="d-flex flex-wrap gap-1 justify-content-center">
+                            <span class="text-muted align-self-center me-1 busca-rapida">
+                                <i class="bi bi-funnel"></i> Filtrar:
+                            </span>
+                            <a href="{{ url_for('sistema_crud') }}" 
+                               class="btn btn-sm btn-outline-secondary {{ 'filtro-ativo' if not situacao_filtro }}">
+                                Todos
+                            </a>
+                            <a href="{{ url_for('sistema_crud', situacao='OK') }}" 
+                               class="btn btn-sm btn-outline-success {{ 'filtro-ativo' if situacao_filtro == 'OK' }}">
+                                <i class="bi bi-check-circle me-1"></i>Localizados
+                            </a>
+                            <a href="{{ url_for('sistema_crud', situacao='Pendente') }}" 
+                               class="btn btn-sm btn-outline-warning {{ 'filtro-ativo' if situacao_filtro == 'Pendente' }}">
+                                <i class="bi bi-clock me-1"></i>Pendentes
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="d-flex flex-wrap gap-1 justify-content-md-end align-items-center">
+                            <!-- Itens por página -->
+                            <div class="d-flex align-items-center">
+                                <span class="text-muted me-1 busca-rapida">Itens por página:</span>
+                                <select class="form-select form-select-sm itens-por-pagina" onchange="mudarItensPorPagina(this.value)">
+                                    <option value="10" {% if paginacao.por_pagina == 10 %}selected{% endif %}>10</option>
+                                    <option value="25" {% if paginacao.por_pagina == 25 %}selected{% endif %}>25</option>
+                                    <option value="50" {% if paginacao.por_pagina == 50 %}selected{% endif %}>50</option>
+                                    <option value="100" {% if paginacao.por_pagina == 100 %}selected{% endif %}>100</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Botões de Ação -->
+                            <button class="btn btn-success btn-sm" onclick="abrirModalNovoBem()">
+                                <i class="bi bi-plus-circle me-1"></i>Novo Bem
+                            </button>
+                            <div class="btn-group export-buttons">
+                                <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-download me-1"></i>Exportar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensagem de Resultados -->
+        {% if termo_busca and paginacao.total_registros > 0 %}
+        <div class="alert alert-info py-2 mb-2" style="font-size: 0.8rem;">
+            <i class="bi bi-search me-2"></i>
+            <strong>{{ paginacao.total_registros }}</strong> resultado(s) encontrado(s) para: 
+            <strong>"{{ termo_busca }}"</strong>
+            <button type="button" class="btn-close btn-close-sm float-end" onclick="limparBusca()"></button>
+        </div>
+        {% elif termo_busca and paginacao.total_registros == 0 %}
+        <div class="alert alert-warning py-2 mb-2" style="font-size: 0.8rem;">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Nenhum resultado encontrado para: <strong>"{{ termo_busca }}"</strong>
+            <button type="button" class="btn-close btn-close-sm float-end" onclick="limparBusca()"></button>
+        </div>
+        {% endif %}
+
+        <!-- Tabela de Bens -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0 py-2">
+                <h5 class="card-title mb-0" style="font-size: 0.9rem;">
+                    <i class="bi bi-table me-2"></i>
+                    Lista de Bens Patrimoniais
+                    {% if termo_busca %}
+                    <span class="badge bg-info ms-2" style="font-size: 0.7rem;">Busca: "{{ termo_busca }}"</span>
+                    {% endif %}
+                    {% if situacao_filtro %}
+                    <span class="badge bg-{{ 'success' if situacao_filtro == 'OK' else 'warning' }} ms-2" style="font-size: 0.7rem;">
+                        {{ 'Localizados' if situacao_filtro == 'OK' else 'Pendentes' }}
+                    </span>
+                    {% endif %}
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="70" style="font-size: 0.8rem;">ID</th>
+                                <th width="100" style="font-size: 0.8rem;">Número</th>
+                                <th style="font-size: 0.8rem;">Nome do Bem</th>
+                                <th width="100" style="font-size: 0.8rem;">Situação</th>
+                                <th style="font-size: 0.8rem;">Localização</th>
+                                <th style="font-size: 0.8rem;">Responsável</th>
+                                <th width="100" style="font-size: 0.8rem;">Status</th>
+                                <th width="130" class="text-center" style="font-size: 0.8rem;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bem in paginacao.dados %}
+                            <tr>
+                                <td>
+                                    <strong class="text-muted" style="font-size: 0.8rem;">#{{ bem.id }}</strong>
+                                </td>
+                                <td>
+                                    <span class="font-monospace fw-bold text-primary" style="font-size: 0.8rem;">{{ bem.numero }}</span>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold" style="font-size: 0.8rem;">{{ bem.nome }}</div>
+                                    {% if bem.observacao %}
+                                    <small class="text-muted" style="font-size: 0.7rem;">
+                                        {{ bem.observacao[:40] }}{% if bem.observacao|length > 40 %}...{% endif %}
+                                    </small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bem.situacao == 'OK' %}
+                                    <span class="badge bg-success badge-status">
+                                        <i class="bi bi-check-circle me-1"></i>Localizado
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-warning badge-status">
+                                        <i class="bi bi-clock me-1"></i>Pendente
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size: 0.8rem;">
+                                    {% if bem.localizacao %}
+                                    <i class="bi bi-geo-alt text-muted me-1"></i>{{ bem.localizacao }}
+                                    {% else %}
+                                    <span class="text-muted">Não informada</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size: 0.8rem;">
+                                    {% if bem.responsavel %}
+                                    <i class="bi bi-person text-muted me-1"></i>{{ bem.responsavel }}
+                                    {% else %}
+                                    <span class="text-muted">Não informado</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bem.status == 'Ativo' %}
+                                    <span class="badge bg-success badge-status">Ativo</span>
+                                    {% elif bem.status == 'Inativo' %}
+                                    <span class="badge bg-danger badge-status">Inativo</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary badge-status">{{ bem.status or 'N/A' }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="action-buttons text-center">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button class="btn btn-outline-primary" onclick="visualizarBem({{ bem.id }})" 
+                                                title="Visualizar" style="font-size: 0.7rem;">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-warning" onclick="editarBem({{ bem.id }})" 
+                                                title="Editar" style="font-size: 0.7rem;">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger" 
+                                                onclick="confirmarExclusao({{ bem.id }}, '{{ bem.nome|replace("'", "\\'") }}')" 
+                                                title="Excluir" style="font-size: 0.7rem;">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="bi bi-inbox display-5 mb-2"></i>
+                                        <h6>Nenhum bem encontrado</h6>
+                                        <p class="mb-2" style="font-size: 0.8rem;">
+                                            {% if termo_busca %}
+                                            Nenhum resultado para "{{ termo_busca }}"
+                                            {% else %}
+                                            Não há bens cadastrados
+                                            {% endif %}
+                                        </p>
+                                        {% if termo_busca or situacao_filtro %}
+                                        <a href="{{ url_for('sistema_crud') }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-arrow-counterclockwise me-1"></i>Limpar filtros
+                                        </a>
+                                        {% else %}
+                                        <button class="btn btn-success btn-sm" onclick="abrirModalNovoBem()">
+                                            <i class="bi bi-plus-circle me-1"></i>Cadastrar Primeiro Bem
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginação e Informações -->
+        {% if paginacao.total_paginas > 1 or paginacao.total_registros > 0 %}
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="text-muted" style="font-size: 0.75rem;">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Mostrando <strong>{{ paginacao.dados|length }}</strong> de 
+                    <strong>{{ paginacao.total_registros|number_format }}</strong> 
+                    registro{{ paginacao.total_registros|pluralize('', 's') }}
+                    {% if paginacao.total_paginas > 1 %}
+                    - Página <strong>{{ paginacao.pagina_atual }}</strong> de 
+                    <strong>{{ paginacao.total_paginas }}</strong>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                {% if paginacao.total_paginas > 1 %}
+                <nav aria-label="Paginação" class="d-flex justify-content-end">
+                    <ul class="pagination pagination-sm mb-0">
+                        {% if paginacao.pagina_atual > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" 
+                               href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=situacao_filtro) }}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for pagina in range(1, paginacao.total_paginas + 1) %}
+                            {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %}
+                            <li class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
+                                <a class="page-link" 
+                                   href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=situacao_filtro) }}">
+                                    {{ pagina }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if paginacao.pagina_atual < paginacao.total_paginas %}
+                        <li class="page-item">
+                            <a class="page-link" 
+                               href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=situacao_filtro) }}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Modal para Visualizar/Editar Bem -->
+    <div class="modal fade" id="modalBem" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white py-2">
+                    <h5 class="modal-title" id="modalBemTitle" style="font-size: 0.9rem;">
+                        <i class="bi bi-info-circle me-2"></i>Detalhes do Bem
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formBem">
+                        <input type="hidden" id="bemId" name="id">
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="numero" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-upc-scan me-1"></i>Número do Bem *
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="numero" name="numero" required 
+                                       pattern="[A-Za-z0-9-]+" placeholder="Ex: 254131, ABC-123">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nome" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-tag me-1"></i>Nome do Bem *
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="nome" name="nome" required 
+                                       placeholder="Ex: Computador Dell, Mesa Executiva">
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="situacao" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-info-circle me-1"></i>Situação
+                                </label>
+                                <select class="form-select form-select-sm" id="situacao" name="situacao">
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="OK">Localizado</option>
+                                    <option value="Inativo">Inativo</option>
+                                    <option value="Manutenção">Em Manutenção</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="status" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-shield-check me-1"></i>Status
+                                </label>
+                                <select class="form-select form-select-sm" id="status" name="status">
+                                    <option value="Ativo">Ativo</option>
+                                    <option value="Inativo">Inativo</option>
+                                    <option value="Baixado">Baixado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="localizacao" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-geo-alt me-1"></i>Localização
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="localizacao" name="localizacao" 
+                                       placeholder="Ex: Sala 101, Almoxarifado">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="responsavel" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-person me-1"></i>Responsável
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="responsavel" name="responsavel" 
+                                       placeholder="Nome do responsável">
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="detentor" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-building me-1"></i>Detentor
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="detentor" name="detentor" 
+                                       placeholder="Departamento ou setor">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="auditor" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-person-check me-1"></i>Auditor
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="auditor" name="auditor" 
+                                       placeholder="Nome do auditor">
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="data_ultima_vistoria" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-calendar me-1"></i>Data Última Vistoria
+                                </label>
+                                <input type="date" class="form-control form-control-sm" id="data_ultima_vistoria" 
+                                       name="data_ultima_vistoria">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="data_vistoria_atual" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-calendar-check me-1"></i>Data Vistoria Atual
+                                </label>
+                                <input type="date" class="form-control form-control-sm" id="data_vistoria_atual" 
+                                       name="data_vistoria_atual">
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="observacao" class="form-label fw-semibold" style="font-size: 0.8rem;">
+                                <i class="bi bi-chat-text me-1"></i>Observações
+                            </label>
+                            <textarea class="form-control form-control-sm" id="observacao" name="observacao" rows="2" 
+                                      placeholder="Observações sobre o bem..."></textarea>
+                        </div>
+
+                        <div class="alert alert-info py-1" style="font-size: 0.75rem;">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Campos marcados com <span class="text-danger">*</span> são obrigatórios.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Fechar
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSalvar" onclick="salvarBem()">
+                        <i class="bi bi-check-circle me-1"></i>Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="modalConfirmacao" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white py-2">
+                    <h5 class="modal-title" style="font-size: 0.9rem;">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Exclusão
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: 0.85rem;">Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?</p>
+                    <p class="text-danger small" style="font-size: 0.75rem;">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Esta ação não pode ser desfeita.
+                    </p>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnConfirmarExclusao">
+                        <i class="bi bi-trash me-1"></i>Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variáveis globais
+        let bemIdParaExcluir = null;
+
+        // Função para mudar itens por página
+        function mudarItensPorPagina(porPagina) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('por_pagina', porPagina);
+            url.searchParams.set('pagina', 1); // Voltar para primeira página
+            window.location.href = url.toString();
+        }
+
+        // Função para limpar busca
+        function limparBusca() {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('q');
+            url.searchParams.set('pagina', 1);
+            window.location.href = url.toString();
+        }
+
+        // Busca em tempo real (opcional - descomente se quiser)
+        document.getElementById('campoBusca')?.addEventListener('input', function(e) {
+            // Para busca em tempo real (ativa após 2 caracteres):
+            // const termo = e.target.value.trim();
+            // if (termo.length >= 2 || termo.length === 0) {
+            //     document.getElementById('formBusca').submit();
+            // }
+        });
+
+        // Foco no campo de busca quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const campoBusca = document.getElementById('campoBusca');
+            if (campoBusca) {
+                campoBusca.focus();
+                // Selecionar todo o texto se houver busca
+                if (campoBusca.value) {
+                    campoBusca.select();
+                }
+            }
+            
+            console.log('✅ Sistema CRUD carregado com sucesso!');
+            console.log('🔍 Termo de busca:', '{{ termo_busca }}');
+            console.log('📊 Total de registros:', {{ paginacao.total_registros }});
+        });
+
+        // Função para abrir modal de novo bem
+        function abrirModalNovoBem() {
+            console.log("➕ Abrindo modal para novo bem");
+            
+            document.getElementById('modalBemTitle').innerHTML = '<i class="bi bi-plus-circle me-2"></i>Novo Bem';
+            document.getElementById('formBem').reset();
+            document.getElementById('bemId').value = '';
+
+            // Habilitar todos os campos
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.readOnly = false;
+            });
+
+            // Definir data atual como padrão para vistoria atual
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('data_vistoria_atual').value = hoje;
+
+            document.getElementById('btnSalvar').style.display = 'block';
+
+            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
+            modal.show();
+        }
+
+        // Função para visualizar bem
+        function visualizarBem(bemId) {
+            console.log("👁️ Visualizando bem ID:", bemId);
+
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Carregando...';
+            btnSalvar.disabled = true;
+
+            // Buscar dados do bem
+            fetch(`/api/bem/${bemId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
+                    if (data.success) {
+                        preencherModalVisualizacao(data.data);
+                    } else {
+                        alert('Erro: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert('Erro ao carregar dados do bem');
+                });
+        }
+
+        // Função para editar bem
+        function editarBem(bemId) {
+            console.log("✏️ Editando bem ID:", bemId);
+
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Carregando...';
+            btnSalvar.disabled = true;
+
+            // Buscar dados do bem
+            fetch(`/api/bem/${bemId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
+                    if (data.success) {
+                        preencherModalEdicao(data.data);
+                    } else {
+                        alert('Erro: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert('Erro ao carregar dados do bem');
+                });
+        }
+
+        // Função para preencher modal de visualização
+        function preencherModalVisualizacao(bem) {
+            console.log("📋 Preenchendo modal de visualização:", bem);
+
+            document.getElementById('modalBemTitle').innerHTML = '<i class="bi bi-eye me-2"></i>Visualizar Bem: ' + (bem.nome || 'Sem nome');
+            preencherCamposFormulario(bem);
+            
+            // Desabilitar todos os campos
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => input.disabled = true);
+            document.getElementById('btnSalvar').style.display = 'none';
+
+            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
+            modal.show();
+        }
+
+        // Função para preencher modal de edição
+        function preencherModalEdicao(bem) {
+            console.log("📝 Preenchendo modal de edição:", bem);
+
+            document.getElementById('modalBemTitle').innerHTML = '<i class="bi bi-pencil me-2"></i>Editar Bem: ' + (bem.nome || 'Sem nome');
+            preencherCamposFormulario(bem);
+            
+            // Habilitar todos os campos (exceto número)
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => {
+                input.disabled = false;
+                if (input.id === 'numero') {
+                    input.readOnly = true; // Número não pode ser alterado
+                }
+            });
+            document.getElementById('btnSalvar').style.display = 'block';
+
+            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
+            modal.show();
+        }
+
+        // Função auxiliar para preencher campos do formulário
+        function preencherCamposFormulario(bem) {
+            document.getElementById('bemId').value = bem.id || '';
+            document.getElementById('numero').value = bem.numero || '';
+            document.getElementById('nome').value = bem.nome || '';
+            document.getElementById('situacao').value = bem.situacao || 'Pendente';
+            document.getElementById('status').value = bem.status || 'Ativo';
+            document.getElementById('localizacao').value = bem.localizacao || '';
+            document.getElementById('responsavel').value = bem.responsavel || '';
+            document.getElementById('detentor').value = bem.detentor || '';
+            document.getElementById('auditor').value = bem.auditor || '';
+            document.getElementById('observacao').value = bem.observacao || '';
+            
+            // Tratar datas
+            document.getElementById('data_ultima_vistoria').value = bem.data_ultima_vistoria || '';
+            document.getElementById('data_vistoria_atual').value = bem.data_vistoria_atual || '';
+        }
+
+        // Função para salvar bem
+        async function salvarBem() {
+            const formData = new FormData(document.getElementById('formBem'));
+            const bemId = document.getElementById('bemId').value;
+
+            // Converter FormData para objeto
+            const dados = {};
+            for (let [key, value] of formData.entries()) {
+                dados[key] = value;
+            }
+
+            console.log("💾 Salvando bem:", dados);
+
+            // Validações
+            if (!dados.numero || !dados.nome) {
+                alert('Número e nome do bem são obrigatórios!');
+                return;
+            }
+
+            try {
+                const btnSalvar = document.getElementById('btnSalvar');
+                const originalText = btnSalvar.innerHTML;
+                btnSalvar.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Salvando...';
+                btnSalvar.disabled = true;
+
+                let response;
+                if (bemId) {
+                    // Edição
+                    response = await fetch('/api/bem/editar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            bem_id: parseInt(bemId),
+                            ...dados
+                        })
+                    });
+                } else {
+                    // Novo bem
+                    response = await fetch('/api/bem/novo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(dados)
+                    });
+                }
+
+                const result = await response.json();
+
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
+                    location.reload();
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao salvar bem: ' + error.message);
+                
+                const btnSalvar = document.getElementById('btnSalvar');
+                btnSalvar.innerHTML = '<i class="bi bi-check-circle me-1"></i>Salvar Alterações';
+                btnSalvar.disabled = false;
+            }
+        }
+
+        // Função para confirmar exclusão
+        function confirmarExclusao(bemId, nomeBem) {
+            console.log("🗑️ Confirmando exclusão do bem:", bemId, nomeBem);
+            bemIdParaExcluir = bemId;
+            document.getElementById('nomeBemExcluir').textContent = nomeBem || 'este bem';
+            new bootstrap.Modal(document.getElementById('modalConfirmacao')).show();
+        }
+
+        // Event listener para exclusão
+        document.getElementById('btnConfirmarExclusao').addEventListener('click', async function() {
+            if (!bemIdParaExcluir) return;
+
+            try {
+                const response = await fetch(`/api/bem/excluir/${bemIdParaExcluir}`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao')).hide();
+                    location.reload();
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao excluir bem: ' + error.message);
+            }
+        });
+
+        // Reativar campos quando modal fechar
+        document.getElementById('modalBem').addEventListener('hidden.bs.modal', function () {
+            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.readOnly = false;
+            });
+            document.getElementById('btnSalvar').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
