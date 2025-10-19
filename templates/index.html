@@ -400,91 +400,85 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- 2. Nosso scanner profissional DEPOIS das dependências -->
-    <script>
-    // ===== SCANNER PROFISSIONAL COM VERIFICAÇÃO DE DEPENDÊNCIAS =====
-    class ProfessionalScanner {
-        constructor() {
-            this.scannerModal = null;
-            this.isScanning = false;
-            this.isInitialized = false;
-            this.html5QrCode = null;
-            this.currentCameraId = null;
-            this.cameras = [];
-            this.currentCameraIndex = 0;
-            
-            this.config = {
-                fps: 15,
-                qrbox: { width: 280, height: 120 },
-                aspectRatio: 1.333,
-                focusMode: "continuous"
-            };
-        }
+   <script>
+// ===== SCANNER PROFISSIONAL CORRIGIDO =====
+class ProfessionalScanner {
+    constructor() {
+        this.scannerModal = null;
+        this.isScanning = false;
+        this.isInitialized = false;
+        this.html5QrCode = null;
+        this.currentCameraId = null;
+        this.cameras = [];
+        this.currentCameraIndex = 0;
+        
+        this.config = {
+            fps: 15,
+            qrbox: { width: 280, height: 120 },
+            aspectRatio: 1.333,
+            focusMode: "continuous"
+        };
+    }
 
-        async initialize() {
-            console.log('🚀 Inicializando Scanner Profissional...');
-            
-            // VERIFICAR SE HTML5QRCODE ESTÁ DISPONÍVEL
-            if (typeof Html5Qrcode === 'undefined') {
-                const errorMsg = 'Biblioteca Html5Qrcode não carregada. Recarregue a página.';
-                console.error('❌', errorMsg);
-                this.showPermanentError(errorMsg);
-                return;
-            }
-            
-            // VERIFICAR SE BOOTSTRAP ESTÁ DISPONÍVEL
-            if (typeof bootstrap === 'undefined') {
-                const errorMsg = 'Biblioteca Bootstrap não carregada. Recarregue a página.';
-                console.error('❌', errorMsg);
-                this.showPermanentError(errorMsg);
-                return;
-            }
-            
-            try {
-                this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
-                this.setupEventListeners();
-                await this.testEnvironment();
-                
-                this.isInitialized = true;
-                console.log('✅ Scanner profissional inicializado com sucesso');
-                
-            } catch (error) {
-                console.error('❌ Erro na inicialização:', error);
-                this.showPermanentError(error.message);
-            }
+    async initialize() {
+        console.log('🚀 Inicializando Scanner Profissional...');
+        
+        // VERIFICAR SE HTML5QRCODE ESTÁ DISPONÍVEL
+        if (typeof Html5Qrcode === 'undefined') {
+            const errorMsg = 'Biblioteca Html5Qrcode não carregada. Recarregue a página.';
+            console.error('❌', errorMsg);
+            this.showPermanentError(errorMsg);
+            return;
         }
-
-        async testEnvironment() {
-            console.log('🔍 Testando ambiente...');
-            
-            // Verificar ambiente seguro
-            if (window.location.protocol !== 'https:' && 
-                window.location.hostname !== 'localhost' && 
-                window.location.hostname !== '127.0.0.1') {
-                console.warn('⚠️ Ambiente não seguro para câmera');
-            }
-            
-            // Verificar suporte básico
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                throw new Error('Navegador não suporta acesso à câmera');
-            }
-            
-            await this.listCameras();
+        
+        // VERIFICAR SE BOOTSTRAP ESTÁ DISPONÍVEL
+        if (typeof bootstrap === 'undefined') {
+            const errorMsg = 'Biblioteca Bootstrap não carregada. Recarregue a página.';
+            console.error('❌', errorMsg);
+            this.showPermanentError(errorMsg);
+            return;
         }
+        
+        try {
+            this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+            this.setupEventListeners();
+            await this.testEnvironment();
+            
+            this.isInitialized = true;
+            console.log('✅ Scanner profissional inicializado com sucesso');
+            
+        } catch (error) {
+            console.error('❌ Erro na inicialização:', error);
+            this.showPermanentError(error.message);
+        }
+    }
 
-        setupEventListeners() {
-            console.log('🔗 Configurando event listeners...');
-            
-            // Botão da câmera principal
-            document.getElementById('btnCamera').addEventListener('click', () => this.openScanner());
-            
-            // Controles do modal
-            document.getElementById('trocar-camera-btn').addEventListener('click', () => this.switchCamera());
-            document.getElementById('digitar-manual-btn').addEventListener('click', () => this.enterManually());
-            document.getElementById('usar-codigo-btn').addEventListener('click', () => this.useScannedCode());
-            document.getElementById('ler-outro-btn').addEventListener('click', () => this.scanAgain());
-            
-            // Eventos do modal
-            const scannerModal = document.getElementById('scannerModal');
+    setupEventListeners() {
+        console.log('🔗 Configurando event listeners...');
+        
+        // Botão da câmera principal - COM FALLBACK
+        const cameraBtn = document.getElementById('btnCamera');
+        if (cameraBtn) {
+            cameraBtn.addEventListener('click', () => {
+                console.log('📷 Botão da câmera clicado!');
+                this.openScanner();
+            });
+            console.log('✅ Event listener do botão da câmera configurado');
+        } else {
+            console.error('❌ Botão da câmera não encontrado!');
+            // Criar fallback visual
+            this.createCameraButtonFallback();
+        }
+        
+        // Controles do modal - COM VERIFICAÇÃO
+        this.setupModalControl('trocar-camera-btn', () => this.switchCamera());
+        this.setupModalControl('digitar-manual-btn', () => this.enterManually());
+        this.setupModalControl('usar-codigo-btn', () => this.useScannedCode());
+        this.setupModalControl('ler-outro-btn', () => this.scanAgain());
+        
+        // Eventos do modal
+        const scannerModal = document.getElementById('scannerModal');
+        if (scannerModal) {
             scannerModal.addEventListener('shown.bs.modal', () => {
                 console.log('📱 Modal aberto - iniciando scanner...');
                 setTimeout(() => this.startScanning(), 500);
@@ -494,127 +488,158 @@
                 console.log('📱 Modal fechado - parando scanner...');
                 this.stopScanning();
             });
-            
-            console.log('✅ Event listeners configurados');
         }
+        
+        console.log('✅ Event listeners configurados');
+    }
 
-        async listCameras() {
-            try {
-                console.log('📷 Listando câmeras disponíveis...');
-                
-                // Primeiro precisamos de permissão para listar câmeras
-                const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
-                tempStream.getTracks().forEach(track => track.stop());
-                
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                this.cameras = devices.filter(device => device.kind === 'videoinput');
-                
-                console.log(`📷 ${this.cameras.length} câmeras encontradas:`, this.cameras.map(cam => cam.label || 'Sem nome'));
-                
-                if (this.cameras.length === 0) {
-                    throw new Error('Nenhuma câmera detectada');
-                }
-                
-            } catch (error) {
-                console.warn('⚠️ Não foi possível listar câmeras:', error);
-                this.cameras = [];
-            }
+    setupModalControl(buttonId, handler) {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.addEventListener('click', handler);
+        } else {
+            console.warn(`⚠️ Botão ${buttonId} não encontrado`);
         }
+    }
 
-        async openScanner() {
-            console.log('🎯 Abrindo scanner...');
+    createCameraButtonFallback() {
+        console.log('🛠️ Criando fallback para botão da câmera...');
+        
+        // Verificar se o input group existe
+        const inputGroup = document.querySelector('.input-group');
+        if (inputGroup) {
+            const fallbackBtn = document.createElement('button');
+            fallbackBtn.type = 'button';
+            fallbackBtn.className = 'btn btn-outline-secondary';
+            fallbackBtn.id = 'btnCameraFallback';
+            fallbackBtn.title = 'Escanear código de barras';
+            fallbackBtn.innerHTML = '<i class="bi bi-camera"></i>';
+            fallbackBtn.addEventListener('click', () => {
+                console.log('📷 Botão fallback clicado!');
+                this.openScanner();
+            });
             
-            if (!this.isInitialized) {
-                await this.initialize();
-            }
-            
-            this.updateStatus('Preparando scanner...');
-            this.hideResult();
-            this.showLoading();
+            inputGroup.appendChild(fallbackBtn);
+            console.log('✅ Botão fallback criado');
+        }
+    }
+
+    async openScanner() {
+        console.log('🎯 Abrindo scanner...');
+        
+        if (!this.isInitialized) {
+            console.log('🔄 Scanner não inicializado, inicializando...');
+            await this.initialize();
+        }
+        
+        if (!this.isInitialized) {
+            console.error('❌ Não foi possível inicializar o scanner');
+            alert('Erro: Scanner não pôde ser inicializado. Verifique o console para detalhes.');
+            return;
+        }
+        
+        this.updateStatus('Preparando scanner...');
+        this.hideResult();
+        this.showLoading();
+        
+        try {
             this.scannerModal.show();
+            console.log('✅ Modal do scanner aberto');
+        } catch (error) {
+            console.error('❌ Erro ao abrir modal:', error);
+            alert('Erro ao abrir scanner. Recarregue a página.');
         }
+    }
 
-        async startScanning() {
-            try {
-                console.log('🎬 Iniciando processo de scanning...');
-                
-                // VERIFICAÇÃO CRÍTICA - garantir que Html5Qrcode está disponível
-                if (typeof Html5Qrcode === 'undefined') {
-                    throw new Error('Html5Qrcode não disponível. A biblioteca não foi carregada.');
-                }
-                
-                await this.stopScanning();
-                
-                this.updateStatus('Solicitando permissão da câmera...');
-                this.showLoading();
-                
-                const viewport = document.getElementById('scanner-viewport');
-                viewport.innerHTML = this.createScannerOverlay();
-                
-                // Configuração para notebook
-                const cameraConfig = this.getNotebookCameraConfig();
-                
-                console.log('🎯 Criando instância Html5Qrcode...');
-                this.html5QrCode = new Html5Qrcode("scanner-viewport");
-                
-                console.log('🚀 Iniciando scanner com configuração:', cameraConfig);
-                
-                await this.html5QrCode.start(
-                    cameraConfig,
-                    this.config,
-                    (decodedText) => {
-                        console.log('📷 Código detectado:', decodedText);
-                        this.onScanSuccess(decodedText);
-                    },
-                    (errorMessage) => {
-                        // Ignorar erros normais de não-detecção
-                        if (!errorMessage.includes('No MultiFormat Readers')) {
-                            console.log('🔍 Scanner ativo...');
-                        }
-                    }
-                );
-                
-                this.isScanning = true;
-                this.hideLoading();
-                this.updateStatus('Scanner ativo - Aponte para o código');
-                console.log('✅ Scanner iniciado com sucesso');
-                
-            } catch (error) {
-                console.error('❌ Erro detalhado no startScanning:', error);
-                await this.handleScanError(error);
-            }
-        }
+    // ... (mantenha o resto dos métodos iguais da versão anterior)
+    // startScanning, getNotebookCameraConfig, createScannerOverlay, etc.
 
-        getNotebookCameraConfig() {
-            if (this.cameras.length > 0) {
-                const defaultCamera = this.cameras[0];
-                this.currentCameraId = defaultCamera.deviceId;
-                console.log('📹 Usando câmera:', defaultCamera.label || 'Câmera padrão');
-                return { 
-                    deviceId: { exact: defaultCamera.deviceId }
-                };
+    async startScanning() {
+        try {
+            console.log('🎬 Iniciando processo de scanning...');
+            
+            // VERIFICAÇÃO CRÍTICA - garantir que Html5Qrcode está disponível
+            if (typeof Html5Qrcode === 'undefined') {
+                throw new Error('Html5Qrcode não disponível. A biblioteca não foi carregada.');
             }
             
-            // Fallback para webcams de notebook
-            console.log('📹 Usando configuração fallback para webcam');
-            return {
-                facingMode: "user" // Câmera frontal
+            await this.stopScanning();
+            
+            this.updateStatus('Solicitando permissão da câmera...');
+            this.showLoading();
+            
+            const viewport = document.getElementById('scanner-viewport');
+            if (!viewport) {
+                throw new Error('Viewport do scanner não encontrado');
+            }
+            
+            viewport.innerHTML = this.createScannerOverlay();
+            
+            // Configuração para notebook
+            const cameraConfig = this.getNotebookCameraConfig();
+            
+            console.log('🎯 Criando instância Html5Qrcode...');
+            this.html5QrCode = new Html5Qrcode("scanner-viewport");
+            
+            console.log('🚀 Iniciando scanner com configuração:', cameraConfig);
+            
+            await this.html5QrCode.start(
+                cameraConfig,
+                this.config,
+                (decodedText) => {
+                    console.log('📷 Código detectado:', decodedText);
+                    this.onScanSuccess(decodedText);
+                },
+                (errorMessage) => {
+                    // Ignorar erros normais de não-detecção
+                    if (!errorMessage.includes('No MultiFormat Readers')) {
+                        console.log('🔍 Scanner ativo...');
+                    }
+                }
+            );
+            
+            this.isScanning = true;
+            this.hideLoading();
+            this.updateStatus('Scanner ativo - Aponte para o código');
+            console.log('✅ Scanner iniciado com sucesso');
+            
+        } catch (error) {
+            console.error('❌ Erro detalhado no startScanning:', error);
+            await this.handleScanError(error);
+        }
+    }
+
+    getNotebookCameraConfig() {
+        if (this.cameras.length > 0) {
+            const defaultCamera = this.cameras[0];
+            this.currentCameraId = defaultCamera.deviceId;
+            console.log('📹 Usando câmera:', defaultCamera.label || 'Câmera padrão');
+            return { 
+                deviceId: { exact: defaultCamera.deviceId }
             };
         }
+        
+        // Fallback para webcams de notebook
+        console.log('📹 Usando configuração fallback para webcam');
+        return {
+            facingMode: "user" // Câmera frontal
+        };
+    }
 
-        createScannerOverlay() {
-            return `
-                <div class="scanner-overlay">
-                    <div class="scanner-guide-box"></div>
-                    <div class="scanner-instructions">
-                        <i class="bi bi-upc-scan"></i> Posicione o código dentro da área destacada
-                    </div>
+    createScannerOverlay() {
+        return `
+            <div class="scanner-overlay">
+                <div class="scanner-guide-box"></div>
+                <div class="scanner-instructions">
+                    <i class="bi bi-upc-scan"></i> Posicione o código dentro da área destacada
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        showLoading() {
-            const viewport = document.getElementById('scanner-viewport');
+    showLoading() {
+        const viewport = document.getElementById('scanner-viewport');
+        if (viewport) {
             viewport.innerHTML = `
                 <div class="scanner-loading-profissional">
                     <div class="spinner"></div>
@@ -623,47 +648,49 @@
                 </div>
             `;
         }
+    }
 
-        hideLoading() {
-            const viewport = document.getElementById('scanner-viewport');
-            if (viewport.querySelector('.scanner-loading-profissional')) {
-                viewport.innerHTML = this.createScannerOverlay();
+    hideLoading() {
+        const viewport = document.getElementById('scanner-viewport');
+        if (viewport && viewport.querySelector('.scanner-loading-profissional')) {
+            viewport.innerHTML = this.createScannerOverlay();
+        }
+    }
+
+    async handleScanError(error) {
+        console.error('💥 Erro completo:', error);
+        
+        let userMessage = 'Erro ao acessar a câmera';
+        
+        if (error.message.includes('Html5Qrcode não disponível')) {
+            userMessage = 'Biblioteca do scanner não carregada. Recarregue a página.';
+        } else {
+            switch (error.name) {
+                case 'NotAllowedError':
+                    userMessage = 'Permissão da câmera negada. Clique em "Tentar Novamente".';
+                    break;
+                case 'NotFoundError':
+                    userMessage = 'Nenhuma câmera encontrada. Verifique sua webcam.';
+                    break;
+                case 'NotSupportedError':
+                    userMessage = 'Navegador não suportado. Use Chrome ou Firefox.';
+                    break;
+                case 'NotReadableError':
+                    userMessage = 'Câmera está em uso por outro aplicativo.';
+                    break;
+                default:
+                    userMessage = `Erro: ${error.message}`;
+                    break;
             }
         }
+        
+        this.updateStatus(`❌ ${userMessage}`);
+        this.showErrorView(userMessage, error.message);
+    }
 
-        async handleScanError(error) {
-            console.error('💥 Erro completo:', error);
-            
-            let userMessage = 'Erro ao acessar a câmera';
-            
-            if (error.message.includes('Html5Qrcode não disponível')) {
-                userMessage = 'Biblioteca do scanner não carregada. Recarregue a página.';
-            } else {
-                switch (error.name) {
-                    case 'NotAllowedError':
-                        userMessage = 'Permissão da câmera negada. Clique em "Tentar Novamente".';
-                        break;
-                    case 'NotFoundError':
-                        userMessage = 'Nenhuma câmera encontrada. Verifique sua webcam.';
-                        break;
-                    case 'NotSupportedError':
-                        userMessage = 'Navegador não suportado. Use Chrome ou Firefox.';
-                        break;
-                    case 'NotReadableError':
-                        userMessage = 'Câmera está em uso por outro aplicativo.';
-                        break;
-                    default:
-                        userMessage = `Erro: ${error.message}`;
-                        break;
-                }
-            }
-            
-            this.updateStatus(`❌ ${userMessage}`);
-            this.showErrorView(userMessage, error.message);
-        }
-
-        showErrorView(userMessage, technicalMessage = '') {
-            const viewport = document.getElementById('scanner-viewport');
+    showErrorView(userMessage, technicalMessage = '') {
+        const viewport = document.getElementById('scanner-viewport');
+        if (viewport) {
             viewport.innerHTML = `
                 <div class="scanner-error-profissional">
                     <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
@@ -688,225 +715,146 @@
                 </div>
             `;
         }
+    }
 
-        showPermanentError(message) {
-            const cameraBtn = document.getElementById('btnCamera');
-            if (cameraBtn) {
-                cameraBtn.disabled = true;
-                cameraBtn.innerHTML = '<i class="bi bi-camera-off"></i>';
-                cameraBtn.title = 'Scanner indisponível: ' + message;
-                cameraBtn.classList.add('btn-danger');
-            }
-            console.error('🚫 Scanner desativado:', message);
+    showPermanentError(message) {
+        const cameraBtn = document.getElementById('btnCamera');
+        if (cameraBtn) {
+            cameraBtn.disabled = true;
+            cameraBtn.innerHTML = '<i class="bi bi-camera-off"></i>';
+            cameraBtn.title = 'Scanner indisponível: ' + message;
+            cameraBtn.classList.add('btn-danger');
         }
-
-        onScanSuccess(decodedText) {
-            console.log('✅ Código válido detectado:', decodedText);
-            
-            const cleanedCode = this.cleanScannedCode(decodedText);
-            
-            if (this.isValidPatrimonioCode(cleanedCode)) {
-                this.stopScanning().then(() => {
-                    this.showScanResult(cleanedCode);
-                    // Vibrar se disponível (apenas em mobile)
-                    if (navigator.vibrate) navigator.vibrate(200);
-                }).catch(console.error);
-            } else {
-                console.log('❌ Código inválido:', cleanedCode);
-                this.updateStatus('Código inválido - tente novamente');
-            }
+        
+        // Também desativar fallback se existir
+        const fallbackBtn = document.getElementById('btnCameraFallback');
+        if (fallbackBtn) {
+            fallbackBtn.disabled = true;
+            fallbackBtn.innerHTML = '<i class="bi bi-camera-off"></i>';
+            fallbackBtn.classList.add('btn-danger');
         }
+        
+        console.error('🚫 Scanner desativado:', message);
+    }
 
-        cleanScannedCode(code) {
-            if (!code) return '';
-            return code.toString()
-                .trim()
-                .replace(/[^\w\s\-\.]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-
-        isValidPatrimonioCode(code) {
-            if (!code || typeof code !== 'string') {
-                console.log('❌ Código vazio ou inválido');
-                return false;
-            }
-            
-            if (code.length < 2 || code.length > 50) {
-                console.log(`❌ Comprimento inválido: ${code.length}`);
-                return false;
-            }
-            
-            const patterns = [
-                /^\d+$/,                          // Apenas números
-                /^[A-Za-z]+\-\d+$/,               // Letras-hífen-números
-                /^\d+[A-Za-z]$/,                  // Números-letras
-                /^[A-Za-z]+\d+$/,                 // Letras-números
-                /^\d+\.\d+$/,                     // Números com ponto
-                /^[A-Za-z]+\d+[A-Za-z]?$/,        // Letras-números-letras
-                /^[A-Za-z0-9\-\_\.]+$/,           // Caracteres permitidos
-                /^\d{3,}$/,                       // Mínimo 3 dígitos
-                /^[A-Z]{1,}\d+$/                  // Pelo menos 1 letra + números
-            ];
-            
-            const isValid = patterns.some(pattern => pattern.test(code));
-            console.log(`🔍 Validação "${code}": ${isValid ? '✅' : '❌'}`);
-            
-            return isValid;
-        }
-
-        showScanResult(code) {
-            const scannedCodeElement = document.getElementById('scanned-code');
-            const scannerStatus = document.getElementById('scanner-status');
-            const scanResult = document.getElementById('scan-result');
-            
-            if (scannedCodeElement && scannerStatus && scanResult) {
-                scannedCodeElement.textContent = code;
-                scannerStatus.classList.add('d-none');
-                scanResult.classList.remove('d-none');
-                scanResult.classList.add('scanner-success');
-            }
-        }
-
-        useScannedCode() {
-            const codeElement = document.getElementById('scanned-code');
-            const numeroBemInput = document.getElementById('numero_bem');
-            
-            if (codeElement && numeroBemInput) {
-                const code = codeElement.textContent;
-                numeroBemInput.value = code;
-                
-                console.log('✅ Código aplicado:', code);
-                
-                this.scannerModal.hide();
-                
-                // Focar e selecionar o campo
-                setTimeout(() => {
-                    numeroBemInput.focus();
-                    numeroBemInput.select();
-                }, 300);
-            }
-        }
-
-        scanAgain() {
-            this.hideResult();
-            this.updateStatus('Preparando para nova leitura...');
-            setTimeout(() => this.startScanning(), 500);
-        }
-
-        async switchCamera() {
-            if (this.cameras.length <= 1) {
-                this.updateStatus('Apenas uma câmera disponível');
-                return;
-            }
-            
-            this.updateStatus('Trocando câmera...');
-            this.currentCameraIndex = (this.currentCameraIndex + 1) % this.cameras.length;
-            this.currentCameraId = this.cameras[this.currentCameraIndex].deviceId;
-            
-            console.log(`🔄 Trocando para câmera: ${this.cameras[this.currentCameraIndex].label}`);
-            
-            await this.restartScanner();
-        }
-
-        async restartScanner() {
-            await this.stopScanning();
-            setTimeout(() => this.startScanning(), 300);
-        }
-
-        enterManually() {
-            this.stopScanning();
-            this.scannerModal.hide();
-            
-            setTimeout(() => {
-                const numeroBemInput = document.getElementById('numero_bem');
-                if (numeroBemInput) {
-                    numeroBemInput.focus();
-                    numeroBemInput.select();
-                }
-            }, 300);
-        }
-
-        hideResult() {
-            const scanResult = document.getElementById('scan-result');
-            const scannerStatus = document.getElementById('scanner-status');
-            
-            if (scanResult && scannerStatus) {
-                scanResult.classList.add('d-none');
-                scanResult.classList.remove('scanner-success');
-                scannerStatus.classList.remove('d-none');
-            }
-        }
-
-        updateStatus(message) {
-            const statusElement = document.getElementById('status-text');
-            if (statusElement) {
-                statusElement.textContent = message;
-                console.log('📢 Status:', message);
-            }
-        }
-
-        async stopScanning() {
-            this.isScanning = false;
-            
-            if (this.html5QrCode && this.html5QrCode.isScanning) {
-                try {
-                    await this.html5QrCode.stop();
-                    console.log('🛑 Scanner parado com sucesso');
-                } catch (error) {
-                    console.log('⚠️ Erro ao parar scanner (provavelmente já parado):', error);
-                }
-                this.html5QrCode = null;
-            }
+    onScanSuccess(decodedText) {
+        console.log('✅ Código válido detectado:', decodedText);
+        
+        const cleanedCode = this.cleanScannedCode(decodedText);
+        
+        if (this.isValidPatrimonioCode(cleanedCode)) {
+            this.stopScanning().then(() => {
+                this.showScanResult(cleanedCode);
+                // Vibrar se disponível (apenas em mobile)
+                if (navigator.vibrate) navigator.vibrate(200);
+            }).catch(console.error);
+        } else {
+            console.log('❌ Código inválido:', cleanedCode);
+            this.updateStatus('Código inválido - tente novamente');
         }
     }
 
-    // ===== INICIALIZAÇÃO =====
-    let professionalScanner;
+    cleanScannedCode(code) {
+        if (!code) return '';
+        return code.toString()
+            .trim()
+            .replace(/[^\w\s\-\.]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Iniciando Sistema Patrimonial...');
-        console.log('📚 Verificando dependências...');
-        console.log(' - Html5Qrcode:', typeof Html5Qrcode !== 'undefined' ? '✅ Carregado' : '❌ Não carregado');
-        console.log(' - Bootstrap:', typeof bootstrap !== 'undefined' ? '✅ Carregado' : '❌ Não carregado');
-        console.log(' - MediaDevices:', !!navigator.mediaDevices);
-        
-        // Inicializar scanner
-        professionalScanner = new ProfessionalScanner();
-        professionalScanner.initialize();
-        
-        // Configurar loading do formulário
-        const searchForm = document.getElementById('searchForm');
-        if (searchForm) {
-            searchForm.addEventListener('submit', function(e) {
-                const btn = document.getElementById('btnLocalizar');
-                const spinner = document.getElementById('loadingSpinner');
-                if (btn && spinner) {
-                    btn.disabled = true;
-                    spinner.classList.remove('d-none');
-                }
-            });
+    isValidPatrimonioCode(code) {
+        if (!code || typeof code !== 'string') {
+            console.log('❌ Código vazio ou inválido');
+            return false;
         }
         
-        console.log('✅ Sistema inicializado');
-    });
-
-    // Função global para debug
-    window.debugScanner = function() {
-        if (professionalScanner) {
-            console.log('🔧 Estado do Scanner:', {
-                isInitialized: professionalScanner.isInitialized,
-                isScanning: professionalScanner.isScanning,
-                cameras: professionalScanner.cameras,
-                html5QrcodeLoaded: typeof Html5Qrcode !== 'undefined'
-            });
-        } else {
-            console.log('❌ Scanner não inicializado');
+        if (code.length < 2 || code.length > 50) {
+            console.log(`❌ Comprimento inválido: ${code.length}`);
+            return false;
         }
-    };
+        
+        const patterns = [
+            /^\d+$/,                          // Apenas números
+            /^[A-Za-z]+\-\d+$/,               // Letras-hífen-números
+            /^\d+[A-Za-z]$/,                  // Números-letras
+            /^[A-Za-z]+\d+$/,                 // Letras-números
+            /^\d+\.\d+$/,                     // Números com ponto
+            /^[A-Za-z]+\d+[A-Za-z]?$/,        // Letras-números-letras
+            /^[A-Za-z0-9\-\_\.]+$/,           // Caracteres permitidos
+            /^\d{3,}$/,                       // Mínimo 3 dígitos
+            /^[A-Z]{1,}\d+$/                  // Pelo menos 1 letra + números
+        ];
+        
+        const isValid = patterns.some(pattern => pattern.test(code));
+        console.log(`🔍 Validação "${code}": ${isValid ? '✅' : '❌'}`);
+        
+        return isValid;
+    }
 
-    // Função para focar no campo de pesquisa
-    function focusSearchField() {
+    showScanResult(code) {
+        const scannedCodeElement = document.getElementById('scanned-code');
+        const scannerStatus = document.getElementById('scanner-status');
+        const scanResult = document.getElementById('scan-result');
+        
+        if (scannedCodeElement && scannerStatus && scanResult) {
+            scannedCodeElement.textContent = code;
+            scannerStatus.classList.add('d-none');
+            scanResult.classList.remove('d-none');
+            scanResult.classList.add('scanner-success');
+        }
+    }
+
+    useScannedCode() {
+        const codeElement = document.getElementById('scanned-code');
+        const numeroBemInput = document.getElementById('numero_bem');
+        
+        if (codeElement && numeroBemInput) {
+            const code = codeElement.textContent;
+            numeroBemInput.value = code;
+            
+            console.log('✅ Código aplicado:', code);
+            
+            this.scannerModal.hide();
+            
+            // Focar e selecionar o campo
+            setTimeout(() => {
+                numeroBemInput.focus();
+                numeroBemInput.select();
+            }, 300);
+        }
+    }
+
+    scanAgain() {
+        this.hideResult();
+        this.updateStatus('Preparando para nova leitura...');
+        setTimeout(() => this.startScanning(), 500);
+    }
+
+    async switchCamera() {
+        if (this.cameras.length <= 1) {
+            this.updateStatus('Apenas uma câmera disponível');
+            return;
+        }
+        
+        this.updateStatus('Trocando câmera...');
+        this.currentCameraIndex = (this.currentCameraIndex + 1) % this.cameras.length;
+        this.currentCameraId = this.cameras[this.currentCameraIndex].deviceId;
+        
+        console.log(`🔄 Trocando para câmera: ${this.cameras[this.currentCameraIndex].label}`);
+        
+        await this.restartScanner();
+    }
+
+    async restartScanner() {
+        await this.stopScanning();
+        setTimeout(() => this.startScanning(), 300);
+    }
+
+    enterManually() {
+        this.stopScanning();
+        this.scannerModal.hide();
+        
         setTimeout(() => {
             const numeroBemInput = document.getElementById('numero_bem');
             if (numeroBemInput) {
@@ -916,13 +864,102 @@
         }, 300);
     }
 
-    // Focar no campo quando houver mensagens
-    document.addEventListener('DOMContentLoaded', function() {
-        const alerts = document.querySelectorAll('.alert');
-        if (alerts.length > 0) {
-            focusSearchField();
+    hideResult() {
+        const scanResult = document.getElementById('scan-result');
+        const scannerStatus = document.getElementById('scanner-status');
+        
+        if (scanResult && scannerStatus) {
+            scanResult.classList.add('d-none');
+            scanResult.classList.remove('scanner-success');
+            scannerStatus.classList.remove('d-none');
         }
-    });
-    </script>
+    }
+
+    updateStatus(message) {
+        const statusElement = document.getElementById('status-text');
+        if (statusElement) {
+            statusElement.textContent = message;
+            console.log('📢 Status:', message);
+        }
+    }
+
+    async stopScanning() {
+        this.isScanning = false;
+        
+        if (this.html5QrCode && this.html5QrCode.isScanning) {
+            try {
+                await this.html5QrCode.stop();
+                console.log('🛑 Scanner parado com sucesso');
+            } catch (error) {
+                console.log('⚠️ Erro ao parar scanner (provavelmente já parado):', error);
+            }
+            this.html5QrCode = null;
+        }
+    }
+}
+
+// ===== INICIALIZAÇÃO CORRIGIDA =====
+let professionalScanner;
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Iniciando Sistema Patrimonial...');
+    console.log('📚 Verificando dependências...');
+    console.log(' - Html5Qrcode:', typeof Html5Qrcode !== 'undefined' ? '✅ Carregado' : '❌ Não carregado');
+    console.log(' - Bootstrap:', typeof bootstrap !== 'undefined' ? '✅ Carregado' : '❌ Não carregado');
+    console.log(' - MediaDevices:', !!navigator.mediaDevices);
+    
+    // Verificar se o botão da câmera existe
+    const cameraBtn = document.getElementById('btnCamera');
+    console.log('📷 Botão da câmera encontrado:', !!cameraBtn);
+    
+    if (cameraBtn) {
+        console.log('📍 Posição do botão:', cameraBtn.outerHTML);
+    }
+    
+    // Inicializar scanner
+    professionalScanner = new ProfessionalScanner();
+    professionalScanner.initialize();
+    
+    // Configurar loading do formulário
+    const searchForm = document.getElementById('searchForm');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            const btn = document.getElementById('btnLocalizar');
+            const spinner = document.getElementById('loadingSpinner');
+            if (btn && spinner) {
+                btn.disabled = true;
+                spinner.classList.remove('d-none');
+            }
+        });
+    }
+    
+    console.log('✅ Sistema inicializado');
+});
+
+// Função global para debug
+window.debugScanner = function() {
+    if (professionalScanner) {
+        console.log('🔧 Estado do Scanner:', {
+            isInitialized: professionalScanner.isInitialized,
+            isScanning: professionalScanner.isScanning,
+            cameras: professionalScanner.cameras,
+            html5QrcodeLoaded: typeof Html5Qrcode !== 'undefined'
+        });
+    } else {
+        console.log('❌ Scanner não inicializado');
+    }
+};
+
+// Teste manual do botão
+window.testCameraButton = function() {
+    const cameraBtn = document.getElementById('btnCamera');
+    if (cameraBtn) {
+        console.log('🧪 Testando botão da câmera...');
+        cameraBtn.click();
+    } else {
+        console.log('❌ Botão da câmera não encontrado para teste');
+    }
+};
+</script> 
 </body>
 </html>
