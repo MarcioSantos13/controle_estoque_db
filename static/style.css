@@ -687,3 +687,50 @@ footer.bg-dark {
     50% { background-color: rgba(25, 135, 84, 0.2); }
     100% { background-color: transparent; }
 }
+
+/* Otimizações específicas para mobile */
+@media (max-width: 768px) {
+    /* Campo de input otimizado para mobile */
+    #numero_bem {
+        font-size: 16px; /* Previne zoom no iOS */
+        height: 44px; /* Tamanho mínimo para toque */
+    }
+    
+    /* Scanner em tela cheia no mobile */
+    .scanner-container {
+        height: 60vh !important;
+        border-radius: 0;
+    }
+    
+    /* Botões maiores para toque */
+    .btn {
+        min-height: 44px;
+        padding: 12px 16px;
+    }
+    
+    /* Modal em tela cheia no mobile */
+    .modal-dialog {
+        margin: 0;
+        max-width: 100%;
+        height: 100vh;
+    }
+    
+    .modal-content {
+        border-radius: 0;
+        height: 100vh;
+    }
+}
+
+/* Melhorias no teclado virtual */
+input[type="text"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Feedback visual para toque */
+.btn:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}

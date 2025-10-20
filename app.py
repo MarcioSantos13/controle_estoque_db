@@ -1907,6 +1907,23 @@ if app.debug:
             
         except Exception as e:
             return jsonify({'error': str(e)})
+        
+        
+        
+        
+@app.route('/api/scanner/diagnostic')
+def scanner_diagnostic():
+    """API para diagnóstico do scanner"""
+    user_agent = request.headers.get('User-Agent', '')
+    is_mobile = any(keyword in user_agent.lower() 
+                   for keyword in ['mobile', 'android', 'iphone', 'ipad'])
+    
+    return jsonify({
+        'is_mobile': is_mobile,
+        'user_agent': user_agent,
+        'html5qrcode_loaded': 'Html5Qrcode' in request.headers.get('Referer', ''),
+        'timestamp': datetime.now().isoformat()
+    })     
 
 # ==============================
 # Inicialização - VERSÃO CORRIGIDA
