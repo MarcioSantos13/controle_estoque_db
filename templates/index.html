@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <!-- Html5Qrcode NO HEAD para garantir disponibilidade -->
+    <!-- Bibliotecas de Scanner - Ordem de prioridade -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -38,8 +42,7 @@
                             <i class="bi bi-question-circle me-1"></i>Ajuda
                         </a>
                         <div class="dropdown">
-                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-1"></i>
                                 {% if session.usuario_nome %}
                                 {{ session.usuario_nome }}
@@ -109,33 +112,26 @@
             </div>
             <div class="card-body p-3">
                 {% if mensagem %}
-                <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3"
-                    role="alert">
+                <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3" role="alert">
                     <div class="d-flex align-items-center">
                         {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i>
-                        {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        {% endif %}
+                        <i class="bi bi-check-circle-fill me-2"></i> {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i> {% else %}
+                        <i class="bi bi-info-circle-fill me-2"></i> {% endif %}
                         <span>{{ mensagem }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 {% endif %}
 
-                <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off"
-                    id="searchForm">
+                <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off" id="searchForm">
                     <div class="col-md-5">
                         <label for="numero_bem" class="form-label fw-semibold">
                             <i class="bi bi-upc-scan me-1"></i>Número do Bem
                         </label>
                         <div class="input-group">
-                            <input type="text" name="numero_bem" id="numero_bem" class="form-control"
-                                placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
-                            <button type="button" class="btn btn-outline-primary" id="btnCamera"
-                                title="Escanear código de barras">
+                            <input type="text" name="numero_bem" id="numero_bem" class="form-control" placeholder="Ex: 469704, ABC-123" required pattern="[A-Za-z0-9-]+">
+                            <button type="button" class="btn btn-outline-primary" id="btnCamera" title="Escanear código de barras">
                                 <i class="bi bi-camera"></i>
                             </button>
                         </div>
@@ -146,8 +142,7 @@
                         <label for="localizacao" class="form-label fw-semibold">
                             <i class="bi bi-geo-alt me-1"></i>Localização
                         </label>
-                        <input type="text" name="localizacao" id="localizacao" class="form-control"
-                            placeholder="Ex: Almoxarifado Central, Sala 101">
+                        <input type="text" name="localizacao" id="localizacao" class="form-control" placeholder="Ex: Almoxarifado Central, Sala 101">
                         <div class="form-text">Opcional - atualiza a localização</div>
                     </div>
 
@@ -166,16 +161,13 @@
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3"
-                            style="width: 60px; height: 60px;">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3" style="width: 60px; height: 60px;">
                             <i class="bi bi-check-circle-fill text-success fs-3"></i>
                         </div>
-                        <h3 class="h2 fw-bold text-success mb-1" id="count-localizados">{{
-                            localizados_count|number_format }}</h3>
+                        <h3 class="h2 fw-bold text-success mb-1" id="count-localizados">{{ localizados_count|number_format }}</h3>
                         <p class="text-muted mb-2">Bens Localizados</p>
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="{{ url_for('visualizar', tipo='localizados') }}"
-                                class="btn btn-outline-success btn-sm">
+                            <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-success btn-sm">
                                 <i class="bi bi-list-ul me-1"></i>Visualizar
                             </a>
                             <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-success btn-sm">
@@ -189,16 +181,13 @@
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3"
-                            style="width: 60px; height: 60px;">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3" style="width: 60px; height: 60px;">
                             <i class="bi bi-exclamation-circle-fill text-warning fs-3"></i>
                         </div>
-                        <h3 class="h2 fw-bold text-warning mb-1" id="count-pendentes">{{
-                            nao_localizados_count|number_format }}</h3>
+                        <h3 class="h2 fw-bold text-warning mb-1" id="count-pendentes">{{ nao_localizados_count|number_format }}</h3>
                         <p class="text-muted mb-2">Bens Pendentes</p>
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="{{ url_for('visualizar', tipo='nao-localizados') }}"
-                                class="btn btn-outline-warning btn-sm">
+                            <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-list-ul me-1"></i>Visualizar
                             </a>
                             <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-warning btn-sm">
@@ -240,8 +229,7 @@
 
         <!-- Resumo rápido -->
         <div class="text-center text-muted small mb-4">
-            <em>Resumo:</em> {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }}
-            • {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
+            <em>Resumo:</em> {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }} • {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
         </div>
     </main>
 
@@ -261,14 +249,12 @@
                         <strong>Atenção:</strong> Esta ação irá recriar todo o banco de dados.
                     </div>
 
-                    <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}"
-                        enctype="multipart/form-data" autocomplete="off">
+                    <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}" enctype="multipart/form-data" autocomplete="off">
                         <div class="mb-3">
                             <label for="excel_file" class="form-label fw-semibold">
                                 <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo Excel
                             </label>
-                            <input type="file" class="form-control" id="excel_file" name="excel_file"
-                                accept=".xlsx,.xls" required>
+                            <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
                             <div class="form-text">Formatos suportados: .xlsx, .xls</div>
                         </div>
 
@@ -276,8 +262,7 @@
                             <label for="aba_nome" class="form-label fw-semibold">
                                 <i class="bi bi-grid me-1"></i>Nome da aba
                             </label>
-                            <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque"
-                                required>
+                            <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque" required>
                             <div class="form-text">Nome da aba onde estão os dados</div>
                         </div>
 
@@ -290,8 +275,7 @@
 
                         <div id="importStatus" class="d-none">
                             <div class="progress mb-3">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    style="width: 0%"></div>
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
                             </div>
                             <div id="statusMessage" class="small"></div>
                         </div>
@@ -339,8 +323,7 @@
                     <h5 class="modal-title" id="scannerModalLabel">
                         <i class="bi bi-upc-scan me-2"></i>Escanear Código Patrimonial
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
@@ -353,8 +336,7 @@
                         <span id="status-text">Preparando scanner...</span>
                     </div>
                     <div id="scan-result" class="p-3 bg-success text-white d-none">
-                        <i class="bi bi-check-circle me-1"></i>
-                        Código lido: <strong id="scanned-code"></strong>
+                        <i class="bi bi-check-circle me-1"></i> Código lido: <strong id="scanned-code"></strong>
                         <button type="button" class="btn btn-light btn-sm ms-2" id="usar-codigo-btn">
                             <i class="bi bi-check me-1"></i>Usar
                         </button>
@@ -415,13 +397,24 @@
                 console.log('🔄 Inicializando Scanner Patrimonial...');
 
                 try {
-                    // Verificar se as dependências estão carregadas
-                    if (typeof Html5Qrcode === 'undefined') {
-                        throw new Error('Biblioteca de scanner não carregada');
+                    // Aguardar carregamento das bibliotecas se necessário
+                    await this.waitForLibraries();
+
+                    // Verificar bibliotecas disponíveis
+                    const availableLibs = this.checkAvailableLibraries();
+                    console.log('📚 Bibliotecas disponíveis:', availableLibs);
+
+                    if (availableLibs.length === 0) {
+                        throw new Error('Nenhuma biblioteca de scanner disponível');
                     }
 
                     // Inicializar modal do Bootstrap
-                    this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+                    const modalElement = document.getElementById('scannerModal');
+                    if (modalElement) {
+                        this.scannerModal = new bootstrap.Modal(modalElement);
+                    } else {
+                        console.warn('⚠️ Modal do scanner não encontrado');
+                    }
 
                     // Configurar event listeners
                     this.setupEventListeners();
@@ -430,12 +423,61 @@
                     await this.checkCameraAvailability();
 
                     this.initialized = true;
-                    console.log('✅ Scanner inicializado com sucesso');
+                    console.log('✅ Scanner inicializado com sucesso usando:', availableLibs[0]);
 
                 } catch (error) {
                     console.error('❌ Erro na inicialização do scanner:', error);
                     this.handleInitializationError(error);
                 }
+            }
+
+            async waitForLibraries(maxWait = 5000) {
+                console.log('⏳ Aguardando carregamento das bibliotecas...');
+
+                const startTime = Date.now();
+
+                while (Date.now() - startTime < maxWait) {
+                    const libs = this.checkAvailableLibraries();
+                    if (libs.length > 0) {
+                        console.log('✅ Bibliotecas carregadas:', libs);
+                        return;
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                console.warn('⚠️ Timeout aguardando bibliotecas');
+            }
+
+            checkAvailableLibraries() {
+                const available = [];
+
+                // Verificar Html5Qrcode
+                if (typeof Html5Qrcode !== 'undefined') {
+                    available.push('Html5Qrcode');
+                }
+
+                // Verificar Quagga
+                if (typeof Quagga !== 'undefined') {
+                    available.push('QuaggaJS');
+                }
+
+                // Verificar ZXing
+                if (typeof ZXing !== 'undefined') {
+                    available.push('ZXing');
+                }
+
+                // Verificar jsQR
+                if (typeof jsQR !== 'undefined') {
+                    available.push('jsQR');
+                }
+
+                // Verificar APIs nativas
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    available.push('MediaDevices');
+                }
+
+                return available;
             }
 
             setupEventListeners() {
@@ -459,10 +501,10 @@
                 }
 
                 // Botões do scanner
-                document.getElementById('trocar-camera-btn')?.addEventListener('click', () => this.switchCamera());
-                document.getElementById('digitar-manual-btn')?.addEventListener('click', () => this.enterManually());
-                document.getElementById('usar-codigo-btn')?.addEventListener('click', () => this.useScannedCode());
-                document.getElementById('ler-outro-btn')?.addEventListener('click', () => this.scanAgain());
+                document.getElementById('trocar-camera-btn') ? .addEventListener('click', () => this.switchCamera());
+                document.getElementById('digitar-manual-btn') ? .addEventListener('click', () => this.enterManually());
+                document.getElementById('usar-codigo-btn') ? .addEventListener('click', () => this.useScannedCode());
+                document.getElementById('ler-outro-btn') ? .addEventListener('click', () => this.scanAgain());
             }
 
             async checkCameraAvailability() {
@@ -492,6 +534,44 @@
                     cameraBtn.innerHTML = '<i class="bi bi-camera-video-off"></i>';
                     cameraBtn.classList.remove('btn-outline-primary');
                     cameraBtn.classList.add('btn-outline-secondary');
+
+                    // Adicionar click alternativo para diagnóstico
+                    cameraBtn.onclick = () => this.showDiagnostic();
+                }
+            }
+
+            showDiagnostic() {
+                const libs = this.checkAvailableLibraries();
+                const mediaSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+                const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+
+                const diagnostic = `
+📊 DIAGNÓSTICO DO SCANNER
+
+🔧 Status das Bibliotecas:
+${libs.length > 0 ? '✅ ' + libs.join(', ') : '❌ Nenhuma biblioteca carregada'}
+
+📹 Suporte à Câmera:
+${mediaSupport ? '✅ API disponível' : '❌ API indisponível'}
+
+🔒 Contexto Seguro:
+${isSecure ? '✅ HTTPS/Localhost' : '❌ HTTP inseguro'}
+
+🌐 Informações do Navegador:
+• User Agent: ${navigator.userAgent.substring(0, 50)}...
+• Protocolo: ${location.protocol}
+• Host: ${location.hostname}
+
+💡 Ações Sugeridas:
+${libs.length === 0 ? '• Verificar conexão de internet\n• Recarregar a página' : ''}
+${!mediaSupport ? '• Usar navegador moderno (Chrome/Firefox/Edge)\n• Verificar permissões' : ''}
+${!isSecure ? '• Usar HTTPS ou localhost' : ''}
+
+🔄 Deseja tentar recarregar a página?
+                `.trim();
+
+                if (confirm(diagnostic)) {
+                    location.reload();
                 }
             }
 
@@ -533,8 +613,7 @@
                     const cameraConfig = await this.getCameraConfig();
 
                     await this.scanner.start(
-                        cameraConfig.deviceId,
-                        {
+                        cameraConfig.deviceId, {
                             fps: 15,
                             qrbox: {
                                 width: 250,
@@ -573,14 +652,20 @@
                     );
 
                     if (rearCamera) {
-                        return { deviceId: rearCamera.id };
+                        return {
+                            deviceId: rearCamera.id
+                        };
                     }
 
-                    return { deviceId: this.cameras[0].id };
+                    return {
+                        deviceId: this.cameras[0].id
+                    };
                 }
 
                 // Fallback para environment facing mode
-                return { facingMode: "environment" };
+                return {
+                    facingMode: "environment"
+                };
             }
 
             onScanSuccess(decodedText) {
@@ -607,13 +692,13 @@
 
                 // Padrões comuns de códigos patrimoniais
                 const patterns = [
-                    /^\d+$/,                          // Apenas números (123456)
-                    /^[A-Za-z]+-\d+$/,               // Letras-hífen-números (PAT-123)
-                    /^\d+[A-Za-z]$/,                 // Números-letras (123ABC)
-                    /^[A-Za-z]+\d+$/,                // Letras-números (ABC123)
-                    /^[A-Za-z]+\d+[A-Za-z]?$/,       // Letras-números-letras (ABC123D)
-                    /^\d+\.\d+$/,                    // Números com ponto (123.456)
-                    /^[A-Za-z]{2,}\d+$/              // Múltiplas letras + números
+                    /^\d+$/, // Apenas números (123456)
+                    /^[A-Za-z]+-\d+$/, // Letras-hífen-números (PAT-123)
+                    /^\d+[A-Za-z]$/, // Números-letras (123ABC)
+                    /^[A-Za-z]+\d+$/, // Letras-números (ABC123)
+                    /^[A-Za-z]+\d+[A-Za-z]?$/, // Letras-números-letras (ABC123D)
+                    /^\d+\.\d+$/, // Números com ponto (123.456)
+                    /^[A-Za-z]{2,}\d+$/ // Múltiplas letras + números
                 ];
 
                 const isValid = patterns.some(pattern => pattern.test(cleanCode));
@@ -630,7 +715,7 @@
             playScanSound() {
                 // Criar som de scan simples (beep)
                 try {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const audioContext = new(window.AudioContext || window.webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
                     const gainNode = audioContext.createGain();
 
@@ -676,7 +761,10 @@
                     // Opcional: auto-submit após scan
                     setTimeout(() => {
                         document.getElementById('searchForm').dispatchEvent(
-                            new Event('submit', { bubbles: true, cancelable: true })
+                            new Event('submit', {
+                                bubbles: true,
+                                cancelable: true
+                            })
                         );
                     }, 500);
                 }
@@ -736,9 +824,9 @@
                 const statusElement = document.getElementById('status-text');
                 if (statusElement) {
                     statusElement.textContent = message;
-                    statusElement.className = message.includes('Erro') || message.includes('❌')
-                        ? 'text-danger'
-                        : 'text-white';
+                    statusElement.className = message.includes('Erro') || message.includes('❌') ?
+                        'text-danger' :
+                        'text-white';
                 }
             }
 
@@ -782,8 +870,59 @@
             }
 
             handleInitializationError(error) {
-                this.deactivateCameraButton('Scanner indisponível');
-                this.updateStatus('Scanner não disponível');
+                console.error('🚨 Erro detalhado na inicialização:', error);
+
+                let errorMessage = '';
+                let solution = '';
+
+                if (error.message.includes('biblioteca não carregada') || error.message.includes('não disponível')) {
+                    errorMessage = 'Bibliotecas de scanner não carregaram';
+                    solution = 'Verifique sua conexão com a internet e recarregue a página';
+
+                    // Tentar detectar problema específico
+                    const libs = this.checkAvailableLibraries();
+                    if (libs.length === 0) {
+                        console.error('❌ Nenhuma biblioteca de scanner carregou');
+                        console.log('🔍 Verificando conexão de rede...');
+
+                        // Teste de conectividade básico
+                        fetch('https://cdn.jsdelivr.net/', {
+                                method: 'HEAD',
+                                mode: 'no-cors'
+                            })
+                            .then(() => console.log('✅ CDN acessível'))
+                            .catch(() => console.log('❌ Problema de conectividade'));
+                    }
+
+                } else if (error.message.includes('câmera')) {
+                    errorMessage = 'Problema com acesso à câmera';
+                    solution = 'Verifique permissões de câmera no navegador';
+
+                } else {
+                    errorMessage = 'Erro desconhecido na inicialização';
+                    solution = 'Tente recarregar a página ou usar outro navegador';
+                }
+
+                // Desativar botão da câmera com mensagem específica
+                this.deactivateCameraButton(errorMessage);
+                this.updateStatus('❌ ' + errorMessage);
+
+                // Log para debug
+                console.group('🔧 Debug Scanner');
+                console.log('Erro:', error.message);
+                console.log('Bibliotecas:', this.checkAvailableLibraries());
+                console.log('Navigator:', !!navigator.mediaDevices);
+                console.log('Protocolo:', location.protocol);
+                console.groupEnd();
+
+                // Mostrar erro amigável após delay
+                setTimeout(() => {
+                    const fullMessage = `❌ ${errorMessage}\n\n💡 ${solution}\n\n🔧 Deseja tentar recarregar a página?`;
+
+                    if (confirm(fullMessage)) {
+                        location.reload();
+                    }
+                }, 2000);
             }
 
             showError(message) {
@@ -857,7 +996,7 @@
         // ===== INICIALIZAÇÃO GLOBAL =====
         let patrimonialScanner;
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Iniciando Sistema de Controle Patrimonial...');
 
             // Inicializar gerenciador de foco
@@ -874,7 +1013,7 @@
             // Configurar loading do formulário
             const searchForm = document.getElementById('searchForm');
             if (searchForm) {
-                searchForm.addEventListener('submit', function () {
+                searchForm.addEventListener('submit', function() {
                     const btn = document.getElementById('btnLocalizar');
                     const spinner = document.getElementById('loadingSpinner');
                     if (btn && spinner) {
@@ -898,16 +1037,16 @@
         });
 
         // Funções globais para debug
-        window.debugScanner = function () {
+        window.debugScanner = function() {
             console.log('🔧 Estado do Scanner:', {
-                inicializado: patrimonialScanner?.initialized || false,
-                scanning: patrimonialScanner?.isScanning || false,
-                cameras: patrimonialScanner?.cameras?.length || 0,
+                inicializado: patrimonialScanner ? .initialized || false,
+                scanning: patrimonialScanner ? .isScanning || false,
+                cameras: patrimonialScanner ? .cameras ? .length || 0,
                 html5Qrcode: typeof Html5Qrcode !== 'undefined'
             });
         };
 
-        window.forceFocus = function () {
+        window.forceFocus = function() {
             patrimonialScanner.focusSearchField();
         };
     </script>
