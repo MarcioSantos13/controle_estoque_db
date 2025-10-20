@@ -738,6 +738,31 @@ def importar_excel():
                              mensagem=f'Erro durante a importação: {str(e)}',
                              **carregar_dados_bancos())
 
+
+
+@app.route('/api/camera/status')
+def api_camera_status():
+    """API para verificar status da câmera"""
+    try:
+        # Verificar se estamos em um ambiente com câmera
+        is_mobile = any(keyword in request.headers.get('User-Agent', '').lower() 
+                       for keyword in ['mobile', 'android', 'iphone', 'ipad'])
+        
+        return jsonify({
+            'success': True,
+            'has_camera': True,  # Assume true, o JavaScript vai validar
+            'is_mobile': is_mobile,
+            'scanner_supported': True
+        })
+    except Exception as e:
+        logger.error(f"Erro ao verificar status da câmera: {str(e)}")
+        return jsonify({'success': False, 'has_camera': False})
+
+
+
+
+
+
 # ==============================
 # Rotas CRUD Unificadas - CORRIGIDAS
 # ==============================

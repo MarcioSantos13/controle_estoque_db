@@ -585,3 +585,105 @@ footer.bg-dark {
   width: 1rem;
   height: 1rem;
 }
+
+/* ===== SCANNER OTIMIZADO ===== */
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.scanner-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.scanner-viewport video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scanner-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #fff;
+    background: #000;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.scanner-loading i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #00ff00;
+    animation: pulse 1.5s infinite;
+}
+
+.scanner-error-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 2rem;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Melhorias para mobile */
+@media (max-width: 576px) {
+    .scanner-container {
+        height: 250px;
+    }
+    
+    .scanner-loading {
+        font-size: 1rem;
+    }
+    
+    .scanner-loading i {
+        font-size: 2.5rem;
+    }
+}
+
+/* Estados do botão da câmera */
+#btnCamera.btn-success {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+#btnCamera.btn-danger {
+    background-color: var(--danger);
+    border-color: var(--danger);
+    color: white;
+}
+
+#btnCamera:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Feedback visual para scan bem-sucedido */
+.scan-success {
+    animation: scanSuccess 0.5s ease-out;
+}
+
+@keyframes scanSuccess {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(25, 135, 84, 0.2); }
+    100% { background-color: transparent; }
+}
