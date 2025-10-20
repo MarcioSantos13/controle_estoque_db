@@ -606,7 +606,15 @@ ${!isSecure ? '• Usar HTTPS ou localhost' : ''}
 
                     viewport.innerHTML = '<div class="scanner-loading"><i class="bi bi-camera"></i><br>Iniciando câmera...</div>';
 
-                    // Configuração otimizada para códigos patrimoniais
+                    // PRIORIDADE 1: Tentar Quagga para códigos de barras
+                    if (typeof Quagga !== 'undefined') {
+                        console.log('🎯 Usando QuaggaJS para códigos de barras');
+                        await this.startQuaggaScanner();
+                        return;
+                    }
+
+                    // PRIORIDADE 2: Html5Qrcode com configuração para códigos de barras
+                    console.log('🎯 Usando Html5Qrcode com suporte a códigos de barras');
                     this.scanner = new Html5Qrcode("scanner-viewport");
 
                     // Tentar câmera traseira primeiro, depois qualquer câmera
@@ -616,16 +624,18 @@ ${!isSecure ? '• Usar HTTPS ou localhost' : ''}
                         cameraConfig.deviceId, {
                             fps: 15,
                             qrbox: {
-                                width: 250,
-                                height: 150
+                                width: 350,
+                                height: 120 // Formato otimizado para códigos de barras
                             },
-                            aspectRatio: 1.333,
+                            aspectRatio: 1.777, // 16:9 melhor para códigos de barras
                             focusMode: "continuous"
                         },
                         (decodedText) => this.onScanSuccess(decodedText),
                         (errorMessage) => {
                             // Ignorar erros de não-detecção
-                            if (!errorMessage.includes("No MultiFormat Readers")) {
+                            if (!errorMessage.includes("No MultiFormat Readers") &&
+                                !errorMessage.includes("No code found") &&
+                                !errorMessage.includes("NotFoundException")) {
                                 console.log('🔍 Scanner ativo:', errorMessage);
                             }
                         }
@@ -633,12 +643,86 @@ ${!isSecure ? '• Usar HTTPS ou localhost' : ''}
 
                     this.isScanning = true;
                     this.currentCameraId = cameraConfig.deviceId;
-                    this.updateStatus('Scanner ativo - Aponte para o código patrimonial');
+                    this.updateStatus('📦 Scanner ativo - Aponte para CÓDIGO DE BARRAS ou QR Code');
                     this.hideLoading();
 
                 } catch (error) {
                     console.error('❌ Erro ao iniciar scanner:', error);
                     this.handleScanError(error);
+                }
+            }
+
+            async startQuaggaScanner() {
+                try {
+                    // Configuração Quagga otimizada para códigos de barras
+                    Quagga.init({
+                        inputStream: {
+                            name: "Live",
+                            type: "LiveStream",
+                            target: document.querySelector('#scanner-viewport'),
+                            constraints: {
+                                facingMode: "environment", // Câmera traseira
+                                width: {
+                                    min: 640,
+                                    ideal: 1280,
+                                    max: 1920
+                                },
+                                height: {
+                                    min: 480,
+                                    ideal: 720,
+                                    max: 1080
+                                }
+                            }
+                        },
+                        locator: {
+                            patchSize: "medium",
+                            halfSample: true
+                        },
+                        numOfWorkers: 2,
+                        frequency: 10,
+                        decoder: {
+                            readers: [
+                                // CÓDIGOS DE BARRAS PRIORIZADOS
+                                "code_128_reader", // CODE-128 (mais comum)
+                                "ean_reader", // EAN-13, EAN-8
+                                "ean_8_reader", // EAN-8 específico
+                                "code_39_reader", // CODE-39
+                                "upc_reader", // UPC-A
+                                "upc_e_reader", // UPC-E
+                                "codabar_reader", // Codabar
+                                "i2of5_reader", // Interleaved 2 of 5
+                                "code_93_reader" // CODE-93
+                            ]
+                        },
+                        locate: true,
+                    }, (error) => {
+                        if (error) {
+                            console.error('❌ Erro Quagga init:', error);
+                            throw error;
+                        }
+
+                        console.log('✅ Quagga inicializado');
+                        Quagga.start();
+
+                        // Handler para códigos detectados
+                        Quagga.onDetected((result) => {
+                            if (result && result.codeResult && result.codeResult.code) {
+                                const code = result.codeResult.code;
+                                const format = result.codeResult.format;
+
+                                console.log('🎯 Código de barras detectado:', code, 'Formato:', format);
+                                this.onScanSuccess(code);
+                            }
+                        });
+
+                        this.isScanning = true;
+                        this.updateStatus('📦 QuaggaJS ativo - Aponte para CÓDIGO DE BARRAS');
+                        this.hideLoading();
+                    });
+
+                } catch (error) {
+                    console.error('❌ Erro QuaggaJS:', error);
+                    throw error;
                 }
             }
 
@@ -669,44 +753,75 @@ ${!isSecure ? '• Usar HTTPS ou localhost' : ''}
             }
 
             onScanSuccess(decodedText) {
-                console.log('📷 Código detectado:', decodedText);
+                console.log('� Código escaneado:', decodedText);
 
-                if (this.isValidPatrimonioCode(decodedText)) {
+                // Limpar e processar código
+                const cleanCode = this.cleanCode(decodedText);
+                console.log('🧹 Código limpo:', cleanCode);
+
+                if (this.isValidCode(cleanCode)) {
+                    console.log('✅ Código aceito para busca');
+
                     // Feedback visual e de áudio
                     this.playScanSound();
                     if (navigator.vibrate) {
-                        navigator.vibrate(200);
+                        navigator.vibrate([100, 50, 100]); // Padrão de vibração
                     }
 
                     // Parar scanner e mostrar resultado
                     this.stopScanning().then(() => {
-                        this.showScanResult(decodedText);
+                        this.showScanResult(cleanCode);
                     });
+                } else {
+                    console.log('⚠️ Código não aceito, continuando escaneamento');
+                    // Não parar o scanner, continue tentando
+                    this.updateStatus('⚠️ Código não reconhecido - tente outro');
                 }
             }
 
-            isValidPatrimonioCode(code) {
+            cleanCode(code) {
+                if (!code) return '';
+
+                // Remover espaços e caracteres especiais desnecessários
+                return code.toString()
+                    .trim()
+                    .replace(/[^\w\-\.]/g, '') // Manter apenas letras, números, hífen e ponto
+                    .toUpperCase();
+            }
+
+            isValidCode(code) {
                 if (!code || typeof code !== 'string') return false;
+                if (code.length < 3) return false; // Muito curto
 
                 const cleanCode = code.trim();
 
-                // Padrões comuns de códigos patrimoniais
+                // Padrões aceitos (mais permissivos para códigos de barras)
                 const patterns = [
-                    /^\d+$/, // Apenas números (123456)
+                    /^\d+$/, // Apenas números (123456789012)
                     /^[A-Za-z]+-\d+$/, // Letras-hífen-números (PAT-123)
-                    /^\d+[A-Za-z]$/, // Números-letras (123ABC)
-                    /^[A-Za-z]+\d+$/, // Letras-números (ABC123)
-                    /^[A-Za-z]+\d+[A-Za-z]?$/, // Letras-números-letras (ABC123D)
+                    /^\d+[A-Za-z]+$/, // Números-letras (123ABC)
+                    /^[A-Za-z]+\d+$/, // Letras-números (ABC123456)
+                    /^[A-Za-z]+\d+[A-Za-z]+$/, // Letras-números-letras (ABC123DEF)
                     /^\d+\.\d+$/, // Números com ponto (123.456)
-                    /^[A-Za-z]{2,}\d+$/ // Múltiplas letras + números
+                    /^\d+\-\d+$/, // Números com hífen (123-456)
+                    /^[A-Za-z]{2,}\d+$/, // Múltiplas letras + números (ASSET123)
+                    /^[0-9A-Z]{8,}$/, // Códigos alfanuméricos longos (códigos de barras)
+                    /^\d{8,}$/, // Números longos (EAN, UPC)
+                    /^[A-Z]{3}\d+$/, // 3 letras + números (PAT123456)
+                    /^\d{4,}-\d+$/, // Ano-número (2023-001)
+                    /^[A-Z]+\d{4,}$/ // Letras + números de 4+ dígitos
                 ];
 
                 const isValid = patterns.some(pattern => pattern.test(cleanCode));
 
                 if (isValid) {
-                    console.log('✅ Código patrimonial válido:', cleanCode);
+                    console.log('✅ Código aceito:', cleanCode);
                 } else {
-                    console.log('❌ Código não reconhecido como patrimonial:', cleanCode);
+                    console.log('⚠️ Código rejeitado (muito simples ou formato inválido):', cleanCode);
+
+                    // Log adicional para debug
+                    console.log('Comprimento:', cleanCode.length);
+                    console.log('Caracteres:', cleanCode.split('').join(' '));
                 }
 
                 return isValid;
@@ -808,16 +923,36 @@ ${!isSecure ? '• Usar HTTPS ou localhost' : ''}
             async stopScanning() {
                 this.isScanning = false;
 
+                // Parar Quagga se estiver ativo
+                if (typeof Quagga !== 'undefined' && Quagga.CameraAccess) {
+                    try {
+                        console.log('🛑 Parando QuaggaJS...');
+                        Quagga.stop();
+                        Quagga.offDetected();
+                        Quagga.offProcessed();
+                    } catch (error) {
+                        console.log('⚠️ Quagga já parado');
+                    }
+                }
+
+                // Parar Html5Qrcode se estiver ativo
                 if (this.scanner && this.scanner.isScanning) {
                     try {
+                        console.log('🛑 Parando Html5Qrcode...');
                         await this.scanner.stop();
                         this.scanner.clear();
                     } catch (error) {
-                        console.log('⚠️ Scanner já parado ou em transição');
+                        console.log('⚠️ Html5Qrcode já parado ou em transição');
                     }
                 }
 
                 this.scanner = null;
+
+                // Limpar viewport
+                const viewport = document.getElementById('scanner-viewport');
+                if (viewport) {
+                    viewport.innerHTML = '';
+                }
             }
 
             updateStatus(message) {
