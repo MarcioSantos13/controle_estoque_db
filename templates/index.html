@@ -416,6 +416,8 @@
                 this.scannerModal = null;
                 this.initialized = false;
                 this.isMobile = this.detectMobile();
+                this.scanAttempts = 0;
+                this.maxScanAttempts = 50;
             }
 
             detectMobile() {
@@ -424,14 +426,14 @@
 
             async initialize() {
                 if (this.initialized) return;
-                console.log("🔄 Inicializando scanner...");
+                console.log("🔄 Inicializando scanner universal...");
 
                 try {
                     await this.waitForHtml5Qrcode();
                     this.setupEvents();
                     await this.loadCameras();
                     this.initialized = true;
-                    console.log("✅ Scanner pronto");
+                    console.log("✅ Scanner universal pronto");
                 } catch (e) {
                     console.error("❌ Erro init:", e);
                     this.disableButton("Scanner indisponível");
@@ -473,6 +475,7 @@
                 try {
                     const devices = await Html5Qrcode.getCameras();
                     this.cameras = devices;
+                    console.log("📷 Câmeras encontradas:", devices.length);
                     if (devices.length === 0) {
                         throw new Error("Nenhuma câmera encontrada");
                     }
@@ -516,28 +519,13 @@
                     const cameraConfig = await this.getCameraConfig();
                     const scanConfig = this.getScanConfig();
 
-                    console.log("🎯 Configuração do scanner:", scanConfig);
+                    console.log("🎯 Iniciando scanner com configuração:", scanConfig);
 
-                    await this.scanner.start(
-                        cameraConfig,
-                        scanConfig,
-                        (decodedText) => {
-                            console.log("📷 Código detectado:", decodedText);
-                            this.onScanSuccess(decodedText);
-                        },
-                        (errorMessage) => {
-                            // Mensagens de debug durante a leitura
-                            if (!errorMessage.includes("NotFoundException")) {
-                                console.log("🔍 Scan em progresso:", errorMessage);
-                            }
-                        }
-                    ).catch(error => {
-                        console.error("❌ Erro ao iniciar scanner:", error);
-                        this.handleScannerError(error);
-                    });
+                    // MÉTODO UNIVERSAL - Tenta diferentes abordagens
+                    await this.startScannerWithFallback(cameraConfig, scanConfig);
 
                     this.isScanning = true;
-                    this.updateStatus("📦 Aponte para o código de barras - mantenha estável");
+                    this.updateStatus("📦 Aponte para o código de barras");
                     this.hideLoading();
 
                 } catch (error) {
@@ -546,38 +534,79 @@
                 }
             }
 
+            async startScannerWithFallback(cameraConfig, scanConfig) {
+                try {
+                    // PRIMEIRA TENTATIVA: Configuração padrão
+                    await this.scanner.start(
+                        cameraConfig,
+                        scanConfig,
+                        (decodedText) => this.onScanSuccess(decodedText),
+                        (errorMessage) => {
+                            // Ignora mensagens normais de "não encontrado"
+                            if (!errorMessage.includes("NotFoundException")) {
+                                console.log("🔍 Scan em progresso:", errorMessage);
+                            }
+                        }
+                    );
+                } catch (error1) {
+                    console.warn("⚠️ Primeira tentativa falhou, tentando fallback...", error1);
+
+                    try {
+                        // SEGUNDA TENTATIVA: Configuração simplificada
+                        const simpleConfig = {
+                            fps: 10,
+                            qrbox: { width: 250, height: 150 },
+                            aspectRatio: 1.333
+                        };
+
+                        await this.scanner.start(
+                            cameraConfig,
+                            simpleConfig,
+                            (decodedText) => this.onScanSuccess(decodedText),
+                            () => { } // Ignora todos os erros
+                        );
+                    } catch (error2) {
+                        console.error("❌ Todas as tentativas falharam:", error2);
+                        throw error2;
+                    }
+                }
+            }
+
             async getCameraConfig() {
                 if (this.cameras.length > 0) {
-                    // Priorizar câmera traseira para melhor qualidade
-                    let preferredCamera = this.cameras.find(camera =>
-                        /back|rear|environment/gi.test(camera.label)
-                    );
-
-                    if (!preferredCamera) {
-                        preferredCamera = this.cameras.find(camera =>
-                            !/front|face/gi.test(camera.label)
+                    // MOBILE: Priorizar câmera traseira
+                    if (this.isMobile) {
+                        const rearCamera = this.cameras.find(camera =>
+                            /back|rear|environment/gi.test(camera.label)
                         );
+                        if (rearCamera) {
+                            console.log("📱 Usando câmera traseira:", rearCamera.label);
+                            return rearCamera.id;
+                        }
                     }
 
-                    return preferredCamera ? preferredCamera.id : this.cameras[0].id;
+                    // DESKTOP ou fallback: Usar primeira câmera disponível
+                    console.log("💻 Usando primeira câmera disponível:", this.cameras[0].label);
+                    return this.cameras[0].id;
                 }
 
-                // Fallback para configuração genérica
-                return { facingMode: "environment" };
+                // Fallback genérico
+                console.log("🔧 Usando configuração genérica de câmera");
+                return { facingMode: this.isMobile ? "environment" : "user" };
             }
 
             getScanConfig() {
-                // CONFIGURAÇÃO OTIMIZADA PARA CÓDIGOS DE BARRAS
-                const config = {
-                    fps: this.isMobile ? 20 : 15, // Mais frames por segundo
-                    qrbox: this.isMobile ? { width: 280, height: 160 } : { width: 350, height: 200 },
-                    aspectRatio: 1.777, // 16:9 para melhor enquadramento
-                    focusMode: "continuous",
-                    // CONFIGURAÇÃO ESPECÍFICA PARA CÓDIGOS DE BARRAS
-                    supportedScanTypes: [
-                        Html5QrcodeScanType.SCAN_TYPE_CAMERA
-                    ],
-                    formatsToSupport: [
+                // CONFIGURAÇÃO UNIVERSAL QUE FUNCIONA EM MOBILE E DESKTOP
+                const baseConfig = {
+                    fps: this.isMobile ? 15 : 10,
+                    qrbox: this.isMobile ? { width: 250, height: 150 } : { width: 300, height: 200 },
+                    aspectRatio: this.isMobile ? 1.333 : 1.777,
+                    focusMode: "continuous"
+                };
+
+                // Adicionar suporte a códigos de barras se disponível
+                if (typeof Html5QrcodeSupportedFormats !== 'undefined') {
+                    baseConfig.formatsToSupport = [
                         Html5QrcodeSupportedFormats.CODE_128,
                         Html5QrcodeSupportedFormats.CODE_39,
                         Html5QrcodeSupportedFormats.CODE_93,
@@ -585,37 +614,28 @@
                         Html5QrcodeSupportedFormats.EAN_8,
                         Html5QrcodeSupportedFormats.UPC_A,
                         Html5QrcodeSupportedFormats.UPC_E,
-                        Html5QrcodeSupportedFormats.ITF,
-                        Html5QrcodeSupportedFormats.CODABAR,
                         Html5QrcodeSupportedFormats.QR_CODE
-                    ],
-                    // Melhorias para detecção
-                    useBarCodeDetectorIfSupported: true,
-                    experimentalFeatures: {
-                        useBarCodeDetectorIfSupported: true
-                    }
-                };
+                    ];
+                }
 
-                console.log("⚙️ Config scanner:", config);
-                return config;
+                console.log("⚙️ Configuração para " + (this.isMobile ? "MOBILE" : "DESKTOP") + ":", baseConfig);
+                return baseConfig;
             }
 
             handleScannerError(error) {
-                let errorMessage = "Erro na câmera";
+                let errorMessage = "Erro na inicialização da câmera";
                 let errorDetails = error.toString();
 
                 console.error("🔴 Erro do scanner:", error);
 
                 if (errorDetails.includes("NotAllowedError")) {
-                    errorMessage = "Permissão da câmera negada. Permita o acesso à câmera nas configurações do navegador.";
+                    errorMessage = "Permissão da câmera negada. Permita o acesso à câmera.";
                 } else if (errorDetails.includes("NotFoundError")) {
                     errorMessage = "Nenhuma câmera encontrada no dispositivo.";
                 } else if (errorDetails.includes("NotSupportedError")) {
-                    errorMessage = "Seu navegador não suporta esta funcionalidade.";
+                    errorMessage = "Navegador não suporta esta funcionalidade.";
                 } else if (errorDetails.includes("NotReadableError")) {
                     errorMessage = "Câmera já está em uso por outro aplicativo.";
-                } else if (errorDetails.includes("OverconstrainedError")) {
-                    errorMessage = "Não foi possível atender aos requisitos da câmera.";
                 }
 
                 this.updateStatus(`❌ ${errorMessage}`);
@@ -630,30 +650,38 @@
                 <h6 class="mt-3">Erro do Scanner</h6>
                 <p class="small">${message}</p>
                 <div class="mt-3">
-                    <button class="btn btn-light btn-sm me-2" onclick="window.patrimonialScanner.manualEntry()">
-                        <i class="bi bi-keyboard"></i> Digitar Manualmente
-                    </button>
-                    <button class="btn btn-outline-light btn-sm" onclick="window.patrimonialScanner.startScanner()">
+                    <button class="btn btn-light btn-sm me-2" onclick="window.patrimonialScanner.retryScanner()">
                         <i class="bi bi-arrow-repeat"></i> Tentar Novamente
+                    </button>
+                    <button class="btn btn-outline-light btn-sm" onclick="window.patrimonialScanner.manualEntry()">
+                        <i class="bi bi-keyboard"></i> Digitar
                     </button>
                 </div>
             </div>
         `;
             }
 
+            retryScanner() {
+                this.hideResult();
+                this.updateStatus("🔄 Reiniciando scanner...");
+                setTimeout(() => this.startScanner(), 1000);
+            }
+
             onScanSuccess(decodedText) {
+                this.scanAttempts = 0; // Resetar contador
+
                 const cleanCode = this.cleanCode(decodedText);
                 if (!cleanCode) {
-                    console.log("⚠️ Código inválido ou muito curto:", decodedText);
+                    console.log("⚠️ Código inválido:", decodedText);
                     return;
                 }
 
-                console.log("✅ Código válido detectado:", cleanCode);
+                console.log("✅ Código detectado:", cleanCode);
 
-                // Feedback visual e sonoro
+                // Feedback
                 this.beep();
                 if (navigator.vibrate) {
-                    navigator.vibrate([100, 50, 100]);
+                    navigator.vibrate([100, 30, 100]);
                 }
 
                 this.showResult(cleanCode);
@@ -663,25 +691,18 @@
             cleanCode(code) {
                 if (!code || typeof code !== 'string') return null;
 
-                // Limpar o código - remover caracteres especiais, manter alfanuméricos, hífen, ponto
+                // Limpar e validar
                 let cleaned = code.trim()
-                    .replace(/[^\w\-\s\.]/g, '') // Remove caracteres especiais
-                    .replace(/\s+/g, ' ')        // Normaliza espaços múltiplos
+                    .replace(/[^\w\-\s\.]/g, '')
+                    .replace(/\s+/g, ' ')
                     .trim();
 
-                // Validação - pelo menos 2 caracteres para códigos curtos
-                if (cleaned.length < 2) {
-                    console.log("❌ Código muito curto:", cleaned);
-                    return null;
-                }
-
-                console.log("🧹 Código limpo:", cleaned);
-                return cleaned;
+                return cleaned.length >= 2 ? cleaned : null;
             }
 
             beep() {
                 try {
-                    // Criar um som de confirmação
+                    // Som de confirmação simples
                     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
                     const gainNode = audioContext.createGain();
@@ -689,16 +710,16 @@
                     oscillator.connect(gainNode);
                     gainNode.connect(audioContext.destination);
 
-                    oscillator.frequency.value = 800; // Tom mais alto para feedback claro
+                    oscillator.frequency.value = 800;
                     oscillator.type = "sine";
 
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
 
                     oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.15);
+                    oscillator.stop(audioContext.currentTime + 0.1);
                 } catch (error) {
-                    console.log("🔇 Áudio não disponível");
+                    // Ignora erro de áudio
                 }
             }
 
@@ -706,10 +727,6 @@
                 document.getElementById("scanned-code").textContent = code;
                 document.getElementById("scanner-status").classList.add("d-none");
                 document.getElementById("scan-result").classList.remove("d-none");
-
-                // Destacar visualmente o resultado
-                const resultElement = document.getElementById("scan-result");
-                resultElement.style.animation = "flashSuccess 0.5s ease-in-out";
             }
 
             hideResult() {
@@ -739,7 +756,6 @@
                     input.value = code;
                     this.scannerModal.hide();
 
-                    // Focar e selecionar o texto no campo
                     setTimeout(() => {
                         input.focus();
                         input.select();
@@ -749,26 +765,20 @@
 
             scanAgain() {
                 this.hideResult();
-                this.updateStatus("📷 Preparando para nova leitura...");
+                this.updateStatus("📷 Nova leitura...");
                 setTimeout(() => this.startScanner(), 500);
             }
 
             async switchCamera() {
                 if (this.cameras.length < 2) {
-                    this.updateStatus("📹 Apenas uma câmera disponível");
+                    this.updateStatus("📹 Apenas uma câmera");
                     return;
                 }
 
-                this.updateStatus("🔄 Trocando de câmera...");
+                this.updateStatus("🔄 Trocando câmera...");
                 await this.stopScanner();
 
-                // Alternar entre câmeras
-                const currentIndex = this.cameras.findIndex(cam => cam.id === this.currentCameraId);
-                const nextIndex = (currentIndex + 1) % this.cameras.length;
-                this.currentCameraId = this.cameras[nextIndex].id;
-
-                console.log("🔄 Mudando para câmera:", this.cameras[nextIndex].label);
-                setTimeout(() => this.startScanner(), 800);
+                setTimeout(() => this.startScanner(), 1000);
             }
 
             manualEntry() {
@@ -777,16 +787,11 @@
                     this.scannerModal.hide();
                 }
 
-                // Focar no campo de input após fechar o modal
                 setTimeout(() => {
                     const input = document.getElementById('numero_bem');
                     if (input) {
                         input.focus();
                         input.select();
-
-                        // Forçar teclado em dispositivos móveis
-                        input.setAttribute('readonly', 'readonly');
-                        setTimeout(() => input.removeAttribute('readonly'), 100);
                     }
                 }, 300);
             }
@@ -798,9 +803,9 @@
                     try {
                         await this.scanner.stop();
                         this.scanner.clear();
-                        console.log("🛑 Scanner parado com sucesso");
+                        console.log("🛑 Scanner parado");
                     } catch (error) {
-                        console.warn("⚠️ Scanner já estava parado:", error);
+                        console.warn("⚠️ Erro ao parar scanner:", error);
                     }
                 }
 
@@ -811,37 +816,96 @@
             }
         }
 
-        // Adicionar animação CSS para feedback visual
-        const style = document.createElement('style');
-        style.textContent = `
-    @keyframes flashSuccess {
-        0% { background-color: #198754; }
-        50% { background-color: #25a075; }
-        100% { background-color: #198754; }
+        // CSS para a barra de scanner (como era antes)
+        const scannerStyle = document.createElement('style');
+        scannerStyle.textContent = `
+    /* Estilo da viewport do scanner */
+    .scanner-viewport {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
     
+    /* Barra de scanner animada */
+    .scanner-viewport::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #ff0000, transparent);
+        animation: scanLine 2s linear infinite;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        z-index: 10;
+    }
+    
+    @keyframes scanLine {
+        0% { top: 0; }
+        50% { top: 50%; }
+        100% { top: 100%; }
+    }
+    
+    /* Melhorar visualização do vídeo */
     .scanner-viewport video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: 8px;
     }
+    
+    /* Loading do scanner */
+    .scanner-loading {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        color: white;
+        background: #000;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .scanner-loading i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #00ff00;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    /* Mensagem de erro */
+    .scanner-error-message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background: #dc3545;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+    }
 `;
-        document.head.appendChild(style);
+        document.head.appendChild(scannerStyle);
 
-        // Inicialização quando o DOM estiver pronto
+        // Inicialização
         document.addEventListener("DOMContentLoaded", function () {
-            console.log("🚀 Inicializando Sistema Patrimonial...");
+            console.log("🚀 Inicializando Scanner Universal...");
             window.patrimonialScanner = new PatrimonialScanner();
 
-            // Inicialização mais rápida para mobile
-            if (window.patrimonialScanner.isMobile) {
-                console.log("📱 Modo mobile detectado");
-                setTimeout(() => window.patrimonialScanner.initialize(), 300);
-            } else {
-                console.log("💻 Modo desktop detectado");
-                setTimeout(() => window.patrimonialScanner.initialize(), 800);
-            }
+            // Inicialização otimizada
+            setTimeout(() => {
+                window.patrimonialScanner.initialize();
+            }, window.patrimonialScanner.isMobile ? 200 : 500);
         });
     </script>
-
 
 
 
