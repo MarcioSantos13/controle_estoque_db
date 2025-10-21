@@ -586,29 +586,38 @@
                 const input = document.getElementById("numero_bem");
 
                 if (input && code) {
+                    // Define o valor do código escaneado
                     input.value = code;
+
+                    // Fecha o modal do scanner
                     this.scannerModal.hide();
 
+                    // Aguarda o modal fechar completamente
                     setTimeout(() => {
+                        // Foca no campo número do bem
                         input.focus();
+
+                        // Seleciona todo o texto para facilitar substituição
                         input.select();
-                    }, 400);
+
+                        // Move o cursor para o final (compatibilidade mobile)
+                        input.setSelectionRange(input.value.length, input.value.length);
+
+                        // Rola a página até o campo (para mobile)
+                        input.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                            inline: 'nearest'
+                        });
+
+                        // Dispara eventos para garantir foco em todos os dispositivos
+                        input.dispatchEvent(new Event('focus', { bubbles: true }));
+
+                        console.log("🎯 Campo focalizado após scan:", code);
+
+                    }, 400); // Tempo suficiente para o modal fechar
                 }
             }
-
-            manualEntry() {
-                this.stopScanner();
-                this.scannerModal.hide();
-
-                setTimeout(() => {
-                    const input = document.getElementById('numero_bem');
-                    if (input) {
-                        input.focus();
-                        input.select();
-                    }
-                }, 300);
-            }
-
             async stopScanner() {
                 this.isScanning = false;
                 if (this.scanner && this.scanner.isScanning) {
@@ -681,7 +690,293 @@
 
     </script>
 
+<script>
+// ===== GERENCIADOR DE FOCO INTELIGENTE =====
+class SmartFocusManager {
+    constructor() {
+        this.numeroBemInput = null;
+        this.localizacaoInput = null;
+        this.userIsTypingInLocalizacao = false;
+        this.lastActiveElement = null;
+        this.init();
+    }
 
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setupSmartFocus());
+        } else {
+            this.setupSmartFocus();
+        }
+    }
+
+    setupSmartFocus() {
+        this.numeroBemInput = document.getElementById('numero_bem');
+        this.localizacaoInput = document.getElementById('localizacao');
+        
+        if (!this.numeroBemInput) {
+            console.warn('❌ Campo numero_bem não encontrado');
+            return;
+        }
+
+        console.log('🎯 Configurando foco inteligente');
+
+        // 1. Foco inicial no numero_bem
+        this.focusNumeroBem();
+
+        // 2. Rastrear elemento ativo
+        document.addEventListener('focusin', (e) => {
+            this.lastActiveElement = e.target;
+            
+            // Se usuário focou na localização, marcar que está digitando lá
+            if (e.target === this.localizacaoInput) {
+                this.userIsTypingInLocalizacao = true;
+                console.log('📍 Usuário focou na localização');
+            }
+        });
+
+        document.addEventListener('focusout', (e) => {
+            // Se usuário saiu da localização, verificar se ainda está preenchendo
+            if (e.target === this.localizacaoInput) {
+                setTimeout(() => {
+                    if (document.activeElement !== this.localizacaoInput) {
+                        this.userIsTypingInLocalizacao = false;
+                    }
+                }, 100);
+            }
+        });
+
+        // 3. Refocar quando página ganhar visibilidade (apenas se não estava na localização)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !this.userIsTypingInLocalizacao) {
+                setTimeout(() => this.focusNumeroBem(), 100);
+            }
+        });
+
+        // 4. Refocar quando janela ganhar foco (apenas se não estava na localização)
+        window.addEventListener('focus', () => {
+            if (!this.userIsTypingInLocalizacao) {
+                setTimeout(() => this.focusNumeroBem(), 50);
+            }
+        });
+
+        // 5. Refocar após submit do formulário (sempre volta para numero_bem)
+        const searchForm = document.getElementById('searchForm');
+        if (searchForm) {
+            searchForm.addEventListener('submit', () => {
+                // Resetar flag de localização após submit
+                this.userIsTypingInLocalizacao = false;
+                setTimeout(() => this.focusNumeroBem(), 800);
+            });
+        }
+
+        // 6. Refocar quando modal fechar (apenas se não estava na localização)
+        const scannerModal = document.getElementById('scannerModal');
+        if (scannerModal) {
+            scannerModal.addEventListener('hidden.bs.modal', () => {
+                if (!this.userIsTypingInLocalizacao) {
+                    setTimeout(() => this.focusNumeroBem(), 300);
+                }
+            });
+        }
+
+        // 7. Refocar após clique geral (mas respeitar se usuário está na localização)
+        document.addEventListener('click', (e) => {
+            // Não refocar se:
+            // - Usuário clicou na localização
+            // - Usuário clicou em botão de submit
+            // - Usuário clicou em modal
+            if (!e.target.closest('#localizacao') && 
+                !e.target.closest('#btnCamera') &&
+                !e.target.closest('.modal') &&
+                e.target.type !== 'submit' &&
+                !this.userIsTypingInLocalizacao) {
+                setTimeout(() => this.focusNumeroBem(), 200);
+            }
+        });
+
+        // 8. Prevenir perda de foco APENAS para numero_bem
+        this.numeroBemInput.addEventListener('blur', (e) => {
+            const relatedTarget = e.relatedTarget;
+            
+            // Só refoca no numero_bem se:
+            // - Não foi para localização
+            // - Não foi para um modal
+            // - Usuário não está ativamente digitando na localização
+            if (!relatedTarget || 
+                (relatedTarget !== this.localizacaoInput &&
+                 relatedTarget.type !== 'text' && 
+                 relatedTarget.type !== 'search' &&
+                 !relatedTarget.closest('.modal') &&
+                 !this.userIsTypingInLocalizacao)) {
+                setTimeout(() => this.focusNumeroBem(), 10);
+            }
+        });
+
+        // 9. Quando usuário focar na localização, desativar auto-foco temporariamente
+        if (this.localizacaoInput) {
+            this.localizacaoInput.addEventListener('focus', () => {
+                this.userIsTypingInLocalizacao = true;
+            });
+
+            this.localizacaoInput.addEventListener('blur', () => {
+                // Só considerar que parou de digitar na localização após um tempo
+                setTimeout(() => {
+                    if (document.activeElement !== this.localizacaoInput) {
+                        this.userIsTypingInLocalizacao = false;
+                    }
+                }, 500);
+            });
+
+            // Se usuário começar a digitar na localização, manter flag ativa
+            this.localizacaoInput.addEventListener('input', () => {
+                this.userIsTypingInLocalizacao = true;
+            });
+        }
+    }
+
+    focusNumeroBem() {
+        if (!this.numeroBemInput || this.userIsTypingInLocalizacao) return;
+
+        // Não focar se estiver em um modal aberto
+        if (this.isInputInModal()) return;
+
+        try {
+            this.numeroBemInput.focus();
+            this.numeroBemInput.setSelectionRange(0, this.numeroBemInput.value.length);
+            
+            // Scroll suave para o campo (mobile)
+            this.numeroBemInput.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest' 
+            });
+
+            console.log('🎯 Foco automático em numero_bem');
+
+        } catch (error) {
+            console.log('⚠️ Foco não pôde ser aplicado:', error);
+        }
+    }
+
+    focusLocalizacao() {
+        if (this.localizacaoInput) {
+            this.userIsTypingInLocalizacao = true;
+            this.localizacaoInput.focus();
+            this.localizacaoInput.select();
+        }
+    }
+
+    // Método para forçar foco na localização (quando produto é encontrado)
+    forceFocusLocalizacao() {
+        this.userIsTypingInLocalizacao = true;
+        this.focusLocalizacao();
+        
+        // Manter foco na localização por um tempo maior
+        setTimeout(() => {
+            this.userIsTypingInLocalizacao = true;
+        }, 3000);
+    }
+
+    // Método para voltar o foco para numero_bem (quando usuário terminar na localização)
+    returnFocusToNumeroBem() {
+        this.userIsTypingInLocalizacao = false;
+        setTimeout(() => this.focusNumeroBem(), 100);
+    }
+
+    isInputInModal() {
+        return document.querySelector('.modal.show') !== null;
+    }
+}
+
+// ===== INTEGRAÇÃO COM O SISTEMA EXISTENTE =====
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        window.smartFocusManager = new SmartFocusManager();
+        
+        // Integrar com o scanner - quando escanear, focar no numero_bem
+        if (window.patrimonialScanner) {
+            const originalUseScannedCode = window.patrimonialScanner.useScannedCode;
+            window.patrimonialScanner.useScannedCode = function() {
+                originalUseScannedCode.call(this);
+                setTimeout(() => {
+                    window.smartFocusManager.returnFocusToNumeroBem();
+                }, 500);
+            };
+        }
+
+        // Quando um produto é encontrado, focar na localização
+        setTimeout(() => {
+            const searchForm = document.getElementById('searchForm');
+            if (searchForm) {
+                // Verificar se há mensagem de sucesso (produto encontrado)
+                const successAlert = document.querySelector('.alert-success');
+                if (successAlert && window.smartFocusManager) {
+                    setTimeout(() => {
+                        window.smartFocusManager.forceFocusLocalizacao();
+                    }, 1000);
+                }
+            }
+        }, 1500);
+
+    }, 1000);
+});
+
+// ===== FUNÇÕES GLOBAIS PARA CONTROLE MANUAL =====
+window.focarNumeroBem = function() {
+    if (window.smartFocusManager) {
+        window.smartFocusManager.returnFocusToNumeroBem();
+        return true;
+    }
+    return false;
+};
+
+window.focarLocalizacao = function() {
+    if (window.smartFocusManager) {
+        window.smartFocusManager.forceFocusLocalizacao();
+        return true;
+    }
+    return false;
+};
+
+// ===== DETECTAR QUANDO PRODUTO É ENCONTRADO =====
+// Esta função pode ser chamada pelo backend quando um produto é encontrado
+window.produtoEncontrado = function() {
+    console.log('✅ Produto encontrado - focando na localização');
+    if (window.smartFocusManager) {
+        setTimeout(() => {
+            window.smartFocusManager.forceFocusLocalizacao();
+        }, 800);
+    }
+};
+
+// Observar mudanças no DOM para detectar produtos encontrados
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList') {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // Element node
+                    if (node.classList && node.classList.contains('alert-success')) {
+                        console.log('🎯 Produto encontrado detectado - focando localização');
+                        setTimeout(() => {
+                            if (window.smartFocusManager) {
+                                window.smartFocusManager.forceFocusLocalizacao();
+                            }
+                        }, 1000);
+                    }
+                }
+            });
+        }
+    });
+});
+
+// Iniciar observação quando DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    const alertContainer = document.querySelector('.container.mt-3');
+    if (alertContainer) {
+        observer.observe(alertContainer, { childList: true, subtree: true });
+    }
+});
+</script>
 
 </body>
 

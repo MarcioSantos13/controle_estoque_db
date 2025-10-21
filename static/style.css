@@ -69,7 +69,7 @@ main {
   padding: 0 1.5rem;
 }
 
-/* ===== HEADER MODERNO ===== */
+/* ===== HEADER MODERNO COMPACTO ===== */
 .app-header {
   background: var(--header-gradient);
   border-bottom: none;
@@ -94,12 +94,13 @@ main {
 .app-header .container {
   position: relative;
   z-index: 2;
+  padding: 1rem 0 !important; /* Mais compacto */
 }
 
 .header-title {
   font-weight: 800;
   margin-bottom: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.75rem !important; /* Reduzido de 2rem */
   background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -108,7 +109,7 @@ main {
 
 .header-subtitle {
   opacity: 0.9;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -201,7 +202,7 @@ main {
   font-weight: 400;
 }
 
-/* ===== GRUPO DE BUSCA CORRIGIDO ===== */
+/* ===== GRUPO DE BUSCA CORRIGIDO E COMPACTO ===== */
 .search-form-container {
   width: 100%;
 }
@@ -214,22 +215,24 @@ main {
   gap: 0;
 }
 
+/* Campos de formulário menores */
 .search-input-group .form-control {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
   border-right: none;
   flex: 1;
-  min-height: 60px;
-  font-size: 1.1rem;
+  min-height: 50px !important; /* Reduzido de 60px */
+  font-size: 1rem !important;  /* Reduzido de 1.1rem */
+  padding: 0.75rem 1rem !important; /* Reduzido */
   width: 100%;
 }
 
 .search-input-group .btn {
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
   border-left: 2px solid var(--gray-200);
-  min-width: 70px;
+  min-width: 60px !important;  /* Reduzido de 70px */
   width: auto;
-  min-height: 60px;
-  font-size: 1.2rem;
+  min-height: 50px !important; /* Reduzido de 60px */
+  font-size: 1.1rem !important; /* Reduzido de 1.2rem */
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -241,9 +244,9 @@ main {
   background: var(--gray-50) !important;
   color: var(--gray-800) !important;
   border: 2px solid var(--gray-200) !important;
-  font-size: 1.1rem;
-  min-height: 60px;
-  padding: 1rem 1.25rem;
+  font-size: 1rem !important; /* Reduzido */
+  min-height: 50px !important; /* Reduzido */
+  padding: 0.75rem 1rem !important; /* Reduzido */
   width: 100%;
   box-sizing: border-box;
   opacity: 1 !important;
@@ -258,14 +261,21 @@ main {
   outline: none;
 }
 
-/* ===== BOTÕES MODERNOS ===== */
+/* Campo localização menor */
+#localizacao {
+  min-height: 50px !important; /* Reduzido */
+  font-size: 1rem !important; /* Reduzido */
+  padding: 0.75rem 1rem !important; /* Reduzido */
+}
+
+/* ===== BOTÕES MODERNOS E COMPACTOS ===== */
 .btn {
   border-radius: var(--border-radius);
   font-weight: 600;
   transition: var(--transition);
   border: 2px solid transparent;
-  padding: 1rem 2rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem !important; /* Reduzido */
+  font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -301,6 +311,12 @@ main {
 .btn:focus {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
   outline: none;
+}
+
+/* Botão principal menor */
+#btnLocalizar {
+  min-height: 50px !important; /* Reduzido */
+  padding: 0.75rem 1.5rem !important;
 }
 
 .btn-primary {
@@ -348,7 +364,7 @@ main {
 }
 
 #btnCamera {
-  min-width: 70px;
+  min-width: 60px !important; /* Reduzido */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -356,7 +372,7 @@ main {
   border-color: var(--primary);
   color: var(--primary);
   background: white;
-  font-size: 1.3rem;
+  font-size: 1.2rem; /* Reduzido */
 }
 
 #btnCamera:hover {
@@ -369,7 +385,7 @@ main {
   transform: scale(0.95);
 }
 
-/* ===== CARDS DE ESTATÍSTICAS MODERNOS ===== */
+/* ===== CARDS DE ESTATÍSTICAS COMPACTOS ===== */
 .stats-card {
   border: none;
   box-shadow: var(--box-shadow);
@@ -406,14 +422,14 @@ main {
 }
 
 .stats-icon {
-  width: 90px;
-  height: 90px;
+  width: 70px !important;  /* Reduzido de 90px */
+  height: 70px !important; /* Reduzido de 90px */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  font-size: 2.5rem;
+  margin: 0 auto 1rem !important; /* Reduzido */
+  font-size: 2rem !important; /* Reduzido de 2.5rem */
   background: rgba(37, 99, 235, 0.1);
   color: var(--primary);
   transition: var(--transition);
@@ -434,7 +450,7 @@ main {
 }
 
 .stats-count {
-  font-size: 3rem;
+  font-size: 2.5rem !important; /* Reduzido de 3rem */
   font-weight: 800;
   margin-bottom: 0.5rem;
   line-height: 1;
@@ -463,9 +479,14 @@ main {
   font-weight: 500;
 }
 
-/* ===== AÇÕES RÁPIDAS MODERNAS ===== */
+/* Cards de estatística mais compactos */
+.stats-card .card-body {
+  padding: 1.5rem !important; /* Reduzido */
+}
+
+/* ===== AÇÕES RÁPIDAS COMPACTAS ===== */
 .quick-actions {
-  margin: 3rem 0;
+  margin: 2rem 0; /* Reduzido */
 }
 
 .quick-actions h3 {
@@ -484,12 +505,13 @@ main {
   margin: 0 auto;
 }
 
+/* Botões de ação rápida menores */
 .actions-grid .btn {
-  padding: 1rem 1.5rem;
-  font-size: 0.95rem;
+  min-height: 50px !important; /* Reduzido de 60px */
+  padding: 0.75rem 1rem !important;
+  font-size: 0.9rem !important;
   justify-content: center;
   text-align: center;
-  min-height: 60px;
 }
 
 /* ===== RESUMO ===== */
@@ -638,22 +660,37 @@ main {
   gap: 1rem;
 }
 
-/* ===== CORREÇÕES RESPONSIVAS - ADICIONAR AO FINAL ===== */
+/* ===== MODAIS COMPACTOS ===== */
+.modal-body {
+  padding: 1.5rem !important; /* Reduzido */
+}
+
+.modal-header {
+  padding: 1rem 1.5rem !important; /* Reduzido */
+}
+
+/* ===== RESPONSIVIDADE OTIMIZADA ===== */
 @media (max-width: 768px) {
   .container {
     padding: 0 0.75rem;
   }
   
+  /* Header mobile compacto */
+  .app-header .container {
+    padding: 1rem !important;
+  }
+  
   .header-title {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     text-align: center;
   }
   
   .header-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
     text-align: center;
   }
   
+  /* Formulário em coluna no mobile */
   #searchForm .col-md-5,
   #searchForm .col-md-2 {
     width: 100%;
@@ -664,12 +701,14 @@ main {
     margin-bottom: 0;
   }
   
+  /* Campos de formulário mobile mais compactos */
   .search-input-group .form-control,
   .search-input-group .btn {
-    min-height: 55px;
-    font-size: 1rem;
+    min-height: 45px !important; /* Mais compacto em mobile */
+    font-size: 0.95rem !important;
   }
   
+  /* Cards em coluna única */
   .row.g-4 {
     margin: 0;
   }
@@ -678,6 +717,7 @@ main {
     margin-bottom: 1rem;
   }
   
+  /* Botões de ação em coluna */
   .actions-grid {
     grid-template-columns: 1fr;
     gap: 0.5rem;
@@ -686,18 +726,32 @@ main {
   .actions-grid .btn {
     width: 100%;
     justify-content: center;
+    min-height: 45px !important; /* Compacto em mobile */
   }
   
+  /* Scanner mais compacto em mobile */
   .scanner-container {
-    height: 300px;
+    height: 250px !important; /* Reduzido de 300px */
   }
   
   .modal-dialog {
     margin: 0.5rem;
   }
+  
+  /* Estatísticas mais compactas em mobile */
+  .stats-icon {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 1.75rem !important;
+  }
+  
+  .stats-count {
+    font-size: 2rem !important;
+  }
 }
 
 @media (max-width: 576px) {
+  /* Ajustes para telas muito pequenas */
   .container {
     padding: 0 0.5rem;
   }
@@ -708,25 +762,27 @@ main {
   
   .search-input-group .form-control,
   .search-input-group .btn {
-    min-height: 50px;
-    font-size: 0.95rem;
+    min-height: 42px !important; /* Ultra compacto */
+    font-size: 0.9rem !important;
   }
   
   .btn {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1rem !important;
     font-size: 0.9rem;
   }
   
+  /* Header compacto mobile */
   .app-header .container {
-    padding: 0.75rem;
+    padding: 0.75rem !important;
   }
   
   .header-title {
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
   }
   
+  /* Scanner full-screen em mobile */
   .scanner-container {
-    height: 280px;
+    height: 220px !important; /* Mais compacto */
   }
   
   .modal-content {
@@ -734,8 +790,16 @@ main {
     margin: 0;
     height: 100vh;
   }
+  
+  /* Ações rápidas em mobile muito pequeno */
+  .actions-grid .btn {
+    min-height: 42px !important;
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
 }
 
+/* ===== GARANTIAS DE VISIBILIDADE E FOCO ===== */
 #numero_bem {
   opacity: 1 !important;
   visibility: visible !important;
@@ -743,21 +807,25 @@ main {
   background: white !important;
 }
 
+/* Melhorar toque em mobile */
 .btn, .form-control {
   touch-action: manipulation;
 }
 
+/* Prevenir zoom em inputs no iOS */
 @media (max-width: 768px) {
   input, select, textarea {
-    font-size: 16px;
+    font-size: 16px; /* Previne zoom no iOS */
   }
 }
 
+/* Loading states */
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+/* Scanner responsivo */
 @media (max-width: 768px) {
   .scanner-viewport::before {
     left: 10%;
@@ -770,4 +838,65 @@ main {
     left: 10%;
     right: 10%;
   }
+}
+
+/* Animações de foco suave */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Classe para elemento com foco */
+.focused-element {
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3) !important;
+}
+
+/* Utilitários para foco automático */
+.auto-focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2) !important;
+  background: white !important;
+}
+
+
+/* ===== BOTÃO BUSCAR ESPECÍFICO - TAMANHO REDUZIDO ===== */
+#btnLocalizar {
+    min-height: 45px !important;        /* Reduzido de 50px */
+    padding: 0.6rem 1.25rem !important; /* Reduzido */
+    font-size: 0.9rem !important;       /* Texto menor */
+}
+
+/* Manter o ícone proporcional */
+#btnLocalizar .bi-search {
+    font-size: 0.9rem !important;
+}
+
+/* Ajuste do spinner de loading */
+#btnLocalizar .spinner-border-sm {
+    width: 0.8rem !important;
+    height: 0.8rem !important;
+    border-width: 0.15em !important;
+}
+
+/* Versão mobile ainda mais compacta */
+@media (max-width: 768px) {
+    #btnLocalizar {
+        min-height: 42px !important;    /* Mais compacto em mobile */
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #btnLocalizar {
+        min-height: 40px !important;    /* Ultra compacto */
+        padding: 0.4rem 0.8rem !important;
+    }
 }
