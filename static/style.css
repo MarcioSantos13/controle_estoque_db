@@ -5,34 +5,94 @@
   --success: #198754;
   --warning: #ffc107;
   --danger: #dc3545;
+  --info: #0dcaf0;
   --light: #f8f9fa;
   --dark: #212529;
   --border-radius: 0.75rem;
   --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   --transition: all 0.3s ease;
+  --header-gradient: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%);
+  --success-gradient: linear-gradient(135deg, var(--success) 0%, #0f6848 100%);
+  --warning-gradient: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
 }
 
 /* ===== ESTILOS GERAIS ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  line-height: 1.6;
+  color: var(--dark);
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+main {
+  flex: 1;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* ===== HEADER ===== */
-header {
-  background: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%);
+.app-header {
+  background: var(--header-gradient);
   border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* ===== CARDS ===== */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+}
+
+.app-header .container {
+  position: relative;
+  z-index: 1;
+}
+
+.header-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-subtitle {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.header-stats {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== CARDS PRINCIPAIS ===== */
 .card {
   border: none;
   border-radius: var(--border-radius);
   transition: var(--transition);
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  overflow: hidden;
 }
 
 .card:hover {
@@ -43,6 +103,63 @@ header {
 .card-header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   background: transparent;
+  padding: 1.25rem 1.5rem;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.search-card {
+  border: none;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* ===== FORMULÁRIOS ===== */
+.form-control {
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+  transition: var(--transition);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+  transform: scale(1.02);
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.form-text {
+  font-size: 0.875rem;
+  color: var(--secondary);
+  margin-top: 0.25rem;
+}
+
+/* Input Group */
+.input-group {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .form-control {
+  border-right: none;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.input-group .btn {
+  border-left: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  min-width: 60px;
 }
 
 /* ===== BOTÕES ===== */
@@ -51,10 +168,21 @@ header {
   font-weight: 500;
   transition: var(--transition);
   border: 1px solid transparent;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn:focus {
@@ -63,7 +191,7 @@ header {
 
 /* Botões com gradiente */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%);
+  background: var(--header-gradient);
   border-color: var(--primary);
 }
 
@@ -72,8 +200,9 @@ header {
 }
 
 .btn-success {
-  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%);
+  background: var(--success-gradient);
   border-color: var(--success);
+  color: white;
 }
 
 .btn-success:hover {
@@ -81,7 +210,7 @@ header {
 }
 
 .btn-warning {
-  background: linear-gradient(135deg, var(--warning) 0%, #e0a800 100%);
+  background: var(--warning-gradient);
   border-color: var(--warning);
   color: #000;
 }
@@ -91,33 +220,87 @@ header {
   color: #000;
 }
 
-/* ===== FORMULÁRIOS ===== */
-.form-control {
-  border-radius: 0.5rem;
-  border: 1px solid #dee2e6;
-  transition: var(--transition);
-  padding: 0.75rem 1rem;
-}
-
-.form-control:focus {
+.btn-outline-primary {
   border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-  transform: scale(1.02);
+  color: var(--primary);
 }
 
-/* Input group corrigido */
-.input-group {
-  border-radius: 0.5rem;
-  overflow: hidden;
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
 }
 
-.input-group .form-control {
-  border-right: none;
+/* ===== CARDS DE ESTATÍSTICAS ===== */
+.stats-card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
 }
 
-.input-group .btn {
-  border-left: none;
-  border-radius: 0 0.5rem 0.5rem 0;
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+.stats-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+}
+
+.stats-icon.success {
+  background: rgba(25, 135, 84, 0.1);
+  color: var(--success);
+}
+
+.stats-icon.warning {
+  background: rgba(255, 193, 7, 0.1);
+  color: var(--warning);
+}
+
+.stats-count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.stats-label {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* ===== AÇÕES RÁPIDAS ===== */
+.quick-actions {
+  margin: 2rem 0;
+}
+
+.quick-actions h3 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.actions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* ===== RESUMO ===== */
+.summary-text {
+  text-align: center;
+  color: var(--secondary);
+  font-style: italic;
+  margin: 1rem 0;
 }
 
 /* ===== MODAIS ===== */
@@ -125,23 +308,34 @@ header {
   border-radius: var(--border-radius);
   border: none;
   box-shadow: var(--box-shadow);
+  overflow: hidden;
 }
 
 .modal-header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.25rem 1.5rem;
 }
 
 .modal-footer {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.5rem;
 }
 
-/* ===== SCANNER SIMPLIFICADO E FUNCIONAL ===== */
+.modal-header.bg-primary {
+  background: var(--header-gradient);
+}
+
+.modal-header.bg-info {
+  background: linear-gradient(135deg, var(--info) 0%, #0dcaf0 100%);
+}
+
+/* ===== SCANNER ===== */
 .scanner-container {
   position: relative;
   width: 100%;
   height: 300px;
   background: #000;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   margin: 0;
   border: 2px solid #333;
@@ -152,20 +346,34 @@ header {
   height: 100%;
   position: relative;
   background: #000;
-  margin: 0;
-  padding: 0;
 }
 
-/* Vídeo do scanner */
 .scanner-viewport video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  background: #000;
 }
 
-/* Loading do scanner */
+.scanner-viewport::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ff0000, transparent);
+  animation: scanLine 2s linear infinite;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  z-index: 10;
+}
+
+@keyframes scanLine {
+  0% { top: 0; }
+  50% { top: 50%; }
+  100% { top: 100%; }
+}
+
 .scanner-loading {
   display: flex;
   flex-direction: column;
@@ -173,7 +381,7 @@ header {
   align-items: center;
   height: 100%;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.1rem;
   background: #000;
   text-align: center;
 }
@@ -182,9 +390,21 @@ header {
   font-size: 3rem;
   margin-bottom: 1rem;
   color: #00ff00;
+  animation: pulse 1.5s infinite;
 }
 
-/* Status do scanner */
+.scanner-error-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem;
+  color: white;
+  text-align: center;
+  background: var(--danger);
+}
+
 #scanner-status {
   background: #2a2a2a;
   border-top: 1px solid #444;
@@ -193,42 +413,98 @@ header {
   padding: 0.75rem 1rem;
 }
 
-/* Resultado do scan */
 #scan-result {
-  background: #2b8a3e;
-  border-top: 1px solid #2b8a3e;
+  background: var(--success-gradient);
+  border-top: 1px solid var(--success);
   animation: fadeIn 0.5s ease-out;
   padding: 0.75rem 1rem;
-}
-
-/* Mensagem de erro do scanner */
-.scanner-error-message {
-  background: #dc3545;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
   color: white;
-  text-align: center;
 }
 
-.scanner-error-message i {
-  opacity: 0.8;
-  margin-bottom: 1rem;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-/* ===== ANIMAÇÕES ===== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* ===== ALERTAS ===== */
+.alert {
+  border: none;
+  border-radius: 0.5rem;
+  border-left: 4px solid transparent;
+  padding: 1rem 1.25rem;
+}
+
+.alert-success {
+  border-left-color: var(--success);
+  background: rgba(25, 135, 84, 0.1);
+}
+
+.alert-danger {
+  border-left-color: var(--danger);
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.alert-warning {
+  border-left-color: var(--warning);
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.alert-info {
+  border-left-color: var(--info);
+  background: rgba(13, 202, 240, 0.1);
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+  background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+  margin-top: auto;
+  padding: 1.5rem 0;
+}
+
+.app-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown-menu {
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.dropdown-item {
+  border-radius: 0.25rem;
+  margin: 0.125rem 0;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.dropdown-item:hover {
+  background-color: var(--light);
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* ===== ANIMAÇÕES ===== */
 @keyframes fadeInUp {
   from { 
     opacity: 0; 
-    transform: translateY(10px); 
+    transform: translateY(20px); 
   }
   to { 
     opacity: 1; 
@@ -236,8 +512,8 @@ header {
   }
 }
 
-.card {
-  animation: fadeInUp 0.5s ease-out;
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
 }
 
 /* ===== ÍCONES ===== */
@@ -249,20 +525,122 @@ header {
   transform: scale(1.1);
 }
 
-/* ===== FOOTER ===== */
-main {
-  flex: 1;
+/* ===== UTILITÁRIOS ===== */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-footer {
-  margin-top: auto;
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* ===== BADGES ===== */
-.badge {
-  font-size: 0.85em;
-  padding: 0.5em 0.75em;
-  border-radius: 0.5rem;
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .header-stats {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .stats-card {
+    margin-bottom: 1rem;
+  }
+  
+  .stats-count {
+    font-size: 2rem;
+  }
+  
+  .stats-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .actions-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .actions-grid .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  /* Scanner responsivo */
+  .scanner-container {
+    height: 250px;
+  }
+  
+  /* Input group mobile */
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .input-group .form-control {
+    border-right: 1px solid #dee2e6;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .input-group .btn {
+    border-left: 1px solid #dee2e6;
+    border-radius: 0 0 0.5rem 0.5rem;
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .app-header .container {
+    text-align: center;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .form-control {
+    font-size: 16px; /* Previne zoom no iOS */
+    min-height: 44px; /* Tamanho mínimo para toque */
+  }
+
+  /* Scanner mobile */
+  .scanner-container {
+    height: 200px;
+  }
+
+  /* Modal em tela cheia no mobile */
+  .modal-dialog {
+    margin: 0;
+    max-width: 100%;
+    height: 100vh;
+  }
+  
+  .modal-content {
+    border-radius: 0;
+    height: 100vh;
+  }
 }
 
 /* ===== ACESSIBILIDADE ===== */
@@ -285,30 +663,23 @@ footer {
 /* ===== ESTADOS DE VALIDAÇÃO ===== */
 .is-invalid {
   border-color: var(--danger);
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.15);
 }
 
 .is-valid {
   border-color: var(--success);
-}
-
-/* ===== UTILIDADES ===== */
-.text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
 }
 
 /* ===== BOTÃO DA CÂMERA ESPECÍFICO ===== */
 #btnCamera {
-  min-width: 50px;
+  min-width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 #btnCamera:hover {
@@ -323,17 +694,48 @@ footer {
   transform: none;
 }
 
+#btnCamera.btn-success {
+  background: var(--success-gradient);
+  border-color: var(--success);
+  color: white;
+}
+
 #btnCamera.btn-danger {
   background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
   border-color: var(--danger);
   color: white;
 }
 
-/* ===== CAMPO DE PESQUISA COM FOCO ===== */
-#numero_bem:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  background-color: #fff;
+/* ===== LOADING SPINNER ===== */
+.spinner-border {
+  vertical-align: -0.125em;
+  border-width: 0.15em;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  background: var(--header-gradient);
+  transition: width 0.6s ease;
+}
+
+.progress-bar-striped {
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 1rem 1rem;
+}
+
+.progress-bar-animated {
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+  0% { background-position: 1rem 0; }
+  100% { background-position: 0 0; }
 }
 
 /* ===== REMOVER ELEMENTOS DESNECESSÁRIOS DO HTML5QRCODE ===== */
@@ -344,393 +746,19 @@ footer {
   display: none !important;
 }
 
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
+/* Feedback visual para toque em dispositivos móveis */
+@media (hover: none) {
+  .btn:hover {
+    transform: none;
+    box-shadow: none;
   }
   
-  .modal-footer {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .modal-footer .btn {
-    width: 100%;
-  }
-
-  /* Scanner responsivo */
-  .scanner-container {
-    height: 250px;
-  }
-
-  /* Cards em coluna */
-  .row.g-4 {
-    gap: 1rem;
+  .card:hover {
+    transform: none;
   }
 }
 
-@media (max-width: 576px) {
-  .container {
-    padding: 0.5rem;
-  }
-  
-  .btn {
-    font-size: 0.875rem;
-    padding: 0.5rem 0.75rem;
-  }
-
-  /* Scanner mobile */
-  .scanner-container {
-    height: 200px;
-  }
-
-  /* Input group mobile */
-  .input-group {
-    flex-direction: column;
-  }
-  
-  .input-group .form-control {
-    border-right: 1px solid #dee2e6;
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
-  
-  .input-group .btn {
-    border-left: 1px solid #dee2e6;
-    border-radius: 0 0 0.5rem 0.5rem;
-  }
-
-  /* Ações rápidas em coluna */
-  .d-flex.flex-wrap {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .d-flex.flex-wrap .btn {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-}
-
-/* ===== ESTILOS PARA MENSAGENS DE ALERTA ===== */
-.alert {
-  border: none;
-  border-radius: 0.5rem;
-  border-left: 4px solid transparent;
-}
-
-.alert-success {
-  border-left-color: var(--success);
-}
-
-.alert-danger {
-  border-left-color: var(--danger);
-}
-
-.alert-warning {
-  border-left-color: var(--warning);
-}
-
-.alert-info {
-  border-left-color: var(--primary);
-}
-
-/* ===== ESTILOS PARA CARDS DE ESTATÍSTICAS ===== */
-.card-body.text-center {
-  padding: 2rem 1rem;
-}
-
-.d-inline-flex.align-items-center.justify-content-center {
-  width: 80px;
-  height: 80px;
-}
-
-/* ===== ANIMAÇÃO DE LOADING ===== */
-.spinner-border {
-  vertical-align: -0.125em;
-}
-
-/* ===== ESTILOS PARA DROPDOWN ===== */
-.dropdown-menu {
-  border: none;
-  box-shadow: var(--box-shadow);
-  border-radius: 0.5rem;
-}
-
-.dropdown-item {
-  border-radius: 0.25rem;
-  margin: 0.125rem 0.5rem;
-  width: auto;
-}
-
-.dropdown-item:hover {
-  background-color: var(--light);
-}
-
-/* ===== ESTILOS PARA HEADER ===== */
-.bg-white.bg-opacity-25.rounded-pill {
-  backdrop-filter: blur(10px);
-}
-
-/* ===== ESTILOS PARA BOTÕES DE AÇÃO RÁPIDA ===== */
-.btn-outline-primary,
-.btn-outline-success,
-.btn-outline-warning,
-.btn-outline-info,
-.btn-outline-dark {
-  border-width: 2px;
-  font-weight: 500;
-}
-
-.btn-outline-primary:hover,
-.btn-outline-success:hover,
-.btn-outline-warning:hover,
-.btn-outline-info:hover,
-.btn-outline-dark:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow);
-}
-
-/* ===== ESTILOS PARA CARDS COM GRADIENTE ===== */
-.card.border-0.shadow-sm {
-  transition: all 0.3s ease;
-}
-
-.card.border-0.shadow-sm:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-}
-
-/* ===== ESTILOS PARA MODAL DE SCANNER ===== */
-.modal-header.bg-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #0b5ed7 100%);
-}
-
-.modal-header.bg-success {
-  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%);
-}
-
-.modal-header.bg-info {
-  background: linear-gradient(135deg, var(--info) 0%, #0dcaf0 100%);
-}
-
-/* ===== ESTILOS PARA FOOTER ===== */
-footer.bg-dark {
-  background: linear-gradient(135deg, #212529 0%, #343a40 100%);
-}
-
-/* ===== ESTILOS PARA CARDS DE ESTATÍSTICAS ===== */
-.bg-success.bg-opacity-10 {
-  background-color: rgba(25, 135, 84, 0.1) !important;
-}
-
-.bg-warning.bg-opacity-10 {
-  background-color: rgba(255, 193, 7, 0.1) !important;
-}
-
-/* ===== ESTILOS PARA ÍCONES DENTRO DE CARDS ===== */
-.text-success.fs-3,
-.text-warning.fs-3 {
-  font-size: 2.5rem !important;
-}
-
-/* ===== ESTILOS PARA TÍTULOS ===== */
-.h2.fw-bold {
-  font-weight: 700 !important;
-}
-
-/* ===== ESTILOS PARA FORM TEXT ===== */
-.form-text {
-  font-size: 0.875rem;
-  color: #6c757d;
-}
-
-/* ===== ESTILOS PARA BOTÃO DE SCANNER ATIVO ===== */
-#btnCamera.btn-outline-primary {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-#btnCamera.btn-outline-primary:hover {
-  background-color: var(--primary);
-  color: white;
-}
-
-#btnCamera.btn-outline-success {
-  border-color: var(--success);
-  color: var(--success);
-}
-
-#btnCamera.btn-outline-success:hover {
-  background-color: var(--success);
-  color: white;
-}
-
-/* ===== ESTILOS PARA MENSAGEM DE SCAN BEM-SUCEDIDO ===== */
-#scan-result.bg-success {
-  background: linear-gradient(135deg, var(--success) 0%, #0f6848 100%) !important;
-}
-
-/* ===== ESTILOS PARA BOTÕES DENTRO DO SCANNER ===== */
-#usar-codigo-btn,
-#ler-outro-btn,
-#trocar-camera-btn,
-#digitar-manual-btn {
-  border-radius: 0.375rem;
-  font-weight: 500;
-}
-
-/* ===== ESTILOS PARA O LOADING SPINNER DO FORMULÁRIO ===== */
-#loadingSpinner {
-  width: 1rem;
-  height: 1rem;
-}
-
-/* ===== SCANNER OTIMIZADO ===== */
-.scanner-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background: #000;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 0;
-}
-
-.scanner-viewport {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.scanner-viewport video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.scanner-loading {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: #fff;
-    background: #000;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.scanner-loading i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #00ff00;
-    animation: pulse 1.5s infinite;
-}
-
-.scanner-error-message {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 2rem;
-    text-align: center;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* Melhorias para mobile */
-@media (max-width: 576px) {
-    .scanner-container {
-        height: 250px;
-    }
-    
-    .scanner-loading {
-        font-size: 1rem;
-    }
-    
-    .scanner-loading i {
-        font-size: 2.5rem;
-    }
-}
-
-/* Estados do botão da câmera */
-#btnCamera.btn-success {
-    background-color: var(--success);
-    border-color: var(--success);
-    color: white;
-}
-
-#btnCamera.btn-danger {
-    background-color: var(--danger);
-    border-color: var(--danger);
-    color: white;
-}
-
-#btnCamera:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-/* Feedback visual para scan bem-sucedido */
-.scan-success {
-    animation: scanSuccess 0.5s ease-out;
-}
-
-@keyframes scanSuccess {
-    0% { background-color: transparent; }
-    50% { background-color: rgba(25, 135, 84, 0.2); }
-    100% { background-color: transparent; }
-}
-
-/* Otimizações específicas para mobile */
-@media (max-width: 768px) {
-    /* Campo de input otimizado para mobile */
-    #numero_bem {
-        font-size: 16px; /* Previne zoom no iOS */
-        height: 44px; /* Tamanho mínimo para toque */
-    }
-    
-    /* Scanner em tela cheia no mobile */
-    .scanner-container {
-        height: 60vh !important;
-        border-radius: 0;
-    }
-    
-    /* Botões maiores para toque */
-    .btn {
-        min-height: 44px;
-        padding: 12px 16px;
-    }
-    
-    /* Modal em tela cheia no mobile */
-    .modal-dialog {
-        margin: 0;
-        max-width: 100%;
-        height: 100vh;
-    }
-    
-    .modal-content {
-        border-radius: 0;
-        height: 100vh;
-    }
-}
-
-/* Melhorias no teclado virtual */
-input[type="text"] {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-/* Feedback visual para toque */
 .btn:active {
-    transform: scale(0.98);
-    transition: transform 0.1s;
+  transform: scale(0.98);
+  transition: transform 0.1s;
 }
