@@ -146,85 +146,106 @@ main {
 
 /* ===== CORREÇÕES ESPECÍFICAS PARA O CAMPO DE BUSCA ===== */
 .search-form-container {
-  width: 100%;
+    width: 100%;
 }
 
 .search-input-group {
-  display: flex;
-  width: 100%;
-  flex-wrap: nowrap;
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
 }
 
-/* Layout para Desktop */
+/* Layout para Desktop - BOTÃO AO LADO */
 @media (min-width: 769px) {
-  .search-input-group {
-    flex-direction: row;
-  }
-  
-  .search-input-group .form-control {
-    border-radius: 0.5rem 0 0 0.5rem;
-    border-right: none;
-    flex: 1;
-    min-height: 50px;
-  }
-  
-  .search-input-group .btn {
-    border-radius: 0 0.5rem 0.5rem 0;
-    border-left: none;
-    min-width: 60px;
-    width: auto;
-    min-height: 50px;
-  }
+    .search-input-group {
+        flex-direction: row;
+        align-items: stretch;
+    }
+    
+    .search-input-group .form-control {
+        border-radius: 0.5rem 0 0 0.5rem;
+        border-right: none;
+        flex: 1;
+        min-height: 50px;
+        width: auto;
+    }
+    
+    .search-input-group .btn {
+        border-radius: 0 0.5rem 0.5rem 0;
+        border-left: none;
+        min-width: 60px;
+        width: auto;
+        min-height: 50px;
+        white-space: nowrap;
+    }
 }
 
-/* Layout para Mobile */
+/* Layout para Mobile - BOTÃO AO LADO TAMBÉM */
 @media (max-width: 768px) {
-  .search-input-group {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .search-input-group .form-control {
-    border-radius: 0.5rem 0.5rem 0 0;
-    border-right: 1px solid #dee2e6;
-    border-bottom: none;
-    width: 100%;
-    min-height: 55px;
-    font-size: 16px; /* Previne zoom no iOS */
-    padding: 12px 15px;
-  }
-  
-  .search-input-group .btn {
-    border-radius: 0 0 0.5rem 0.5rem;
-    border-left: 1px solid #dee2e6;
-    border-top: none;
-    width: 100%;
-    min-height: 50px;
-    font-size: 16px;
-  }
-  
-  /* Ajuste específico para o botão de busca */
-  #btnLocalizar {
-    min-height: 55px;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 10px;
-  }
+    .search-input-group {
+        flex-direction: row;
+        align-items: stretch;
+    }
+    
+    .search-input-group .form-control {
+        border-radius: 0.5rem 0 0 0.5rem;
+        border-right: none;
+        flex: 1;
+        min-height: 55px;
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    
+    .search-input-group .btn {
+        border-radius: 0 0.5rem 0.5rem 0;
+        border-left: 1px solid #dee2e6;
+        border-top: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+        min-width: 60px;
+        width: auto;
+        min-height: 55px;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+    
+    /* Ajuste específico para o botão de busca */
+    #btnLocalizar {
+        min-height: 55px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 0;
+        width: 100%;
+    }
 }
 
 /* Garantir que o campo esteja sempre visível e acessível */
 #numero_bem {
-  background: white !important;
-  color: black !important;
-  border: 2px solid var(--primary) !important;
-  font-size: 16px;
-  min-height: 50px;
-  padding: 12px 15px;
-  width: 100%;
-  box-sizing: border-box;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
+    background: white !important;
+    color: black !important;
+    border: 2px solid var(--primary) !important;
+    font-size: 16px;
+    min-height: 50px;
+    padding: 12px 15px;
+    width: 100%;
+    box-sizing: border-box;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Correção para o grupo de inputs em mobile */
+@media (max-width: 768px) {
+    .search-form-container .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    .search-form-container .col-md-5,
+    .search-form-container .col-md-2 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 /* Estados de foco melhorados */
@@ -926,4 +947,117 @@ main {
 #searchForm .col-md-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+/* ===== SCANNER OTIMIZADO PARA CÓDIGOS DE BARRAS ===== */
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    max-height: 400px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+    border: 2px solid #333;
+}
+
+.scanner-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #000;
+}
+
+.scanner-viewport video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Área de scan mais adequada para códigos de barras */
+.scanner-viewport::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff0000, transparent);
+    animation: scanLine 1.5s linear infinite;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    z-index: 10;
+    border-radius: 2px;
+}
+
+@keyframes scanLine {
+    0% { top: 10%; }
+    50% { top: 50%; }
+    100% { top: 90%; }
+}
+
+/* Guias visuais para códigos de barras */
+.scanner-viewport::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    bottom: 30%;
+    left: 15%;
+    right: 15%;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.scanner-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #fff;
+    font-size: 1.1rem;
+    background: #000;
+    text-align: center;
+}
+
+.scanner-loading i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #00ff00;
+    animation: pulse 1.5s infinite;
+}
+
+/* Instruções para códigos de barras */
+.scanner-instructions {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+    border-top: 1px solid #444;
+}
+
+.scanner-instructions i {
+    color: #00ff00;
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .scanner-container {
+        height: 50vh;
+        max-height: 300px;
+    }
+    
+    .scanner-viewport::after {
+        left: 15%;
+        right: 15%;
+    }
+    
+    .scanner-viewport::before {
+        left: 10%;
+        right: 10%;
+    }
 }
