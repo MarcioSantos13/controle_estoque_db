@@ -144,22 +144,104 @@ main {
   margin-top: 0.25rem;
 }
 
-/* Input Group */
-.input-group {
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* ===== CORREÇÕES ESPECÍFICAS PARA O CAMPO DE BUSCA ===== */
+.search-form-container {
+  width: 100%;
 }
 
-.input-group .form-control {
-  border-right: none;
-  border-radius: 0.5rem 0 0 0.5rem;
+.search-input-group {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
-.input-group .btn {
-  border-left: none;
-  border-radius: 0 0.5rem 0.5rem 0;
-  min-width: 60px;
+/* Layout para Desktop */
+@media (min-width: 769px) {
+  .search-input-group {
+    flex-direction: row;
+  }
+  
+  .search-input-group .form-control {
+    border-radius: 0.5rem 0 0 0.5rem;
+    border-right: none;
+    flex: 1;
+    min-height: 50px;
+  }
+  
+  .search-input-group .btn {
+    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: none;
+    min-width: 60px;
+    width: auto;
+    min-height: 50px;
+  }
+}
+
+/* Layout para Mobile */
+@media (max-width: 768px) {
+  .search-input-group {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .search-input-group .form-control {
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-right: 1px solid #dee2e6;
+    border-bottom: none;
+    width: 100%;
+    min-height: 55px;
+    font-size: 16px; /* Previne zoom no iOS */
+    padding: 12px 15px;
+  }
+  
+  .search-input-group .btn {
+    border-radius: 0 0 0.5rem 0.5rem;
+    border-left: 1px solid #dee2e6;
+    border-top: none;
+    width: 100%;
+    min-height: 50px;
+    font-size: 16px;
+  }
+  
+  /* Ajuste específico para o botão de busca */
+  #btnLocalizar {
+    min-height: 55px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+}
+
+/* Garantir que o campo esteja sempre visível e acessível */
+#numero_bem {
+  background: white !important;
+  color: black !important;
+  border: 2px solid var(--primary) !important;
+  font-size: 16px;
+  min-height: 50px;
+  padding: 12px 15px;
+  width: 100%;
+  box-sizing: border-box;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Estados de foco melhorados */
+#numero_bem:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+  background-color: #fff !important;
+  outline: none;
+}
+
+/* Remover qualquer estilo que possa estar escondendo o campo */
+#numero_bem:not([type="hidden"]) {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 /* ===== BOTÕES ===== */
@@ -227,6 +309,41 @@ main {
 
 .btn-outline-primary:hover {
   background-color: var(--primary);
+  color: white;
+}
+
+/* ===== BOTÃO DA CÂMERA ESPECÍFICO ===== */
+#btnCamera {
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+#btnCamera:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+#btnCamera:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#btnCamera.btn-success {
+  background: var(--success-gradient);
+  border-color: var(--success);
+  color: white;
+}
+
+#btnCamera.btn-danger {
+  background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
+  border-color: var(--danger);
   color: white;
 }
 
@@ -329,11 +446,12 @@ main {
   background: linear-gradient(135deg, var(--info) 0%, #0dcaf0 100%);
 }
 
-/* ===== SCANNER ===== */
+/* ===== SCANNER OTIMIZADO PARA MOBILE ===== */
 .scanner-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 60vh; /* Usar altura relativa */
+  max-height: 400px;
   background: #000;
   border-radius: 8px;
   overflow: hidden;
@@ -355,6 +473,7 @@ main {
   display: block;
 }
 
+/* Linha de scan animada */
 .scanner-viewport::after {
   content: '';
   position: absolute;
@@ -364,7 +483,7 @@ main {
   height: 4px;
   background: linear-gradient(90deg, transparent, #ff0000, transparent);
   animation: scanLine 2s linear infinite;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
   z-index: 10;
 }
 
@@ -405,6 +524,11 @@ main {
   background: var(--danger);
 }
 
+.scanner-error-message h5 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
 #scanner-status {
   background: #2a2a2a;
   border-top: 1px solid #444;
@@ -419,6 +543,26 @@ main {
   animation: fadeIn 0.5s ease-out;
   padding: 0.75rem 1rem;
   color: white;
+}
+
+/* Feedback visual para scan bem-sucedido */
+.scan-success {
+  animation: scanSuccess 1s ease-out;
+}
+
+@keyframes scanSuccess {
+  0% { 
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4);
+  }
+  50% { 
+    background-color: rgba(25, 135, 84, 0.2);
+    box-shadow: 0 0 0 20px rgba(25, 135, 84, 0);
+  }
+  100% { 
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+  }
 }
 
 @keyframes pulse {
@@ -584,25 +728,31 @@ main {
   .scanner-container {
     height: 250px;
   }
-  
-  /* Input group mobile */
-  .input-group {
-    flex-direction: column;
-  }
-  
-  .input-group .form-control {
-    border-right: 1px solid #dee2e6;
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
-  
-  .input-group .btn {
-    border-left: 1px solid #dee2e6;
-    border-radius: 0 0 0.5rem 0.5rem;
-    min-height: 50px;
-  }
 }
 
-@media (max-width: 576px) {
+/* Ajustes específicos para mobile muito pequeno */
+@media (max-width: 480px) {
+  .scanner-container {
+    height: 50vh;
+    max-height: 300px;
+  }
+  
+  .search-input-group .form-control {
+    font-size: 18px !important;
+    min-height: 60px !important;
+    padding: 15px !important;
+  }
+  
+  .search-input-group .btn {
+    min-height: 55px !important;
+    font-size: 18px !important;
+  }
+  
+  #btnLocalizar {
+    min-height: 65px !important;
+    font-size: 20px !important;
+  }
+  
   .container {
     padding: 0 0.5rem;
   }
@@ -624,22 +774,23 @@ main {
     font-size: 16px; /* Previne zoom no iOS */
     min-height: 44px; /* Tamanho mínimo para toque */
   }
+}
 
-  /* Scanner mobile */
+/* Melhorias para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
   .scanner-container {
-    height: 200px;
+    height: 400px;
   }
+}
 
-  /* Modal em tela cheia no mobile */
+/* Garantir que o modal do scanner seja responsivo */
+@media (max-width: 576px) {
   .modal-dialog {
-    margin: 0;
-    max-width: 100%;
-    height: 100vh;
+    margin: 0.5rem;
   }
   
-  .modal-content {
+  .scanner-container {
     border-radius: 0;
-    height: 100vh;
   }
 }
 
@@ -669,41 +820,6 @@ main {
 .is-valid {
   border-color: var(--success);
   box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
-}
-
-/* ===== BOTÃO DA CÂMERA ESPECÍFICO ===== */
-#btnCamera {
-  min-width: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-#btnCamera:hover {
-  background-color: var(--primary);
-  color: white;
-  transform: scale(1.05);
-}
-
-#btnCamera:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-#btnCamera.btn-success {
-  background: var(--success-gradient);
-  border-color: var(--success);
-  color: white;
-}
-
-#btnCamera.btn-danger {
-  background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
-  border-color: var(--danger);
-  color: white;
 }
 
 /* ===== LOADING SPINNER ===== */
@@ -761,4 +877,53 @@ main {
 .btn:active {
   transform: scale(0.98);
   transition: transform 0.1s;
+}
+
+/* Input group corrigido para garantir compatibilidade */
+.input-group {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .form-control {
+  border-right: none;
+}
+
+.input-group .btn {
+  border-left: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  min-width: 60px;
+}
+
+/* Garantir que os elementos do scanner sejam sempre visíveis */
+.scanner-viewport canvas,
+.scanner-viewport video {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Melhorias para a visualização em mobile landscape */
+@media (max-height: 500px) and (orientation: landscape) {
+  .scanner-container {
+    height: 70vh;
+    max-height: 250px;
+  }
+  
+  .modal-dialog {
+    max-height: 90vh;
+  }
+}
+
+/* Correção para garantir que o campo de busca não quebre */
+#searchForm .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#searchForm .col-md-5,
+#searchForm .col-md-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
