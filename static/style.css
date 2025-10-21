@@ -214,13 +214,13 @@ main {
   gap: 0;
 }
 
-/* BOTÃO SEMPRE AO LADO - TODOS OS DISPOSITIVOS */
 .search-input-group .form-control {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
   border-right: none;
   flex: 1;
   min-height: 60px;
   font-size: 1.1rem;
+  width: 100%;
 }
 
 .search-input-group .btn {
@@ -237,7 +237,6 @@ main {
   transition: var(--transition-fast);
 }
 
-/* Garantir que o campo esteja sempre visível */
 #numero_bem {
   background: var(--gray-50) !important;
   color: var(--gray-800) !important;
@@ -304,7 +303,6 @@ main {
   outline: none;
 }
 
-/* Botões com gradiente moderno */
 .btn-primary {
   background: var(--header-gradient);
   border-color: transparent;
@@ -349,7 +347,6 @@ main {
   border-color: var(--primary);
 }
 
-/* ===== BOTÃO DA CÂMERA ESPECÍFICO ===== */
 #btnCamera {
   min-width: 70px;
   display: flex;
@@ -531,7 +528,6 @@ main {
   display: block;
 }
 
-/* Linha de scan otimizada para códigos de barras */
 .scanner-viewport::after {
   content: '';
   position: absolute;
@@ -557,7 +553,6 @@ main {
   100% { top: 85%; opacity: 0; }
 }
 
-/* Guias visuais melhoradas */
 .scanner-viewport::before {
   content: '';
   position: absolute;
@@ -643,100 +638,136 @@ main {
   gap: 1rem;
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== CORREÇÕES RESPONSIVAS - ADICIONAR AO FINAL ===== */
 @media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
-  
-  .header-title {
-    font-size: 1.75rem;
-  }
-  
-  .header-subtitle {
-    font-size: 1rem;
-  }
-  
-  .stats-count {
-    font-size: 2.5rem;
-  }
-  
-  .stats-icon {
-    width: 70px;
-    height: 70px;
-    font-size: 2rem;
-  }
-  
-  .actions-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  
-  .scanner-container {
-    height: 300px;
-  }
-  
-  .search-input-group .form-control,
-  .search-input-group .btn {
-    min-height: 55px;
-  }
-}
-
-@media (max-width: 480px) {
   .container {
     padding: 0 0.75rem;
   }
   
   .header-title {
     font-size: 1.5rem;
+    text-align: center;
   }
   
-  .card-header {
-    padding: 1.25rem 1.5rem;
+  .header-subtitle {
+    font-size: 0.9rem;
+    text-align: center;
   }
   
-  .stats-count {
-    font-size: 2rem;
+  #searchForm .col-md-5,
+  #searchForm .col-md-2 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  #searchForm .col-md-2 {
+    margin-bottom: 0;
+  }
+  
+  .search-input-group .form-control,
+  .search-input-group .btn {
+    min-height: 55px;
+    font-size: 1rem;
+  }
+  
+  .row.g-4 {
+    margin: 0;
+  }
+  
+  .row.g-4 .col-md-6 {
+    margin-bottom: 1rem;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .actions-grid .btn {
+    width: 100%;
+    justify-content: center;
   }
   
   .scanner-container {
-    height: 250px;
+    height: 300px;
+  }
+  
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
   }
   
   .search-input-group .form-control,
   .search-input-group .btn {
     min-height: 50px;
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .app-header .container {
+    padding: 0.75rem;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+  }
+  
+  .scanner-container {
+    height: 280px;
+  }
+  
+  .modal-content {
+    border-radius: 0;
+    margin: 0;
+    height: 100vh;
   }
 }
 
-/* Animações */
-@keyframes fadeInUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
+#numero_bem {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  background: white !important;
+}
+
+.btn, .form-control {
+  touch-action: manipulation;
+}
+
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px;
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .scanner-viewport::before {
+    left: 10%;
+    right: 10%;
+    top: 20%;
+    bottom: 20%;
   }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Utilitários */
-.glass-effect {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-.text-gradient {
-  background: var(--header-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  
+  .scanner-viewport::after {
+    left: 10%;
+    right: 10%;
+  }
 }
