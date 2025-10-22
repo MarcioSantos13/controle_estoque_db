@@ -350,6 +350,21 @@
             padding: 1.25rem 1.5rem;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
+
+        /* Loading States */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            border-radius: 12px;
+        }
     </style>
 </head>
 
@@ -403,7 +418,7 @@
                                         <i class="bi bi-person me-2"></i>Meu Perfil
                                     </a>
                                 </li>
-
+                                {% if session.usuario_tipo == 'admin' %}
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">
                                         <i class="bi bi-person-plus me-2"></i>Cadastrar Usuário
@@ -414,12 +429,7 @@
                                         <i class="bi bi-people me-2"></i>Gerenciar Usuários
                                     </a>
                                 </li>
-
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bi bi-gear me-2"></i>Configurações
-                                    </a>
-                                </li>
+                                {% endif %}
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -859,10 +869,17 @@
 
         // VARIÁVEIS GLOBAIS
         let bemIdParaExcluir = null;
+        let modalBemInstance = null;
 
-        // Adicionar event listener para o botão Novo Bem
+        // Inicialização quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', function() {
             console.log("✅ Sistema CRUD carregado com sucesso!");
+            
+            // Inicializar instância do modal
+            const modalElement = document.getElementById('modalBem');
+            if (modalElement) {
+                modalBemInstance = new bootstrap.Modal(modalElement);
+            }
             
             // Adicionar event listener para o botão Novo Bem
             const btnNovoBem = document.getElementById('btnNovoBem');
@@ -872,6 +889,12 @@
             } else {
                 console.error("❌ Botão Novo Bem não encontrado");
             }
+
+            // Adicionar event listener para o botão de confirmação de exclusão
+            const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
+            if (btnConfirmarExclusao) {
+                btnConfirmarExclusao.addEventListener('click', executarExclusao);
+            }
         });
 
         // FUNÇÃO PARA NOVO BEM - CORRIGIDA
@@ -879,49 +902,52 @@
             if (event) event.preventDefault();
             console.log("➕ ABRINDO MODAL PARA NOVO BEM");
 
-            // Resetar o formulário e limpar todos os campos
-            const form = document.getElementById('formBem');
-            if (form) {
-                form.reset();
-            }
-            
-            // Limpar campos específicos
-            document.getElementById('modalBemTitle').textContent = 'Novo Bem';
-            document.getElementById('bemId').value = '';
-            document.getElementById('numero').value = '';
-            document.getElementById('nome').value = '';
-            document.getElementById('localizacao').value = '';
-            document.getElementById('responsavel').value = '';
-            document.getElementById('auditor').value = '';
-            document.getElementById('observacoes').value = '';
-            document.getElementById('situacao').value = 'Pendente';
+            try {
+                // Resetar o formulário e limpar todos os campos
+                const form = document.getElementById('formBem');
+                if (form) {
+                    form.reset();
+                }
+                
+                // Limpar campos específicos
+                document.getElementById('modalBemTitle').textContent = 'Novo Bem';
+                document.getElementById('bemId').value = '';
+                document.getElementById('numero').value = '';
+                document.getElementById('nome').value = '';
+                document.getElementById('localizacao').value = '';
+                document.getElementById('responsavel').value = '';
+                document.getElementById('auditor').value = '';
+                document.getElementById('observacoes').value = '';
+                document.getElementById('situacao').value = 'Pendente';
 
-            // Habilitar todos os campos para edição
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => {
-                input.disabled = false;
-                input.readOnly = false;
-            });
+                // Habilitar todos os campos para edição
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    input.readOnly = false;
+                });
 
-            // Definir data atual como padrão para vistoria atual
-            const hoje = new Date().toISOString().split('T')[0];
-            document.getElementById('data_vistoria_atual').value = hoje;
-            document.getElementById('data_ultima_vistoria').value = '';
+                // Definir data atual como padrão para vistoria atual
+                const hoje = new Date().toISOString().split('T')[0];
+                document.getElementById('data_vistoria_atual').value = hoje;
+                document.getElementById('data_ultima_vistoria').value = '';
 
-            document.getElementById('btnSalvar').style.display = 'block';
+                document.getElementById('btnSalvar').style.display = 'block';
 
-            // Abrir o modal
-            const modalElement = document.getElementById('modalBem');
-            if (modalElement) {
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-                console.log("✅ Modal Novo Bem aberto com sucesso");
-            } else {
-                console.error("❌ Elemento do modal não encontrado");
+                // Abrir o modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
+                    console.log("✅ Modal Novo Bem aberto com sucesso");
+                } else {
+                    console.error("❌ Instância do modal não disponível");
+                }
+            } catch (error) {
+                console.error("💥 Erro ao abrir modal novo bem:", error);
+                alert("Erro ao abrir formulário de novo bem: " + error.message);
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA E SIMPLIFICADA
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -936,65 +962,42 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // CORREÇÃO: Usar a rota correta da API
-            // Tentar diferentes formatos de rota
-            const rotasPossiveis = [
-                `/api/bens/${bemId}`,
-                `/api/bens/id/${bemId}`,
-                `/api/bem/${bemId}`,
-                `/bens/${bemId}`
-            ];
+            // USAR APENAS A ROTA PRINCIPAL - CORREÇÃO: URL absoluta
+            const rota = `/api/bens/${bemId}`;
+            console.log(`📡 Buscando dados via: ${rota}`);
 
-            // Função para tentar uma rota
-            const tentarRota = async (index) => {
-                if (index >= rotasPossiveis.length) {
+            fetch(rota)
+                .then(response => {
+                    console.log("📡 Status:", response.status);
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("📊 Dados COMPLETOS recebidos:", data);
+
                     // Restaurar botão
                     btnSalvar.innerHTML = originalText;
                     btnSalvar.disabled = false;
-                    alert("❌ Erro: Não foi possível encontrar a rota da API. Verifique a configuração do servidor.");
-                    return;
-                }
 
-                const rota = rotasPossiveis[index];
-                console.log(`📡 Tentando rota: ${rota}`);
-
-                try {
-                    const response = await fetch(rota);
-                    console.log("📡 Status:", response.status);
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("📊 Dados COMPLETOS recebidos:", data);
-
-                        // Restaurar botão
-                        btnSalvar.innerHTML = originalText;
-                        btnSalvar.disabled = false;
-
-                        if (data.success && data.data) {
-                            preencherModalEdicao(data.data);
-                        } else {
-                            console.error("❌ Erro na resposta:", data);
-                            alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                        }
-                    } else if (response.status === 404) {
-                        // Tentar próxima rota
-                        console.log(`❌ Rota ${rota} não encontrada, tentando próxima...`);
-                        tentarRota(index + 1);
+                    if (data.success && data.data) {
+                        preencherModalEdicao(data.data);
                     } else {
-                        throw new Error(`Erro HTTP: ${response.status}`);
+                        console.error("❌ Erro na resposta:", data);
+                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
                     }
-                } catch (error) {
-                    console.error(`💥 Erro na requisição para ${rota}:`, error);
-                    // Tentar próxima rota
-                    tentarRota(index + 1);
-                }
-            };
-
-            // Iniciar tentativas
-            tentarRota(0);
+                })
+                .catch(error => {
+                    console.error("💥 Erro ao buscar bem:", error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro ao carregar dados do bem: " + error.message);
+                });
         }
 
-        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA
+        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA E SIMPLIFICADA
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -1009,56 +1012,37 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // CORREÇÃO: Usar a mesma lógica de rotas da função editar
-            const rotasPossiveis = [
-                `/api/bens/${bemId}`,
-                `/api/bens/id/${bemId}`,
-                `/api/bem/${bemId}`,
-                `/bens/${bemId}`
-            ];
+            // USAR APENAS A ROTA PRINCIPAL - CORREÇÃO: URL absoluta
+            const rota = `/api/bens/${bemId}`;
+            console.log(`📡 Buscando dados para visualização via: ${rota}`);
 
-            const tentarRota = async (index) => {
-                if (index >= rotasPossiveis.length) {
+            fetch(rota)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
+
                     // Restaurar botão
                     btnSalvar.innerHTML = originalText;
                     btnSalvar.disabled = false;
-                    alert("❌ Erro: Não foi possível encontrar a rota da API para visualização.");
-                    return;
-                }
 
-                const rota = rotasPossiveis[index];
-                console.log(`📡 Tentando rota para visualização: ${rota}`);
-
-                try {
-                    const response = await fetch(rota);
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
-
-                        // Restaurar botão
-                        btnSalvar.innerHTML = originalText;
-                        btnSalvar.disabled = false;
-
-                        if (data.success && data.data) {
-                            preencherModalVisualizacao(data.data);
-                        } else {
-                            alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
-                        }
-                    } else if (response.status === 404) {
-                        console.log(`❌ Rota ${rota} não encontrada, tentando próxima...`);
-                        tentarRota(index + 1);
+                    if (data.success && data.data) {
+                        preencherModalVisualizacao(data.data);
                     } else {
-                        throw new Error(`Erro HTTP: ${response.status}`);
+                        alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
                     }
-                } catch (error) {
-                    console.error(`💥 Erro na requisição para ${rota}:`, error);
-                    tentarRota(index + 1);
-                }
-            };
-
-            // Iniciar tentativas
-            tentarRota(0);
+                })
+                .catch(error => {
+                    console.error("💥 Erro ao buscar bem para visualização:", error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro ao carregar dados do bem: " + error.message);
+                });
         }
 
         // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
@@ -1070,70 +1054,76 @@
                 return;
             }
 
-            // Preencher todos os campos
-            document.getElementById('modalBemTitle').textContent = `Editar Bem: ${bem.nome || 'Sem nome'}`;
-            document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('numero').value = bem.numero || '';
-            document.getElementById('nome').value = bem.nome || '';
-            document.getElementById('situacao').value = bem.situacao || 'Pendente';
-            document.getElementById('localizacao').value = bem.localizacao || '';
-            document.getElementById('responsavel').value = bem.responsavel || '';
-            document.getElementById('auditor').value = bem.auditor || '';
-            document.getElementById('observacoes').value = bem.observacoes || '';
-
-            // Datas - tratamento mais robusto
             try {
-                if (bem.data_ultima_vistoria) {
-                    let dataUltima = bem.data_ultima_vistoria;
-                    // Se for string, converter para formato date
-                    if (typeof dataUltima === 'string') {
-                        if (dataUltima.includes('T')) {
-                            dataUltima = dataUltima.split('T')[0];
-                        } else if (dataUltima.includes(' ')) {
-                            dataUltima = dataUltima.split(' ')[0];
-                        }
-                    }
-                    document.getElementById('data_ultima_vistoria').value = dataUltima;
-                } else {
-                    document.getElementById('data_ultima_vistoria').value = '';
-                }
+                // Preencher todos os campos
+                document.getElementById('modalBemTitle').textContent = `Editar Bem: ${bem.nome || 'Sem nome'}`;
+                document.getElementById('bemId').value = bem.id || '';
+                document.getElementById('numero').value = bem.numero || '';
+                document.getElementById('nome').value = bem.nome || '';
+                document.getElementById('situacao').value = bem.situacao || 'Pendente';
+                document.getElementById('localizacao').value = bem.localizacao || '';
+                document.getElementById('responsavel').value = bem.responsavel || '';
+                document.getElementById('auditor').value = bem.auditor || '';
+                document.getElementById('observacoes').value = bem.observacoes || '';
 
-                if (bem.data_vistoria_atual) {
-                    let dataAtual = bem.data_vistoria_atual;
-                    // Se for string, converter para formato date
-                    if (typeof dataAtual === 'string') {
-                        if (dataAtual.includes('T')) {
-                            dataAtual = dataAtual.split('T')[0];
-                        } else if (dataAtual.includes(' ')) {
-                            dataAtual = dataAtual.split(' ')[0];
+                // Datas - tratamento mais robusto
+                try {
+                    if (bem.data_ultima_vistoria) {
+                        let dataUltima = bem.data_ultima_vistoria;
+                        // Se for string, converter para formato date
+                        if (typeof dataUltima === 'string') {
+                            if (dataUltima.includes('T')) {
+                                dataUltima = dataUltima.split('T')[0];
+                            } else if (dataUltima.includes(' ')) {
+                                dataUltima = dataUltima.split(' ')[0];
+                            }
                         }
+                        document.getElementById('data_ultima_vistoria').value = dataUltima;
+                    } else {
+                        document.getElementById('data_ultima_vistoria').value = '';
                     }
-                    document.getElementById('data_vistoria_atual').value = dataAtual;
-                } else {
+
+                    if (bem.data_vistoria_atual) {
+                        let dataAtual = bem.data_vistoria_atual;
+                        // Se for string, converter para formato date
+                        if (typeof dataAtual === 'string') {
+                            if (dataAtual.includes('T')) {
+                                dataAtual = dataAtual.split('T')[0];
+                            } else if (dataAtual.includes(' ')) {
+                                dataAtual = dataAtual.split(' ')[0];
+                            }
+                        }
+                        document.getElementById('data_vistoria_atual').value = dataAtual;
+                    } else {
+                        document.getElementById('data_vistoria_atual').value = '';
+                    }
+                } catch (error) {
+                    console.error("Erro ao processar datas:", error);
+                    document.getElementById('data_ultima_vistoria').value = '';
                     document.getElementById('data_vistoria_atual').value = '';
                 }
-            } catch (error) {
-                console.error("Erro ao processar datas:", error);
-                document.getElementById('data_ultima_vistoria').value = '';
-                document.getElementById('data_vistoria_atual').value = '';
-            }
 
-            // Habilitar campos para edição (número como readonly)
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => {
-                input.disabled = false;
-                if (input.id === 'numero') {
-                    input.readOnly = true; // Número não pode ser alterado na edição
+                // Habilitar campos para edição (número como readonly)
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    if (input.id === 'numero') {
+                        input.readOnly = true; // Número não pode ser alterado na edição
+                    }
+                });
+                document.getElementById('btnSalvar').style.display = 'block';
+
+                // Abrir modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
                 }
-            });
-            document.getElementById('btnSalvar').style.display = 'block';
-
-            // Abrir modal
-            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
-            modal.show();
+            } catch (error) {
+                console.error("💥 Erro ao preencher modal de edição:", error);
+                alert("Erro ao carregar formulário de edição: " + error.message);
+            }
         }
 
-        // FUNÇÃO SALVAR BEM - CORRIGIDA
+        // FUNÇÃO SALVAR BEM - CORRIGIDA E SIMPLIFICADA
         async function salvarBem() {
             console.log("💾 INICIANDO SALVAMENTO DO BEM");
             
@@ -1172,8 +1162,8 @@
 
             try {
                 let response;
-                let url;
                 let method;
+                let url;
 
                 // Mostrar loading no botão
                 const btnSalvar = document.getElementById('btnSalvar');
@@ -1182,97 +1172,40 @@
                 btnSalvar.disabled = true;
 
                 if (bemId && bemId !== '') {
-                    // EDIÇÃO - usar ID
+                    // EDIÇÃO - CORREÇÃO: URL absoluta
                     method = 'PUT';
-                    // CORREÇÃO: Tentar diferentes rotas para edição
-                    const rotasEdicao = [
-                        `/api/bens/${bemId}`,
-                        `/api/bens/editar/${bemId}`,
-                        `/bens/${bemId}`
-                    ];
-                    
-                    // Encontrar a rota correta
-                    for (const rota of rotasEdicao) {
-                        try {
-                            console.log(`📤 Tentando ${method} para ${rota}`);
-                            response = await fetch(rota, {
-                                method: method,
-                                headers: { 
-                                    'Content-Type': 'application/json',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify(dados)
-                            });
-                            
-                            if (response.ok) {
-                                url = rota;
-                                break;
-                            }
-                        } catch (error) {
-                            console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
-                            continue;
-                        }
-                    }
-                    
-                    if (!response || !response.ok) {
-                        throw new Error("Nenhuma rota de edição funcionou");
-                    }
+                    url = `/api/bens/${bemId}`;
                 } else {
-                    // NOVO BEM
+                    // NOVO BEM - CORREÇÃO: URL absoluta
                     method = 'POST';
-                    // CORREÇÃO: Tentar diferentes rotas para criação
-                    const rotasCriacao = [
-                        '/api/bens',
-                        '/api/bens/novo',
-                        '/bens'
-                    ];
-                    
-                    for (const rota of rotasCriacao) {
-                        try {
-                            console.log(`📤 Tentando ${method} para ${rota}`);
-                            response = await fetch(rota, {
-                                method: method,
-                                headers: { 
-                                    'Content-Type': 'application/json',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify(dados)
-                            });
-                            
-                            if (response.ok) {
-                                url = rota;
-                                break;
-                            }
-                        } catch (error) {
-                            console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
-                            continue;
-                        }
-                    }
-                    
-                    if (!response || !response.ok) {
-                        throw new Error("Nenhuma rota de criação funcionou");
-                    }
+                    url = '/api/bens';
                 }
+
+                console.log(`📤 Enviando ${method} para ${url}`);
+
+                response = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
 
                 console.log("📥 Status da resposta:", response.status);
 
-                const responseText = await response.text();
-                console.log("📥 Resposta bruta do servidor:", responseText);
-
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                } catch (parseError) {
-                    console.error("❌ Erro ao fazer parse do JSON:", parseError);
-                    throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}...`);
-                }
-
+                const result = await response.json();
                 console.log("📥 Resposta parseada:", result);
 
                 if (result.success) {
                     alert("✅ " + result.message);
-                    bootstrap.Modal.getInstance(document.getElementById('modalBem')).hide();
-                    location.reload();
+                    if (modalBemInstance) {
+                        modalBemInstance.hide();
+                    }
+                    // Recarregar a página para mostrar os dados atualizados
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 } else {
                     let mensagemErro = result.message || "Erro desconhecido";
                     if (result.errors) {
@@ -1287,8 +1220,10 @@
             } finally {
                 // Restaurar botão independente do resultado
                 const btnSalvar = document.getElementById('btnSalvar');
-                btnSalvar.innerHTML = 'Salvar Alterações';
-                btnSalvar.disabled = false;
+                if (btnSalvar) {
+                    btnSalvar.innerHTML = 'Salvar Alterações';
+                    btnSalvar.disabled = false;
+                }
             }
         }
 
@@ -1301,112 +1236,108 @@
                 return;
             }
 
-            // Preencher todos os campos
-            document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
-            document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('numero').value = bem.numero || '';
-            document.getElementById('nome').value = bem.nome || '';
-            document.getElementById('situacao').value = bem.situacao || 'Pendente';
-            document.getElementById('localizacao').value = bem.localizacao || '';
-            document.getElementById('responsavel').value = bem.responsavel || '';
-            document.getElementById('auditor').value = bem.auditor || '';
-            document.getElementById('observacoes').value = bem.observacoes || '';
-
-            // Datas - tratamento mais robusto
             try {
-                if (bem.data_ultima_vistoria) {
-                    let dataUltima = bem.data_ultima_vistoria;
-                    if (typeof dataUltima === 'string') {
-                        if (dataUltima.includes('T')) {
-                            dataUltima = dataUltima.split('T')[0];
-                        } else if (dataUltima.includes(' ')) {
-                            dataUltima = dataUltima.split(' ')[0];
-                        }
-                    }
-                    document.getElementById('data_ultima_vistoria').value = dataUltima;
-                } else {
-                    document.getElementById('data_ultima_vistoria').value = '';
-                }
+                // Preencher todos os campos
+                document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
+                document.getElementById('bemId').value = bem.id || '';
+                document.getElementById('numero').value = bem.numero || '';
+                document.getElementById('nome').value = bem.nome || '';
+                document.getElementById('situacao').value = bem.situacao || 'Pendente';
+                document.getElementById('localizacao').value = bem.localizacao || '';
+                document.getElementById('responsavel').value = bem.responsavel || '';
+                document.getElementById('auditor').value = bem.auditor || '';
+                document.getElementById('observacoes').value = bem.observacoes || '';
 
-                if (bem.data_vistoria_atual) {
-                    let dataAtual = bem.data_vistoria_atual;
-                    if (typeof dataAtual === 'string') {
-                        if (dataAtual.includes('T')) {
-                            dataAtual = dataAtual.split('T')[0];
-                        } else if (dataAtual.includes(' ')) {
-                            dataAtual = dataAtual.split(' ')[0];
+                // Datas - tratamento mais robusto
+                try {
+                    if (bem.data_ultima_vistoria) {
+                        let dataUltima = bem.data_ultima_vistoria;
+                        if (typeof dataUltima === 'string') {
+                            if (dataUltima.includes('T')) {
+                                dataUltima = dataUltima.split('T')[0];
+                            } else if (dataUltima.includes(' ')) {
+                                dataUltima = dataUltima.split(' ')[0];
+                            }
                         }
+                        document.getElementById('data_ultima_vistoria').value = dataUltima;
+                    } else {
+                        document.getElementById('data_ultima_vistoria').value = '';
                     }
-                    document.getElementById('data_vistoria_atual').value = dataAtual;
-                } else {
+
+                    if (bem.data_vistoria_atual) {
+                        let dataAtual = bem.data_vistoria_atual;
+                        if (typeof dataAtual === 'string') {
+                            if (dataAtual.includes('T')) {
+                                dataAtual = dataAtual.split('T')[0];
+                            } else if (dataAtual.includes(' ')) {
+                                dataAtual = dataAtual.split(' ')[0];
+                            }
+                        }
+                        document.getElementById('data_vistoria_atual').value = dataAtual;
+                    } else {
+                        document.getElementById('data_vistoria_atual').value = '';
+                    }
+                } catch (error) {
+                    console.error("Erro ao processar datas:", error);
+                    document.getElementById('data_ultima_vistoria').value = '';
                     document.getElementById('data_vistoria_atual').value = '';
                 }
+
+                // Desabilitar campos para visualização
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => input.disabled = true);
+                document.getElementById('btnSalvar').style.display = 'none';
+
+                // Abrir modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
+                }
             } catch (error) {
-                console.error("Erro ao processar datas:", error);
-                document.getElementById('data_ultima_vistoria').value = '';
-                document.getElementById('data_vistoria_atual').value = '';
+                console.error("💥 Erro ao preencher modal de visualização:", error);
+                alert("Erro ao carregar formulário de visualização: " + error.message);
             }
-
-            // Desabilitar campos para visualização
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => input.disabled = true);
-            document.getElementById('btnSalvar').style.display = 'none';
-
-            const modal = new bootstrap.Modal(document.getElementById('modalBem'));
-            modal.show();
         }
 
-        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA
+        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA E SIMPLIFICADA
         function confirmarExclusao(bemId, nomeBem) {
             console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
             bemIdParaExcluir = bemId;
             document.getElementById('nomeBemExcluir').textContent = nomeBem || 'Este bem';
-            new bootstrap.Modal(document.getElementById('modalConfirmacao')).show();
+            
+            const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
+            modalConfirmacao.show();
         }
 
-        document.getElementById('btnConfirmarExclusao').addEventListener('click', async function () {
+        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
+        async function executarExclusao() {
             if (!bemIdParaExcluir) return;
 
             try {
-                // CORREÇÃO: Tentar diferentes rotas para exclusão
-                const rotasExclusao = [
-                    `/api/bens/${bemIdParaExcluir}`,
-                    `/api/bens/excluir/${bemIdParaExcluir}`,
-                    `/bens/${bemIdParaExcluir}`
-                ];
+                // CORREÇÃO: URL absoluta
+                const url = `/api/bens/${bemIdParaExcluir}`;
+                console.log(`🗑️ Executando DELETE para ${url}`);
 
-                let response;
-                let rotaUsada = '';
+                const response = await fetch(url, {
+                    method: 'DELETE'
+                });
 
-                for (const rota of rotasExclusao) {
-                    try {
-                        console.log(`🗑️ Tentando DELETE para ${rota}`);
-                        response = await fetch(rota, {
-                            method: 'DELETE'
-                        });
-                        
-                        if (response.ok) {
-                            rotaUsada = rota;
-                            break;
-                        }
-                    } catch (error) {
-                        console.log(`❌ Rota ${rota} falhou, tentando próxima...`);
-                        continue;
-                    }
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
 
-                if (!response || !response.ok) {
-                    throw new Error("Nenhuma rota de exclusão funcionou");
-                }
-
-                console.log(`✅ Exclusão bem-sucedida via ${rotaUsada}`);
                 const result = await response.json();
                 console.log("📥 Resposta da exclusão:", result);
 
                 if (result.success) {
                     alert("✅ " + result.message);
-                    bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao')).hide();
-                    location.reload();
+                    const modalConfirmacao = bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao'));
+                    if (modalConfirmacao) {
+                        modalConfirmacao.hide();
+                    }
+                    // Recarregar a página para mostrar os dados atualizados
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 } else {
                     alert("❌ Erro: " + result.message);
                 }
@@ -1414,7 +1345,7 @@
                 console.error("💥 Erro ao excluir:", error);
                 alert("❌ Erro: " + error.message);
             }
-        });
+        }
 
         // Reativar campos quando modal fechar
         document.getElementById('modalBem').addEventListener('hidden.bs.modal', function () {

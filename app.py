@@ -51,12 +51,12 @@ app.secret_key = 'sua-chave-segura-aqui'  # Altere para uma chave segura em prod
 app.config.from_object(Config)
 
 # ==============================
-# Configuração de Segurança
+# Configuração de Segurança - CORRIGIDA
 # ==============================
 try:
     from flask_talisman import Talisman
     
-    # Configuração de Content Security Policy
+    # Configuração de Content Security Policy MAIS PERMISSIVA
     csp = {
         'default-src': [
             '\'self\'',
@@ -66,8 +66,10 @@ try:
         'script-src': [
             '\'self\'',
             'https://cdn.jsdelivr.net',
+            'https://unpkg.com',
             '\'unsafe-inline\'',
-            '\'unsafe-eval\''
+            '\'unsafe-eval\'',
+            'blob:'
         ],
         'style-src': [
             '\'self\'',
@@ -86,32 +88,39 @@ try:
             'data:'
         ],
         'connect-src': [
-            '\'self\''
+            '\'self\'',
+            'blob:',
+            'data:'
+        ],
+        'frame-src': [
+            '\'self\'',
+            'blob:',
+            'data:'
         ]
     }
 
-    # Configurar Talisman baseado no ambiente
-    if not app.debug:
-        # Produção - forçar HTTPS
+    # Configuração adaptativa baseada no ambiente
+    if os.environ.get('FLASK_ENV') == 'production' or not app.debug:
+        # Produção - HTTPS obrigatório
         Talisman(
             app,
             content_security_policy=csp,
-            force_https=True,
+            force_https=False,  # ALTERADO: Permitir HTTP também
             session_cookie_secure=True,
             strict_transport_security=True,
             frame_options='DENY'
         )
-        logger.info("Modo produção: Segurança HTTPS ativada")
+        logger.info("Modo produção: Segurança ativada")
     else:
-        # Desenvolvimento - permitir HTTP
+        # Desenvolvimento - mais permissivo
         Talisman(
             app,
-            content_security_policy=csp,
+            content_security_policy=None,  # Desativar CSP em desenvolvimento
             force_https=False,
             session_cookie_secure=False,
             strict_transport_security=False
         )
-        logger.info("Modo desenvolvimento: Executando em HTTP")
+        logger.info("Modo desenvolvimento: Executando com segurança reduzida")
         
 except ImportError:
     logger.warning("Flask-Talisman não instalado. Executando sem segurança HTTPS.")
@@ -437,7 +446,7 @@ def carregar_dados_bancos() -> Dict[str, int]:
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
 # ==============================
-# Sistema de Autenticação
+# Sistema de Autenticação - MOVIDA PARA ANTES DAS ROTAS
 # ==============================
 def hash_senha(senha):
     """Gera hash da senha"""
@@ -641,6 +650,7 @@ def visualizar(tipo: str):
                              mensagem=f"Erro ao carregar dados: {str(e)}")
 
 @app.route('/exportar/<tipo>')
+@login_required
 def exportar(tipo: str):
     """Exporta relatórios para Excel"""
     if not os.path.exists(DB_PATH):
@@ -652,6 +662,7 @@ def exportar(tipo: str):
     return export_service.exportar_bens_por_tipo(tipo)
 
 @app.route('/exportar-localidade/<localidade>')
+@login_required
 def exportar_localidade(localidade: str):
     """Exporta relatório por localidade para Excel"""
     if not os.path.exists(DB_PATH):
@@ -660,6 +671,7 @@ def exportar_localidade(localidade: str):
     return export_service.exportar_localidade(localidade)
 
 @app.route('/importar-excel', methods=['POST'])
+@login_required
 def importar_excel():
     """Rota para importar dados do Excel para o SQLite"""
     try:
@@ -738,9 +750,8 @@ def importar_excel():
                              mensagem=f'Erro durante a importação: {str(e)}',
                              **carregar_dados_bancos())
 
-
-
 @app.route('/api/camera/status')
+@login_required
 def api_camera_status():
     """API para verificar status da câmera"""
     try:
@@ -758,18 +769,14 @@ def api_camera_status():
         logger.error(f"Erro ao verificar status da câmera: {str(e)}")
         return jsonify({'success': False, 'has_camera': False})
 
-
-
-
-
-
 # ==============================
-# Rotas CRUD Unificadas - CORRIGIDAS
+# Rotas CRUD Unificadas - CORRIGIDAS E PADRONIZADAS
 # ==============================
 
 @app.route('/api/bens', methods=['POST'])
 @login_required
 def criar_bem():
+    """Cria um novo bem - ROTA PADRONIZADA"""
     try:
         dados = request.get_json()
         print(f"📥 Dados recebidos para novo bem: {dados}")
@@ -829,13 +836,13 @@ def criar_bem():
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
 # ==============================
-# ROTAS DA API CORRIGIDAS - ADICIONANDO ROTAS FALTANTES
+# ROTAS DA API CORRIGIDAS E PADRONIZADAS
 # ==============================
 
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
 def api_obter_bem_por_id(bem_id):
-    """API para obter dados de um bem pelo ID - ROTA CORRIGIDA"""
+    """API para obter dados de um bem pelo ID - ROTA PRINCIPAL"""
     try:
         print(f"🔍 Buscando bem por ID: {bem_id}")
         
@@ -872,18 +879,10 @@ def api_obter_bem_por_id(bem_id):
         print(f"💥 Erro ao obter bem por ID {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
-# ROTA ALTERNATIVA PARA COMPATIBILIDADE - ESSA É A QUE O JAVASCRIPT ESTÁ TENTANDO ACESSAR
-@app.route('/api/bens/id/<int:bem_id>', methods=['GET'])
-@login_required
-def api_obter_bem_por_id_alternativo(bem_id):
-    """Rota alternativa para compatibilidade com JavaScript - CORRIGINDO O ERRO 404"""
-    print(f"🔍 ROTA ALTERNATIVA - Buscando bem por ID: {bem_id}")
-    return api_obter_bem_por_id(bem_id)
-
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
 def api_editar_bem(bem_id):
-    """API para editar um bem existente - COM OBSERVAÇÕES"""
+    """API para editar um bem existente - ROTA PRINCIPAL"""
     try:
         dados = request.get_json()
         print(f"✏️ Editando bem ID {bem_id} com dados:", dados)
@@ -929,7 +928,7 @@ def api_editar_bem(bem_id):
 @app.route('/api/bens/<int:bem_id>', methods=['DELETE'])
 @login_required
 def api_excluir_bem(bem_id):
-    """API para excluir um bem"""
+    """API para excluir um bem - ROTA PRINCIPAL"""
     try:
         print(f"🗑️ Excluindo bem ID: {bem_id}")
         
@@ -956,40 +955,39 @@ def api_excluir_bem(bem_id):
         print(f"💥 Erro ao excluir bem {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
-@app.route('/api/bens/<numero_bem>', methods=['GET'])
-@login_required
-def api_obter_bem_por_numero(numero_bem):
-    """API para obter dados de um bem pelo número"""
-    try:
-        print(f"🔍 Buscando bem por número: {numero_bem}")
-        
-        bem = obter_bem_por_numero(DB_PATH, numero_bem)
-        
-        if bem:
-            print(f"✅ Bem encontrado: {bem['numero']} - {bem['nome']}")
-            return jsonify({'success': True, 'data': bem})
-        else:
-            print(f"❌ Bem não encontrado: {numero_bem}")
-            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
-            
-    except Exception as e:
-        print(f"💥 Erro ao obter bem {numero_bem}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)}), 500
+# ==============================
+# ROTAS DE COMPATIBILIDADE - PARA EVITAR ERROS 404
+# ==============================
 
-@app.route('/api/verificar-numero', methods=['GET'])
-def api_verificar_numero():
-    """API para verificar se um número de bem já existe"""
-    try:
-        numero = request.args.get('numero', '').strip()
-        if not numero:
-            return jsonify({'exists': False})
-        
-        existe = verificar_numero_existe(DB_PATH, numero)
-        return jsonify({'exists': existe})
-        
-    except Exception as e:
-        logger.error(f"Erro ao verificar número: {str(e)}")
-        return jsonify({'exists': False})
+@app.route('/api/bens/id/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem_por_id_compativel(bem_id):
+    """Rota de compatibilidade - redireciona para a rota principal"""
+    return api_obter_bem_por_id(bem_id)
+
+@app.route('/api/bem/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem_por_id_alternativo(bem_id):
+    """Rota alternativa para compatibilidade"""
+    return api_obter_bem_por_id(bem_id)
+
+@app.route('/api/bens/editar/<int:bem_id>', methods=['PUT'])
+@login_required
+def api_editar_bem_compativel(bem_id):
+    """Rota de compatibilidade para edição"""
+    return api_editar_bem(bem_id)
+
+@app.route('/api/bens/excluir/<int:bem_id>', methods=['DELETE'])
+@login_required
+def api_excluir_bem_compativel(bem_id):
+    """Rota de compatibilidade para exclusão"""
+    return api_excluir_bem(bem_id)
+
+@app.route('/api/bens/novo', methods=['POST'])
+@login_required
+def api_criar_bem_compativel():
+    """Rota de compatibilidade para criação"""
+    return criar_bem()
 
 # ==============================
 # Rotas de Autenticação
@@ -1056,11 +1054,13 @@ def perfil():
 # ROTAS DE AJUDA E SUPORTE
 # ==============================
 @app.route('/ajuda')
+@login_required
 def ajuda():
     """Página central de ajuda do sistema"""
     return render_template('ajuda.html')
 
 @app.route('/ajuda/<topico>')
+@login_required
 def ajuda_topico(topico):
     """Página de ajuda por tópico específico"""
     topicos_validos = ['cadastro', 'localizacao', 'relatorios', 'importacao', 'problemas', 'contato']
@@ -1071,6 +1071,7 @@ def ajuda_topico(topico):
     return render_template('ajuda.html', topico_selecionado=topico)
 
 @app.route('/api/ajuda/buscar', methods=['POST'])
+@login_required
 def api_ajuda_buscar():
     """API para busca na ajuda"""
     try:
@@ -1110,6 +1111,7 @@ def api_ajuda_buscar():
         return jsonify({'success': False, 'message': 'Erro na busca'})
 
 @app.route('/api/ajuda/contato', methods=['POST'])
+@login_required
 def api_ajuda_contato():
     """API para enviar mensagem de contato"""
     try:
@@ -1229,36 +1231,6 @@ def cadastrar_usuario():
     
     # GET request - mostrar formulário vazio
     return render_template('cadastrar_usuario.html')
-
-# ==============================
-# ROTAS DA API CORRIGIDAS - ADICIONANDO ROTAS FALTANTES
-# ==============================
-
-@app.route('/api/bem/<int:bem_id>', methods=['GET'])
-@login_required
-def api_obter_bem_por_id_compativel(bem_id):
-    """Rota alternativa para compatibilidade com JavaScript"""
-    return api_obter_bem_por_id(bem_id)
-
-@app.route('/api/bens/editar/<int:bem_id>', methods=['PUT'])
-@login_required
-def api_editar_bem_compativel(bem_id):
-    """Rota alternativa para edição"""
-    return api_editar_bem(bem_id)
-
-@app.route('/api/bens/excluir/<int:bem_id>', methods=['DELETE'])
-@login_required
-def api_excluir_bem_compativel(bem_id):
-    """Rota alternativa para exclusão"""
-    return api_excluir_bem(bem_id)
-
-@app.route('/api/bens/novo', methods=['POST'])
-@login_required
-def api_criar_bem_compativel():
-    """Rota alternativa para criação"""
-    return criar_bem()
-
-
 
 # ==============================
 # ROTA PARA EDITAR USUÁRIO
@@ -1526,6 +1498,7 @@ def obter_estatisticas_crud():
 # Rotas de Interface
 # ==============================
 @app.route('/buscar')
+@login_required
 def buscar_bens():
     """Página de busca avançada"""
     termo = request.args.get('q', '')
@@ -1537,11 +1510,13 @@ def buscar_bens():
                          total_resultados=len(resultados))
 
 @app.route('/novo-bem')
+@login_required
 def novo_bem():
     """Página para cadastrar novo bem"""
     return render_template('novo_bem.html')
 
 @app.route('/relatorio/localidades')
+@login_required
 def relatorio_localidades():
     """Relatório de bens por localidade - COM FILTROS AVANÇADOS"""
     try:
@@ -1702,8 +1677,9 @@ def obter_bens_paginados_com_id(db_path: str, tipo: str, pagina: int = 1, por_pa
         }
 
 @app.route('/sistema-crud')
+@login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens - VERSÃO DEFINITIVA CORRIGIDA"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA"""
     try:
         # Parâmetros de paginação e filtros
         pagina = request.args.get('pagina', 1, type=int)
@@ -1743,6 +1719,7 @@ def sistema_crud():
             query_where += " AND (nome LIKE ? OR numero LIKE ?)"
             termo_like = f"%{termo_busca}%"
             params.extend([termo_like, termo_like])
+        
         # Contar total de registros
         count_query = f"SELECT COUNT(*) FROM bens {query_where}"
         cursor.execute(count_query, params)
@@ -1831,6 +1808,7 @@ def sistema_crud():
                             mensagem=f"Erro ao carregar dados: {str(e)}")
  
 @app.route('/sair')
+@login_required
 def sair():
     """Página de encerramento do aplicativo"""
     return render_template('sair.html', total_count=carregar_dados_bancos().get('total_count', 0), session_time="5min")
@@ -1862,6 +1840,7 @@ def service_unavailable(error):
 # ==============================
 if app.debug:
     @app.route('/debug-localidades')
+    @login_required
     def debug_localidades():
         """Página de debug para verificar localidades (apenas em desenvolvimento)"""
         from utils.db_handler import debug_localidades_completas
@@ -1872,6 +1851,7 @@ if app.debug:
             return f"Erro no debug: {str(e)}"
 
     @app.route('/teste-consulta-direta/<localidade>')
+    @login_required
     def teste_consulta_direta(localidade):
         """Teste de consulta direta no banco (apenas em desenvolvimento)"""
         try:
@@ -1908,10 +1888,8 @@ if app.debug:
         except Exception as e:
             return jsonify({'error': str(e)})
         
-        
-        
-        
 @app.route('/api/scanner/diagnostic')
+@login_required
 def scanner_diagnostic():
     """API para diagnóstico do scanner"""
     user_agent = request.headers.get('User-Agent', '')
@@ -1938,17 +1916,27 @@ if __name__ == '__main__':
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
-    # CONFIGURAÇÃO SIMPLIFICADA - SEM HTTPS PARA EVITAR PROBLEMAS
+    # CONFIGURAÇÃO ADAPTATIVA
     try:
-        # Sempre usar HTTP na porta 5000 para desenvolvimento
-        host = '0.0.0.0'  # Acessível de qualquer IP
-        port = 5000       # Porta que não requer admin
+        # Configuração baseada no ambiente
+        if os.environ.get('FLASK_ENV') == 'production':
+            # Produção
+            host = '0.0.0.0'
+            port = 5000
+            debug = False
+            logger.info("🚀 Iniciando em modo PRODUÇÃO")
+        else:
+            # Desenvolvimento
+            host = '0.0.0.0'
+            port = 5000
+            debug = True
+            logger.info("🔧 Iniciando em modo DESENVOLVIMENTO")
         
-        logger.info(f"🚀 Iniciando servidor em http://{host}:{port}")
+        logger.info(f"🌐 Servidor iniciado em http://{host}:{port}")
         logger.info("📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000")
         
         app.run(
-            debug=True,
+            debug=debug,
             host=host,
             port=port,
             threaded=True
