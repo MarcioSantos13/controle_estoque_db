@@ -1,1283 +1,194 @@
-2025-09-28 01:27:28 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:27:29 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Tabela bens criada/atualizada com sucesso
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Backup criado: D:\controle_estoque_db\relatorios\backups\backup_controle_20250928_012803.db
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Colunas encontradas no Excel: ['NOME ', 'NUMERO DO BEM', 'SITUAÇÃO', 'LOCALIZAÇÃO', 'Responsavel', 'Data da ultima vistoria', 'Data da vistoria atual', 'Auditor']
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'nome' detectada como: 'NOME '
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'responsavel' detectada como: 'Responsavel'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'data_ultima_vistoria' detectada como: 'Data da ultima vistoria'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'data_vistoria_atual' detectada como: 'Data da vistoria atual'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Coluna 'auditor' detectada como: 'Auditor'
-2025-09-28 01:28:03 - controle_patrimonial - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'situacao': 'SITUAÇÃO', 'localizacao': 'LOCALIZAÇÃO', 'responsavel': 'Responsavel', 'data_ultima_vistoria': 'Data da ultima vistoria', 'data_vistoria_atual': 'Data da vistoria atual', 'auditor': 'Auditor'}
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 12: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 13: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 14: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 15: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 16: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 17: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 18: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 19: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 20: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 21: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 22: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 23: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 24: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 25: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 26: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 27: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 28: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 29: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 30: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 31: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 32: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 33: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 34: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 35: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 36: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 37: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 38: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 39: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 40: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 41: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 42: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 43: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 44: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 45: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 46: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 47: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 48: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 49: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 50: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 51: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 52: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 53: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 54: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 55: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 56: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 57: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 58: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 59: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 60: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 61: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 62: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 63: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 64: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 65: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 66: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 67: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 68: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 69: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 70: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 71: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 72: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 73: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 74: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 75: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 76: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 77: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 78: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 79: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 80: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 81: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 82: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 83: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 84: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 85: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 86: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 87: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 88: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 89: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 90: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 91: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 92: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 93: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 94: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 95: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 96: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 97: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 98: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 99: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 100: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 101: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 102: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 103: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 104: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 105: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 106: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 107: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 108: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 109: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 110: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 111: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 112: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 113: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 114: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 115: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 116: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 117: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 118: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 119: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 120: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 121: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 122: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 123: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 124: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 125: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 126: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 127: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 128: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 129: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 130: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 131: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 132: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 133: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 134: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 135: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 136: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 137: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 138: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 139: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 140: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 141: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 142: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 143: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 144: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 145: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 146: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 147: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 148: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 149: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 150: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 151: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 152: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 153: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 154: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 155: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 156: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 157: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 158: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 159: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 160: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 161: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 162: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 163: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 164: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 165: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 166: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 167: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 168: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 169: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 170: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 171: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 172: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 173: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 174: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 175: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 176: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 177: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 178: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 179: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 180: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 181: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 182: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 183: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 184: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 185: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 186: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 187: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 188: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 189: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 190: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 191: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 192: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 193: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 194: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 195: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 196: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 197: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 198: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 199: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 200: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 201: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - WARNING - Erro na linha 202: Error binding parameter 5: type 'NaTType' is not supported
-2025-09-28 01:28:03 - controle_patrimonial - INFO - ✅ Importação concluída com sucesso!
-• 📊 Novos registros: 0
-• 🔄 Registros atualizados: 10
-• ⚠️  Registros com erro: 191
-• 📦 Backup criado: backup_controle_20250928_012803.db
-2025-09-28 01:30:29 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:30:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:30:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:31:09 - controle_patrimonial - ERROR - Erro na importação: name 'registros_inseridos' is not defined
-2025-09-28 01:38:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 01:38:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 02:07:04 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 02:07:04 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 02:07:56 - controle_patrimonial - INFO - Localização do bem 367248: Sala da Direção
-2025-09-28 02:07:56 - controle_patrimonial - INFO - Verificação do bem 367248: Encontrado
-2025-09-28 02:07:56 - controle_patrimonial - INFO - ✅ Bem 367248 marcado como localizado em 'Sala da Direção'!
-2025-09-28 02:08:07 - controle_patrimonial - INFO - Bem 320382 atualizado com sucesso
-2025-09-28 20:40:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 20:40:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-28 20:59:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 00:04:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 00:04:23 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 00:04:36 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 00:04:36 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 00:04:36 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 00:04:36 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-29 00:05:15 - controle_patrimonial - INFO - Localização do bem 329779: Sec. Financeira
-2025-09-29 00:05:15 - controle_patrimonial - INFO - Verificação do bem 329779: Encontrado
-2025-09-29 00:05:15 - controle_patrimonial - INFO - ✅ Bem 329779 marcado como localizado em 'Sec. Financeira'!
-2025-09-29 00:05:15 - controle_patrimonial - ERROR - Erro ao obter bem 329779: no such column: observacoes
-2025-09-29 00:06:45 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:28:24 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:28:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:38:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:38:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:39:44 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:39:45 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:42:02 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:42:02 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:45:31 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:45:31 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:53:24 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:53:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 22:53:37 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 22:53:37 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 22:53:37 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 22:53:37 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-29 23:05:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 23:05:29 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 23:05:29 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 23:05:29 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 23:05:29 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-29 23:05:33 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 23:05:33 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 23:05:33 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 23:05:33 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-29 23:14:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 23:14:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 23:15:08 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 23:15:08 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 23:15:09 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 23:15:09 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-29 23:16:01 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-09-29 23:16:01 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-09-29 23:16:01 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-09-29 23:16:01 - controle_patrimonial - ERROR - Erro ao obter bem 002: no such column: observacoes
-2025-09-29 23:18:57 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 23:18:57 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-29 23:19:06 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-09-29 23:19:06 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-09-29 23:19:06 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-09-29 23:19:06 - controle_patrimonial - ERROR - Erro ao obter bem 002: no such column: observacoes
-2025-09-29 23:19:10 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-29 23:19:10 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-29 23:19:10 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-29 23:19:10 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 08:57:53 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 08:57:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 08:58:18 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 02
-2025-09-30 08:58:18 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 08:58:19 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 02'!
-2025-09-30 08:58:19 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 08:58:43 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 08:58:43 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 08:58:43 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 10:47:19 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 10:47:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 10:47:33 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 10:47:33 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 10:47:33 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 10:47:33 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 10:49:04 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 10:49:04 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 10:49:05 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 10:49:05 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 11:32:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:32:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:33:24 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 11:33:24 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 11:33:24 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 11:33:24 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 11:35:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:35:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:35:28 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 11:35:28 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 11:35:28 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 11:35:28 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 11:35:33 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 11:35:33 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 11:35:33 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 11:35:33 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 11:35:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:35:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 11:36:07 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 11:36:07 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 11:36:07 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 11:36:07 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 13:41:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 13:41:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 13:42:23 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 13:42:23 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 13:42:23 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 13:42:23 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 13:51:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 13:51:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 13:51:27 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 13:51:27 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 13:51:27 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 13:51:27 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 13:52:08 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250930-135208.xlsx (4 registros)
-2025-09-30 13:52:12 - controle_patrimonial - INFO - Localização do bem 404500: Sala da Direção
-2025-09-30 13:52:12 - controle_patrimonial - INFO - Verificação do bem 404500: Encontrado
-2025-09-30 13:52:12 - controle_patrimonial - INFO - ✅ Bem 404500 marcado como localizado em 'Sala da Direção'!
-2025-09-30 13:52:12 - controle_patrimonial - ERROR - Erro ao obter bem 404500: no such column: observacoes
-2025-09-30 14:03:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 14:03:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 14:04:12 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 14:04:12 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 14:04:12 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 14:04:12 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 14:05:15 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 14:05:15 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 14:05:16 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 14:05:16 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 14:05:27 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-09-30 14:05:27 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-09-30 14:05:27 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-09-30 14:05:27 - controle_patrimonial - ERROR - Erro ao obter bem 002: no such column: observacoes
-2025-09-30 14:05:32 - controle_patrimonial - INFO - Localização do bem 003: Não definida
-2025-09-30 14:05:32 - controle_patrimonial - INFO - Verificação do bem 003: Não encontrado
-2025-09-30 14:20:06 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 14:20:07 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 14:20:22 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 14:20:22 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 14:20:22 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 14:20:22 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 14:20:52 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 14:20:52 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 14:20:52 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 14:20:52 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 15:04:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:04:57 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:04:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:07 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:09 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:13 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:15 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:26 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:28 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:30 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:05:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:08:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:08:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:08:28 - controle_patrimonial - ERROR - Erro na página CRUD: 'total_count' is undefined
-2025-09-30 15:10:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:11:07 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:11:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:12:30 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:12:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:12:42 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:12:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:12:54 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 15:12:54 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 15:12:54 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 15:12:54 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 15:13:09 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-09-30 15:13:09 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-09-30 15:13:09 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-09-30 15:13:09 - controle_patrimonial - ERROR - Erro ao obter bem 002: no such column: observacoes
-2025-09-30 15:14:14 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:14:39 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:15:04 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:19:45 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:19:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:19:52 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:20:36 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:20:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:20:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:21:08 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:21:41 - controle_patrimonial - ERROR - Erro ao obter bem undefined: no such column: observacoes
-2025-09-30 15:25:07 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:25:11 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:25:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:25:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:30:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:30:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 15:31:12 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 15:31:25 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 15:31:25 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 15:31:25 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 15:31:25 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 16:04:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 16:04:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 22:36:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 22:36:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 22:36:57 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 22:36:57 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 22:36:57 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 22:36:57 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 22:37:29 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 22:49:30 - controle_patrimonial - INFO - Bem 320584 atualizado com sucesso
-2025-09-30 22:58:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 22:59:08 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:02:56 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:02:57 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:05:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:05:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:07:37 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:07:56 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:08:41 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:08:42 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:19:37 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:19:37 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:20:13 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250930-232013.xlsx (5 registros)
-2025-09-30 23:28:05 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:28:12 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:43:11 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:43:12 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:43:21 - controle_patrimonial - INFO - Localização do bem 001: Sala Direção 01
-2025-09-30 23:43:21 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-09-30 23:43:21 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Direção 01'!
-2025-09-30 23:43:21 - controle_patrimonial - ERROR - Erro ao obter bem 001: no such column: observacoes
-2025-09-30 23:48:02 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:48:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:51:12 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:51:13 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:51:25 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20250930-235125.xlsx (198 registros)
-2025-09-30 23:54:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-09-30 23:54:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 00:04:52 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 00:04:52 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 00:05:26 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251001-000526.xlsx (5 registros)
-2025-10-01 20:18:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:18:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:18:57 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-01 20:18:57 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-01 20:18:57 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-01 20:19:34 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251001-201934.xlsx (5 registros)
-2025-10-01 20:26:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:30:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:30:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:31:53 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251001-203153.xlsx (6 registros)
-2025-10-01 20:32:45 - controle_patrimonial - INFO - Novo bem criado: 003 - COMPUTADOR DELL - VERSÃO TESTE 003
-2025-10-01 20:33:08 - controle_patrimonial - INFO - Localização do bem 003: Sala da Direção 1
-2025-10-01 20:33:08 - controle_patrimonial - INFO - Verificação do bem 003: Encontrado
-2025-10-01 20:33:08 - controle_patrimonial - INFO - ✅ Bem 003 marcado como localizado em 'Sala da Direção 1'!
-2025-10-01 20:33:29 - controle_patrimonial - INFO - Localização do bem 003: Sala da Direção 1
-2025-10-01 20:33:29 - controle_patrimonial - INFO - Verificação do bem 003: Encontrado
-2025-10-01 20:33:29 - controle_patrimonial - INFO - ✅ Bem 003 marcado como localizado em 'Sala da Direção 1'!
-2025-10-01 20:33:53 - controle_patrimonial - INFO - Verificação do bem 003: Encontrado
-2025-10-01 20:33:53 - controle_patrimonial - INFO - ✅ Bem 003 marcado como localizado em 'sala direção'!
-2025-10-01 20:35:01 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251001-203501.xlsx (7 registros)
-2025-10-01 20:50:09 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:50:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:53:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 20:53:35 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 21:07:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 21:07:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 21:17:22 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-01 21:17:22 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-01 21:17:22 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-01 23:10:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:10:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:10:44 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-01 23:10:44 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-01 23:10:44 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-01 23:19:15 - controle_patrimonial - ERROR - Erro ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-01 23:24:30 - controle_patrimonial - ERROR - Erro ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-01 23:30:19 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:30:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:30:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:31:42 - controle_patrimonial - ERROR - Erro de banco ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-01 23:54:41 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:58:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-01 23:58:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 00:03:46 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 00:03:46 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 00:05:48 - controle_patrimonial - ERROR - Erro de banco ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-02 00:06:39 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-02 00:06:39 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-02 00:06:40 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-02 00:08:23 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-10-02 00:08:23 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-10-02 00:08:23 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-10-02 22:55:55 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 22:55:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 22:55:56 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 22:55:56 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:05:54 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:05:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:05:55 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:05:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:28:57 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:28:57 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:28:59 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:28:59 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:45:38 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:45:38 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:45:39 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-02 23:45:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-02 23:46:50 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-02 23:46:50 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-02 23:46:50 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-02 23:47:08 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251002-234708.xlsx (7 registros)
-2025-10-03 00:14:18 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 00:14:18 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 00:14:19 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 00:17:17 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção 2
-2025-10-03 00:17:17 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-10-03 00:17:17 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção 2'!
-2025-10-03 00:21:33 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 00:21:33 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 00:21:34 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 00:22:20 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251003-002220.xlsx (197 registros)
-2025-10-03 00:28:39 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251003-002839.xlsx (7 registros)
-2025-10-03 00:30:36 - controle_patrimonial - ERROR - Erro de banco ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-03 00:33:14 - controle_patrimonial - INFO - Relatório por localidade exportado: D:\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251003-003314.xlsx
-2025-10-03 00:40:40 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 00:40:40 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 00:40:41 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 00:40:41 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 00:40:48 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 00:40:48 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 00:40:49 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 00:47:12 - controle_patrimonial - ERROR - Erro de banco ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-03 09:04:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:04:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:04:28 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:04:28 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:26:54 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:26:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:26:54 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:26:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:30:50 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:30:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:30:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:30:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:32:06 - controle_patrimonial - INFO - Novo bem criado: 007 - Computador 07
-2025-10-03 09:33:54 - controle_patrimonial - INFO - Novo bem criado: 008 - Computador 008
-2025-10-03 09:45:47 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:45:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:45:47 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:45:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:47:19 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:47:19 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:47:20 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 09:47:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 09:47:31 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 09:47:31 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 09:47:31 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 09:58:22 - controle_patrimonial - INFO - Novo bem criado: 009 - Computador 009
-2025-10-03 10:10:58 - controle_patrimonial - INFO - Bem 009 excluído
-2025-10-03 10:11:36 - controle_patrimonial - ERROR - Erro ao criar bem: 'NoneType' object has no attribute 'strip'
-2025-10-03 10:24:00 - controle_patrimonial - INFO - Novo bem criado: 009 - Computador 09
-2025-10-03 10:24:25 - controle_patrimonial - INFO - Bem 009 excluído
-2025-10-03 10:24:37 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251003-102437.xlsx (7 registros)
-2025-10-03 10:29:58 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:29:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:29:58 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:29:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:31:09 - controle_patrimonial - ERROR - Erro de banco ao cadastrar usuário: table usuarios has no column named departamento
-2025-10-03 10:43:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:43:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:43:59 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:43:59 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:46:33 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:46:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:52:37 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:52:37 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:52:38 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 10:52:38 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 10:53:49 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Santos', 'email': 'marcio@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 10:53:49 - controle_patrimonial - ERROR - Erro SQLite: table usuarios has no column named departamento
-2025-10-03 11:24:58 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:24:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:28:36 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:28:36 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:28:36 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:28:36 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:30:06 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Ferreira dos Santos', 'email': 'marcio.santos@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 11:30:06 - controle_patrimonial - ERROR - Erro SQLite: table usuarios has no column named departamento
-2025-10-03 11:37:53 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:37:53 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:40:43 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:40:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:40:43 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:40:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:43:21 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Ferreira dos Santos', 'email': 'marcio.santos@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': 'cad@Estoque', 'confirmar_senha': 'cad@Estoque'}
-2025-10-03 11:43:21 - controle_patrimonial - ERROR - Erro SQLite: table usuarios has no column named departamento
-2025-10-03 11:48:18 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:48:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:48:18 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 11:48:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 11:49:38 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'marcio', 'email': 'marcio@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'usuario', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 11:49:38 - controle_patrimonial - ERROR - Erro SQLite: table usuarios has no column named departamento
-2025-10-03 11:53:30 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Ferreira dos Santos', 'email': 'marcio.santos@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 11:53:30 - controle_patrimonial - ERROR - Erro SQLite: table usuarios has no column named departamento
-2025-10-03 12:09:21 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:09:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:09:22 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:09:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:10:48 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Santos', 'email': 'marcio@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-9999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 12:10:48 - controle_patrimonial - INFO - Usuário cadastrado com ID: 3
-2025-10-03 12:10:48 - controle_patrimonial - ERROR - Erro ao listar usuários: listar_usuarios.html
-2025-10-03 12:17:17 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:17:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:17:17 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:17:17 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:21:18 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Teste de Login', 'email': 'usuario.teste@empresa.com', 'departamento': 'Patrimônio', 'telefone': '(61) 88888-888', 'tipo': 'usuario', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 12:21:18 - controle_patrimonial - INFO - Usuário cadastrado com ID: 5
-2025-10-03 12:32:36 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:32:36 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:33:14 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:33:14 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:33:18 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:33:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:41:38 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:41:38 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:41:39 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 12:41:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 12:43:42 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'Marcio Santos', 'email': 'marcio@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-03 13:03:04 - controle_patrimonial - ERROR - Erro ao criar bem: 'NoneType' object has no attribute 'strip'
-2025-10-03 13:03:08 - controle_patrimonial - ERROR - Erro ao criar bem: 'NoneType' object has no attribute 'strip'
-2025-10-03 14:05:15 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 14:05:15 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 14:05:16 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 14:05:16 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 14:06:57 - controle_patrimonial - ERROR - Erro ao criar bem: 'NoneType' object has no attribute 'strip'
-2025-10-03 14:38:37 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 14:38:37 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 14:38:47 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 14:38:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 14:38:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 14:38:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 14:38:58 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 14:38:58 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 14:38:58 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 14:39:28 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251003-143928.xlsx (7 registros)
-2025-10-03 15:07:54 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251003-150754.xlsx (7 registros)
-2025-10-03 15:29:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 15:29:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 19:51:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 19:51:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 19:51:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 19:51:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:09:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:09:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:09:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:09:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:26:29 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:26:29 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:34:41 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:34:41 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:34:42 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:34:42 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:34:59 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-03 20:34:59 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-03 20:35:00 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-03 20:36:26 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:36:26 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 20:36:29 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 20:36:29 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 22:52:09 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 22:52:09 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 22:52:10 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 22:52:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 22:53:07 - controle_patrimonial - INFO - Bem 007 excluído
-2025-10-03 23:06:13 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:06:13 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:07:11 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:07:11 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:07:26 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:07:26 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:10:47 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:10:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:10:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:10:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:12:20 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:12:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:12:20 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-03 23:12:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-03 23:15:33 - controle_patrimonial - INFO - Bem 16 excluído
-2025-10-03 23:15:49 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251003-231549.xlsx (7 registros)
-2025-10-04 00:27:10 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 00:27:10 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 00:27:10 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 00:29:34 - controle_patrimonial - INFO - Relatório por localidade exportado: D:\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251004-002934.xlsx
-2025-10-04 00:39:25 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 00:39:25 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 00:39:25 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 00:43:51 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 00:43:51 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 00:43:51 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 00:45:54 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 00:45:54 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 00:45:54 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 00:59:02 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 00:59:02 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 00:59:02 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:04:34 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:04:34 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:04:34 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:05:19 - controle_patrimonial - INFO - Localização do bem 367248: Sala da Direção
-2025-10-04 01:05:19 - controle_patrimonial - INFO - Verificação do bem 367248: Encontrado
-2025-10-04 01:05:19 - controle_patrimonial - INFO - ✅ Bem 367248 marcado como localizado em 'Sala da Direção'!
-2025-10-04 01:06:00 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:06:00 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:06:01 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:10:17 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:10:17 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:10:17 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:11:38 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:11:38 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:11:38 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:15:22 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:15:22 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:15:22 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 01:17:49 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 01:17:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 01:17:49 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 01:17:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 01:17:56 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-04 01:17:56 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-04 01:17:56 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-04 22:28:24 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 22:28:24 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 22:28:25 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 22:28:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 23:39:34 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:41:44 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:43:14 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:44:24 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:45:54 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:46:46 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'teste', 'email': 'teste@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-99', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-04 23:46:46 - controle_patrimonial - INFO - Usuário cadastrado com ID: 6
-2025-10-04 23:50:24 - controle_patrimonial - ERROR - Erro ao editar usuário: no such column: data_atualizacao
-2025-10-04 23:57:13 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 23:57:13 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 23:57:50 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 23:57:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 23:58:07 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 23:58:07 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 23:58:08 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-04 23:58:08 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-04 23:58:47 - controle_patrimonial - INFO - Editando usuário 1 com dados: {'nome': 'Administrador', 'email': 'admin@empresa.com', 'departamento': 'TI', 'telefone': '', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-04 23:58:47 - controle_patrimonial - INFO - Senha fornecida, atualizando hash
-2025-10-04 23:58:47 - controle_patrimonial - INFO - Query: UPDATE usuarios SET nome = ?, email = ?, departamento = ?, telefone = NULL, tipo = ?, ativo = ?, senha_hash = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?
-2025-10-04 23:58:47 - controle_patrimonial - INFO - Valores: ['Administrador', 'admin@empresa.com', 'TI', 'admin', 1, '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 1]
-2025-10-04 23:58:47 - controle_patrimonial - ERROR - Erro SQLite ao editar usuário 1: no such column: data_atualizacao
-2025-10-05 00:02:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-05 00:02:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-05 00:26:34 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-05 00:26:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-05 00:26:34 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-05 00:26:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-05 00:27:22 - controle_patrimonial - INFO - Editando usuário 1 com dados: {'nome': 'Administrador', 'email': 'admin@empresa.com', 'departamento': '', 'telefone': '', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-05 00:27:22 - controle_patrimonial - INFO - Senha fornecida, atualizando hash
-2025-10-05 00:27:22 - controle_patrimonial - INFO - Query: UPDATE usuarios SET nome = ?, email = ?, departamento = NULL, telefone = NULL, tipo = ?, ativo = ?, senha_hash = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?
-2025-10-05 00:27:22 - controle_patrimonial - INFO - Valores: ['Administrador', 'admin@empresa.com', 'admin', 1, '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 1]
-2025-10-05 00:28:42 - controle_patrimonial - INFO - Localização do bem 404612: Sala da Direção
-2025-10-05 00:28:42 - controle_patrimonial - INFO - Verificação do bem 404612: Encontrado
-2025-10-05 00:28:42 - controle_patrimonial - INFO - ✅ Bem 404612 marcado como localizado em 'Sala da Direção'!
-2025-10-05 00:29:43 - controle_patrimonial - INFO - Localização do bem 404612: Sala da Direção
-2025-10-05 00:29:43 - controle_patrimonial - INFO - Verificação do bem 404612: Encontrado
-2025-10-05 00:29:43 - controle_patrimonial - INFO - ✅ Bem 404612 marcado como localizado em 'Sala da Direção'!
-2025-10-05 00:30:23 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251005-003023.xlsx (8 registros)
-2025-10-05 00:30:26 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251005-003025.xlsx (198 registros)
-2025-10-05 22:32:53 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-05 22:32:53 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-05 22:32:54 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-05 22:32:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-05 22:35:13 - controle_patrimonial - INFO - Editando usuário 6 com dados: {'nome': 'teste', 'email': 'teste@unb.br', 'departamento': 'TI', 'telefone': '(61) 99999-99', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-05 22:35:13 - controle_patrimonial - INFO - Senha fornecida, atualizando hash
-2025-10-05 22:35:13 - controle_patrimonial - INFO - Query: UPDATE usuarios SET nome = ?, email = ?, departamento = ?, telefone = ?, tipo = ?, ativo = ?, senha_hash = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?
-2025-10-05 22:35:13 - controle_patrimonial - INFO - Valores: ['teste', 'teste@unb.br', 'TI', '(61) 99999-99', 'admin', 1, '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 6]
-2025-10-06 00:41:39 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-06 00:41:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-06 00:41:39 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-06 00:41:39 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-06 20:01:42 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-06 20:01:42 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-06 20:01:43 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-06 20:01:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-06 20:13:40 - controle_patrimonial - INFO - Localização do bem 367248: 110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD
-2025-10-06 20:13:40 - controle_patrimonial - INFO - Verificação do bem 367248: Encontrado
-2025-10-06 20:13:40 - controle_patrimonial - INFO - ✅ Bem 367248 marcado como localizado em '110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD'!
-2025-10-06 20:14:00 - controle_patrimonial - INFO - Localização do bem 404500: 110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD
-2025-10-06 20:14:00 - controle_patrimonial - INFO - Verificação do bem 404500: Encontrado
-2025-10-06 20:14:00 - controle_patrimonial - INFO - ✅ Bem 404500 marcado como localizado em '110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD'!
-2025-10-06 20:14:45 - controle_patrimonial - INFO - Localização do bem 404612: 110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD
-2025-10-06 20:14:45 - controle_patrimonial - INFO - Verificação do bem 404612: Encontrado
-2025-10-06 20:14:45 - controle_patrimonial - INFO - ✅ Bem 404612 marcado como localizado em '110124_4384 - SALA DA DIREÃ‡ÃƒO / CEAD'!
-2025-10-06 20:19:40 - controle_patrimonial - INFO - Bem 014 excluído
-2025-10-06 20:20:29 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251006-202029.xlsx (6 registros)
-2025-10-06 20:23:14 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251006-202314.xlsx (6 registros)
-2025-10-06 20:29:37 - controle_patrimonial - INFO - Localização do bem 001: Sala CTIC
-2025-10-06 20:29:37 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-06 20:29:37 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala CTIC'!
-2025-10-06 20:30:06 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-06 20:30:06 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 001'!
-2025-10-06 20:30:32 - controle_patrimonial - INFO - Localização do bem 001: SALA 001
-2025-10-06 20:30:32 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-06 20:30:32 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 001'!
-2025-10-06 20:32:49 - controle_patrimonial - INFO - Localização do bem 001: SALA 001
-2025-10-06 20:32:49 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-06 20:32:49 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 001'!
-2025-10-06 20:33:59 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251006-203318.xlsx (318814 registros)
-2025-10-09 22:53:20 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-09 22:53:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-09 22:53:21 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-09 22:53:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-09 22:54:11 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-09 22:54:11 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-09 22:54:11 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-09 23:14:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-09 23:14:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-09 23:14:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-09 23:14:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-09 23:15:09 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-09 23:15:09 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-09 23:15:09 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-09 23:15:25 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251009-231525.xlsx (10 registros)
-2025-10-09 23:16:11 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251009-231535.xlsx (318811 registros)
-2025-10-09 23:18:53 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251009-231853.xlsx (10 registros)
-2025-10-09 23:19:07 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251009-231907.xlsx (10 registros)
-2025-10-09 23:19:22 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251009-231922.xlsx (10 registros)
-2025-10-14 19:56:51 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 19:56:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 19:56:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 19:56:51 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 19:56:51 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 19:56:51 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 19:56:51 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 19:56:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 19:56:51 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 19:56:51 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 19:57:39 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 19:57:39 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 19:57:39 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:10:13 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:10:13 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:10:13 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:10:35 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:10:35 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:10:35 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:10:45 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:10:45 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:10:45 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:10:56 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:10:56 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:10:56 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:13:18 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:13:18 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:13:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:13:18 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:13:18 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:13:19 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:13:19 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:13:19 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:13:19 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:13:19 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:13:35 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:13:35 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:13:35 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:29:25 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:29:25 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:29:25 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:29:40 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:29:40 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:29:40 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:29:58 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:29:58 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:29:58 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:31:27 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:31:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:31:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:31:27 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:31:27 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:31:28 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:31:28 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:31:28 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:31:28 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:31:28 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:32:11 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:32:11 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:32:12 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:47:32 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:47:32 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:47:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:47:32 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:47:32 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:47:33 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:47:33 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:47:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:47:33 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:47:33 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:47:43 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:47:43 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:47:43 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:47:58 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:47:58 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:47:58 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:48:22 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:48:22 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:48:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:48:22 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:48:22 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:48:22 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:48:23 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:48:23 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:48:23 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:48:23 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:48:42 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:48:42 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:48:42 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:53:43 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:53:43 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:53:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:53:43 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:53:43 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:53:44 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:53:44 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:53:44 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:53:44 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:53:44 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:53:52 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:53:52 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:53:52 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:53:58 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:53:58 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:53:58 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:54:05 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:54:05 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:54:05 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:54:17 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção
-2025-10-14 20:54:17 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-10-14 20:54:17 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção'!
-2025-10-14 20:58:27 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:58:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:58:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:58:27 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:58:27 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:58:27 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 20:58:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 20:58:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 20:58:27 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 20:58:27 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 20:58:39 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:58:39 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:58:39 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 20:58:47 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 20:58:47 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 20:58:48 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:00:53 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:00:53 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:00:53 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:00:53 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:00:53 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:00:54 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:00:54 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:00:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:00:54 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:00:54 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:01:04 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:01:04 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:01:05 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:01:16 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:01:16 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:01:16 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:05:31 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:05:31 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:05:31 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:05:37 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:05:37 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:05:37 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:09:32 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:09:32 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:09:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:09:32 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:09:32 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:09:32 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:09:32 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:09:32 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:09:32 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:09:32 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:09:48 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:09:48 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:09:48 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:10:00 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:10:00 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:10:00 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 21:17:03 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:17:03 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:17:03 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:17:03 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:17:03 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:17:04 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 21:17:04 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 21:17:04 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 21:17:04 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 21:17:04 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 21:17:13 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 21:17:13 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 21:17:13 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-14 22:46:03 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 22:46:03 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 22:46:03 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 22:46:03 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 22:46:03 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 22:46:04 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-14 22:46:04 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-14 22:46:04 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-14 22:46:04 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-14 22:46:04 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-14 22:46:35 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-14 22:46:35 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-14 22:46:35 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 19:55:27 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 19:55:27 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 19:55:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 19:55:27 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 19:55:27 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 19:55:28 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 19:55:28 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 19:55:28 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 19:55:28 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 19:55:28 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 19:55:57 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-15 19:55:57 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 19:55:57 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 20:09:30 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 20:09:30 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 20:09:30 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 20:09:30 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 20:09:30 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 20:09:31 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 20:09:31 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 20:09:31 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 20:09:31 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 20:09:31 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 20:09:41 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-15 20:09:41 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 20:09:41 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 20:10:09 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-15 20:10:09 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 20:10:09 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 20:10:45 - controle_patrimonial - INFO - Localização do bem 002: Sala da Direção
-2025-10-15 20:10:45 - controle_patrimonial - INFO - Verificação do bem 002: Encontrado
-2025-10-15 20:10:45 - controle_patrimonial - INFO - ✅ Bem 002 marcado como localizado em 'Sala da Direção'!
-2025-10-15 20:11:12 - controle_patrimonial - INFO - Localização do bem 469703: Sala da Direção
-2025-10-15 20:11:12 - controle_patrimonial - INFO - Verificação do bem 469703: Encontrado
-2025-10-15 20:11:12 - controle_patrimonial - INFO - ✅ Bem 469703 marcado como localizado em 'Sala da Direção'!
-2025-10-15 20:12:24 - controle_patrimonial - INFO - Localização do bem 2022003404: Sala CTIC
-2025-10-15 20:12:24 - controle_patrimonial - INFO - Verificação do bem 2022003404: Encontrado
-2025-10-15 20:12:24 - controle_patrimonial - INFO - ✅ Bem 2022003404 marcado como localizado em 'Sala CTIC'!
-2025-10-15 20:12:43 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251015-201243.xlsx (12 registros)
-2025-10-15 20:12:56 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251015-201256.xlsx (12 registros)
-2025-10-15 21:09:34 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 21:09:34 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 21:09:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 21:09:34 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 21:09:34 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 21:09:35 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 21:09:35 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 21:09:35 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 21:09:35 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 21:09:35 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 21:09:53 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-15 21:09:53 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 21:09:53 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 21:10:19 - controle_patrimonial - INFO - Localização do bem 100068: Não definida
-2025-10-15 21:10:19 - controle_patrimonial - INFO - Verificação do bem 100068: Encontrado
-2025-10-15 21:10:19 - controle_patrimonial - INFO - ✅ Bem 100068 marcado como localizado!
-2025-10-15 21:15:27 - controle_patrimonial - INFO - Localização do bem 13: Sala da Direção
-2025-10-15 21:15:27 - controle_patrimonial - INFO - Verificação do bem 13: Encontrado
-2025-10-15 21:15:27 - controle_patrimonial - INFO - ✅ Bem 13 marcado como localizado em 'Sala da Direção'!
-2025-10-15 21:18:52 - controle_patrimonial - INFO - Bem 13 excluído
-2025-10-15 21:20:40 - controle_patrimonial - INFO - Bem 0013 excluído
-2025-10-15 21:26:37 - controle_patrimonial - INFO - Dados recebidos: {'nome': 'teste2', 'email': 'teste2@unb.br', 'departamento': 'Patrimônio', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '0', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-15 21:26:38 - controle_patrimonial - INFO - Usuário cadastrado com ID: 8
-2025-10-15 21:29:09 - controle_patrimonial - INFO - Editando usuário 8 com dados: {'nome': 'teste2', 'email': 'teste2@unb.br', 'departamento': 'Patrimônio', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '0', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-15 21:29:09 - controle_patrimonial - INFO - Senha fornecida, atualizando hash
-2025-10-15 21:29:09 - controle_patrimonial - INFO - Query: UPDATE usuarios SET nome = ?, email = ?, departamento = ?, telefone = ?, tipo = ?, ativo = ?, senha_hash = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?
-2025-10-15 21:29:09 - controle_patrimonial - INFO - Valores: ['teste2', 'teste2@unb.br', 'Patrimônio', '(61) 99999-999', 'admin', 0, '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 8]
-2025-10-15 21:29:56 - controle_patrimonial - INFO - Editando usuário 8 com dados: {'nome': 'teste2', 'email': 'teste2@unb.br', 'departamento': 'Patrimônio', 'telefone': '(61) 99999-999', 'tipo': 'admin', 'ativo': '1', 'senha': '123123', 'confirmar_senha': '123123'}
-2025-10-15 21:29:56 - controle_patrimonial - INFO - Senha fornecida, atualizando hash
-2025-10-15 21:29:56 - controle_patrimonial - INFO - Query: UPDATE usuarios SET nome = ?, email = ?, departamento = ?, telefone = ?, tipo = ?, ativo = ?, senha_hash = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?
-2025-10-15 21:29:56 - controle_patrimonial - INFO - Valores: ['teste2', 'teste2@unb.br', 'Patrimônio', '(61) 99999-999', 'admin', 1, '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 8]
-2025-10-15 21:33:02 - controle_patrimonial - INFO - Bem 13 excluído
-2025-10-15 23:48:06 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 23:48:06 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 23:48:06 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 23:48:06 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 23:48:06 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 23:48:06 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-15 23:48:06 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-15 23:48:06 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-15 23:48:06 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-15 23:48:06 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-15 23:48:13 - controle_patrimonial - INFO - Localização do bem 001: SALA 02
-2025-10-15 23:48:13 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 23:48:13 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'SALA 02'!
-2025-10-15 23:48:47 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-15 23:48:47 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 00:09:05 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:09:05 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:09:05 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:09:05 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:09:05 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:09:06 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:09:06 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:09:06 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:09:06 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:09:06 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:09:17 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 00:09:17 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 00:09:17 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 00:09:34 - controle_patrimonial - INFO - Localização do bem 0013: Sala da Direção 1
-2025-10-16 00:09:34 - controle_patrimonial - INFO - Verificação do bem 0013: Encontrado
-2025-10-16 00:09:35 - controle_patrimonial - INFO - ✅ Bem 0013 marcado como localizado em 'Sala da Direção 1'!
-2025-10-16 00:09:45 - controle_patrimonial - INFO - Localização do bem 0024: Não definida
-2025-10-16 00:09:45 - controle_patrimonial - INFO - Verificação do bem 0024: Não encontrado
-2025-10-16 00:16:01 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:16:01 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:16:01 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:16:01 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:16:01 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:16:02 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:16:02 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:16:02 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:16:02 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:16:02 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:40:48 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:40:48 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:40:48 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:40:48 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:40:48 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:40:49 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 00:40:49 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 00:40:49 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 00:40:49 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 00:40:49 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 00:40:59 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 00:40:59 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 00:40:59 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 20:41:43 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 20:41:43 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 20:41:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 20:41:43 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 20:41:43 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 20:41:44 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 20:41:44 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 20:41:44 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 20:41:44 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 20:41:44 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 20:42:10 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 20:42:10 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 20:42:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 20:42:10 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 20:42:10 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 20:42:10 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 20:42:10 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 20:42:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 20:42:10 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 20:42:10 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 20:42:47 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 20:42:47 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 20:42:47 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 20:42:57 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 20:42:57 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 20:42:57 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 21:06:21 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:06:21 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:06:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:06:21 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:06:21 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:11:59 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:11:59 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:11:59 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:11:59 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:11:59 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:13:36 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:13:36 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:13:36 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:13:36 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:13:36 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:13:36 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:13:36 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:13:36 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:13:36 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:13:36 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:13:59 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 21:13:59 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 21:13:59 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 21:20:34 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:20:34 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:20:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:20:34 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:20:34 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:20:34 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 21:20:34 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 21:20:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 21:20:34 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 21:20:34 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 21:20:53 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 21:20:53 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 21:20:53 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 21:21:09 - controle_patrimonial - INFO - Localização do bem 0026: Não definida
-2025-10-16 21:21:09 - controle_patrimonial - INFO - Verificação do bem 0026: Não encontrado
-2025-10-16 21:28:32 - controle_patrimonial - INFO - Relatório por localidade exportado: D:\controle_estoque_db\relatorios\bens_localidade_sala_da_direção_20251016-212832.xlsx
-2025-10-16 21:30:15 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
-2025-10-16 21:30:15 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
-2025-10-16 21:30:16 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
-2025-10-16 21:30:30 - controle_patrimonial - INFO - Localização do bem 469703: Sala da Direção
-2025-10-16 21:30:30 - controle_patrimonial - INFO - Verificação do bem 469703: Encontrado
-2025-10-16 21:30:30 - controle_patrimonial - INFO - ✅ Bem 469703 marcado como localizado em 'Sala da Direção'!
-2025-10-16 21:32:37 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-213237.xlsx (7 registros)
-2025-10-16 21:38:41 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251016-213806.xlsx (318816 registros)
-2025-10-16 22:13:29 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-221329.xlsx (7 registros)
-2025-10-16 22:15:25 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 22:15:25 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 22:15:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 22:15:25 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 22:15:25 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 22:15:25 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 22:15:25 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 22:15:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 22:15:25 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 22:15:25 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 22:16:32 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-221632.xlsx (7 registros)
-2025-10-16 22:31:12 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-223112.xlsx (7 registros)
-2025-10-16 22:31:50 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251016-223115.xlsx (318816 registros)
-2025-10-16 22:51:05 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-225105.xlsx (7 registros)
-2025-10-16 22:53:57 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251016-225357.xlsx (7 registros)
-2025-10-16 23:11:18 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 23:11:18 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 23:11:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 23:11:18 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 23:11:18 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-16 23:11:19 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-16 23:11:19 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-16 23:11:19 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-16 23:11:19 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-16 23:11:19 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-17 20:37:50 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-17 20:37:50 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-17 20:37:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-17 20:37:50 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-17 20:37:50 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-17 20:37:50 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
-2025-10-17 20:37:50 - controle_patrimonial - INFO - Tabela usuarios já existe
-2025-10-17 20:37:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
-2025-10-17 20:37:50 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
-2025-10-17 20:37:50 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
-2025-10-17 21:08:11 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 21:39:51 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 21:39:51 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 21:39:51 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 21:39:51 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 21:39:51 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 21:39:52 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 21:39:52 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 21:39:52 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 21:39:52 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 21:39:52 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 21:44:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 21:44:44 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 21:44:44 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 21:44:44 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 21:44:44 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 21:44:44 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 22:03:27 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 22:03:27 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 22:03:27 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 22:03:27 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 22:03:27 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 22:03:33 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 22:03:33 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 22:03:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 22:03:33 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 22:03:33 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 22:03:54 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 22:03:54 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 22:03:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 22:03:54 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 22:03:54 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 22:03:54 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-19 22:03:54 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-19 22:03:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-19 22:03:54 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-19 22:03:54 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-19 22:04:20 - controle_patrimonial - INFO - Localização do bem 001: Sala Teste 01
+2025-10-19 22:04:20 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
+2025-10-19 22:04:20 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'Sala Teste 01'!
+2025-10-20 19:50:54 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-20 19:50:54 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-20 19:50:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-20 19:50:54 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-20 19:50:54 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-20 19:50:55 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-20 19:50:55 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-20 19:50:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-20 19:50:55 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-20 19:50:55 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-20 20:39:43 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-20 20:39:43 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-20 20:39:43 - controle_patrimonial - INFO - 🚀 Iniciando aplicação Flask otimizada
+2025-10-20 20:39:43 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-20 20:39:43 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-20 20:39:43 - controle_patrimonial - INFO - ⚡ Modo otimizado para mobile ativado
+2025-10-20 20:39:44 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-20 20:39:44 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-20 20:39:44 - controle_patrimonial - INFO - 🚀 Iniciando aplicação Flask otimizada
+2025-10-20 20:39:44 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-20 20:39:44 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-20 20:39:44 - controle_patrimonial - INFO - ⚡ Modo otimizado para mobile ativado
+2025-10-21 20:56:54 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 20:56:54 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 20:56:54 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 20:56:54 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 20:56:54 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 20:56:55 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 20:56:55 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 20:56:55 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 20:56:55 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 20:56:55 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 20:57:42 - controle_patrimonial - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251021-205742.xlsx (3 registros)
+2025-10-21 20:57:58 - controle_patrimonial - INFO - Localização do bem 001: sala ctic
+2025-10-21 20:57:58 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
+2025-10-21 20:57:58 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-21 20:58:21 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 20:58:21 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 20:58:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 20:58:21 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 20:58:21 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 20:58:22 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 20:58:22 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 20:58:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 20:58:22 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 20:58:22 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:01:12 - controle_patrimonial - INFO - Localização do bem 001: sala ctic
+2025-10-21 21:01:12 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
+2025-10-21 21:01:12 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-21 21:35:33 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:35:33 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:35:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:35:33 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:35:33 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:39:21 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:39:21 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:39:21 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:39:21 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:39:21 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:39:22 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:39:22 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:39:22 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:39:22 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:39:22 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:47:47 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:47:47 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:47:47 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:47:47 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:47:47 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:47:50 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:47:50 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:47:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:47:50 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:47:50 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 21:47:58 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 21:47:58 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 21:47:58 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 21:47:58 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 21:47:58 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 22:12:10 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 22:12:10 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 22:12:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 22:12:10 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 22:12:10 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 22:12:10 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 22:12:10 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 22:12:10 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 22:12:10 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 22:12:10 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:17:23 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:17:23 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:17:23 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:17:23 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:17:23 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:17:24 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:17:24 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:17:24 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:17:24 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:17:24 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:19:34 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:19:34 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:19:34 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:19:34 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:19:34 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:19:38 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:19:38 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:19:38 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:19:38 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:19:38 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:19:43 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:19:43 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:19:43 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:19:43 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:19:43 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:21:01 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:21:01 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:21:01 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:21:01 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:21:01 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:21:18 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:21:18 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:21:18 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:21:18 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:21:18 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:21:20 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:21:20 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:21:20 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:21:20 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:21:20 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:21:33 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:21:33 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:21:33 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:21:33 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:21:33 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:21:45 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:21:45 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:21:45 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:21:45 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:21:45 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:22:08 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:22:08 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:22:08 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:22:08 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:22:08 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:22:09 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:22:09 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:22:09 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:22:09 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:22:09 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:24:50 - controle_patrimonial - WARNING - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-21 23:24:50 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-21 23:24:50 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-21 23:24:50 - controle_patrimonial - INFO - 🚀 Iniciando servidor em http://0.0.0.0:5000
+2025-10-21 23:24:50 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-21 23:25:25 - controle_patrimonial - INFO - Iniciando aplicação Flask
