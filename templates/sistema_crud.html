@@ -947,55 +947,81 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA E SIMPLIFICADA
-        function editarBem(bemId) {
-            console.log("🎯 EDITAR BEM - ID:", bemId);
+        <!-- CORREÇÃO NO JavaScript - substitua a função editarBem por esta versão: -->
 
-            if (!bemId || bemId === "None" || bemId === "null" || bemId === "") {
-                alert("ERRO: ID do bem inválido.");
-                return;
-            }
+    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+    function editarBem(bemId) {
+        console.log("🎯 EDITAR BEM - ID:", bemId);
 
-            // Mostrar loading
-            const btnSalvar = document.getElementById('btnSalvar');
-            const originalText = btnSalvar.innerHTML;
-            btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-            btnSalvar.disabled = true;
-
-            // USAR APENAS A ROTA PRINCIPAL - CORREÇÃO: URL absoluta
-            const rota = `/api/bens/${bemId}`;
-            console.log(`📡 Buscando dados via: ${rota}`);
-
-            fetch(rota)
-                .then(response => {
-                    console.log("📡 Status:", response.status);
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("📊 Dados COMPLETOS recebidos:", data);
-
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-
-                    if (data.success && data.data) {
-                        preencherModalEdicao(data.data);
-                    } else {
-                        console.error("❌ Erro na resposta:", data);
-                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                    }
-                })
-                .catch(error => {
-                    console.error("💥 Erro ao buscar bem:", error);
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-                    alert("❌ Erro ao carregar dados do bem: " + error.message);
-                });
+        if (!bemId || bemId === "None" || bemId === "null" || bemId === "") {
+            alert("ERRO: ID do bem inválido.");
+            return;
         }
+
+        // Mostrar loading
+        const btnSalvar = document.getElementById('btnSalvar');
+        const originalText = btnSalvar.innerHTML;
+        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
+        btnSalvar.disabled = true;
+
+        // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR
+        const rota = `api/bens/${bemId}`;
+        console.log(`📡 Buscando dados via: ${rota}`);
+
+        fetch(rota)
+            .then(response => {
+                console.log("📡 Status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("📊 Dados COMPLETOS recebidos:", data);
+
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+
+                if (data.success && data.data) {
+                    preencherModalEdicao(data.data);
+                } else {
+                    console.error("❌ Erro na resposta:", data);
+                    alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+                }
+            })
+            .catch(error => {
+                console.error("💥 Erro ao buscar bem:", error);
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+                alert("❌ Erro ao carregar dados do bem: " + error.message);
+            });
+    }
+
+    // CORREÇÃO NAS OUTRAS FUNÇÕES TAMBÉM - usar URLs relativas:
+    function salvarBem() {
+        // ... código anterior ...
+        
+        // USAR URL RELATIVA
+        if (bemId && bemId !== '') {
+            method = 'PUT';
+            url = `api/bens/${bemId}`;  // CORREÇÃO: URL relativa
+        } else {
+            method = 'POST';
+            url = 'api/bens';  // CORREÇÃO: URL relativa
+        }
+        // ... resto do código
+    }
+
+    function executarExclusao() {
+        // ... código anterior ...
+        
+        // USAR URL RELATIVA
+        const url = `api/bens/${bemIdParaExcluir}`;  // CORREÇÃO: URL relativa
+        // ... resto do código
+    }
+
 
         // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA E SIMPLIFICADA
         function visualizarBem(bemId) {

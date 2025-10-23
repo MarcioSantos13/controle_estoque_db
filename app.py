@@ -36,12 +36,14 @@ from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura
 from utils.logger import logger
 
 # ==============================
-# Configuração e Inicialização
+# Configuração e Inicialização - CORRIGIDA
 # ==============================
 class Config:
     """Configurações centralizadas da aplicação"""
-    DB_PATH = os.path.join(os.path.abspath("."), "relatorios", "controle_patrimonial.db")
-    UPLOAD_FOLDER = 'temp'
+    # CORREÇÃO: Usar caminho base do aplicativo
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DB_PATH = os.path.join(BASE_DIR, "relatorios", "controle_patrimonial.db")
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'temp')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
     PAGINATION_SIZE = 200
     EXPORT_CHUNK_SIZE = 1000
@@ -51,12 +53,12 @@ app.secret_key = 'sua-chave-segura-aqui'  # Altere para uma chave segura em prod
 app.config.from_object(Config)
 
 # ==============================
-# Configuração de Segurança - CORRIGIDA
+# Configuração de Segurança - CORRIGIDA PARA SERVIDOR
 # ==============================
 try:
     from flask_talisman import Talisman
     
-    # Configuração de Content Security Policy MAIS PERMISSIVA
+    # Configuração de Content Security Policy MAIS PERMISSIVA para servidor
     csp = {
         'default-src': [
             '\'self\'',
@@ -99,23 +101,23 @@ try:
         ]
     }
 
-    # Configuração adaptativa baseada no ambiente
+    # Configuração adaptativa baseada no ambiente - CORREÇÃO PARA SERVIDOR
     if os.environ.get('FLASK_ENV') == 'production' or not app.debug:
-        # Produção - HTTPS obrigatório
+        # Produção - configuração mais permissiva para servidor
         Talisman(
             app,
             content_security_policy=csp,
-            force_https=False,  # ALTERADO: Permitir HTTP também
-            session_cookie_secure=True,
-            strict_transport_security=True,
-            frame_options='DENY'
+            force_https=False,  # Permitir HTTP
+            session_cookie_secure=False,  # Permitir cookies em HTTP
+            strict_transport_security=False,  # Desativar HSTS
+            frame_options='SAMEORIGIN'
         )
-        logger.info("Modo produção: Segurança ativada")
+        logger.info("Modo produção: Segurança configurada para servidor")
     else:
         # Desenvolvimento - mais permissivo
         Talisman(
             app,
-            content_security_policy=None,  # Desativar CSP em desenvolvimento
+            content_security_policy=None,
             force_https=False,
             session_cookie_secure=False,
             strict_transport_security=False
@@ -381,7 +383,7 @@ def buscar_bens_por_nome_com_id(db_path: str, termo: str) -> list:
         return []
     
 # ==============================
-# Inicialização de Serviços
+# Inicialização de Serviços - CORRIGIDA
 # ==============================
 def caminho_relativo(pasta: str) -> str:
     """Retorna caminho absoluto, mesmo empacotado com PyInstaller"""
@@ -389,7 +391,7 @@ def caminho_relativo(pasta: str) -> str:
         return os.path.join(sys._MEIPASS, pasta)
     return os.path.join(os.path.abspath("."), pasta)
 
-# Configurar caminho do banco
+# Configurar caminho do banco - CORREÇÃO: Usar caminho da configuração
 DB_PATH = app.config['DB_PATH']
 bem_service = BemService(DB_PATH)
 export_service = bem_service
@@ -446,7 +448,7 @@ def carregar_dados_bancos() -> Dict[str, int]:
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
 # ==============================
-# Sistema de Autenticação - MOVIDA PARA ANTES DAS ROTAS
+# Sistema de Autenticação
 # ==============================
 def hash_senha(senha):
     """Gera hash da senha"""
@@ -770,7 +772,7 @@ def api_camera_status():
         return jsonify({'success': False, 'has_camera': False})
 
 # ==============================
-# Rotas CRUD Unificadas - CORRIGIDAS E PADRONIZADAS
+# ROTAS DA API CORRIGIDAS E PADRONIZADAS
 # ==============================
 
 @app.route('/api/bens', methods=['POST'])
@@ -834,10 +836,6 @@ def criar_bem():
     except Exception as e:
         print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
-
-# ==============================
-# ROTAS DA API CORRIGIDAS E PADRONIZADAS
-# ==============================
 
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
@@ -956,38 +954,11 @@ def api_excluir_bem(bem_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================
-# ROTAS DE COMPATIBILIDADE - PARA EVITAR ERROS 404
+# ROTAS DE COMPATIBILIDADE - REMOVIDAS PARA EVITAR CONFLITOS
 # ==============================
 
-@app.route('/api/bens/id/<int:bem_id>', methods=['GET'])
-@login_required
-def api_obter_bem_por_id_compativel(bem_id):
-    """Rota de compatibilidade - redireciona para a rota principal"""
-    return api_obter_bem_por_id(bem_id)
-
-@app.route('/api/bem/<int:bem_id>', methods=['GET'])
-@login_required
-def api_obter_bem_por_id_alternativo(bem_id):
-    """Rota alternativa para compatibilidade"""
-    return api_obter_bem_por_id(bem_id)
-
-@app.route('/api/bens/editar/<int:bem_id>', methods=['PUT'])
-@login_required
-def api_editar_bem_compativel(bem_id):
-    """Rota de compatibilidade para edição"""
-    return api_editar_bem(bem_id)
-
-@app.route('/api/bens/excluir/<int:bem_id>', methods=['DELETE'])
-@login_required
-def api_excluir_bem_compativel(bem_id):
-    """Rota de compatibilidade para exclusão"""
-    return api_excluir_bem(bem_id)
-
-@app.route('/api/bens/novo', methods=['POST'])
-@login_required
-def api_criar_bem_compativel():
-    """Rota de compatibilidade para criação"""
-    return criar_bem()
+# REMOVIDAS: Rotas duplicadas que causam conflitos
+# As rotas principais acima são suficientes
 
 # ==============================
 # Rotas de Autenticação
@@ -1904,7 +1875,7 @@ def scanner_diagnostic():
     })     
 
 # ==============================
-# Inicialização - VERSÃO CORRIGIDA
+# Inicialização - VERSÃO CORRIGIDA PARA SERVIDOR
 # ==============================
 if __name__ == '__main__':
     # Garantir que a tabela de usuários existe
@@ -1916,15 +1887,15 @@ if __name__ == '__main__':
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
-    # CONFIGURAÇÃO ADAPTATIVA
+    # CONFIGURAÇÃO ADAPTATIVA PARA SERVIDOR
     try:
         # Configuração baseada no ambiente
         if os.environ.get('FLASK_ENV') == 'production':
-            # Produção
+            # Produção - configurações otimizadas para servidor
             host = '0.0.0.0'
             port = 5000
             debug = False
-            logger.info("🚀 Iniciando em modo PRODUÇÃO")
+            logger.info("🚀 Iniciando em modo PRODUÇÃO (SERVIDOR)")
         else:
             # Desenvolvimento
             host = '0.0.0.0'
@@ -1933,6 +1904,8 @@ if __name__ == '__main__':
             logger.info("🔧 Iniciando em modo DESENVOLVIMENTO")
         
         logger.info(f"🌐 Servidor iniciado em http://{host}:{port}")
+        logger.info(f"📁 Caminho do banco: {DB_PATH}")
+        logger.info(f"📁 Pasta de upload: {app.config['UPLOAD_FOLDER']}")
         logger.info("📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000")
         
         app.run(
