@@ -1,7 +1,12 @@
-*.xlsx
-*.log
+# Arquivos de banco de dados
 *.db
-!relatorios/controle_patrimonial.db
-__pycache__/
-relatorios/controle_patrimonial.db
-relatorios/controle_patrimonial.db
+*.sqlite
+*.db-journal
+
+# Arquivos Excel
+*.xlsx
+*.xls
+*.xlsm
+
+# Arquivos temporários do Windows
+Thumbs.db
