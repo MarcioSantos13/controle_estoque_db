@@ -775,9 +775,10 @@ def api_camera_status():
 # ROTAS DA API CORRIGIDAS E PADRONIZADAS
 # ==============================
 
+
 @app.route('/api/bens', methods=['POST'])
 @login_required
-def criar_bem():
+def api_criar_bem():
     """Cria um novo bem - ROTA PADRONIZADA"""
     try:
         dados = request.get_json()
@@ -836,6 +837,8 @@ def criar_bem():
     except Exception as e:
         print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
+
+
 
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
@@ -954,11 +957,9 @@ def api_excluir_bem(bem_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================
-# ROTAS DE COMPATIBILIDADE - REMOVIDAS PARA EVITAR CONFLITOS
-# ==============================
-
 # REMOVIDAS: Rotas duplicadas que causam conflitos
 # As rotas principais acima são suficientes
+# ==============================
 
 # ==============================
 # Rotas de Autenticação
@@ -1806,6 +1807,12 @@ def service_unavailable(error):
         return jsonify({'success': False, 'message': 'Serviço temporariamente indisponível'}), 503
     return render_template('503.html'), 503
 
+
+
+
+
+
+
 # ==============================
 # Rotas de Debug (Apenas em modo desenvolvimento)
 # ==============================
@@ -1858,7 +1865,146 @@ if app.debug:
             
         except Exception as e:
             return jsonify({'error': str(e)})
+
+# ==============================
+# NOVA ROTA DE DEBUG PARA ERROS - ADICIONE AQUI
+# ==============================
+@app.route('/debug/errors')
+@login_required
+@admin_required  # Apenas administradores podem ver os logs
+def debug_errors():
+    """Rota para visualizar erros recentes do sistema"""
+    try:
+        from utils.logger import list_recent_errors
         
+        # Obter os últimos 50 erros
+        errors = list_recent_errors(50)
+        
+        # Formatar para HTML
+        errors_html = "<br>".join([f"<div style='border-bottom: 1px solid #ccc; padding: 5px;'>{error}</div>" for error in errors])
+        
+        html_template = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Debug - Erros do Sistema</title>
+            <style>
+                body {{ font-family: Arial, sans-serif; margin: 20px; }}
+                .header {{ background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }}
+                .error-log {{ background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }}
+                .timestamp {{ color: #666; font-size: 0.9em; }}
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>🔍 Debug - Erros do Sistema</h1>
+                <p><strong>Arquivo:</strong> logs/errors.log</p>
+                <p><strong>Total de erros:</strong> {len(errors)}</p>
+                <a href="/debug/errors/clear" style="color: red; text-decoration: none;">🗑️ Limpar Logs</a> |
+                <a href="/" style="text-decoration: none;">🏠 Voltar</a>
+            </div>
+            <div class="error-log">
+                <h3>Últimos Erros:</h3>
+                {errors_html if errors else "<p>Nenhum erro encontrado</p>"}
+            </div>
+        </body>
+        </html>
+        """
+        
+        return html_template
+        
+    except Exception as e:
+        return f"Erro ao carregar logs: {str(e)}"
+
+@app.route('/debug/errors/clear')
+@login_required
+@admin_required
+def clear_error_logs():
+    """Rota para limpar arquivo de logs de erro (apenas desenvolvimento)"""
+    try:
+        from utils.logger import get_error_log_file_path
+        import os
+        
+        error_file = get_error_log_file_path()
+        
+        if os.path.exists(error_file):
+            # Criar backup antes de limpar
+            backup_file = f"{error_file}.backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            import shutil
+            shutil.copy2(error_file, backup_file)
+            
+            # Limpar arquivo
+            open(error_file, 'w').close()
+            
+            return f"""
+            <html>
+            <body>
+                <h2>✅ Logs de erro limpos!</h2>
+                <p>Backup criado em: {backup_file}</p>
+                <a href="/debug/errors">↩️ Voltar para logs</a> |
+                <a href="/">🏠 Página inicial</a>
+            </body>
+            </html>
+            """
+        else:
+            return "Arquivo de logs não encontrado"
+            
+    except Exception as e:
+        return f"Erro ao limpar logs: {str(e)}"
+
+@app.route('/debug/logs')
+@login_required
+@admin_required
+def debug_logs():
+    """Rota para visualizar logs gerais do sistema"""
+    try:
+        from utils.logger import get_log_file_path
+        import os
+        
+        log_file = get_log_file_path()
+        
+        if os.path.exists(log_file):
+            with open(log_file, 'r', encoding='utf-8') as f:
+                logs = f.readlines()
+            
+            # Últimas 100 linhas
+            recent_logs = logs[-100:] if len(logs) > 100 else logs
+            
+            logs_html = "<br>".join([f"<div style='border-bottom: 1px solid #eee; padding: 3px; font-family: monospace;'>{log}</div>" for log in recent_logs])
+            
+            html_template = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Debug - Logs do Sistema</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; margin: 20px; }}
+                    .header {{ background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }}
+                    .log-container {{ background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 600px; overflow-y: auto; }}
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>📋 Debug - Logs do Sistema</h1>
+                    <p><strong>Arquivo:</strong> {log_file}</p>
+                    <p><strong>Total de linhas:</strong> {len(logs)} | <strong>Mostrando:</strong> {len(recent_logs)}</p>
+                    <a href="/debug/errors">🔍 Ver Erros</a> |
+                    <a href="/" style="text-decoration: none;">🏠 Voltar</a>
+                </div>
+                <div class="log-container">
+                    {logs_html if recent_logs else "<p>Nenhum log encontrado</p>"}
+                </div>
+            </body>
+            </html>
+            """
+            
+            return html_template
+        else:
+            return "Arquivo de logs não encontrado"
+            
+    except Exception as e:
+        return f"Erro ao carregar logs: {str(e)}"
+
 @app.route('/api/scanner/diagnostic')
 @login_required
 def scanner_diagnostic():
@@ -1872,7 +2018,7 @@ def scanner_diagnostic():
         'user_agent': user_agent,
         'html5qrcode_loaded': 'Html5Qrcode' in request.headers.get('Referer', ''),
         'timestamp': datetime.now().isoformat()
-    })     
+    })
 
 # ==============================
 # Inicialização - VERSÃO CORRIGIDA PARA SERVIDOR

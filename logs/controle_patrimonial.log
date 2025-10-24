@@ -31,3 +31,19 @@
 2025-10-23 13:05:04 - controle_patrimonial - INFO - Localização do bem 001: sala ctic
 2025-10-23 13:05:04 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
 2025-10-23 13:05:05 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-23 13:36:45 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-23 13:36:45 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-23 13:36:45 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-23 13:36:45 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-23 13:36:45 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-23 13:36:45 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-23 13:36:45 - controle_patrimonial - INFO - 📁 Pasta de upload: D:\Projetos\controle_estoque_db\temp
+2025-10-23 13:36:45 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-23 13:36:46 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-23 13:36:46 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-23 13:36:46 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-23 13:36:46 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-23 13:36:46 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-23 13:36:46 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-23 13:36:46 - controle_patrimonial - INFO - 📁 Pasta de upload: D:\Projetos\controle_estoque_db\temp
+2025-10-23 13:36:46 - controle_patrimonial - INFO - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000

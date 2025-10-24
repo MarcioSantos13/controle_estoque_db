@@ -1,0 +1,31 @@
+# ==============================
+# APIs para o Sistema
+# ==============================
+
+@app.route('/api/estatisticas')
+@login_required
+def api_estatisticas():
+    """API para obter estatísticas do sistema"""
+    try:
+        estatisticas = carregar_dados_bancos()
+        return jsonify({
+            'success': True,
+            'total_bens': estatisticas['total_count'],
+            'localizados_count': estatisticas['localizados_count'],
+            'pendentes_count': estatisticas['nao_localizados_count']
+        })
+    except Exception as e:
+        logger.error(f"Erro ao obter estatísticas: {str(e)}")
+        return jsonify({
+            'success': False,
+            'total_bens': 0,
+            'localizados_count': 0,
+            'pendentes_count': 0
+        })
+
+# ==============================
+# Handlers de Erro Globais
+# ==============================
+@app.errorhandler(404)
+def not_found(error):
+    # ... código existente ...

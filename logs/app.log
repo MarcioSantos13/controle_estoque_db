@@ -1,0 +1,60 @@
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 00:19:58 - controle_patrimonial - WARNING - [app.py:128] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:528] - Tabela usuarios já existe
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2030] - Iniciando aplicação Flask
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2050] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2052] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2053] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2054] - 📁 Pasta de upload: D:\controle_estoque_db\temp
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [app.py:2055] - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 00:19:58 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 00:19:59 - controle_patrimonial - WARNING - [app.py:128] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:528] - Tabela usuarios já existe
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2030] - Iniciando aplicação Flask
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2050] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2052] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2053] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2054] - 📁 Pasta de upload: D:\controle_estoque_db\temp
+2025-10-24 00:19:59 - controle_patrimonial - INFO - [app.py:2055] - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-24 00:24:05 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 00:24:05 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 00:24:05 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 00:24:05 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 00:24:06 - controle_patrimonial - WARNING - [app.py:128] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:528] - Tabela usuarios já existe
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2030] - Iniciando aplicação Flask
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2050] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2052] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2053] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2054] - 📁 Pasta de upload: D:\controle_estoque_db\temp
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2055] - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 00:24:06 - controle_patrimonial - WARNING - [app.py:128] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:528] - Tabela usuarios já existe
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2030] - Iniciando aplicação Flask
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2050] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2052] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2053] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2054] - 📁 Pasta de upload: D:\controle_estoque_db\temp
+2025-10-24 00:24:06 - controle_patrimonial - INFO - [app.py:2055] - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
+2025-10-24 07:42:24 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 07:42:24 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 07:42:24 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 07:42:24 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:115] - Modo produção: Segurança configurada para servidor
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:528] - Tabela usuarios já existe
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2030] - Iniciando aplicação Flask
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2050] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2052] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2053] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2054] - 📁 Pasta de upload: D:\Projetos\controle_estoque_db\temp
+2025-10-24 07:42:33 - controle_patrimonial - INFO - [app.py:2055] - 📱 Acesse via: http://localhost:5000 ou http://SEU-IP:5000
