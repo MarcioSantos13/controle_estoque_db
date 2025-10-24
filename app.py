@@ -646,7 +646,7 @@ def exportar_localidade(localidade: str):
     return export_service.exportar_localidade(localidade)
 
 # ==============================
-# ROTAS DA API CORRIGIDAS E SIMPLIFICADAS
+# ROTAS DA API - SEM DUPLICAÇÕES
 # ==============================
 
 @app.route('/api/bens', methods=['POST'])
@@ -706,6 +706,42 @@ def api_criar_bem():
         print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
+@app.route('/api/bens/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem(bem_id):
+    """Obtém dados de um bem pelo ID - ROTA PRINCIPAL ÚNICA"""
+    try:
+        print(f"🔍 Buscando bem por ID: {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, numero, nome, situacao, localizacao, responsavel, 
+                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+            FROM bens WHERE id = ?
+        ''', (bem_id,))
+        
+        bem = cursor.fetchone()
+        conn.close()
+        
+        if bem:
+            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
+            bem_dict = dict(zip(colunas, bem))
+            
+            # Converter datas para string
+            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
+                if bem_dict[campo]:
+                    bem_dict[campo] = str(bem_dict[campo])
+            
+            return jsonify({'success': True, 'data': bem_dict})
+        else:
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+            
+    except Exception as e:
+        print(f"💥 Erro ao obter bem {bem_id}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
@@ -781,56 +817,60 @@ def api_excluir_bem(bem_id):
         print(f"💥 Erro ao excluir bem {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# ==============================
+# Rota de Importação Excel
+# ==============================
 
-@app.route('/api/bens/<int:bem_id>', methods=['GET'])
+@app.route('/importar-excel', methods=['POST'])
 @login_required
-def api_obter_bem(bem_id):
-    """Obtém dados de um bem pelo ID - ROTA PRINCIPAL ÚNICA"""
+@admin_required
+def importar_excel():
+    """Importa dados do Excel para o banco de dados"""
     try:
-        print(f"🔍 Buscando bem por ID: {bem_id}")
+        if 'excel_file' not in request.files:
+            flash('Nenhum arquivo selecionado.', 'error')
+            return redirect(url_for('index'))
         
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
+        file = request.files['excel_file']
+        if file.filename == '':
+            flash('Nenhum arquivo selecionado.', 'error')
+            return redirect(url_for('index'))
         
-        cursor.execute('''
-            SELECT id, numero, nome, situacao, localizacao, responsavel, 
-                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
-            FROM bens WHERE id = ?
-        ''', (bem_id,))
+        if not file.filename.lower().endswith(('.xlsx', '.xls')):
+            flash('Formato de arquivo inválido. Use .xlsx ou .xls.', 'error')
+            return redirect(url_for('index'))
         
-        bem = cursor.fetchone()
-        conn.close()
+        # Obter parâmetros do formulário
+        aba_nome = request.form.get('aba_nome', 'Estoque')
+        criar_backup = request.form.get('backup') == 'on'
         
-        if bem:
-            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
-                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
-            bem_dict = dict(zip(colunas, bem))
-            
-            # Converter datas para string
-            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
-                if bem_dict[campo]:
-                    bem_dict[campo] = str(bem_dict[campo])
-            
-            return jsonify({'success': True, 'data': bem_dict})
+        # Verificar estrutura do Excel
+        resultado_verificacao = verificar_estrutura_excel(file, aba_nome)
+        if not resultado_verificacao['sucesso']:
+            flash(f"Erro na estrutura do arquivo: {resultado_verificacao['mensagem']}", 'error')
+            return redirect(url_for('index'))
+        
+        # Criar backup se solicitado
+        if criar_backup and os.path.exists(DB_PATH):
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_path = DB_PATH.replace('.db', f'_backup_{timestamp}.db')
+            shutil.copy2(DB_PATH, backup_path)
+            logger.info(f"Backup criado: {backup_path}")
+        
+        # Importar dados
+        resultado_importacao = importar_excel_para_sqlite(file, DB_PATH, aba_nome)
+        
+        if resultado_importacao['sucesso']:
+            flash(f"Importação concluída! {resultado_importacao['registros_processados']} registros processados.", 'success')
         else:
-            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
-            
+            flash(f"Erro na importação: {resultado_importacao['mensagem']}", 'error')
+        
+        return redirect(url_for('index'))
+        
     except Exception as e:
-        print(f"💥 Erro ao obter bem {bem_id}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-@app.route('/debug/routes')
-def debug_routes():
-    """Debug: Lista todas as rotas disponíveis"""
-    routes = []
-    for rule in app.url_map.iter_rules():
-        routes.append({
-            'endpoint': rule.endpoint,
-            'methods': list(rule.methods),
-            'path': str(rule)
-        })
-    return jsonify(routes)
-
+        logger.error(f"Erro na importação do Excel: {str(e)}")
+        flash(f"Erro interno na importação: {str(e)}", 'error')
+        return redirect(url_for('index'))
 
 # ==============================
 # Rotas de Autenticação
@@ -888,10 +928,6 @@ def perfil():
                          usuario_nome=session.get('usuario_nome'),
                          usuario_email=session.get('usuario_email'),
                          usuario_tipo=session.get('usuario_tipo'))
-
-
-
-
 
 # ==============================
 # ROTAS DE AJUDA E SUPORTE
@@ -982,62 +1018,6 @@ def api_ajuda_contato():
     except Exception as e:
         logger.error(f"Erro ao processar contato: {str(e)}")
         return jsonify({'success': False, 'message': 'Erro ao enviar mensagem'})
-
-@app.route('/importar-excel', methods=['POST'])
-@login_required
-@admin_required  # Se quiser restringir apenas a administradores
-def importar_excel():
-    """Importa dados do Excel para o banco de dados"""
-    try:
-        if 'excel_file' not in request.files:
-            flash('Nenhum arquivo selecionado.', 'error')
-            return redirect(url_for('index'))
-        
-        file = request.files['excel_file']
-        if file.filename == '':
-            flash('Nenhum arquivo selecionado.', 'error')
-            return redirect(url_for('index'))
-        
-        if not file.filename.lower().endswith(('.xlsx', '.xls')):
-            flash('Formato de arquivo inválido. Use .xlsx ou .xls.', 'error')
-            return redirect(url_for('index'))
-        
-        # Obter parâmetros do formulário
-        aba_nome = request.form.get('aba_nome', 'Estoque')
-        criar_backup = request.form.get('backup') == 'on'
-        
-        # Verificar estrutura do Excel
-        resultado_verificacao = verificar_estrutura_excel(file, aba_nome)
-        if not resultado_verificacao['sucesso']:
-            flash(f"Erro na estrutura do arquivo: {resultado_verificacao['mensagem']}", 'error')
-            return redirect(url_for('index'))
-        
-        # Criar backup se solicitado
-        if criar_backup and os.path.exists(DB_PATH):
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_path = DB_PATH.replace('.db', f'_backup_{timestamp}.db')
-            shutil.copy2(DB_PATH, backup_path)
-            logger.info(f"Backup criado: {backup_path}")
-        
-        # Importar dados
-        resultado_importacao = importar_excel_para_sqlite(file, DB_PATH, aba_nome)
-        
-        if resultado_importacao['sucesso']:
-            flash(f"Importação concluída! {resultado_importacao['registros_processados']} registros processados.", 'success')
-        else:
-            flash(f"Erro na importação: {resultado_importacao['mensagem']}", 'error')
-        
-        return redirect(url_for('index'))
-        
-    except Exception as e:
-        logger.error(f"Erro na importação do Excel: {str(e)}")
-        flash(f"Erro interno na importação: {str(e)}", 'error')
-        return redirect(url_for('index'))
-
-
-
-
-
 
 # ==============================
 # Rotas de Usuários
