@@ -947,7 +947,7 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -962,8 +962,8 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR
-            const rota = `/api/bens/${bemId}`;
+            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR COM SUBDIRETÓRIO
+            const rota = `api/bens/${bemId}`;
             console.log(`📡 Buscando dados via: ${rota}`);
 
             fetch(rota)
@@ -997,7 +997,7 @@
                 });
         }
 
-        // FUNÇÃO PARA VISUALIZAR - CORRIGIDA
+        // FUNÇÃO PARA VISUALIZAR - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -1012,8 +1012,8 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // USAR URL RELATIVA
-            const rota = `/api/bens/${bemId}`;
+            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR COM SUBDIRETÓRIO
+            const rota = `api/bens/${bemId}`;
             console.log(`📡 Buscando dados para visualização via: ${rota}`);
 
             fetch(rota)
@@ -1121,7 +1121,7 @@
             }
         }
 
-        // FUNÇÃO SALVAR BEM - CORRIGIDA E SIMPLIFICADA
+        // FUNÇÃO SALVAR BEM - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
         async function salvarBem() {
             console.log("💾 INICIANDO SALVAMENTO DO BEM");
             
@@ -1153,13 +1153,13 @@
                 btnSalvar.disabled = true;
 
                 if (bemId) {
-                    // EDIÇÃO
+                    // EDIÇÃO - URL RELATIVA
                     method = 'PUT';
-                    url = `/api/bens/${bemId}`;
+                    url = `api/bens/${bemId}`;
                 } else {
-                    // NOVO BEM
+                    // NOVO BEM - URL RELATIVA
                     method = 'POST';
-                    url = '/api/bens';
+                    url = 'api/bens';
                 }
 
                 console.log(`📤 Enviando ${method} para ${url}`);
@@ -1271,7 +1271,7 @@
             }
         }
 
-        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA E SIMPLIFICADA
+        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
         function confirmarExclusao(bemId, nomeBem) {
             console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
             bemIdParaExcluir = bemId;
@@ -1281,12 +1281,12 @@
             modalConfirmacao.show();
         }
 
-        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
+        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
         async function executarExclusao() {
             if (!bemIdParaExcluir) return;
 
             try {
-                const url = `/api/bens/${bemIdParaExcluir}`;
+                const url = `api/bens/${bemIdParaExcluir}`;
                 console.log(`🗑️ Executando DELETE para ${url}`);
 
                 const response = await fetch(url, {
