@@ -403,3 +403,5 @@ NameError: name 'error_handler' is not defined
 2025-10-24 14:56:21 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 001: sala ctic
 2025-10-24 14:56:21 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 001: Encontrado
 2025-10-24 14:56:21 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-24 15:33:01 - controle_patrimonial - INFO - [app.py:305] - Relatório exportado: D:\Projetos\controle_estoque_db\relatorios\bens_localizados_20251024-153300.xlsx (1 registros)
+2025-10-24 15:38:39 - controle_patrimonial - INFO - [app.py:339] - Relatório por localidade exportado: D:\Projetos\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251024-153839.xlsx
