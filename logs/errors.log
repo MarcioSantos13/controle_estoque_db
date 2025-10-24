@@ -1,0 +1,58 @@
+2025-10-24 13:50:53 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 821, in <module>
+    @app.route('/api/bens/<int:bem_id>', methods=['GET'])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: api_obter_bem
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 821, in <module>
+    @app.route('/api/bens/<int:bem_id>', methods=['GET'])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: api_obter_bem
+2025-10-24 13:51:28 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 821, in <module>
+    @app.route('/api/bens/<int:bem_id>', methods=['GET'])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: api_obter_bem
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 821, in <module>
+    @app.route('/api/bens/<int:bem_id>', methods=['GET'])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\Projetos\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: api_obter_bem

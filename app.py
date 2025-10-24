@@ -706,42 +706,6 @@ def api_criar_bem():
         print(f"💥 Erro ao criar bem: {str(e)}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
-@app.route('/api/bens/<int:bem_id>', methods=['GET'])
-@login_required
-def api_obter_bem(bem_id):
-    """Obtém dados de um bem pelo ID - ROTA PRINCIPAL ÚNICA"""
-    try:
-        print(f"🔍 Buscando bem por ID: {bem_id}")
-        
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            SELECT id, numero, nome, situacao, localizacao, responsavel, 
-                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
-            FROM bens WHERE id = ?
-        ''', (bem_id,))
-        
-        bem = cursor.fetchone()
-        conn.close()
-        
-        if bem:
-            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
-                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
-            bem_dict = dict(zip(colunas, bem))
-            
-            # Converter datas para string
-            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
-                if bem_dict[campo]:
-                    bem_dict[campo] = str(bem_dict[campo])
-            
-            return jsonify({'success': True, 'data': bem_dict})
-        else:
-            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
-            
-    except Exception as e:
-        print(f"💥 Erro ao obter bem {bem_id}: {str(e)}")
-        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
@@ -816,6 +780,57 @@ def api_excluir_bem(bem_id):
     except Exception as e:
         print(f"💥 Erro ao excluir bem {bem_id}: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@app.route('/api/bens/<int:bem_id>', methods=['GET'])
+@login_required
+def api_obter_bem(bem_id):
+    """Obtém dados de um bem pelo ID - ROTA PRINCIPAL ÚNICA"""
+    try:
+        print(f"🔍 Buscando bem por ID: {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, numero, nome, situacao, localizacao, responsavel, 
+                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+            FROM bens WHERE id = ?
+        ''', (bem_id,))
+        
+        bem = cursor.fetchone()
+        conn.close()
+        
+        if bem:
+            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
+            bem_dict = dict(zip(colunas, bem))
+            
+            # Converter datas para string
+            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
+                if bem_dict[campo]:
+                    bem_dict[campo] = str(bem_dict[campo])
+            
+            return jsonify({'success': True, 'data': bem_dict})
+        else:
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+            
+    except Exception as e:
+        print(f"💥 Erro ao obter bem {bem_id}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/debug/routes')
+def debug_routes():
+    """Debug: Lista todas as rotas disponíveis"""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': list(rule.methods),
+            'path': str(rule)
+        })
+    return jsonify(routes)
+
 
 # ==============================
 # Rotas de Autenticação
