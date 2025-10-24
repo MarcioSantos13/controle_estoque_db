@@ -10,6 +10,8 @@ from datetime import datetime
 from typing import Tuple, Dict, Any, List
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response, session, flash
+# Importar error handler
+from error_handler import error_handler
 
 # Importar handlers
 from utils.db_handler import (
@@ -50,6 +52,18 @@ class Config:
 app = Flask(__name__)
 app.secret_key = 'sua-chave-segura-aqui'
 app.config.from_object(Config)
+
+
+
+# ==============================
+# Inicialização do Error Handler
+# ==============================
+error_handler.init_app(app)
+
+
+
+
+
 
 # ==============================
 # Configuração de Segurança

@@ -56,3 +56,56 @@ Traceback (most recent call last):
     ...<2 lines>...
     )
 AssertionError: View function mapping is overwriting an existing endpoint function: api_obter_bem
+2025-10-24 14:52:13 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 59, in <module>
+    # ==============================
+NameError: name 'error_handler' is not defined
+Traceback (most recent call last):
+  File "D:\Projetos\controle_estoque_db\app.py", line 59, in <module>
+    # ==============================
+NameError: name 'error_handler' is not defined
+2025-10-24 14:56:09,340 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 14:56:09,341 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 14:56:09,341 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 14:56:09,341 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 14:56:09,901 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 14:56:09,912 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 14:56:09,912 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 14:56:09,913 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 14:56:09,914 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 14:56:09,914 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 14:56:09,954 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://164.41.170.52:5000
+2025-10-24 14:56:09,955 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-24 14:56:09,956 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 14:56:10,281 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 14:56:10,281 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 14:56:10,282 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 14:56:10,282 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 14:56:10,873 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 14:56:10,885 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 14:56:10,886 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 14:56:10,887 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 14:56:10,887 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 14:56:10,888 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 14:56:10,909 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 14:56:10,913 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 14:56:15,295 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 14:56:15] "GET / HTTP/1.1" 200 -
+2025-10-24 14:56:15,321 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 14:56:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 14:56:21,162 - controle_patrimonial - INFO - Localização do bem 001: sala ctic
+2025-10-24 14:56:21,163 - controle_patrimonial - INFO - Verificação do bem 001: Encontrado
+2025-10-24 14:56:21,356 - controle_patrimonial - INFO - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-24 14:56:21,491 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 14:56:21] "POST / HTTP/1.1" 200 -
+2025-10-24 14:56:21,527 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 14:56:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 15:02:44,858 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:02:44] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 15:02:56,177 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:02:56] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 15:03:00,834 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:00] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 15:03:07,087 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:07] "PUT /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 15:03:10,041 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:10] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 15:03:10,914 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:10] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 15:03:30,893 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:30] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 15:03:32,496 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:32] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
+2025-10-24 15:03:33,361 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:33] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
