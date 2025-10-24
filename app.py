@@ -10,8 +10,6 @@ from datetime import datetime
 from typing import Tuple, Dict, Any, List
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response, session, flash
-# Importar error handler
-from error_handler import error_handler
 
 # Importar handlers
 from utils.db_handler import (
@@ -52,18 +50,6 @@ class Config:
 app = Flask(__name__)
 app.secret_key = 'sua-chave-segura-aqui'
 app.config.from_object(Config)
-
-
-
-# ==============================
-# Inicialização do Error Handler
-# ==============================
-error_handler.init_app(app)
-
-
-
-
-
 
 # ==============================
 # Configuração de Segurança
@@ -829,6 +815,179 @@ def api_excluir_bem(bem_id):
         
     except Exception as e:
         print(f"💥 Erro ao excluir bem {bem_id}: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+# ==============================
+# ROTAS ALTERNATIVAS PARA CRUD (FUNCIONAM EM QUALQUER SERVIDOR)
+# ==============================
+
+@app.route('/crud/bem/<int:bem_id>')
+@login_required
+def crud_obter_bem(bem_id):
+    """Rota alternativa para obter dados do bem - FUNCIONA EM QUALQUER SERVIDOR"""
+    try:
+        print(f"🔍 Buscando bem por ID (rota alternativa): {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, numero, nome, situacao, localizacao, responsavel, 
+                   data_ultima_vistoria, data_vistoria_atual, auditor, observacoes
+            FROM bens WHERE id = ?
+        ''', (bem_id,))
+        
+        bem = cursor.fetchone()
+        conn.close()
+        
+        if bem:
+            colunas = ['id', 'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+                      'data_ultima_vistoria', 'data_vistoria_atual', 'auditor', 'observacoes']
+            bem_dict = dict(zip(colunas, bem))
+            
+            # Converter datas para string
+            for campo in ['data_ultima_vistoria', 'data_vistoria_atual']:
+                if bem_dict[campo]:
+                    bem_dict[campo] = str(bem_dict[campo])
+            
+            return jsonify({'success': True, 'data': bem_dict})
+        else:
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+            
+    except Exception as e:
+        print(f"💥 Erro ao obter bem {bem_id} (rota alternativa): {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/crud/bem/<int:bem_id>', methods=['POST'])
+@login_required
+def crud_atualizar_bem(bem_id):
+    """Rota alternativa para atualizar bem - FUNCIONA EM QUALQUER SERVIDOR"""
+    try:
+        dados = request.get_json()
+        print(f"✏️ Atualizando bem ID {bem_id} (rota alternativa)")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se o bem existe
+        cursor.execute("SELECT id FROM bens WHERE id = ?", (bem_id,))
+        if not cursor.fetchone():
+            conn.close()
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+        
+        # Atualizar o bem
+        cursor.execute('''
+            UPDATE bens SET 
+                nome = ?, situacao = ?, localizacao = ?, responsavel = ?,
+                data_ultima_vistoria = ?, data_vistoria_atual = ?, auditor = ?,
+                observacoes = ?
+            WHERE id = ?
+        ''', (
+            dados.get('nome'),
+            dados.get('situacao'),
+            dados.get('localizacao'),
+            dados.get('responsavel'),
+            dados.get('data_ultima_vistoria'),
+            dados.get('data_vistoria_atual'),
+            dados.get('auditor'),
+            dados.get('observacoes'),
+            bem_id
+        ))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Bem atualizado com sucesso!'})
+        
+    except Exception as e:
+        print(f"💥 Erro ao atualizar bem {bem_id} (rota alternativa): {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/crud/bem/novo', methods=['POST'])
+@login_required
+def crud_criar_bem():
+    """Rota alternativa para criar novo bem - FUNCIONA EM QUALQUER SERVIDOR"""
+    try:
+        dados = request.get_json()
+        print(f"📥 Criando novo bem (rota alternativa)")
+        
+        # Validação
+        if not dados.get('numero') or not dados.get('numero').strip():
+            return jsonify({'success': False, 'message': 'Número do bem é obrigatório'}), 400
+        
+        if not dados.get('nome') or not dados.get('nome').strip():
+            return jsonify({'success': False, 'message': 'Nome do bem é obrigatório'}), 400
+            
+        numero = dados['numero'].strip()
+        nome = dados['nome'].strip()
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se número já existe
+        cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
+        if cursor.fetchone():
+            conn.close()
+            return jsonify({'success': False, 'message': 'Número do bem já existe'}), 400
+        
+        # Inserir novo bem
+        cursor.execute('''
+            INSERT INTO bens 
+            (numero, nome, situacao, localizacao, responsavel, data_ultima_vistoria, data_vistoria_atual, auditor, observacoes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            numero,
+            nome,
+            dados.get('situacao', 'Pendente'),
+            dados.get('localizacao', ''),
+            dados.get('responsavel', ''),
+            dados.get('data_ultima_vistoria'),
+            dados.get('data_vistoria_atual'),
+            dados.get('auditor', ''),
+            dados.get('observacoes', '')
+        ))
+        
+        conn.commit()
+        novo_id = cursor.lastrowid
+        conn.close()
+        
+        return jsonify({
+            'success': True, 
+            'message': 'Bem criado com sucesso!',
+            'id': novo_id
+        })
+        
+    except Exception as e:
+        print(f"💥 Erro ao criar bem (rota alternativa): {str(e)}")
+        return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
+
+@app.route('/crud/bem/<int:bem_id>', methods=['DELETE'])
+@login_required
+def crud_excluir_bem(bem_id):
+    """Rota alternativa para excluir bem - FUNCIONA EM QUALQUER SERVIDOR"""
+    try:
+        print(f"🗑️ Excluindo bem ID (rota alternativa): {bem_id}")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Verificar se o bem existe
+        cursor.execute("SELECT numero, nome FROM bens WHERE id = ?", (bem_id,))
+        bem = cursor.fetchone()
+        
+        if not bem:
+            conn.close()
+            return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
+        
+        # Excluir o bem
+        cursor.execute("DELETE FROM bens WHERE id = ?", (bem_id,))
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Bem excluído com sucesso!'})
+        
+    except Exception as e:
+        print(f"💥 Erro ao excluir bem {bem_id} (rota alternativa): {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================

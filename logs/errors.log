@@ -109,3 +109,139 @@ NameError: name 'error_handler' is not defined
 2025-10-24 15:03:30,893 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:30] "GET /sistema-crud HTTP/1.1" 200 -
 2025-10-24 15:03:32,496 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:32] "GET /sistema-crud?situacao=OK HTTP/1.1" 200 -
 2025-10-24 15:03:33,361 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:03:33] "GET /sistema-crud?situacao=Pendente HTTP/1.1" 200 -
+2025-10-24 15:18:35,871 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:18:35] "GET / HTTP/1.1" 200 -
+2025-10-24 15:18:35,898 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:18:35] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 15:18:37,155 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:18:37] "GET /ajuda HTTP/1.1" 200 -
+2025-10-24 15:18:40,107 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:18:40] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 15:33:01,176 - controle_patrimonial - INFO - Relatório exportado: D:\Projetos\controle_estoque_db\relatorios\bens_localizados_20251024-153300.xlsx (1 registros)
+2025-10-24 15:33:01,195 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:33:01] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-10-24 15:38:21,160 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:38:21] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-10-24 15:38:21,192 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:38:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 15:38:28,522 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:38:28] "GET /relatorio/localidades?localidade=sala+ctic&por_pagina=20 HTTP/1.1" 200 -
+2025-10-24 15:38:28,563 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:38:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 15:38:39,851 - controle_patrimonial - INFO - Relatório por localidade exportado: D:\Projetos\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251024-153839.xlsx
+2025-10-24 15:38:39,892 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 15:38:39] "GET /exportar-localidade/sala%20ctic HTTP/1.1" 200 -
+2025-10-24 15:59:15,574 - werkzeug - INFO -  * Detected change in 'D:\\Projetos\\controle_estoque_db\\app.py', reloading
+2025-10-24 15:59:15,746 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 15:59:16,749 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 15:59:16,750 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 15:59:16,750 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 15:59:16,750 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 15:59:17,371 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 15:59:17,382 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 15:59:17,382 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 15:59:17,383 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 15:59:17,384 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 15:59:17,384 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 15:59:17,413 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 15:59:17,417 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 15:59:26,972 - werkzeug - INFO -  * Detected change in 'D:\\Projetos\\controle_estoque_db\\app.py', reloading
+2025-10-24 15:59:27,134 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 15:59:27,486 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 15:59:27,486 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 15:59:27,487 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 15:59:27,487 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 15:59:28,022 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 15:59:28,036 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 15:59:28,037 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 15:59:28,038 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 15:59:28,038 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 15:59:28,038 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 15:59:28,060 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 15:59:28,063 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 15:59:31,270 - werkzeug - INFO -  * Detected change in 'D:\\Projetos\\controle_estoque_db\\app.py', reloading
+2025-10-24 15:59:31,432 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 15:59:31,864 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 15:59:31,864 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 15:59:31,865 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 15:59:31,865 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 15:59:32,481 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 15:59:32,495 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 15:59:32,495 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 15:59:32,496 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 15:59:32,497 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 15:59:32,497 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 15:59:32,523 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 15:59:32,525 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 16:01:10,589 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 16:01:10,590 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 16:01:10,590 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 16:01:10,590 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 16:01:11,197 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 16:01:11,210 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 16:01:11,210 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 16:01:11,211 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 16:01:11,212 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 16:01:11,212 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 16:01:11,249 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://164.41.170.52:5000
+2025-10-24 16:01:11,250 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-24 16:01:11,251 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 16:01:11,573 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 16:01:11,573 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 16:01:11,574 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 16:01:11,574 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 16:01:12,114 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 16:01:12,127 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 16:01:12,128 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 16:01:12,128 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 16:01:12,129 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 16:01:12,129 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 16:01:12,152 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 16:01:12,156 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 16:01:20,111 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:20] "GET / HTTP/1.1" 200 -
+2025-10-24 16:01:20,138 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:01:25,430 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:25] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-24 16:01:25,473 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:01:27,707 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:27] "GET / HTTP/1.1" 200 -
+2025-10-24 16:01:27,738 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:27] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:01:29,579 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:29] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 16:01:31,577 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:31] "GET /crud/bem/320584 HTTP/1.1" 200 -
+2025-10-24 16:01:37,682 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:01:37] "GET /crud/bem/320584 HTTP/1.1" 200 -
+2025-10-24 16:04:04,865 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 16:04:04,866 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 16:04:04,866 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 16:04:04,866 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 16:04:05,452 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 16:04:05,465 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 16:04:05,465 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 16:04:05,466 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 16:04:05,467 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 16:04:05,467 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 16:04:05,503 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://164.41.170.52:5000
+2025-10-24 16:04:05,504 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-24 16:04:05,507 - werkzeug - INFO -  * Restarting with stat
+2025-10-24 16:04:05,886 - controle_patrimonial - INFO - === SISTEMA INICIADO ===
+2025-10-24 16:04:05,887 - controle_patrimonial - INFO - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-24 16:04:05,888 - controle_patrimonial - INFO - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-24 16:04:05,889 - controle_patrimonial - INFO - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-24 16:04:06,508 - controle_patrimonial - INFO - Modo produção: Segurança configurada para servidor
+2025-10-24 16:04:06,525 - controle_patrimonial - INFO - Tabela usuarios já existe
+2025-10-24 16:04:06,525 - controle_patrimonial - INFO - Iniciando aplicação Flask
+2025-10-24 16:04:06,526 - controle_patrimonial - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 16:04:06,527 - controle_patrimonial - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 16:04:06,527 - controle_patrimonial - INFO - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 16:04:06,551 - werkzeug - WARNING -  * Debugger is active!
+2025-10-24 16:04:06,555 - werkzeug - INFO -  * Debugger PIN: 956-457-572
+2025-10-24 16:04:11,420 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:04:11] "GET / HTTP/1.1" 200 -
+2025-10-24 16:04:11,453 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:04:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:04:16,549 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:04:16] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 16:04:18,106 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:04:18] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 16:10:06,525 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:06] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-10-24 16:10:06,703 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:06] "GET /login HTTP/1.1" 200 -
+2025-10-24 16:10:11,728 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:11] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-10-24 16:10:11,796 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:11] "GET / HTTP/1.1" 200 -
+2025-10-24 16:10:11,828 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:10:14,862 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:14] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-10-24 16:10:14,929 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:14] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:10:18,491 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:18] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-10-24 16:10:18,530 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:18] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-10-24 16:10:22,523 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:22] "GET /sistema-crud HTTP/1.1" 200 -
+2025-10-24 16:10:24,223 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:24] "GET /api/bens/320584 HTTP/1.1" 200 -
+2025-10-24 16:11:14,845 - werkzeug - INFO -  * Detected change in 'D:\\Projetos\\controle_estoque_db\\app.py', reloading
+2025-10-24 16:11:15,026 - werkzeug - INFO -  * Restarting with stat
