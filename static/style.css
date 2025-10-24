@@ -900,3 +900,25 @@ main {
         padding: 0.4rem 0.8rem !important;
     }
 }
+
+/* CORREÇÃO PARA O GRUPO DE BUSCA - BOTÃO NA MESMA LINHA */
+.search-input-group {
+    display: flex !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+}
+
+.search-input-group .form-control {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    border-radius: 0.75rem 0 0 0.75rem !important;
+    border-right: none !important;
+}
+
+.search-input-group .btn {
+    flex: 0 0 auto !important;
+    border-radius: 0 0.75rem 0.75rem 0 !important;
+    border-left: 2px solid #e2e8f0 !important;
+    white-space: nowrap !important;
+}

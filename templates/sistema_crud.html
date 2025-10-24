@@ -947,87 +947,61 @@
             }
         }
 
-        <!-- CORREÇÃO NO JavaScript - substitua a função editarBem por esta versão: -->
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+        function editarBem(bemId) {
+            console.log("🎯 EDITAR BEM - ID:", bemId);
 
-    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
-    function editarBem(bemId) {
-        console.log("🎯 EDITAR BEM - ID:", bemId);
+            if (!bemId) {
+                alert("ERRO: ID do bem inválido.");
+                return;
+            }
 
-        if (!bemId || bemId === "None" || bemId === "null" || bemId === "") {
-            alert("ERRO: ID do bem inválido.");
-            return;
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
+            btnSalvar.disabled = true;
+
+            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR
+            const rota = `/api/bens/${bemId}`;
+            console.log(`📡 Buscando dados via: ${rota}`);
+
+            fetch(rota)
+                .then(response => {
+                    console.log("📡 Status:", response.status);
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("📊 Dados COMPLETOS recebidos:", data);
+
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
+                    if (data.success && data.data) {
+                        preencherModalEdicao(data.data);
+                    } else {
+                        console.error("❌ Erro na resposta:", data);
+                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+                    }
+                })
+                .catch(error => {
+                    console.error("💥 Erro ao buscar bem:", error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro ao carregar dados do bem: " + error.message);
+                });
         }
 
-        // Mostrar loading
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-        btnSalvar.disabled = true;
-
-        // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR
-        const rota = `api/bens/${bemId}`;
-        console.log(`📡 Buscando dados via: ${rota}`);
-
-        fetch(rota)
-            .then(response => {
-                console.log("📡 Status:", response.status);
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("📊 Dados COMPLETOS recebidos:", data);
-
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-
-                if (data.success && data.data) {
-                    preencherModalEdicao(data.data);
-                } else {
-                    console.error("❌ Erro na resposta:", data);
-                    alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                }
-            })
-            .catch(error => {
-                console.error("💥 Erro ao buscar bem:", error);
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-                alert("❌ Erro ao carregar dados do bem: " + error.message);
-            });
-    }
-
-    // CORREÇÃO NAS OUTRAS FUNÇÕES TAMBÉM - usar URLs relativas:
-    function salvarBem() {
-        // ... código anterior ...
-        
-        // USAR URL RELATIVA
-        if (bemId && bemId !== '') {
-            method = 'PUT';
-            url = `api/bens/${bemId}`;  // CORREÇÃO: URL relativa
-        } else {
-            method = 'POST';
-            url = 'api/bens';  // CORREÇÃO: URL relativa
-        }
-        // ... resto do código
-    }
-
-    function executarExclusao() {
-        // ... código anterior ...
-        
-        // USAR URL RELATIVA
-        const url = `api/bens/${bemIdParaExcluir}`;  // CORREÇÃO: URL relativa
-        // ... resto do código
-    }
-
-
-        // FUNÇÃO PARA VISUALIZAR POR ID - CORRIGIDA E SIMPLIFICADA
+        // FUNÇÃO PARA VISUALIZAR - CORRIGIDA
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
-            if (!bemId || bemId === "None" || bemId === "null" || bemId === "") {
+            if (!bemId) {
                 alert("ID do bem inválido.");
                 return;
             }
@@ -1038,7 +1012,7 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // USAR APENAS A ROTA PRINCIPAL - CORREÇÃO: URL absoluta
+            // USAR URL RELATIVA
             const rota = `/api/bens/${bemId}`;
             console.log(`📡 Buscando dados para visualização via: ${rota}`);
 
@@ -1050,8 +1024,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("📊 Dados VISUALIZAÇÃO recebidos:", data);
-
                     // Restaurar botão
                     btnSalvar.innerHTML = originalText;
                     btnSalvar.disabled = false;
@@ -1159,35 +1131,18 @@
             // Converter FormData para objeto JavaScript
             const dados = {};
             for (let [key, value] of formData.entries()) {
-                // Tratamento específico para campos de data vazios
-                if ((key === 'data_ultima_vistoria' || key === 'data_vistoria_atual') && value === '') {
-                    dados[key] = null; // Enviar null para datas vazias
-                } else if (value === '' || value === null || value === undefined) {
-                    dados[key] = ''; // String vazia para outros campos
-                } else {
-                    dados[key] = typeof value === 'string' ? value.trim() : value;
-                }
-                console.log(`📋 Campo: ${key} =`, dados[key]);
+                dados[key] = value;
             }
 
-            console.log("📤 Dados completos a serem enviados:", dados);
-            console.log("🎯 ID do bem:", bemId || "NOVO BEM");
+            console.log("📤 Dados a serem enviados:", dados);
 
             // Validar campos obrigatórios
-            if (!dados.numero || dados.numero === '') {
-                alert("❌ Campo obrigatório: Número do Bem deve ser preenchido.");
-                document.getElementById('numero').focus();
-                return;
-            }
-
-            if (!dados.nome || dados.nome === '') {
-                alert("❌ Campo obrigatório: Nome do Bem deve ser preenchido.");
-                document.getElementById('nome').focus();
+            if (!dados.numero || !dados.nome) {
+                alert("❌ Campos obrigatórios: Número e Nome do Bem devem ser preenchidos.");
                 return;
             }
 
             try {
-                let response;
                 let method;
                 let url;
 
@@ -1197,19 +1152,19 @@
                 btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
                 btnSalvar.disabled = true;
 
-                if (bemId && bemId !== '') {
-                    // EDIÇÃO - CORREÇÃO: URL absoluta
+                if (bemId) {
+                    // EDIÇÃO
                     method = 'PUT';
                     url = `/api/bens/${bemId}`;
                 } else {
-                    // NOVO BEM - CORREÇÃO: URL absoluta
+                    // NOVO BEM
                     method = 'POST';
                     url = '/api/bens';
                 }
 
                 console.log(`📤 Enviando ${method} para ${url}`);
 
-                response = await fetch(url, {
+                const response = await fetch(url, {
                     method: method,
                     headers: { 
                         'Content-Type': 'application/json',
@@ -1218,10 +1173,7 @@
                     body: JSON.stringify(dados)
                 });
 
-                console.log("📥 Status da resposta:", response.status);
-
                 const result = await response.json();
-                console.log("📥 Resposta parseada:", result);
 
                 if (result.success) {
                     alert("✅ " + result.message);
@@ -1233,18 +1185,13 @@
                         location.reload();
                     }, 1000);
                 } else {
-                    let mensagemErro = result.message || "Erro desconhecido";
-                    if (result.errors) {
-                        mensagemErro += "\nErros: " + JSON.stringify(result.errors);
-                    }
-                    alert("❌ Erro: " + mensagemErro);
-                    console.error("Erro detalhado:", result);
+                    alert("❌ Erro: " + result.message);
                 }
             } catch (error) {
                 console.error("💥 Erro ao salvar:", error);
                 alert("❌ Erro: " + error.message);
             } finally {
-                // Restaurar botão independente do resultado
+                // Restaurar botão
                 const btnSalvar = document.getElementById('btnSalvar');
                 if (btnSalvar) {
                     btnSalvar.innerHTML = 'Salvar Alterações';
@@ -1339,7 +1286,6 @@
             if (!bemIdParaExcluir) return;
 
             try {
-                // CORREÇÃO: URL absoluta
                 const url = `/api/bens/${bemIdParaExcluir}`;
                 console.log(`🗑️ Executando DELETE para ${url}`);
 
@@ -1352,7 +1298,6 @@
                 }
 
                 const result = await response.json();
-                console.log("📥 Resposta da exclusão:", result);
 
                 if (result.success) {
                     alert("✅ " + result.message);
@@ -1360,7 +1305,7 @@
                     if (modalConfirmacao) {
                         modalConfirmacao.hide();
                     }
-                    // Recarregar a página para mostrar os dados atualizados
+                    // Recarregar a página
                     setTimeout(() => {
                         location.reload();
                     }, 1000);
@@ -1384,6 +1329,4 @@
         });
     </script>
 </body>
-
-
 </html>
