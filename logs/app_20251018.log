@@ -1,0 +1,13 @@
+2025-10-18 23:47:42,220 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 23:47:42,364 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-18 23:47:42,364 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-18 23:47:42,364 - werkzeug - INFO -  * Restarting with stat
+2025-10-18 23:47:43,730 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-18 23:47:43,754 - werkzeug - WARNING -  * Debugger is active!
+2025-10-18 23:47:43,758 - werkzeug - INFO -  * Debugger PIN: 130-648-628
+2025-10-18 23:48:11,160 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 23:48:11] "GET / HTTP/1.1" 200 -
+2025-10-18 23:48:11,206 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 23:48:11] "GET /static/style.css HTTP/1.1" 200 -
+2025-10-18 23:48:11,382 - werkzeug - INFO - 127.0.0.1 - - [18/Oct/2025 23:48:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-18 23:49:59,659 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 23:49:59,810 - werkzeug - INFO -  * Restarting with stat
