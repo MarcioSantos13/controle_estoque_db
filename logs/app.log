@@ -485,3 +485,47 @@ NameError: name 'error_handler' is not defined
 2025-10-24 16:11:16 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
 2025-10-24 16:11:16 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
 2025-10-24 16:11:16 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 23:42:15 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 23:42:15 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 23:42:15 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 23:42:15 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 23:42:18 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 23:42:19 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 23:42:19 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 23:42:33 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 001: sala ctic
+2025-10-24 23:42:33 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 001: Encontrado
+2025-10-24 23:42:33 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-24 23:58:05 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 23:58:05 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 23:58:05 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 23:58:05 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 23:58:07 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-24 23:58:07 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-24 23:58:08 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-24 23:59:02 - controle_patrimonial - INFO - [app.py:325] - Relatório por localidade exportado: D:\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251024-235902.xlsx
