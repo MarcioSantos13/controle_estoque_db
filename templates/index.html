@@ -70,11 +70,15 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li>
+
+                                <!-- REMOVIDO: Item Meu Perfil -->
+                                <!--<li>
                                     <a class="dropdown-item" href="{{ url_for('perfil') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
                                     </a>
-                                </li>
+                                </li> -->
+
+
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
@@ -356,7 +360,8 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <div id="scanner-viewport" class="scanner-viewport" style="width: 100%; height: 300px; background: #000;">
+                        <div id="scanner-viewport" class="scanner-viewport"
+                            style="width: 100%; height: 300px; background: #000;">
                             <!-- Scanner será inserido aqui -->
                         </div>
                     </div>
@@ -491,7 +496,7 @@
 
                     // Tentar ZXing primeiro
                     await this.tryZXingScanner();
-                    
+
                     this.isScanning = true;
                     this.hideLoading();
 
@@ -503,9 +508,9 @@
             }
 
             checkCameraCompatibility() {
-                return !!(navigator.mediaDevices && 
-                         navigator.mediaDevices.getUserMedia &&
-                         window.MediaStreamTrack);
+                return !!(navigator.mediaDevices &&
+                    navigator.mediaDevices.getUserMedia &&
+                    window.MediaStreamTrack);
             }
 
             async tryZXingScanner() {
@@ -544,7 +549,7 @@
 
             async tryQuaggaScanner() {
                 this.updateStatus("🔄 Usando scanner alternativo...");
-                
+
                 try {
                     await this.initQuagga();
                     this.quaggaActive = true;
@@ -658,7 +663,7 @@
 
             async stopScanner() {
                 this.isScanning = false;
-                
+
                 // Parar ZXing
                 if (this.codeReader) {
                     try {
