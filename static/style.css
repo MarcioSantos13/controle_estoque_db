@@ -524,7 +524,7 @@ main {
   font-weight: 500;
 }
 
-/* ===== SCANNER SUPER OTIMIZADO ===== */
+/* ===== SCANNER CORRIGIDO E OTIMIZADO ===== */
 .scanner-container {
   position: relative;
   width: 100%;
@@ -536,21 +536,41 @@ main {
   border: 3px solid var(--gray-300);
 }
 
+/* ELEMENTO VIDEO CORRETO PARA SCANNER */
 .scanner-viewport {
   width: 100%;
   height: 100%;
-  position: relative;
-  background: #000;
-}
-
-.scanner-viewport video {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
+  background: #000;
   display: block;
 }
 
-.scanner-viewport::after {
+/* Overlay do scanner com frame de guia */
+.scanner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scanner-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 100px;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  animation: pulse 2s infinite;
+}
+
+/* Linha de scanner animada */
+.scanner-overlay::after {
   content: '';
   position: absolute;
   top: 0;
@@ -575,20 +595,7 @@ main {
   100% { top: 85%; opacity: 0; }
 }
 
-.scanner-viewport::before {
-  content: '';
-  position: absolute;
-  top: 25%;
-  bottom: 25%;
-  left: 20%;
-  right: 20%;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 12px;
-  pointer-events: none;
-  z-index: 5;
-  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.3);
-}
-
+/* Estados do scanner */
 .scanner-loading {
   display: flex;
   flex-direction: column;
@@ -906,6 +913,11 @@ main {
     height: 250px !important; /* Reduzido de 300px */
   }
   
+  .scanner-frame {
+    width: 180px !important;
+    height: 90px !important;
+  }
+  
   .modal-dialog {
     margin: 0.5rem;
   }
@@ -967,6 +979,11 @@ main {
     height: 220px !important; /* Mais compacto */
   }
   
+  .scanner-frame {
+    width: 160px !important;
+    height: 80px !important;
+  }
+  
   .modal-content {
     border-radius: 0;
     margin: 0;
@@ -1014,14 +1031,7 @@ main {
 
 /* Scanner responsivo */
 @media (max-width: 768px) {
-  .scanner-viewport::before {
-    left: 10%;
-    right: 10%;
-    top: 20%;
-    bottom: 20%;
-  }
-  
-  .scanner-viewport::after {
+  .scanner-overlay::after {
     left: 10%;
     right: 10%;
   }
@@ -1150,4 +1160,58 @@ main {
 .import-error {
   border-color: var(--danger) !important;
   background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA O SCANNER ===== */
+/* Garantir que o elemento video seja exibido corretamente */
+.scanner-viewport video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Estados específicos para o scanner quando ativo */
+.scanner-active .scanner-viewport {
+  border: 3px solid #00ff00;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+}
+
+/* Feedback visual para scan bem-sucedido */
+.scan-success {
+  animation: scanSuccess 0.5s ease;
+}
+
+@keyframes scanSuccess {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(25, 135, 84, 0.2); }
+  100% { background-color: transparent; }
+}
+
+/* Botões do modal do scanner */
+#scannerModal .btn {
+  margin: 0.25rem;
+}
+
+/* Ajustes para o modal do scanner em mobile */
+@media (max-width: 768px) {
+  #scannerModal .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100vw - 1rem);
+  }
+  
+  #scannerModal .btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem !important;
+  }
+}
+
+/* Garantir que o scanner tenha prioridade de z-index */
+.scanner-container {
+  z-index: 1000;
+}
+
+/* Estilo para quando a câmera está ativa */
+.camera-active {
+  filter: brightness(1.1) contrast(1.1);
 }

@@ -19,23 +19,22 @@
     <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-
 </head>
 
 <body class="bg-light">
     <!-- Header -->
-    <header class="bg-primary text-white shadow-sm">
+    <header class="app-header bg-primary text-white shadow-sm">
         <div class="container py-4">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h1 class="h2 mb-1 fw-bold">
+                    <h1 class="header-title mb-1">
                         <i class="bi bi-building-gear me-2"></i>Controle Patrimonial - CEAD
                     </h1>
-                    <p class="mb-0 opacity-75">Gerencie seus bens de forma simples e organizada</p>
+                    <p class="header-subtitle mb-0">Gerencie seus bens de forma simples e organizada</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="d-flex align-items-center justify-content-md-end gap-2">
-                        <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1">
+                        <div class="header-stats">
                             <small>
                                 <i class="bi bi-database me-1"></i>
                                 <span id="total-bens">{{ total_count|number_format }}</span> bens
@@ -70,15 +69,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-
-                                <!-- REMOVIDO: Item Meu Perfil -->
-                                <!--<li>
-                                    <a class="dropdown-item" href="{{ url_for('perfil') }}">
-                                        <i class="bi bi-person me-2"></i>Meu Perfil
-                                    </a>
-                                </li> -->
-
-
+                                <!-- Item removido: Meu Perfil foi excluído -->
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
@@ -111,7 +102,7 @@
 
     <main class="container py-5">
         <!-- Card de Busca -->
-        <div class="card shadow-lg border-0 rounded-3 mb-4">
+        <div class="card search-card shadow-lg border-0 rounded-3 mb-4">
             <div class="card-header bg-white py-3 border-0">
                 <h2 class="h5 mb-0 text-center">
                     <i class="bi bi-search-heart text-primary me-2"></i> Localizar Bem Patrimonial
@@ -160,13 +151,12 @@
                             <i class="bi bi-geo-alt me-1"></i>Localização
                         </label>
                         <input type="text" name="localizacao" id="localizacao" class="form-control form-control-lg"
-                            placeholder="Ex: Almoxarifado Central, Sala 101" style="font-size: 16px; min-height: 50px;">
+                            placeholder="Ex: Almoxarifado Central, Sala 101">
                         <div class="form-text">Opcional - atualiza a localização</div>
                     </div>
 
                     <div class="col-12 col-md-12 col-lg-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100 mb-2 ms-auto" id="btnLocalizar"
-                            style="min-height: 50px;">
+                        <button type="submit" class="btn btn-primary w-100" id="btnLocalizar">
                             <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
                             <i class="bi bi-search"></i> Buscar
                         </button>
@@ -178,16 +168,15 @@
         <!-- Cards de Estatísticas -->
         <div class="row g-4 mb-5">
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
+                <div class="card stats-card success border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3"
-                            style="width: 60px; height: 60px;">
-                            <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                        <div class="stats-icon success">
+                            <i class="bi bi-check-circle-fill"></i>
                         </div>
-                        <h3 class="h2 fw-bold text-success mb-1" id="count-localizados">
+                        <h3 class="stats-count mb-1" id="count-localizados">
                             {{ localizados_count|number_format }}
                         </h3>
-                        <p class="text-muted mb-2">Bens Localizados</p>
+                        <p class="stats-label mb-2">Bens Localizados</p>
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="{{ url_for('visualizar', tipo='localizados') }}"
                                 class="btn btn-outline-success btn-sm">
@@ -202,16 +191,15 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
+                <div class="card stats-card warning border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3"
-                            style="width: 60px; height: 60px;">
-                            <i class="bi bi-exclamation-circle-fill text-warning fs-3"></i>
+                        <div class="stats-icon warning">
+                            <i class="bi bi-exclamation-circle-fill"></i>
                         </div>
-                        <h3 class="h2 fw-bold text-warning mb-1" id="count-pendentes">
+                        <h3 class="stats-count mb-1" id="count-pendentes">
                             {{ nao_localizados_count|number_format }}
                         </h3>
-                        <p class="text-muted mb-2">Bens Pendentes</p>
+                        <p class="stats-label mb-2">Bens Pendentes</p>
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="{{ url_for('visualizar', tipo='nao-localizados') }}"
                                 class="btn btn-outline-warning btn-sm">
@@ -227,9 +215,9 @@
         </div>
 
         <!-- Ações Rápidas -->
-        <div class="text-center mb-4">
-            <h3 class="h5 text-muted mb-3">Ações Rápidas</h3>
-            <div class="d-flex flex-wrap justify-content-center gap-2">
+        <div class="quick-actions">
+            <h3>Ações Rápidas</h3>
+            <div class="actions-grid">
                 <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
                     <i class="bi bi-check-circle me-1"></i>Localizados
                 </a>
@@ -255,14 +243,14 @@
         </div>
 
         <!-- Resumo rápido -->
-        <div class="text-center text-muted small mb-4">
+        <div class="summary-text">
             <em>Resumo:</em> {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }}
             • {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
         </div>
     </main>
 
     <!-- Modal de Importação -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal fade import-modal" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-3">
                 <div class="modal-header bg-info text-white rounded-top-3">
@@ -360,9 +348,10 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <div id="scanner-viewport" class="scanner-viewport"
-                            style="width: 100%; height: 300px; background: #000;">
-                            <!-- Scanner será inserido aqui -->
+                        <!-- ELEMENTO VIDEO CORRETO PARA O ZXing -->
+                        <video id="scanner-viewport" class="scanner-viewport" muted playsinline></video>
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame"></div>
                         </div>
                     </div>
                     <div id="scanner-status" class="p-3 bg-dark text-white small">
@@ -395,7 +384,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-3 mt-5">
+    <footer class="app-footer bg-dark text-white py-3 mt-5">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
@@ -429,6 +418,7 @@
                 this.selectedDeviceId = null;
                 this.usingBackCamera = true;
                 this.quaggaActive = false;
+                this.videoElement = null;
             }
 
             // ===== INICIALIZAÇÃO PRINCIPAL =====
@@ -448,6 +438,7 @@
                 this.numeroBemInput = document.getElementById('numero_bem');
                 this.localizacaoInput = document.getElementById('localizacao');
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+                this.videoElement = document.getElementById('scanner-viewport');
             }
 
             // ===== SISTEMA DE SCANNER ZXing CORRIGIDO =====
@@ -483,8 +474,7 @@
             async startScanner() {
                 if (this.isScanning) return;
 
-                const viewport = document.getElementById("scanner-viewport");
-                viewport.innerHTML = '<div class="scanner-loading text-white text-center p-4"><i class="bi bi-camera" style="font-size: 2rem;"></i><br>Iniciando câmera...</div>';
+                this.showLoading();
 
                 try {
                     // Verificar compatibilidade primeiro
@@ -496,7 +486,7 @@
 
                     // Tentar ZXing primeiro
                     await this.tryZXingScanner();
-
+                    
                     this.isScanning = true;
                     this.hideLoading();
 
@@ -508,9 +498,9 @@
             }
 
             checkCameraCompatibility() {
-                return !!(navigator.mediaDevices &&
-                    navigator.mediaDevices.getUserMedia &&
-                    window.MediaStreamTrack);
+                return !!(navigator.mediaDevices && 
+                         navigator.mediaDevices.getUserMedia &&
+                         window.MediaStreamTrack);
             }
 
             async tryZXingScanner() {
@@ -530,26 +520,44 @@
 
                 this.updateStatus("📦 Aponte para o código de barras");
 
-                // CORREÇÃO: Usar decodeFromConstraints em vez de listar dispositivos
-                await this.codeReader.decodeFromConstraints(
-                    constraints,
-                    'scanner-viewport',
-                    (result, error) => {
-                        if (result) {
-                            console.log("✅ Código lido:", result.text);
-                            this.onScanSuccess(result.text);
-                        }
+                // CORREÇÃO: Usar decodeFromConstraints com elemento video
+                if (!this.videoElement) {
+                    throw new Error("Elemento video não encontrado");
+                }
 
-                        if (error && !error.message.includes('NotFoundException')) {
-                            console.log("Scanning:", error.message);
-                        }
+                // Garantir que o elemento video está visível e configurado
+                this.videoElement.style.display = 'block';
+                this.videoElement.width = 400;
+                this.videoElement.height = 300;
+
+                // Obter o stream de vídeo primeiro
+                this.currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                this.videoElement.srcObject = this.currentStream;
+                
+                // Aguardar o vídeo estar pronto
+                await new Promise((resolve) => {
+                    this.videoElement.onloadedmetadata = () => {
+                        this.videoElement.play();
+                        resolve();
+                    };
+                });
+
+                // Iniciar a decodificação
+                this.codeReader.decodeFromVideoElement(this.videoElement, (result, error) => {
+                    if (result) {
+                        console.log("✅ Código lido:", result.text);
+                        this.onScanSuccess(result.text);
                     }
-                );
+
+                    if (error && !error.message.includes('NotFoundException')) {
+                        console.log("Scanning:", error.message);
+                    }
+                });
             }
 
             async tryQuaggaScanner() {
                 this.updateStatus("🔄 Usando scanner alternativo...");
-
+                
                 try {
                     await this.initQuagga();
                     this.quaggaActive = true;
@@ -567,7 +575,7 @@
                         inputStream: {
                             name: "Live",
                             type: "LiveStream",
-                            target: document.querySelector('#scanner-viewport'),
+                            target: this.videoElement,
                             constraints: {
                                 facingMode: this.usingBackCamera ? "environment" : "user",
                                 width: { min: 640, ideal: 1280 },
@@ -599,6 +607,30 @@
                 });
             }
             // FIM DO TRECHO CORRIGIDO DA CÂMERA
+
+            showLoading() {
+                if (this.videoElement) {
+                    this.videoElement.style.display = 'none';
+                }
+                const scannerContainer = document.querySelector(".scanner-container");
+                if (scannerContainer) {
+                    scannerContainer.innerHTML = '<div class="scanner-loading"><i class="bi bi-camera" style="font-size: 2rem;"></i><br>Iniciando câmera...</div>';
+                }
+            }
+
+            hideLoading() {
+                const scannerContainer = document.querySelector(".scanner-container");
+                if (scannerContainer) {
+                    scannerContainer.innerHTML = `
+                        <video id="scanner-viewport" class="scanner-viewport" muted playsinline></video>
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame"></div>
+                        </div>
+                    `;
+                    // Re-atribuir o elemento video após recriar o HTML
+                    this.videoElement = document.getElementById('scanner-viewport');
+                }
+            }
 
             onScanSuccess(decodedText) {
                 const cleanCode = this.cleanCode(decodedText);
@@ -663,7 +695,7 @@
 
             async stopScanner() {
                 this.isScanning = false;
-
+                
                 // Parar ZXing
                 if (this.codeReader) {
                     try {
@@ -685,6 +717,11 @@
                     this.currentStream.getTracks().forEach(track => track.stop());
                     this.currentStream = null;
                 }
+
+                // Limpar elemento video
+                if (this.videoElement) {
+                    this.videoElement.srcObject = null;
+                }
             }
 
             scanAgain() {
@@ -700,11 +737,6 @@
 
             updateStatus(message) {
                 document.getElementById("status-text").textContent = message;
-            }
-
-            hideLoading() {
-                const loading = document.querySelector("#scanner-viewport .scanner-loading");
-                if (loading) loading.remove();
             }
 
             handleScannerError(error) {
@@ -725,24 +757,26 @@
             }
 
             showErrorUI(message) {
-                const viewport = document.getElementById("scanner-viewport");
-                viewport.innerHTML = `
-                    <div class="scanner-error-message text-center p-4 text-white">
-                        <i class="bi bi-camera-video-off" style="font-size: 3rem;"></i>
-                        <h5 class="mt-3">${message}</h5>
-                        <div class="mt-3">
-                            <button class="btn btn-light btn-sm me-2" onclick="window.sistemaPatrimonial.manualEntry()">
-                                <i class="bi bi-keyboard"></i> Digitar Manualmente
-                            </button>
-                            <button class="btn btn-outline-light btn-sm" onclick="window.sistemaPatrimonial.scanAgain()">
-                                <i class="bi bi-arrow-repeat"></i> Tentar Novamente
-                            </button>
+                const scannerContainer = document.querySelector(".scanner-container");
+                if (scannerContainer) {
+                    scannerContainer.innerHTML = `
+                        <div class="scanner-error-message">
+                            <i class="bi bi-camera-video-off" style="font-size: 3rem;"></i>
+                            <h5 class="mt-3">${message}</h5>
+                            <div class="mt-3">
+                                <button class="btn btn-light btn-sm me-2" onclick="window.sistemaPatrimonial.manualEntry()">
+                                    <i class="bi bi-keyboard"></i> Digitar Manualmente
+                                </button>
+                                <button class="btn btn-outline-light btn-sm" onclick="window.sistemaPatrimonial.scanAgain()">
+                                    <i class="bi bi-arrow-repeat"></i> Tentar Novamente
+                                </button>
+                            </div>
+                            <div class="mt-3 small">
+                                <strong>Dica:</strong> Use um aplicativo dedicado de scanner para melhor resultado.
+                            </div>
                         </div>
-                        <div class="mt-3 small">
-                            <strong>Dica:</strong> Use um aplicativo dedicado de scanner para melhor resultado.
-                        </div>
-                    </div>
-                `;
+                    `;
+                }
             }
 
             manualEntry() {
@@ -984,51 +1018,6 @@
             return false;
         };
     </script>
-
-    <style>
-        .scanner-viewport {
-            width: 100%;
-            height: 300px;
-            background: #000;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scanner-loading {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            background: #000;
-        }
-
-        .scanner-error-message {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-        }
-
-        .search-input-group {
-            position: relative;
-            display: flex;
-        }
-
-        .search-input-group .form-control {
-            padding-right: 50px;
-        }
-
-        .search-input-group .btn {
-            position: absolute;
-            right: 4px;
-            top: 4px;
-            bottom: 4px;
-            z-index: 3;
-        }
-    </style>
 
 </body>
 
