@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+    <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 
 </head>
 
@@ -341,7 +343,7 @@
         </div>
     </div>
 
-    <!-- Modal do Scanner -->
+    <!-- Modal do Scanner CORRIGIDO -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -354,7 +356,7 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <div id="scanner-viewport" class="scanner-viewport">
+                        <div id="scanner-viewport" class="scanner-viewport" style="width: 100%; height: 300px; background: #000;">
                             <!-- Scanner será inserido aqui -->
                         </div>
                     </div>
@@ -407,7 +409,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ===== SISTEMA UNIFICADO DE SCANNER E FOCO =====
+        // ===== SISTEMA UNIFICADO DE SCANNER CORRIGIDO =====
         class SistemaPatrimonial {
             constructor() {
                 this.codeReader = null;
@@ -420,11 +422,13 @@
                 this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 this.currentStream = null;
                 this.selectedDeviceId = null;
+                this.usingBackCamera = true;
+                this.quaggaActive = false;
             }
 
             // ===== INICIALIZAÇÃO PRINCIPAL =====
             async initialize() {
-                console.log("🚀 Inicializando Sistema Patrimonial com ZXing");
+                console.log("🚀 Inicializando Sistema Patrimonial com Scanner Corrigido");
 
                 this.setupElements();
                 this.setupScanner();
@@ -441,7 +445,7 @@
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
             }
 
-            // ===== SISTEMA DE SCANNER ZXing =====
+            // ===== SISTEMA DE SCANNER ZXing CORRIGIDO =====
             setupScanner() {
                 if (typeof ZXing === 'undefined') {
                     this.showLibraryError();
@@ -470,76 +474,126 @@
                 document.getElementById("trocar-camera-btn")?.addEventListener("click", () => this.switchCamera());
             }
 
+            // INÍCIO DO TRECHO CORRIGIDO DA CÂMERA
             async startScanner() {
                 if (this.isScanning) return;
 
                 const viewport = document.getElementById("scanner-viewport");
-                viewport.innerHTML = '<div class="scanner-loading"><i class="bi bi-camera"></i><br>Iniciando câmera...</div>';
+                viewport.innerHTML = '<div class="scanner-loading text-white text-center p-4"><i class="bi bi-camera" style="font-size: 2rem;"></i><br>Iniciando câmera...</div>';
 
                 try {
-                    // Inicializar ZXing
-                    const { BrowserMultiFormatReader } = ZXing;
-                    this.codeReader = new BrowserMultiFormatReader();
-
-                    this.updateStatus("🔍 Procurando câmeras...");
-
-                    // Listar câmeras disponíveis
-                    const videoInputDevices = await this.codeReader.listVideoInputDevices();
-
-                    if (videoInputDevices.length === 0) {
-                        throw new Error("Nenhuma câmera encontrada");
+                    // Verificar compatibilidade primeiro
+                    if (!this.checkCameraCompatibility()) {
+                        throw new Error("Navegador não suporta acesso à câmera");
                     }
 
-                    // Selecionar câmera (preferir traseira no mobile)
-                    let selectedDevice;
-                    if (this.isMobile) {
-                        selectedDevice = videoInputDevices.find(device =>
-                            device.label.toLowerCase().includes('back') ||
-                            device.label.toLowerCase().includes('traseira') ||
-                            device.label.toLowerCase().includes('environment')
-                        ) || videoInputDevices[0];
-                    } else {
-                        selectedDevice = videoInputDevices[0];
-                    }
+                    this.updateStatus("🔍 Iniciando câmera...");
 
-                    this.selectedDeviceId = selectedDevice.deviceId;
-                    this.updateStatus("📦 Aponte para o código de barras");
-
-                    // Configurar e iniciar scanner
-                    const constraints = {
-                        video: {
-                            deviceId: { exact: this.selectedDeviceId },
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 },
-                            focusMode: 'continuous'
-                        }
-                    };
-
-                    // Iniciar decoding
-                    await this.codeReader.decodeFromVideoDevice(
-                        this.selectedDeviceId,
-                        'scanner-viewport',
-                        (result, error) => {
-                            if (result) {
-                                console.log("✅ Código lido:", result.text);
-                                this.onScanSuccess(result.text);
-                            }
-
-                            if (error && !error.message.includes('NotFoundException')) {
-                                console.log("Scanning:", error.message);
-                            }
-                        },
-                        constraints
-                    );
-
+                    // Tentar ZXing primeiro
+                    await this.tryZXingScanner();
+                    
                     this.isScanning = true;
                     this.hideLoading();
 
                 } catch (error) {
                     console.error("❌ Erro no scanner ZXing:", error);
+                    // Tentar Quagga como fallback
+                    await this.tryQuaggaScanner();
+                }
+            }
+
+            checkCameraCompatibility() {
+                return !!(navigator.mediaDevices && 
+                         navigator.mediaDevices.getUserMedia &&
+                         window.MediaStreamTrack);
+            }
+
+            async tryZXingScanner() {
+                const { BrowserMultiFormatReader } = ZXing;
+                this.codeReader = new BrowserMultiFormatReader();
+
+                // CORREÇÃO: Constraints mais flexíveis e compatíveis
+                const constraints = {
+                    video: {
+                        facingMode: this.usingBackCamera ? "environment" : "user",
+                        width: { min: 320, ideal: 1280, max: 1920 },
+                        height: { min: 240, ideal: 720, max: 1080 },
+                        frameRate: { ideal: 30 }
+                    },
+                    audio: false
+                };
+
+                this.updateStatus("📦 Aponte para o código de barras");
+
+                // CORREÇÃO: Usar decodeFromConstraints em vez de listar dispositivos
+                await this.codeReader.decodeFromConstraints(
+                    constraints,
+                    'scanner-viewport',
+                    (result, error) => {
+                        if (result) {
+                            console.log("✅ Código lido:", result.text);
+                            this.onScanSuccess(result.text);
+                        }
+
+                        if (error && !error.message.includes('NotFoundException')) {
+                            console.log("Scanning:", error.message);
+                        }
+                    }
+                );
+            }
+
+            async tryQuaggaScanner() {
+                this.updateStatus("🔄 Usando scanner alternativo...");
+                
+                try {
+                    await this.initQuagga();
+                    this.quaggaActive = true;
+                    this.isScanning = true;
+                    this.hideLoading();
+                } catch (error) {
+                    console.error("❌ Quagga também falhou:", error);
                     this.handleScannerError(error);
                 }
             }
+
+            async initQuagga() {
+                return new Promise((resolve, reject) => {
+                    Quagga.init({
+                        inputStream: {
+                            name: "Live",
+                            type: "LiveStream",
+                            target: document.querySelector('#scanner-viewport'),
+                            constraints: {
+                                facingMode: this.usingBackCamera ? "environment" : "user",
+                                width: { min: 640, ideal: 1280 },
+                                height: { min: 480, ideal: 720 }
+                            }
+                        },
+                        decoder: {
+                            readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "upc_reader"]
+                        },
+                        locator: {
+                            patchSize: "medium",
+                            halfSample: true
+                        }
+                    }, (err) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        Quagga.start();
+                        resolve();
+                    });
+
+                    Quagga.onDetected((result) => {
+                        if (result && result.codeResult) {
+                            console.log("✅ Código lido pelo Quagga:", result.codeResult.code);
+                            this.onScanSuccess(result.codeResult.code);
+                        }
+                    });
+                });
+            }
+            // FIM DO TRECHO CORRIGIDO DA CÂMERA
 
             onScanSuccess(decodedText) {
                 const cleanCode = this.cleanCode(decodedText);
@@ -604,13 +658,21 @@
 
             async stopScanner() {
                 this.isScanning = false;
+                
+                // Parar ZXing
                 if (this.codeReader) {
                     try {
                         this.codeReader.reset();
                         this.codeReader = null;
                     } catch (error) {
-                        console.warn("Scanner já parado");
+                        console.warn("Scanner ZXing já parado");
                     }
+                }
+
+                // Parar Quagga
+                if (this.quaggaActive) {
+                    Quagga.stop();
+                    this.quaggaActive = false;
                 }
 
                 // Parar stream de vídeo
@@ -644,11 +706,13 @@
                 let errorMessage = "Erro na câmera";
 
                 if (error.toString().includes("NotAllowedError")) {
-                    errorMessage = "Permissão da câmera negada";
+                    errorMessage = "Permissão da câmera negada. Permita o acesso à câmera nas configurações do navegador.";
                 } else if (error.toString().includes("NotFoundError")) {
-                    errorMessage = "Nenhuma câmera encontrada";
+                    errorMessage = "Nenhuma câmera encontrada no dispositivo.";
                 } else if (error.toString().includes("NotSupportedError")) {
-                    errorMessage = "Navegador não suportado";
+                    errorMessage = "Navegador não suporta acesso à câmera.";
+                } else if (error.toString().includes("NotReadableError")) {
+                    errorMessage = "Câmera já está em uso por outro aplicativo.";
                 }
 
                 this.updateStatus(`❌ ${errorMessage}`);
@@ -658,19 +722,22 @@
             showErrorUI(message) {
                 const viewport = document.getElementById("scanner-viewport");
                 viewport.innerHTML = `
-            <div class="scanner-error-message text-center p-4">
-                <i class="bi bi-camera-video-off" style="font-size: 3rem;"></i>
-                <h5 class="mt-3">${message}</h5>
-                <div class="mt-3">
-                    <button class="btn btn-light btn-sm me-2" onclick="window.sistemaPatrimonial.manualEntry()">
-                        <i class="bi bi-keyboard"></i> Digitar Manualmente
-                    </button>
-                    <button class="btn btn-outline-light btn-sm" onclick="window.sistemaPatrimonial.scanAgain()">
-                        <i class="bi bi-arrow-repeat"></i> Tentar Novamente
-                    </button>
-                </div>
-            </div>
-        `;
+                    <div class="scanner-error-message text-center p-4 text-white">
+                        <i class="bi bi-camera-video-off" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">${message}</h5>
+                        <div class="mt-3">
+                            <button class="btn btn-light btn-sm me-2" onclick="window.sistemaPatrimonial.manualEntry()">
+                                <i class="bi bi-keyboard"></i> Digitar Manualmente
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="window.sistemaPatrimonial.scanAgain()">
+                                <i class="bi bi-arrow-repeat"></i> Tentar Novamente
+                            </button>
+                        </div>
+                        <div class="mt-3 small">
+                            <strong>Dica:</strong> Use um aplicativo dedicado de scanner para melhor resultado.
+                        </div>
+                    </div>
+                `;
             }
 
             manualEntry() {
@@ -679,12 +746,17 @@
             }
 
             openScanner() {
+                // Verificar compatibilidade antes de abrir
+                if (!this.checkCameraCompatibility()) {
+                    alert("Seu navegador não suporta acesso à câmera. Use um aplicativo dedicado de scanner.");
+                    return;
+                }
                 this.scannerModal.show();
             }
 
             async switchCamera() {
+                this.usingBackCamera = !this.usingBackCamera;
                 await this.stopScanner();
-                this.selectedDeviceId = null;
                 setTimeout(() => this.startScanner(), 500);
             }
 
@@ -850,6 +922,7 @@
                 if (cameraBtn) {
                     cameraBtn.disabled = true;
                     cameraBtn.title = "Scanner não disponível";
+                    cameraBtn.innerHTML = '<i class="bi bi-camera-off"></i>';
                 }
             }
         }
@@ -906,6 +979,51 @@
             return false;
         };
     </script>
+
+    <style>
+        .scanner-viewport {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanner-loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: #000;
+        }
+
+        .scanner-error-message {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .search-input-group {
+            position: relative;
+            display: flex;
+        }
+
+        .search-input-group .form-control {
+            padding-right: 50px;
+        }
+
+        .search-input-group .btn {
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            bottom: 4px;
+            z-index: 3;
+        }
+    </style>
 
 </body>
 

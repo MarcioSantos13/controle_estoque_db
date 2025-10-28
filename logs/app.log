@@ -529,3 +529,46 @@ NameError: name 'error_handler' is not defined
 2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
 2025-10-24 23:58:08 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
 2025-10-24 23:59:02 - controle_patrimonial - INFO - [app.py:325] - Relatório por localidade exportado: D:\controle_estoque_db\relatorios\bens_localidade_sala_ctic_20251024-235902.xlsx
+2025-10-28 08:29:38 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 08:29:38 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-28 08:29:38 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-28 08:29:38 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 08:29:49 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-28 08:29:50 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 08:29:50 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-28 08:29:50 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-28 08:29:50 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 08:29:51 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-28 09:25:46 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 09:25:46 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-28 09:25:46 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-28 09:25:46 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Projetos\controle_estoque_db\logs\app.log
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Projetos\controle_estoque_db\logs\errors.log
+2025-10-28 09:25:47 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Projetos\controle_estoque_db
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 09:25:48 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Projetos\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 001: sala ctic
+2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 001: Encontrado
+2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 001 marcado como localizado em 'sala ctic'!
