@@ -245,3 +245,46 @@ NameError: name 'error_handler' is not defined
 2025-10-24 16:10:24,223 - werkzeug - INFO - 127.0.0.1 - - [24/Oct/2025 16:10:24] "GET /api/bens/320584 HTTP/1.1" 200 -
 2025-10-24 16:11:14,845 - werkzeug - INFO -  * Detected change in 'D:\\Projetos\\controle_estoque_db\\app.py', reloading
 2025-10-24 16:11:15,026 - werkzeug - INFO -  * Restarting with stat
+2025-10-29 13:34:20 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:35:14 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:36:09 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:36:45 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:38:34 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:49:17 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 13:49:48 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py", line 362
+    mensagem_user += f"\n• 📝 {len(detalhes_atualizacoes} registros foram modificados"
+                                                       ^
+SyntaxError: closing parenthesis '}' does not match opening parenthesis '('
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py", line 362
+    mensagem_user += f"\n• 📝 {len(detalhes_atualizacoes} registros foram modificados"
+                                                       ^
+SyntaxError: closing parenthesis '}' does not match opening parenthesis '('
+2025-10-29 13:55:12 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:55:34 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:07:21 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:09:44 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 14:11:04 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:28:27 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str

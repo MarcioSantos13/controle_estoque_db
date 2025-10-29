@@ -572,3 +572,160 @@ NameError: name 'error_handler' is not defined
 2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 001: sala ctic
 2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 001: Encontrado
 2025-10-28 09:26:34 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 001 marcado como localizado em 'sala ctic'!
+2025-10-28 15:53:12 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 15:53:12 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-28 15:53:12 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-28 15:53:12 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 15:53:16 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-28 15:53:17 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 13:32:58 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:32:58 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:32:58 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:32:58 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 13:33:01 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 13:33:02 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 13:34:20 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:35:14 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:36:09 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:36:45 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:37:50 - controle_patrimonial - INFO - [app.py:291] - Relatório exportado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\bens_localizados_20251029-133750.xlsx (1 registros)
+2025-10-29 13:38:01 - controle_patrimonial - INFO - [app.py:291] - Relatório exportado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\bens_localizados_20251029-133801.xlsx (1 registros)
+2025-10-29 13:38:34 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:49:17 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:49:17 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:49:17 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:49:17 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:49:17 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 13:49:48 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:49:48 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:49:48 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:49:48 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:49:48 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py", line 362
+    mensagem_user += f"\n• 📝 {len(detalhes_atualizacoes} registros foram modificados"
+                                                       ^
+SyntaxError: closing parenthesis '}' does not match opening parenthesis '('
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py", line 362
+    mensagem_user += f"\n• 📝 {len(detalhes_atualizacoes} registros foram modificados"
+                                                       ^
+SyntaxError: closing parenthesis '}' does not match opening parenthesis '('
+2025-10-29 13:54:40 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:54:40 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:54:40 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:54:40 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 13:54:41 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 13:54:42 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 13:55:12 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 13:55:34 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:07:21 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:09:44 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 14:09:44 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 14:09:44 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 14:09:44 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 14:09:44 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 14:10:10 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 14:10:10 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 14:10:10 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 14:10:10 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 14:10:11 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 14:10:12 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 14:11:04 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 14:27:52 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 14:27:52 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 14:27:52 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 14:27:52 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-29 14:27:53 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:111] - Modo produção: Segurança configurada para servidor
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 14:28:27 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
