@@ -1003,19 +1003,19 @@ def importar_excel():
     try:
         if 'excel_file' not in request.files:
             flash('Nenhum arquivo selecionado.', 'error')
-            #return redirect(url_for('index'))
+            return redirect(url_for('index'))
         
         file = request.files['excel_file']
         if file.filename == '':
             flash('Nenhum arquivo selecionado.', 'error')
-            #return redirect(url_for('index'))
+            return redirect(url_for('index'))
         
         # Verificar extensões permitidas
         allowed_extensions = {'.xlsx', '.xls', '.csv'}
         file_ext = os.path.splitext(file.filename)[1].lower()
         if file_ext not in allowed_extensions:
             flash('Formato de arquivo inválido. Use .xlsx, .xls ou .csv.', 'error')
-            #return redirect(url_for('index'))
+            return redirect(url_for('index'))
         
         # Obter parâmetros do formulário
         aba_nome = request.form.get('aba_nome', 'Estoque')
@@ -1046,7 +1046,7 @@ def importar_excel():
                 print(f"❌ Estrutura inválida: {resultado_verificacao['mensagem']}")
                 if os.path.exists(temp_path):
                     os.remove(temp_path)
-                #return redirect(url_for('index'))
+                return redirect(url_for('index'))
             
             print("✅ Estrutura do arquivo validada!")
             
@@ -1100,14 +1100,14 @@ def importar_excel():
                 print("🧹 Arquivo temporário removido")
         
         print("🔁 Redirecionando para index...")
-        #return redirect(url_for('index'))
+        return redirect(url_for('index'))
         
     except Exception as e:
         error_msg = f"❌ Erro interno na importação: {str(e)}"
         logger.error(f"Erro na importação do Excel/CSV: {str(e)}")
         flash(error_msg, 'error')
         print(f"💥 Erro geral: {str(e)}")
-        #return redirect(url_for('index'))
+        return redirect(url_for('index'))
 
 
 
