@@ -882,6 +882,36 @@ def limpar_arquivos_temporarios(temp_dir: str, extensoes: List[str] = ['.tmp', '
     except Exception as e:
         print(f"⚠️  Erro na limpeza de arquivos temporários: {e}")
 
+def formatar_mensagem_importacao(resultado: Dict[str, Any], apagar_dados: bool = False) -> str:
+    """Formata mensagem detalhada da importação para exibição ao usuário"""
+    
+    if not resultado['sucesso']:
+        return resultado['mensagem']
+    
+    partes = []
+    
+    # Mensagem principal baseada no tipo de operação
+    if apagar_dados:
+        partes.append("🗑️ BANCO DE DADOS LIMPO E IMPORTADO COM SUCESSO!")
+    else:
+        partes.append("✅ IMPORTAÇÃO CONCLUÍDA COM SUCESSO!")
+    
+    # Detalhes dos registros
+    if resultado['registros_inseridos'] > 0:
+        partes.append(f"📥 Novos: {resultado['registros_inseridos']}")
+    
+    if resultado['registros_atualizados'] > 0:
+        partes.append(f"🔄 Atualizados: {resultado['registros_atualizados']}")
+    
+    if resultado['registros_erro'] > 0:
+        partes.append(f"⚠️ Erros: {resultado['registros_erro']}")
+    
+    partes.append(f"📊 Total processado: {resultado['registros_processados']}")
+    
+    return " | ".join(partes)
+
+
+
 # ==============================
 # FUNÇÃO PARA TESTE/DEBUG
 # ==============================

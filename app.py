@@ -1054,7 +1054,7 @@ def importar_excel():
         # Obter parâmetros do formulário
         aba_nome = request.form.get('aba_nome', 'Estoque')
         criar_backup = request.form.get('backup') == 'on'
-        apagar_dados = request.form.get('apagar_dados') == 'on'  # NOVO PARÂMETRO
+        apagar_dados = request.form.get('apagar_dados') == 'on'
         
         print(f"📥 Parâmetros recebidos:")
         print(f"   - Arquivo: {file.filename}")
@@ -1095,30 +1095,32 @@ def importar_excel():
             
             print(f"📊 Resultado da importação: {resultado_importacao}")
             
-            # FLASH MENSAGEM DETALHADA (CORREÇÃO)
+            # CORREÇÃO: Tratamento simplificado e mais robusto das mensagens
             if resultado_importacao['sucesso']:
-                # Dividir a mensagem em linhas para flash
-                mensagens = resultado_importacao['mensagem'].split('\n')
-                for msg in mensagens:
-                    msg = msg.strip()
-                    if msg:  # Só processar mensagens não vazias
-                        if '✅' in msg or 'sucesso' in msg.lower():
-                            flash(msg, 'success')
-                        elif '⚠️' in msg or 'avisos' in msg.lower() or 'aviso' in msg.lower():
-                            flash(msg, 'warning')
-                        elif '❌' in msg or 'erro' in msg.lower():
-                            flash(msg, 'error')
-                        elif '🗑️' in msg or 'removidos' in msg.lower():
-                            flash(msg, 'info')
-                        elif '📦' in msg or 'backup' in msg.lower():
-                            flash(msg, 'info')
-                        else:
-                            flash(msg, 'info')
+                # Se apagou dados, mostrar mensagem especial
+                if apagar_dados:
+                    flash('🗑️ TODOS OS DADOS ANTERIORES FORAM REMOVIDOS!', 'warning')
                 
-                print("✅ Mensagens de sucesso enviadas para flash")
+                # Mensagem principal de sucesso
+                flash(f"✅ {resultado_importacao['mensagem']}", 'success')
+                
+                # Mensagens detalhadas
+                if resultado_importacao['registros_inseridos'] > 0:
+                    flash(f"📥 {resultado_importacao['registros_inseridos']} novos registros inseridos", 'info')
+                
+                if resultado_importacao['registros_atualizados'] > 0:
+                    flash(f"🔄 {resultado_importacao['registros_atualizados']} registros atualizados", 'info')
+                
+                if resultado_importacao['registros_erro'] > 0:
+                    flash(f"⚠️ {resultado_importacao['registros_erro']} registros com erro", 'warning')
+                
+                # Mensagem de backup se aplicável
+                if criar_backup and not apagar_dados:
+                    flash("📦 Backup do banco anterior criado com sucesso", 'info')
+                    
             else:
+                # Mensagem de erro
                 flash(f"❌ {resultado_importacao['mensagem']}", 'error')
-                print(f"❌ Erro na importação: {resultado_importacao['mensagem']}")
             
         except Exception as e:
             error_msg = f"❌ Erro durante o processo de importação: {str(e)}"
@@ -1142,6 +1144,8 @@ def importar_excel():
         flash(error_msg, 'error')
         print(f"💥 Erro geral: {str(e)}")
         return redirect(url_for('index'))
+
+
 
 # ==============================
 # Rotas de Autenticação
