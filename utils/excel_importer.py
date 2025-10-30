@@ -14,17 +14,11 @@ logger = logging.getLogger(__name__)
 # FUNÇÕES AUXILIARES
 # ==============================
 
-
-
-
 def get_db_connection(db_path: str) -> sqlite3.Connection:
     """Conexão simples com o banco SQLite"""
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
-
-
-
 
 def criar_tabela_atualizada(db_path: str) -> None:
     """Cria a tabela bens com a nova estrutura completa"""
@@ -826,6 +820,67 @@ def obter_colunas_excel(arquivo_excel: str, aba_nome: str = 'Estoque') -> List[s
     except Exception as e:
         print(f"Erro ao obter colunas: {str(e)}")
         return []
+
+# ==============================
+# FUNÇÃO PARA VERIFICAÇÃO DE PERMISSÕES
+# ==============================
+
+def verificar_permissoes_importacao(db_path: str, temp_dir: str) -> Tuple[bool, str]:
+    """
+    Verifica se temos permissões necessárias para importação
+    Retorna: (sucesso, mensagem)
+    """
+    try:
+        # Verificar permissão de escrita no diretório do banco
+        db_dir = os.path.dirname(db_path)
+        if not os.access(db_dir, os.W_OK):
+            return False, f"Sem permissão de escrita no diretório: {db_dir}"
+        
+        # Verificar permissão de escrita no diretório temporário
+        if not os.access(temp_dir, os.W_OK):
+            return False, f"Sem permissão de escrita no diretório temporário: {temp_dir}"
+        
+        # Verificar se podemos criar arquivos no diretório do banco
+        test_file = os.path.join(db_dir, 'test_permission.tmp')
+        try:
+            with open(test_file, 'w') as f:
+                f.write('test')
+            os.remove(test_file)
+        except Exception as e:
+            return False, f"Sem permissão para criar arquivos em: {db_dir}"
+        
+        return True, "Permissões verificadas com sucesso"
+        
+    except Exception as e:
+        return False, f"Erro ao verificar permissões: {str(e)}"
+
+# ==============================
+# FUNÇÃO PARA LIMPEZA SEGURA DE ARQUIVOS TEMPORÁRIOS
+# ==============================
+
+def limpar_arquivos_temporarios(temp_dir: str, extensoes: List[str] = ['.tmp', '.xlsx', '.xls', '.csv']):
+    """
+    Limpa arquivos temporários antigos
+    """
+    try:
+        if not os.path.exists(temp_dir):
+            return
+        
+        agora = datetime.now()
+        for arquivo in os.listdir(temp_dir):
+            if any(arquivo.endswith(ext) for ext in extensoes):
+                caminho_arquivo = os.path.join(temp_dir, arquivo)
+                try:
+                    # Remover arquivos com mais de 1 hora
+                    tempo_criacao = datetime.fromtimestamp(os.path.getctime(caminho_arquivo))
+                    diferenca = agora - tempo_criacao
+                    if diferenca.total_seconds() > 3600:  # 1 hora
+                        os.remove(caminho_arquivo)
+                        print(f"🧹 Arquivo temporário removido: {arquivo}")
+                except Exception as e:
+                    print(f"⚠️  Não foi possível remover {arquivo}: {e}")
+    except Exception as e:
+        print(f"⚠️  Erro na limpeza de arquivos temporários: {e}")
 
 # ==============================
 # FUNÇÃO PARA TESTE/DEBUG

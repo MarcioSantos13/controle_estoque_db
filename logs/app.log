@@ -1147,3 +1147,16 @@ ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_i
 2025-10-30 12:12:36 - controle_patrimonial - INFO - [app.py:1694] - 🔧 Iniciando em modo DESENVOLVIMENTO
 2025-10-30 12:12:36 - controle_patrimonial - INFO - [app.py:1696] - 🌐 Servidor iniciado em http://0.0.0.0:5000
 2025-10-30 12:12:36 - controle_patrimonial - INFO - [app.py:1697] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 15:10:58 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 15:10:58 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\app.log
+2025-10-30 15:10:58 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\Discovery2025\Projetos python3\controle_estoque_db\logs\errors.log
+2025-10-30 15:10:58 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-10-30 15:10:58 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
