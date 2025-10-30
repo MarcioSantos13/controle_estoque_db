@@ -228,6 +228,43 @@ def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
     return mapeamento_colunas
 
 # ==============================
+# FUNÇÃO PARA FORMATAR MENSAGEM DE IMPORTAÇÃO
+# ==============================
+
+def formatar_mensagem_importacao(resultado: Dict[str, Any], apagar_dados: bool = False) -> str:
+    """
+    Formata mensagem detalhada da importação para exibição ao usuário
+    """
+    if not resultado['sucesso']:
+        return resultado['mensagem']
+    
+    partes = []
+    
+    # Mensagem principal baseada no tipo de operação
+    if apagar_dados:
+        partes.append("🗑️ BANCO LIMPO E IMPORTADO COM SUCESSO")
+    else:
+        partes.append("✅ IMPORTAÇÃO CONCLUÍDA")
+    
+    # Detalhes dos registros
+    detalhes = []
+    if resultado['registros_inseridos'] > 0:
+        detalhes.append(f"Novos: {resultado['registros_inseridos']}")
+    
+    if resultado['registros_atualizados'] > 0:
+        detalhes.append(f"Atualizados: {resultado['registros_atualizados']}")
+    
+    if resultado['registros_erro'] > 0:
+        detalhes.append(f"Erros: {resultado['registros_erro']}")
+    
+    if detalhes:
+        partes.append("(" + " | ".join(detalhes) + ")")
+    
+    partes.append(f"Total: {resultado['registros_processados']}")
+    
+    return " ".join(partes)
+
+# ==============================
 # FUNÇÃO PARA IMPORTAR CSV
 # ==============================
 
@@ -411,16 +448,15 @@ def importar_csv_para_sqlite(caminho_csv: str, db_path: str, delimiter: str = ',
         print(f"📈 TOTAL PROCESSADO: {total_processados}")
         print("="*70)
         
-        # MENSAGEM SIMPLIFICADA PARA USUÁRIO
-        if registros_erro == 0:
-            if registros_inseridos > 0 and registros_atualizados > 0:
-                mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos e {registros_atualizados} atualizados"
-            elif registros_inseridos > 0:
-                mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos registros"
-            else:
-                mensagem_user = f"✅ Importação concluída! {registros_atualizados} registros atualizados"
-        else:
-            mensagem_user = f"⚠️ Importação com {registros_erro} erros! {total_processados - registros_erro} registros processados"
+        # Mensagem formatada para o usuário
+        mensagem_user = formatar_mensagem_importacao({
+            'sucesso': True,
+            'mensagem': '',
+            'registros_processados': total_processados,
+            'registros_inseridos': registros_inseridos,
+            'registros_atualizados': registros_atualizados,
+            'registros_erro': registros_erro
+        }, apagar_dados=False)
         
         return {
             'sucesso': True,
@@ -685,19 +721,15 @@ def importar_excel_para_sqlite(caminho_excel: str, db_path: str, aba_nome: str =
         
         print("="*70)
         
-        # MENSAGEM SIMPLIFICADA PARA USUÁRIO
-        if registros_erro == 0:
-            if apagar_dados_antes:
-                mensagem_user = f"✅ Importação concluída! {total_processados} registros importados"
-            else:
-                if registros_inseridos > 0 and registros_atualizados > 0:
-                    mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos e {registros_atualizados} atualizados"
-                elif registros_inseridos > 0:
-                    mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos registros"
-                else:
-                    mensagem_user = f"✅ Importação concluída! {registros_atualizados} registros atualizados"
-        else:
-            mensagem_user = f"⚠️ Importação com {registros_erro} erros! {total_processados - registros_erro} registros processados"
+        # MENSAGEM FORMATADA PARA USUÁRIO
+        mensagem_user = formatar_mensagem_importacao({
+            'sucesso': True,
+            'mensagem': '',
+            'registros_processados': total_processados,
+            'registros_inseridos': registros_inseridos,
+            'registros_atualizados': registros_atualizados,
+            'registros_erro': registros_erro
+        }, apagar_dados_antes)
 
         return {
             'sucesso': True,
@@ -882,36 +914,6 @@ def limpar_arquivos_temporarios(temp_dir: str, extensoes: List[str] = ['.tmp', '
     except Exception as e:
         print(f"⚠️  Erro na limpeza de arquivos temporários: {e}")
 
-def formatar_mensagem_importacao(resultado: Dict[str, Any], apagar_dados: bool = False) -> str:
-    """Formata mensagem detalhada da importação para exibição ao usuário"""
-    
-    if not resultado['sucesso']:
-        return resultado['mensagem']
-    
-    partes = []
-    
-    # Mensagem principal baseada no tipo de operação
-    if apagar_dados:
-        partes.append("🗑️ BANCO DE DADOS LIMPO E IMPORTADO COM SUCESSO!")
-    else:
-        partes.append("✅ IMPORTAÇÃO CONCLUÍDA COM SUCESSO!")
-    
-    # Detalhes dos registros
-    if resultado['registros_inseridos'] > 0:
-        partes.append(f"📥 Novos: {resultado['registros_inseridos']}")
-    
-    if resultado['registros_atualizados'] > 0:
-        partes.append(f"🔄 Atualizados: {resultado['registros_atualizados']}")
-    
-    if resultado['registros_erro'] > 0:
-        partes.append(f"⚠️ Erros: {resultado['registros_erro']}")
-    
-    partes.append(f"📊 Total processado: {resultado['registros_processados']}")
-    
-    return " | ".join(partes)
-
-
-
 # ==============================
 # FUNÇÃO PARA TESTE/DEBUG
 # ==============================
@@ -955,7 +957,7 @@ def testar_importacao():
             print("\n3. Iniciando importação...")
             resultado_importacao = importar_excel_para_sqlite(
                 excel_path, db_path, 'Estoque', 
-                criar_backup=False, apagar_dados_antes=False
+                criar_backup=False, apagar_dados_antes=True  # Teste com apagar dados
             )
             print(f"🎯 Resultado: {'SUCESSO' if resultado_importacao['sucesso'] else 'FALHA'}")
             print(f"💬 {resultado_importacao['mensagem']}")
