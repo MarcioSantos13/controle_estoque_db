@@ -32,7 +32,7 @@ from utils.db_handler import (
     obter_bem_por_id 
 )
 
-from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
 from utils.logger import logger
 
 # ==============================
