@@ -994,11 +994,12 @@ def crud_excluir_bem(bem_id):
 # Rota de Importação Excel
 # ==============================
 
+
 @app.route('/importar-excel', methods=['POST'])
 @login_required
 @admin_required
 def importar_excel():
-    """Importa dados do Excel para o banco de dados"""
+    """Importa dados do Excel ou CSV para o banco de dados - CORRIGIDA"""
     try:
         if 'excel_file' not in request.files:
             flash('Nenhum arquivo selecionado.', 'error')
@@ -1009,41 +1010,110 @@ def importar_excel():
             flash('Nenhum arquivo selecionado.', 'error')
             return redirect(url_for('index'))
         
-        if not file.filename.lower().endswith(('.xlsx', '.xls')):
-            flash('Formato de arquivo inválido. Use .xlsx ou .xls.', 'error')
+        # Verificar extensões permitidas
+        allowed_extensions = {'.xlsx', '.xls', '.csv'}
+        file_ext = os.path.splitext(file.filename)[1].lower()
+        if file_ext not in allowed_extensions:
+            flash('Formato de arquivo inválido. Use .xlsx, .xls ou .csv.', 'error')
             return redirect(url_for('index'))
         
         # Obter parâmetros do formulário
         aba_nome = request.form.get('aba_nome', 'Estoque')
         criar_backup = request.form.get('backup') == 'on'
+        apagar_dados = request.form.get('apagar_dados') == 'on'  # NOVO PARÂMETRO
         
-        # Verificar estrutura do Excel
-        resultado_verificacao = verificar_estrutura_excel(file, aba_nome)
-        if not resultado_verificacao['sucesso']:
-            flash(f"Erro na estrutura do arquivo: {resultado_verificacao['mensagem']}", 'error')
-            return redirect(url_for('index'))
+        print(f"📥 Parâmetros recebidos:")
+        print(f"   - Arquivo: {file.filename}")
+        print(f"   - Aba: {aba_nome}")
+        print(f"   - Backup: {criar_backup}")
+        print(f"   - Apagar dados: {apagar_dados}")
         
-        # Criar backup se solicitado
-        if criar_backup and os.path.exists(DB_PATH):
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_path = DB_PATH.replace('.db', f'_backup_{timestamp}.db')
-            shutil.copy2(DB_PATH, backup_path)
-            logger.info(f"Backup criado: {backup_path}")
+        # Salvar arquivo temporariamente
+        temp_dir = app.config['UPLOAD_FOLDER']
+        os.makedirs(temp_dir, exist_ok=True)
+        temp_path = os.path.join(temp_dir, secure_filename(file.filename))
+        file.save(temp_path)
         
-        # Importar dados
-        resultado_importacao = importar_excel_para_sqlite(file, DB_PATH, aba_nome)
+        print(f"📁 Arquivo salvo temporariamente: {temp_path}")
         
-        if resultado_importacao['sucesso']:
-            flash(f"Importação concluída! {resultado_importacao['registros_processados']} registros processados.", 'success')
-        else:
-            flash(f"Erro na importação: {resultado_importacao['mensagem']}", 'error')
+        try:
+            # Verificar estrutura do arquivo
+            print("🔍 Verificando estrutura do arquivo...")
+            resultado_verificacao = verificar_estrutura_excel(temp_path, aba_nome)
+            
+            if not resultado_verificacao['sucesso']:
+                flash(f"❌ Erro na estrutura do arquivo: {resultado_verificacao['mensagem']}", 'error')
+                print(f"❌ Estrutura inválida: {resultado_verificacao['mensagem']}")
+                if os.path.exists(temp_path):
+                    os.remove(temp_path)
+                return redirect(url_for('index'))
+            
+            print("✅ Estrutura do arquivo validada!")
+            
+            # Importar dados
+            print("🔄 Iniciando importação...")
+            if file_ext == '.csv':
+                resultado_importacao = importar_csv_para_sqlite(temp_path, DB_PATH)
+            else:
+                resultado_importacao = importar_excel_para_sqlite(
+                    temp_path, DB_PATH, aba_nome, criar_backup, apagar_dados
+                )
+            
+            print(f"📊 Resultado da importação: {resultado_importacao}")
+            
+            # FLASH MENSAGEM DETALHADA (CORREÇÃO)
+            if resultado_importacao['sucesso']:
+                # Dividir a mensagem em linhas para flash
+                mensagens = resultado_importacao['mensagem'].split('\n')
+                for msg in mensagens:
+                    msg = msg.strip()
+                    if msg:  # Só processar mensagens não vazias
+                        if '✅' in msg or 'sucesso' in msg.lower():
+                            flash(msg, 'success')
+                        elif '⚠️' in msg or 'avisos' in msg.lower() or 'aviso' in msg.lower():
+                            flash(msg, 'warning')
+                        elif '❌' in msg or 'erro' in msg.lower():
+                            flash(msg, 'error')
+                        elif '🗑️' in msg or 'removidos' in msg.lower():
+                            flash(msg, 'info')
+                        elif '📦' in msg or 'backup' in msg.lower():
+                            flash(msg, 'info')
+                        else:
+                            flash(msg, 'info')
+                
+                print("✅ Mensagens de sucesso enviadas para flash")
+            else:
+                flash(f"❌ {resultado_importacao['mensagem']}", 'error')
+                print(f"❌ Erro na importação: {resultado_importacao['mensagem']}")
+            
+        except Exception as e:
+            error_msg = f"❌ Erro durante o processo de importação: {str(e)}"
+            flash(error_msg, 'error')
+            print(f"💥 Erro no processo: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            
+        finally:
+            # Limpar arquivo temporário
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+                print("🧹 Arquivo temporário removido")
         
+        print("🔁 Redirecionando para index...")
         return redirect(url_for('index'))
         
     except Exception as e:
-        logger.error(f"Erro na importação do Excel: {str(e)}")
-        flash(f"Erro interno na importação: {str(e)}", 'error')
+        error_msg = f"❌ Erro interno na importação: {str(e)}"
+        logger.error(f"Erro na importação do Excel/CSV: {str(e)}")
+        flash(error_msg, 'error')
+        print(f"💥 Erro geral: {str(e)}")
         return redirect(url_for('index'))
+
+
+
+
+
+
 
 # ==============================
 # Rotas de Autenticação

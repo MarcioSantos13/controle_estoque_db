@@ -729,3 +729,341 @@ ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_i
 2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
 2025-10-29 14:27:54 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
 2025-10-29 14:28:27 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 20:57:25 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 20:57:25 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 20:57:25 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 20:57:25 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 20:57:29 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 20:57:29 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1576] - Iniciando aplicação Flask
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1591] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1593] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 20:57:29 - controle_patrimonial - INFO - [app.py:1594] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 20:58:13 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 20:58:32 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 21:19:25 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:19:25 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:19:25 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:19:25 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:19:25 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:21:54 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 21:21:54 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:21:55 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 21:21:55 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 21:22:58 - controle_patrimonial - INFO - [app.py:1043] - Backup criado: D:\controle_estoque_db\relatorios\controle_patrimonial_backup_20251029_212258.db
+2025-10-29 21:22:59 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 21:23:55 - controle_patrimonial - INFO - [app.py:1043] - Backup criado: D:\controle_estoque_db\relatorios\controle_patrimonial_backup_20251029_212355.db
+2025-10-29 21:23:55 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 21:28:39 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 385996: Não definida
+2025-10-29 21:28:39 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 385996: Encontrado
+2025-10-29 21:28:39 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 385996 marcado como localizado!
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:31:47 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 21:31:47 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 21:46:08 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:46:08 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:46:08 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:46:08 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:46:09 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 21:46:09 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 21:46:09 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 21:46:41 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 22:18:45 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 22:18:45 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 22:18:45 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 22:18:45 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 22:18:45 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 23:07:45 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:07:45 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:07:45 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:07:45 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:07:48 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:07:48 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:07:48 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:08:31 - controle_patrimonial - INFO - [app.py:1043] - Backup criado: D:\controle_estoque_db\relatorios\controle_patrimonial_backup_20251029_230831.db
+2025-10-29 23:18:23 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:18:23 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:18:23 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:18:23 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:18:23 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:19:11 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:19:11 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:19:12 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:19:12 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:19:12 - controle_patrimonial - INFO - [app.py:1600] - Iniciando aplicação Flask
+2025-10-29 23:19:12 - controle_patrimonial - INFO - [app.py:1615] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:19:12 - controle_patrimonial - INFO - [app.py:1617] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:19:12 - controle_patrimonial - INFO - [app.py:1618] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:20:21 - controle_patrimonial - INFO - [app.py:1043] - Backup criado: D:\controle_estoque_db\relatorios\controle_patrimonial_backup_20251029_232021.db
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:32:34 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:32:34 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:32:35 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:32:35 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:32:35 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-29 23:32:35 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:32:35 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:32:35 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-29 23:40:53 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-29 23:40:53 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-29 23:40:53 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-29 23:40:53 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-29 23:40:54 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-29 23:40:54 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-29 23:40:54 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-29 23:40:54 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-29 23:40:54 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-29 23:40:54 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:15:41 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:15:41 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:15:41 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:15:41 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:15:41 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:19:21 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:19:21 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:19:22 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:19:22 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:19:22 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:19:22 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:19:22 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:19:22 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:20:08 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 254131: Sala da Direção
+2025-10-30 00:20:08 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 254131: Encontrado
+2025-10-30 00:20:08 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 254131 marcado como localizado em 'Sala da Direção'!
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:27:58 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:27:58 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:28:07 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:28:07 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:28:36 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:28:36 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:28:36 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:28:36 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:28:36 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+2025-10-30 00:29:47 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:29:47 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:29:47 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:29:47 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:29:47 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:35:57 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:35:57 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:35:58 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:35:58 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:35:58 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:35:58 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:35:58 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:35:58 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:41:21 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:41:21 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:41:21 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:41:21 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:41:21 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-30 00:41:40 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:41:40 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:41:40 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:41:40 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:41:41 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-30 00:41:41 - controle_patrimonial - WARNING - [app.py:123] - Flask-Talisman não instalado. Executando sem segurança HTTPS.
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:509] - Tabela usuarios já existe
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1646] - Iniciando aplicação Flask
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1661] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1663] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-30 00:41:41 - controle_patrimonial - INFO - [app.py:1664] - 📁 Caminho do banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-10-30 00:42:49 - controle_patrimonial - INFO - [db_handler.py:108] - Localização do bem 254131: Sala da Direção
+2025-10-30 00:42:49 - controle_patrimonial - INFO - [db_handler.py:56] - Verificação do bem 254131: Encontrado
+2025-10-30 00:42:50 - controle_patrimonial - INFO - [db_handler.py:91] - ✅ Bem 254131 marcado como localizado em 'Sala da Direção'!
+2025-10-30 00:43:07 - controle_patrimonial - INFO - [app.py:291] - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251030-004307.xlsx (1 registros)

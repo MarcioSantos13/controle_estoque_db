@@ -109,12 +109,55 @@ def normalizar_valor(valor: Any) -> Optional[str]:
         return None
 
 # ==============================
-# FUNÇÃO DE DETECÇÃO DE COLUNAS
+# FUNÇÃO PARA APAGAR TODOS OS DADOS
+# ==============================
+
+def apagar_todos_dados(db_path: str) -> Tuple[bool, str]:
+    """
+    Apaga TODOS os dados da tabela bens
+    Retorna: (sucesso, mensagem)
+    """
+    try:
+        print("🗑️  INICIANDO LIMPEZA COMPLETA DO BANCO DE DADOS...")
+        
+        conn = get_db_connection(db_path)
+        cursor = conn.cursor()
+        
+        # Contar registros antes
+        cursor.execute("SELECT COUNT(*) FROM bens")
+        total_antes = cursor.fetchone()[0]
+        
+        if total_antes == 0:
+            conn.close()
+            return True, "ℹ️  O banco já estava vazio. Nenhum registro para apagar."
+        
+        # Apagar todos os registros
+        cursor.execute("DELETE FROM bens")
+        
+        # Resetar a sequência autoincrement
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'bens'")
+        
+        conn.commit()
+        conn.close()
+        
+        mensagem = f"✅ LIMPEZA CONCLUÍDA! {total_antes:,} registros removidos."
+        print(mensagem)
+        
+        return True, mensagem
+        
+    except Exception as e:
+        error_msg = f"❌ Erro ao apagar dados: {str(e)}"
+        print(error_msg)
+        return False, error_msg
+
+# ==============================
+# FUNÇÃO DE DETECÇÃO DE COLUNAS - CORRIGIDA
 # ==============================
 
 def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
     """
     Detecta automaticamente as colunas relevantes no DataFrame
+    CORREÇÃO: Mapeamento específico para a estrutura informada
     """
     # CORREÇÃO: Remover espaços extras dos nomes das colunas
     df.columns = [str(col).strip() for col in df.columns]
@@ -130,114 +173,169 @@ def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
         'auditor': None
     }
     
-    # Mapeamento de possíveis nomes para cada coluna
-    possiveis_nomes = {
-        'numero': ['número do bem', 'numero do bem', 'nº do bem', 'patrimonio', 'patrimônio', 'numero', 'número', 'codigo', 'código'],
-        'nome': ['nome', 'descrição', 'descricao', 'item', 'equipamento', 'bem', 'denominação', 'denominacao'],
-        'situacao': ['situação', 'situacao', 'status', 'estado', 'condição', 'condicao'],
-        'localizacao': ['localização', 'localizacao', 'local', 'setor', 'departamento', 'localidade'],
-        'responsavel': ['responsavel', 'responsável', 'encarregado', 'curador', 'responsavel pela vistoria'],
-        'data_ultima_vistoria': ['data da ultima vistoria', 'última vistoria', 'data ultima vistoria', 'data última vistoria'],
-        'data_vistoria_atual': ['data da vistoria atual', 'vistoria atual', 'data vistoria atual', 'data vistoria'],
-        'auditor': ['auditor', 'auditor responsavel', 'inspetor', 'vistoriador']
+    print(f"🔍 Colunas encontradas no arquivo: {df.columns.tolist()}")
+    
+    # CORREÇÃO: Mapeamento direto baseado na estrutura informada
+    mapeamento_direto = {
+        'NOME': 'nome',
+        'NUMERO DO BEM': 'numero', 
+        'SITUAÇÃO': 'situacao',
+        'LOCALIZAÇÃO': 'localizacao',
+        'Responsavel': 'responsavel',
+        'Data da ultima vistoria': 'data_ultima_vistoria',
+        'Data da vistoria atual': 'data_vistoria_atual',
+        'Auditor': 'auditor'
     }
     
-    # Converter nomes das colunas para minúsculas
-    colunas_df = [str(col).strip().lower() for col in df.columns]
-    
-    print(f"🔍 Colunas encontradas no Excel: {df.columns.tolist()}")
-    
-    # Procurar correspondências
-    for coluna_alvo, possibilidades in possiveis_nomes.items():
-        for possibilidade in possibilidades:
-            for idx, coluna_df in enumerate(colunas_df):
-                if possibilidade in coluna_df:
-                    mapeamento_colunas[coluna_alvo] = df.columns[idx]
-                    print(f"✅ Coluna '{coluna_alvo}' detectada como: '{df.columns[idx]}'")
-                    break
-            if mapeamento_colunas[coluna_alvo]:
+    # Primeiro tentar mapeamento direto
+    for coluna_excel, coluna_alvo in mapeamento_direto.items():
+        for coluna_df in df.columns:
+            if coluna_excel.upper() == coluna_df.upper():
+                mapeamento_colunas[coluna_alvo] = coluna_df
+                print(f"✅ Coluna '{coluna_alvo}' detectada como: '{coluna_df}'")
                 break
+    
+    # Se mapeamento direto não funcionar, tentar por similaridade
+    if not mapeamento_colunas['numero']:
+        possiveis_nomes = {
+            'numero': ['número do bem', 'numero do bem', 'nº do bem', 'patrimonio', 'patrimônio', 'numero', 'número', 'codigo', 'código', 'num', 'nº'],
+            'nome': ['nome', 'descrição', 'descricao', 'item', 'equipamento', 'bem', 'denominação', 'denominacao'],
+            'situacao': ['situação', 'situacao', 'status', 'estado', 'condição', 'condicao'],
+            'localizacao': ['localização', 'localizacao', 'local', 'setor', 'departamento', 'localidade'],
+            'responsavel': ['responsavel', 'responsável', 'encarregado', 'curador', 'responsavel pela vistoria'],
+            'data_ultima_vistoria': ['data da ultima vistoria', 'última vistoria', 'data ultima vistoria', 'data última vistoria', 'ultima vistoria'],
+            'data_vistoria_atual': ['data da vistoria atual', 'vistoria atual', 'data vistoria atual', 'data vistoria', 'vistoria atual'],
+            'auditor': ['auditor', 'auditor responsavel', 'inspetor', 'vistoriador']
+        }
+        
+        # Converter nomes das colunas para minúsculas
+        colunas_df = [str(col).strip().lower() for col in df.columns]
+        
+        # Procurar correspondências
+        for coluna_alvo, possibilidades in possiveis_nomes.items():
+            if mapeamento_colunas[coluna_alvo]:  # Já foi mapeada
+                continue
+                
+            for possibilidade in possibilidades:
+                for idx, coluna_df in enumerate(colunas_df):
+                    if possibilidade in coluna_df:
+                        mapeamento_colunas[coluna_alvo] = df.columns[idx]
+                        print(f"✅ Coluna '{coluna_alvo}' detectada como: '{df.columns[idx]}'")
+                        break
+                if mapeamento_colunas[coluna_alvo]:
+                    break
     
     return mapeamento_colunas
 
 # ==============================
-# FUNÇÃO PARA APAGAR E RECRIAR BANCO COMPLETO
+# FUNÇÃO PARA IMPORTAR CSV
 # ==============================
 
-def recriar_banco_completo(caminho_excel: str, aba_nome: str, db_path: str) -> Tuple[bool, str]:
+def importar_csv_para_sqlite(caminho_csv: str, db_path: str, delimiter: str = ',') -> Dict[str, Any]:
     """
-    Apaga o banco de dados inteiro e recria a partir do Excel
+    Importa dados de arquivo CSV para SQLite
+    Retorna: Dict com resultados detalhados
     """
     try:
-        print("🔄 INICIANDO RECRIAÇÃO COMPLETA DO BANCO DE DADOS")
-        print("="*60)
+        print(f"📁 Iniciando importação do arquivo CSV: {caminho_csv}")
         
-        # Verificar se arquivo Excel existe
-        if not os.path.exists(caminho_excel):
-            return False, f"❌ Arquivo Excel não encontrado: {caminho_excel}"
+        # Verificar se arquivo existe
+        if not os.path.exists(caminho_csv):
+            return {
+                'sucesso': False, 
+                'mensagem': f"❌ Arquivo CSV não encontrado: {caminho_csv}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
-        # Verificar se banco existe antes de apagar
-        banco_existia = os.path.exists(db_path)
-        
-        if banco_existia:
-            # Fazer backup do banco atual
-            backup_dir = os.path.join(os.path.dirname(db_path), 'backups')
-            os.makedirs(backup_dir, exist_ok=True)
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            backup_path = os.path.join(backup_dir, f"backup_completo_{timestamp}.db")
-            shutil.copy2(db_path, backup_path)
-            print(f"📦 Backup completo criado: {os.path.basename(backup_path)}")
-            
-            # Apagar banco atual
-            os.remove(db_path)
-            print("🗑️  Banco de dados anterior removido")
-        
-        # Criar nova tabela
+        # Criar/atualizar tabela primeiro
         criar_tabela_atualizada(db_path)
         
-        # Carregar arquivo Excel
+        # Ler arquivo CSV
         try:
-            wb = load_workbook(caminho_excel, read_only=True, data_only=True)
+            # Tentar detectar encoding
+            encodings = ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252']
+            df = None
+            
+            for encoding in encodings:
+                try:
+                    df = pd.read_csv(caminho_csv, delimiter=delimiter, encoding=encoding)
+                    print(f"✅ CSV lido com encoding: {encoding}")
+                    break
+                except UnicodeDecodeError:
+                    continue
+            
+            if df is None:
+                return {
+                    'sucesso': False,
+                    'mensagem': "❌ Não foi possível ler o arquivo CSV com nenhum encoding comum",
+                    'registros_processados': 0,
+                    'registros_inseridos': 0,
+                    'registros_atualizados': 0,
+                    'registros_erro': 0
+                }
+                
+            print(f"📊 DataFrame CSV carregado com {len(df)} linhas e {len(df.columns)} colunas")
         except Exception as e:
-            return False, f"❌ Erro ao abrir arquivo Excel: {str(e)}"
-        
-        if aba_nome not in wb.sheetnames:
-            abas_disponiveis = ", ".join(wb.sheetnames)
-            wb.close()
-            return False, f"❌ Aba '{aba_nome}' não encontrada. Abas disponíveis: {abas_disponiveis}"
-        
-        wb.close()
-        
-        # Ler dados com pandas
-        try:
-            df = pd.read_excel(caminho_excel, sheet_name=aba_nome)
-            print(f"📊 DataFrame carregado com {len(df)} linhas e {len(df.columns)} colunas")
-        except Exception as e:
-            return False, f"❌ Erro ao ler dados do Excel: {str(e)}"
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Erro ao ler arquivo CSV: {str(e)}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         if df.empty:
-            return False, "❌ O arquivo Excel está vazio ou não contém dados"
+            return {
+                'sucesso': False,
+                'mensagem': "❌ O arquivo CSV está vazio ou não contém dados",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         # Detectar mapeamento de colunas
         mapeamento = detectar_colunas(df)
+        print(f"🗂️  Mapeamento de colunas: {mapeamento}")
         
         # Verificar colunas obrigatórias
         if not mapeamento['numero']:
-            return False, "❌ Coluna do número do bem não detectada"
+            colunas_encontradas = ", ".join(df.columns.tolist())
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Coluna do número do bem não detectada. Colunas encontradas: {colunas_encontradas}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         if not mapeamento['nome']:
-            return False, "❌ Coluna do nome não detectada"
+            colunas_encontradas = ", ".join(df.columns.tolist())
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Coluna do nome não detectada. Colunas encontradas: {colunas_encontradas}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         # Processar e importar dados
         conn = get_db_connection(db_path)
         cursor = conn.cursor()
         
         registros_inseridos = 0
+        registros_atualizados = 0
         registros_erro = 0
         
-        print("\n🔄 Inserindo registros no novo banco...")
+        print("\n🔄 Iniciando processamento dos registros CSV...")
         
         for index, row in df.iterrows():
-            linha_excel = index + 2
+            linha_csv = index + 2  # +2 porque CSV tem cabeçalho na linha 1
             try:
                 # Pular linhas vazias
                 if row.isnull().all():
@@ -249,6 +347,7 @@ def recriar_banco_completo(caminho_excel: str, aba_nome: str, db_path: str) -> T
                 
                 if not numero or not nome:
                     registros_erro += 1
+                    print(f"⚠️  Linha {linha_csv}: Número ou nome vazio - Número: '{numero}', Nome: '{nome}'")
                     continue
                 
                 # Extrair dados opcionais
@@ -261,80 +360,144 @@ def recriar_banco_completo(caminho_excel: str, aba_nome: str, db_path: str) -> T
                 data_ultima_vistoria = processar_data_excel(row.get(mapeamento.get('data_ultima_vistoria')))
                 data_vistoria_atual = processar_data_excel(row.get(mapeamento.get('data_vistoria_atual')))
                 
-                # Inserir novo registro
-                cursor.execute('''
-                    INSERT INTO bens 
-                    (numero, nome, situacao, localizacao, responsavel, 
-                     data_ultima_vistoria, data_vistoria_atual, auditor)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (numero, nome, situacao, localizacao, responsavel,
-                     data_ultima_vistoria, data_vistoria_atual, auditor))
-                registros_inseridos += 1
+                # Verificar se registro já existe
+                cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
+                registro_existente = cursor.fetchone()
                 
-                # Log a cada 50 registros
-                if registros_inseridos % 50 == 0:
-                    print(f"📈 {registros_inseridos} registros inseridos...")
+                if registro_existente:
+                    # Atualizar registro existente
+                    cursor.execute('''
+                        UPDATE bens SET 
+                        nome = ?, situacao = ?, localizacao = ?, responsavel = ?,
+                        data_ultima_vistoria = ?, data_vistoria_atual = ?, auditor = ?,
+                        data_localizacao = CASE WHEN ? != '' AND localizacao != ? THEN CURRENT_TIMESTAMP ELSE data_localizacao END
+                        WHERE numero = ?
+                    ''', (nome, situacao, localizacao, responsavel, 
+                         data_ultima_vistoria, data_vistoria_atual, auditor,
+                         localizacao, localizacao, numero))
+                    
+                    registros_atualizados += 1
+                    print(f"🔄 Linha {linha_csv}: ATUALIZADO - {numero}")
+                        
+                else:
+                    # Inserir novo registro
+                    cursor.execute('''
+                        INSERT INTO bens 
+                        (numero, nome, situacao, localizacao, responsavel, 
+                         data_ultima_vistoria, data_vistoria_atual, auditor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ''', (numero, nome, situacao, localizacao, responsavel,
+                         data_ultima_vistoria, data_vistoria_atual, auditor))
+                    registros_inseridos += 1
+                    print(f"✅ Linha {linha_csv}: NOVO - {numero} - {nome}")
                 
             except Exception as e:
                 registros_erro += 1
-                if registros_erro <= 5:
-                    print(f"⚠️  Erro na linha {linha_excel}: {str(e)}")
+                print(f"❌ Linha {linha_csv}: ERRO - {str(e)}")
                 continue
         
         conn.commit()
         conn.close()
         
         # RELATÓRIO FINAL
-        print("\n" + "="*60)
-        print("🎉 RECRIAÇÃO DO BANCO CONCLUÍDA!")
-        print("="*60)
+        total_processados = registros_inseridos + registros_atualizados + registros_erro
+        
+        print("\n" + "="*70)
+        print("📊 RELATÓRIO FINAL DA IMPORTAÇÃO CSV")
+        print("="*70)
         print(f"✅ NOVOS REGISTROS INSERIDOS: {registros_inseridos}")
+        print(f"🔄 REGISTROS ATUALIZADOS: {registros_atualizados}")
         print(f"❌ REGISTROS COM ERRO: {registros_erro}")
+        print(f"📈 TOTAL PROCESSADO: {total_processados}")
+        print("="*70)
         
-        if banco_existia:
-            print(f"📦 Backup do banco anterior salvo")
+        # MENSAGEM SIMPLIFICADA PARA USUÁRIO
+        if registros_erro == 0:
+            if registros_inseridos > 0 and registros_atualizados > 0:
+                mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos e {registros_atualizados} atualizados"
+            elif registros_inseridos > 0:
+                mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos registros"
+            else:
+                mensagem_user = f"✅ Importação concluída! {registros_atualizados} registros atualizados"
+        else:
+            mensagem_user = f"⚠️ Importação com {registros_erro} erros! {total_processados - registros_erro} registros processados"
         
-        print("="*60)
-        
-        mensagem_user = f"🎉 Banco de dados recriado com sucesso!"
-        mensagem_user += f"\n• 📊 Total de registros: {registros_inseridos}"
-        mensagem_user += f"\n• ⚠️  Registros com erro: {registros_erro}"
-        
-        if banco_existia:
-            mensagem_user += f"\n• 📦 Backup do banco anterior foi criado"
-        
-        return True, mensagem_user
+        return {
+            'sucesso': True,
+            'mensagem': mensagem_user,
+            'registros_processados': total_processados,
+            'registros_inseridos': registros_inseridos,
+            'registros_atualizados': registros_atualizados,
+            'registros_erro': registros_erro
+        }
         
     except Exception as e:
-        error_msg = f"❌ Erro na recriação do banco: {str(e)}"
+        error_msg = f"❌ Erro crítico na importação CSV: {str(e)}"
         print(error_msg)
         import traceback
         traceback.print_exc()
-        return False, error_msg
+        return {
+            'sucesso': False,
+            'mensagem': error_msg,
+            'registros_processados': 0,
+            'registros_inseridos': 0,
+            'registros_atualizados': 0,
+            'registros_erro': 0
+        }
 
 # ==============================
-# FUNÇÃO PRINCIPAL DE IMPORTAÇÃO
+# FUNÇÃO PRINCIPAL DE IMPORTAÇÃO - CORRIGIDA
 # ==============================
 
-def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, criar_backup: bool = True) -> Tuple[bool, str]:
+def importar_excel_para_sqlite(caminho_excel: str, db_path: str, aba_nome: str = 'Estoque', criar_backup: bool = True, apagar_dados_antes: bool = False) -> Dict[str, Any]:
     """
     Importa dados do Excel para SQLite com nova estrutura completa
+    CORREÇÃO: Melhor tratamento de erros e validações
+    Retorna: Dict com resultados detalhados
     """
     try:
         print(f"📁 Iniciando importação do arquivo: {caminho_excel}")
         print(f"📊 Aba: {aba_nome}")
         print(f"🗄️  Banco de dados: {db_path}")
+        print(f"🗑️  Apagar dados antes: {apagar_dados_antes}")
         
         # Verificar se arquivo existe
         if not os.path.exists(caminho_excel):
-            return False, f"❌ Arquivo Excel não encontrado: {caminho_excel}"
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Arquivo não encontrado: {caminho_excel}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
+        
+        # Verificar extensão do arquivo
+        extensao = os.path.splitext(caminho_excel)[1].lower()
+        if extensao == '.csv':
+            return importar_csv_para_sqlite(caminho_excel, db_path)
+        
+        # APAGAR DADOS ANTES DA IMPORTAÇÃO (se solicitado)
+        if apagar_dados_antes:
+            print("🗑️  Solicitada limpeza do banco antes da importação...")
+            sucesso_limpeza, mensagem_limpeza = apagar_todos_dados(db_path)
+            if not sucesso_limpeza:
+                return {
+                    'sucesso': False,
+                    'mensagem': f"❌ Falha ao apagar dados: {mensagem_limpeza}",
+                    'registros_processados': 0,
+                    'registros_inseridos': 0,
+                    'registros_atualizados': 0,
+                    'registros_erro': 0
+                }
+            print(f"✅ {mensagem_limpeza}")
         
         # Criar/atualizar tabela primeiro
         criar_tabela_atualizada(db_path)
         
         # Fazer backup se necessário
         backup_path = ""
-        if criar_backup and os.path.exists(db_path):
+        if criar_backup and os.path.exists(db_path) and not apagar_dados_antes:
             backup_dir = os.path.join(os.path.dirname(db_path), 'backups')
             os.makedirs(backup_dir, exist_ok=True)
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -344,17 +507,32 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
             print(f"📦 {mensagem_backup}")
         else:
             mensagem_backup = ""
+            print("ℹ️  Backup não criado (solicitada limpeza ou configuração)")
         
         # Carregar arquivo Excel
         try:
             wb = load_workbook(caminho_excel, read_only=True, data_only=True)
         except Exception as e:
-            return False, f"❌ Erro ao abrir arquivo Excel: {str(e)}"
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Erro ao abrir arquivo Excel: {str(e)}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         if aba_nome not in wb.sheetnames:
             abas_disponiveis = ", ".join(wb.sheetnames)
             wb.close()
-            return False, f"❌ Aba '{aba_nome}' não encontrada. Abas disponíveis: {abas_disponiveis}"
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Aba '{aba_nome}' não encontrada. Abas disponíveis: {abas_disponiveis}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         wb.close()
         
@@ -363,10 +541,24 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
             df = pd.read_excel(caminho_excel, sheet_name=aba_nome)
             print(f"📊 DataFrame carregado com {len(df)} linhas e {len(df.columns)} colunas")
         except Exception as e:
-            return False, f"❌ Erro ao ler dados do Excel: {str(e)}"
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Erro ao ler dados do Excel: {str(e)}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         if df.empty:
-            return False, "❌ O arquivo Excel está vazio ou não contém dados"
+            return {
+                'sucesso': False,
+                'mensagem': "❌ O arquivo Excel está vazio ou não contém dados",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         # Detectar mapeamento de colunas
         mapeamento = detectar_colunas(df)
@@ -374,9 +566,25 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
         
         # Verificar colunas obrigatórias
         if not mapeamento['numero']:
-            return False, "❌ Coluna do número do bem não detectada. Verifique se existe uma coluna com 'número', 'patrimonio' ou similar."
+            colunas_encontradas = ", ".join(df.columns.tolist())
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Coluna do número do bem não detectada. Colunas encontradas: {colunas_encontradas}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         if not mapeamento['nome']:
-            return False, "❌ Coluna do nome não detectada. Verifique se existe uma coluna com 'nome', 'descrição' ou similar."
+            colunas_encontradas = ", ".join(df.columns.tolist())
+            return {
+                'sucesso': False,
+                'mensagem': f"❌ Coluna do nome não detectada. Colunas encontradas: {colunas_encontradas}",
+                'registros_processados': 0,
+                'registros_inseridos': 0,
+                'registros_atualizados': 0,
+                'registros_erro': 0
+            }
         
         # Processar e importar dados
         conn = get_db_connection(db_path)
@@ -385,9 +593,6 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
         registros_inseridos = 0
         registros_atualizados = 0
         registros_erro = 0
-        
-        # Lista para detalhes das atualizações
-        detalhes_atualizacoes = []
         
         print("\n🔄 Iniciando processamento dos registros...")
         
@@ -418,28 +623,10 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
                 data_vistoria_atual = processar_data_excel(row.get(mapeamento.get('data_vistoria_atual')))
                 
                 # Verificar se registro já existe
-                cursor.execute("SELECT id, nome, situacao, localizacao, responsavel, auditor FROM bens WHERE numero = ?", (numero,))
+                cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
                 registro_existente = cursor.fetchone()
                 
                 if registro_existente:
-                    # VERIFICAR SE HOUVE ALTERAÇÕES
-                    houve_alteracao = False
-                    alteracoes = []
-                    
-                    # Comparar cada campo
-                    campos_para_comparar = [
-                        ('nome', registro_existente['nome'], nome),
-                        ('situacao', registro_existente['situacao'], situacao),
-                        ('localizacao', registro_existente['localizacao'], localizacao),
-                        ('responsavel', registro_existente['responsavel'], responsavel),
-                        ('auditor', registro_existente['auditor'], auditor)
-                    ]
-                    
-                    for campo, valor_antigo, valor_novo in campos_para_comparar:
-                        if valor_antigo != valor_novo:
-                            houve_alteracao = True
-                            alteracoes.append(f"{campo}: '{valor_antigo}' → '{valor_novo}'")
-                    
                     # Atualizar registro existente
                     cursor.execute('''
                         UPDATE bens SET 
@@ -452,17 +639,7 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
                          localizacao, localizacao, numero))
                     
                     registros_atualizados += 1
-                    
-                    # Registrar detalhes da atualização se houve alteração
-                    if houve_alteracao:
-                        detalhes_atualizacoes.append({
-                            'numero': numero,
-                            'alteracoes': alteracoes,
-                            'linha': linha_excel
-                        })
-                        print(f"🔄 Linha {linha_excel}: ATUALIZADO - {numero} - {', '.join(alteracoes)}")
-                    else:
-                        print(f"ℹ️  Linha {linha_excel}: MANTIDO - {numero} (sem alterações)")
+                    print(f"🔄 Linha {linha_excel}: ATUALIZADO - {numero}")
                         
                 else:
                     # Inserir novo registro
@@ -484,30 +661,21 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
             except Exception as e:
                 registros_erro += 1
                 print(f"❌ Linha {linha_excel}: ERRO - {str(e)}")
-                if registros_erro <= 10:  # Mostrar apenas os primeiros 10 erros detalhados
-                    print(f"   Dados da linha: Número: '{numero}', Nome: '{nome}'")
                 continue
         
         conn.commit()
         conn.close()
         
         # RELATÓRIO FINAL DETALHADO
+        total_processados = registros_inseridos + registros_atualizados + registros_erro
+        
         print("\n" + "="*70)
         print("📊 RELATÓRIO FINAL DA IMPORTAÇÃO")
         print("="*70)
         print(f"✅ NOVOS REGISTROS INSERIDOS: {registros_inseridos}")
         print(f"🔄 REGISTROS ATUALIZADOS: {registros_atualizados}")
         print(f"❌ REGISTROS COM ERRO: {registros_erro}")
-        print(f"📈 TOTAL PROCESSADO: {registros_inseridos + registros_atualizados + registros_erro}")
-        
-        if detalhes_atualizacoes:
-            print(f"\n📝 DETALHES DAS ATUALIZAÇÕES ({len(detalhes_atualizacoes)} registros modificados):")
-            for i, detalhe in enumerate(detalhes_atualizacoes[:15], 1):  # Mostrar apenas os 15 primeiros
-                print(f"   {i:2d}. {detalhe['numero']} (Linha {detalhe['linha']}):")
-                for alteracao in detalhe['alteracoes']:
-                    print(f"        - {alteracao}")
-            if len(detalhes_atualizacoes) > 15:
-                print(f"   ... e mais {len(detalhes_atualizacoes) - 15} registros atualizados")
+        print(f"📈 TOTAL PROCESSADO: {total_processados}")
         
         if registros_erro > 0:
             print(f"\n⚠️  {registros_erro} registros não puderam ser processados. Verifique os logs acima.")
@@ -517,21 +685,28 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
         
         print("="*70)
         
-        # Mensagem para usuário
-        mensagem_user = f"✅ Importação concluída com sucesso!"
-        mensagem_user += f"\n• 📊 Novos registros: {registros_inseridos}"
-        mensagem_user += f"\n• 🔄 Registros atualizados: {registros_atualizados}"
-        
-        if detalhes_atualizacoes:
-            mensagem_user += f"\n• 📝 {len(detalhes_atualizacoes)} registros foram modificados"
-        
-        if registros_erro > 0:
-            mensagem_user += f"\n• ⚠️  Registros com erro: {registros_erro}"
-        
-        if mensagem_backup:
-            mensagem_user += f"\n• 📦 {mensagem_backup}"
-        
-        return True, mensagem_user
+        # MENSAGEM SIMPLIFICADA PARA USUÁRIO
+        if registros_erro == 0:
+            if apagar_dados_antes:
+                mensagem_user = f"✅ Importação concluída! {total_processados} registros importados"
+            else:
+                if registros_inseridos > 0 and registros_atualizados > 0:
+                    mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos e {registros_atualizados} atualizados"
+                elif registros_inseridos > 0:
+                    mensagem_user = f"✅ Importação concluída! {registros_inseridos} novos registros"
+                else:
+                    mensagem_user = f"✅ Importação concluída! {registros_atualizados} registros atualizados"
+        else:
+            mensagem_user = f"⚠️ Importação com {registros_erro} erros! {total_processados - registros_erro} registros processados"
+
+        return {
+            'sucesso': True,
+            'mensagem': mensagem_user,
+            'registros_processados': total_processados,
+            'registros_inseridos': registros_inseridos,
+            'registros_atualizados': registros_atualizados,
+            'registros_erro': registros_erro
+        }
         
     except Exception as e:
         error_msg = f"❌ Erro crítico na importação: {str(e)}"
@@ -539,47 +714,103 @@ def importar_excel_para_sqlite(caminho_excel: str, aba_nome: str, db_path: str, 
         import traceback
         print("📋 Traceback completo:")
         traceback.print_exc()
-        return False, error_msg
+        return {
+            'sucesso': False,
+            'mensagem': error_msg,
+            'registros_processados': 0,
+            'registros_inseridos': 0,
+            'registros_atualizados': 0,
+            'registros_erro': 0
+        }
 
 # ==============================
-# FUNÇÕES DE VERIFICAÇÃO
+# FUNÇÕES DE VERIFICAÇÃO - CORRIGIDAS
 # ==============================
 
-def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -> Tuple[bool, str]:
-    """Verifica se a planilha tem a estrutura esperada"""
+def verificar_estrutura_excel(file_path: str, aba_nome: str = 'Estoque') -> Dict[str, Any]:
+    """Verifica se a planilha tem a estrutura esperada - CORRIGIDA"""
     try:
-        if not os.path.exists(caminho_arquivo):
-            return False, f"Arquivo não encontrado: {caminho_arquivo}"
+        # Se for um objeto de arquivo do Flask, salvar temporariamente
+        if hasattr(file_path, 'filename'):
+            temp_path = f"temp_{file_path.filename}"
+            file_path.save(temp_path)
+            file_to_check = temp_path
+        else:
+            file_to_check = file_path
         
-        wb = load_workbook(caminho_arquivo, read_only=True)
+        if not os.path.exists(file_to_check):
+            return {'sucesso': False, 'mensagem': f"Arquivo não encontrado: {file_to_check}"}
         
-        if aba_nome not in wb.sheetnames:
-            abas_disponiveis = ", ".join(wb.sheetnames)
-            wb.close()
-            return False, f"Aba '{aba_nome}' não encontrada. Abas disponíveis: {abas_disponiveis}"
+        extensao = os.path.splitext(file_to_check)[1].lower()
         
-        ws = wb[aba_nome]
-        
-        # Obter cabeçalhos
-        cabecalhos = []
-        for cell in ws[1]:
-            if cell.value:
-                cabecalhos.append(str(cell.value).strip().upper())
-        
-        wb.close()
-        
-        # Campos obrigatórios
-        obrigatorios = ['NUMERO', 'NÚMERO', 'PATRIMONIO', 'PATRIMÔNIO', 'CODIGO', 'CÓDIGO']
-        
-        encontrou_obrigatorio = any(campo in ' '.join(cabecalhos) for campo in obrigatorios)
-        
-        if not encontrou_obrigatorio:
-            return False, f"Campo obrigatório de número/patrimônio não encontrado. Campos disponíveis: {cabecalhos}"
-        
-        return True, f"Estrutura válida. Campos encontrados: {len(cabecalhos)}"
+        if extensao == '.csv':
+            # Verificar CSV
+            try:
+                df = pd.read_csv(file_to_check, nrows=1)
+                colunas = df.columns.tolist()
+                return {
+                    'sucesso': True, 
+                    'mensagem': f"Estrutura CSV válida. Colunas: {', '.join(colunas)}",
+                    'colunas': colunas
+                }
+            except Exception as e:
+                return {'sucesso': False, 'mensagem': f"Erro ao ler CSV: {str(e)}"}
+        else:
+            # Verificar Excel
+            try:
+                wb = load_workbook(file_to_check, read_only=True)
+                
+                if aba_nome not in wb.sheetnames:
+                    abas_disponiveis = ", ".join(wb.sheetnames)
+                    wb.close()
+                    if hasattr(file_path, 'filename'):
+                        os.remove(temp_path)
+                    return {
+                        'sucesso': False, 
+                        'mensagem': f"Aba '{aba_nome}' não encontrada. Abas disponíveis: {abas_disponiveis}"
+                    }
+                
+                ws = wb[aba_nome]
+                
+                # Obter cabeçalhos
+                cabecalhos = []
+                for cell in ws[1]:
+                    if cell.value:
+                        cabecalhos.append(str(cell.value).strip())
+                
+                wb.close()
+                
+                # Limpar arquivo temporário se existir
+                if hasattr(file_path, 'filename') and os.path.exists(temp_path):
+                    os.remove(temp_path)
+                
+                # Verificar campos obrigatórios
+                campos_obrigatorios = ['numero', 'nome']
+                campos_encontrados = [col.lower() for col in cabecalhos]
+                
+                # Verificar se temos pelo menos número e nome
+                tem_numero = any('numero' in campo or 'número' in campo or 'patrimonio' in campo for campo in campos_encontrados)
+                tem_nome = any('nome' in campo for campo in campos_encontrados)
+                
+                if not tem_numero or not tem_nome:
+                    return {
+                        'sucesso': False, 
+                        'mensagem': f"Campos obrigatórios não encontrados. Campos disponíveis: {cabecalhos}"
+                    }
+                
+                return {
+                    'sucesso': True, 
+                    'mensagem': f"Estrutura válida. Campos encontrados: {len(cabecalhos)}",
+                    'colunas': cabecalhos
+                }
+                
+            except Exception as e:
+                if hasattr(file_path, 'filename') and os.path.exists(temp_path):
+                    os.remove(temp_path)
+                return {'sucesso': False, 'mensagem': f"Erro ao verificar estrutura: {str(e)}"}
         
     except Exception as e:
-        return False, f"Erro ao verificar estrutura: {str(e)}"
+        return {'sucesso': False, 'mensagem': f"Erro geral na verificação: {str(e)}"}
 
 def obter_colunas_excel(arquivo_excel: str, aba_nome: str = 'Estoque') -> List[str]:
     """Retorna as colunas disponíveis no arquivo Excel"""
@@ -618,52 +849,32 @@ def testar_importacao():
         # Criar pasta do banco se não existir
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         
-        # Menu de opções
-        print("\n🔧 OPÇÕES DISPONÍVEIS:")
-        print("1. Importação normal (atualiza registros existentes)")
-        print("2. Recriação completa do banco (apaga tudo e recria)")
+        # Testar verificação de estrutura
+        print("\n1. Verificando estrutura do Excel...")
+        resultado = verificar_estrutura_excel(excel_path)
+        print(f"📋 {resultado['mensagem']}")
         
-        opcao = input("\n🎯 Escolha uma opção (1 ou 2): ").strip()
-        
-        if opcao == "1":
-            # Testar verificação de estrutura
-            print("\n1. Verificando estrutura do Excel...")
-            resultado, mensagem = verificar_estrutura_excel(excel_path)
-            print(f"📋 {mensagem}")
+        if resultado['sucesso']:
+            # Testar obtenção de colunas
+            print("\n2. Obtendo colunas do Excel...")
+            colunas = obter_colunas_excel(excel_path)
+            print(f"📊 Colunas encontradas: {colunas}")
             
-            if resultado:
-                # Testar obtenção de colunas
-                print("\n2. Obtendo colunas do Excel...")
-                colunas = obter_colunas_excel(excel_path)
-                print(f"📊 Colunas encontradas: {colunas}")
-                
-                # Testar importação
-                print("\n3. Iniciando importação...")
-                sucesso, mensagem = importar_excel_para_sqlite(excel_path, 'Estoque', db_path)
-                print(f"🎯 Resultado: {'SUCESSO' if sucesso else 'FALHA'}")
-                print(f"💬 {mensagem}")
-            else:
-                print("❌ Estrutura inválida, importação cancelada.")
-                
-        elif opcao == "2":
-            print("\n🚨 ATENÇÃO: Esta opção vai APAGAR TODO o banco de dados atual!")
-            print("    Um backup será criado automaticamente.")
-            confirmacao = input("    Confirma que deseja continuar? (s/N): ").strip().lower()
-            
-            if confirmacao in ['s', 'sim', 'y', 'yes']:
-                sucesso, mensagem = recriar_banco_completo(excel_path, 'Estoque', db_path)
-                print(f"🎯 Resultado: {'SUCESSO' if sucesso else 'FALHA'}")
-                print(f"💬 {mensagem}")
-            else:
-                print("❌ Operação cancelada pelo usuário.")
+            # Testar importação
+            print("\n3. Iniciando importação...")
+            resultado_importacao = importar_excel_para_sqlite(
+                excel_path, db_path, 'Estoque', 
+                criar_backup=False, apagar_dados_antes=False
+            )
+            print(f"🎯 Resultado: {'SUCESSO' if resultado_importacao['sucesso'] else 'FALHA'}")
+            print(f"💬 {resultado_importacao['mensagem']}")
         else:
-            print("❌ Opção inválida. Use 1 ou 2.")
+            print("❌ Estrutura inválida, importação cancelada.")
             
     except Exception as e:
         print(f"💥 Erro no teste: {e}")
         import traceback
         traceback.print_exc()
 
-# Executar teste se o arquivo for executado diretamente
 if __name__ == "__main__":
     testar_importacao()

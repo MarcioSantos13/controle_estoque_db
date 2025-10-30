@@ -69,7 +69,6 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <!-- Item removido: Meu Perfil foi excluído -->
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('sistema_crud') }}">
                                         <i class="bi bi-gear me-2"></i>Gestão Completa
@@ -91,16 +90,39 @@
         </div>
     </header>
 
-    {% if mensagem_sucesso %}
-    <div class="container mt-3">
+    <main class="container py-5">
+        <!-- MENSAGENS FLASH - CORREÇÃO -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-center">
+                                {% if category == 'success' %}
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                {% elif category == 'error' or category == 'danger' %}
+                                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                                {% elif category == 'warning' %}
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                {% else %}
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                {% endif %}
+                                <span>{{ message | safe }}</span>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if mensagem_sucesso %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i> {{ mensagem_sucesso }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    <main class="container py-5">
         <!-- Card de Busca -->
         <div class="card search-card shadow-lg border-0 rounded-3 mb-4">
             <div class="card-header bg-white py-3 border-0">
@@ -237,7 +259,7 @@
                     <i class="bi bi-map me-1"></i>Relatório por Localidade
                 </a>
                 <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
-                    <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel
+                    <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel/CSV
                 </button>
             </div>
         </div>
@@ -249,31 +271,31 @@
         </div>
     </main>
 
-    <!-- Modal de Importação -->
+    <!-- Modal de Importação - ATUALIZADO -->
     <div class="modal fade import-modal" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-3">
                 <div class="modal-header bg-info text-white rounded-top-3">
                     <h5 class="modal-title" id="importModalLabel">
-                        <i class="bi bi-file-earmark-excel me-2"></i>Importar do Excel
+                        <i class="bi bi-file-earmark-excel me-2"></i>Importar do Excel/CSV
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="alert alert-warning">
                         <i class="bi bi-exclamation-triangle me-2"></i>
-                        <strong>Atenção:</strong> Esta ação irá recriar todo o banco de dados.
+                        <strong>Atenção:</strong> Esta ação irá atualizar o banco de dados.
                     </div>
 
                     <form id="importForm" method="POST" action="{{ url_for('importar_excel') }}"
                         enctype="multipart/form-data" autocomplete="off">
                         <div class="mb-3">
                             <label for="excel_file" class="form-label fw-semibold">
-                                <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo Excel
+                                <i class="bi bi-file-spreadsheet me-1"></i>Selecionar arquivo
                             </label>
                             <input type="file" class="form-control" id="excel_file" name="excel_file"
-                                accept=".xlsx,.xls" required>
-                            <div class="form-text">Formatos suportados: .xlsx, .xls</div>
+                                accept=".xlsx,.xls,.csv" required>
+                            <div class="form-text">Formatos suportados: .xlsx, .xls, .csv</div>
                         </div>
 
                         <div class="mb-3">
@@ -282,7 +304,18 @@
                             </label>
                             <input type="text" class="form-control" id="aba_nome" name="aba_nome" value="Estoque"
                                 required>
-                            <div class="form-text">Nome da aba onde estão os dados</div>
+                            <div class="form-text">Nome da aba onde estão os dados (apenas para Excel)</div>
+                        </div>
+
+                        <!-- NOVA OPÇÃO: APAGAR DADOS -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="apagar_dados" name="apagar_dados">
+                            <label class="form-check-label text-danger fw-bold" for="apagar_dados">
+                                <i class="bi bi-trash3 me-1"></i>APAGAR TODOS OS DADOS ANTES DA IMPORTAÇÃO
+                            </label>
+                            <div class="form-text text-danger">
+                                ⚠️ ATENÇÃO: Esta ação remove TODOS os registros existentes antes de importar!
+                            </div>
                         </div>
 
                         <div class="form-check mb-3">
@@ -290,6 +323,7 @@
                             <label class="form-check-label" for="backup">
                                 <i class="bi bi-shield-check me-1"></i>Criar backup do banco atual
                             </label>
+                            <div class="form-text">Recomendado para segurança dos dados</div>
                         </div>
 
                         <div id="importStatus" class="d-none">
@@ -1017,6 +1051,36 @@
             }
             return false;
         };
+
+        // ===== DEBUG DO FORMULÁRIO DE IMPORTAÇÃO =====
+        console.log("🔧 Script de importação carregado");
+
+        // Debug do formulário de importação
+        document.addEventListener('DOMContentLoaded', function() {
+            const importForm = document.getElementById('importForm');
+            if (importForm) {
+                importForm.addEventListener('submit', function(e) {
+                    console.log('📤 Formulário de importação enviado');
+                    const formData = new FormData(this);
+                    console.log('📋 Dados do formulário:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`   ${key}: ${value}`);
+                    }
+                    
+                    // Mostrar loading
+                    const btnImportar = document.getElementById('btnImportar');
+                    const originalText = btnImportar.innerHTML;
+                    btnImportar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Importando...';
+                    btnImportar.disabled = true;
+                    
+                    // Restaurar botão após 10 segundos (fallback)
+                    setTimeout(() => {
+                        btnImportar.innerHTML = originalText;
+                        btnImportar.disabled = false;
+                    }, 10000);
+                });
+            }
+        });
     </script>
 
 </body>

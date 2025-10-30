@@ -288,3 +288,79 @@ Traceback (most recent call last):
 ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
 2025-10-29 14:11:04 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
 2025-10-29 14:28:27 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 20:58:13 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 20:58:32 - controle_patrimonial - ERROR - [app.py:1044] - Erro na importação do Excel: tuple indices must be integers or slices, not str
+2025-10-29 21:19:25 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 21:22:59 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 21:23:55 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 21:46:41 - controle_patrimonial - ERROR - [app.py:1064] - Erro na importação do Excel/CSV: tuple indices must be integers or slices, not str
+2025-10-29 22:18:45 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-29 23:18:23 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-30 00:15:41 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+2025-10-30 00:28:36 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+2025-10-30 00:29:47 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+  File "D:\controle_estoque_db\utils\excel_importer.py", line 695
+    if registros_erro == 0:
+SyntaxError: expected 'except' or 'finally' block
+2025-10-30 00:41:21 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 35, in <module>
+    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel
+ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\controle_estoque_db\utils\excel_importer.py)
