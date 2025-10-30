@@ -12,3 +12,5 @@
 Thumbs.db
 relatorios/controle_patrimonial.db
 relatorios/controle_patrimonial.db
+logs/app.log
+utils/__pycache__/excel_importer.cpython-313.pyc
