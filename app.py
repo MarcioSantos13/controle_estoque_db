@@ -430,6 +430,41 @@ def carregar_dados_bancos() -> Dict[str, int]:
         logger.error(f"Erro ao carregar contagens do banco: {str(e)}")
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
+def criar_estrutura_diretorios():
+    """Garante que todos os diretórios necessários existam"""
+    diretorios = [
+        app.config['UPLOAD_FOLDER'],
+        os.path.join(app.config['BASE_DIR'], 'logs'),
+        os.path.dirname(app.config['DB_PATH']),
+        os.path.join(os.path.dirname(app.config['DB_PATH']), 'backups')
+    ]
+    
+    for diretorio in diretorios:
+        try:
+            os.makedirs(diretorio, exist_ok=True)
+            # Dar permissões amplas para desenvolvimento
+            os.chmod(diretorio, 0o777)
+            print(f"✅ Diretório criado/verificado: {diretorio}")
+        except Exception as e:
+            print(f"⚠️  Erro ao criar diretório {diretorio}: {e}")
+
+def verificar_permissoes_arquivos():
+    """Verifica permissões de arquivos necessários"""
+    arquivos_verificar = [
+        '/var/www/controle_estoque_db/relatorios/controle_patrimonial.db',
+        '/var/www/controle_estoque_db/logs/app.log'
+    ]
+    
+    for arquivo in arquivos_verificar:
+        diretorio = os.path.dirname(arquivo)
+        if not os.path.exists(diretorio):
+            os.makedirs(diretorio, mode=0o777, exist_ok=True)
+        if os.path.exists(arquivo):
+            try:
+                os.chmod(arquivo, 0o666)
+            except:
+                pass
+
 # ==============================
 # Sistema de Autenticação
 # ==============================
@@ -991,12 +1026,8 @@ def crud_excluir_bem(bem_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================
-# Rota de Importação Excel
+# Rota de Importação Excel - CORRIGIDA (APENAS UMA DEFINIÇÃO)
 # ==============================
-
-
-
-
 
 @app.route('/importar-excel', methods=['POST'])
 @login_required
@@ -1111,12 +1142,6 @@ def importar_excel():
         flash(error_msg, 'error')
         print(f"💥 Erro geral: {str(e)}")
         return redirect(url_for('index'))
-
-
-
-
-
-
 
 # ==============================
 # Rotas de Autenticação
@@ -1644,6 +1669,11 @@ def service_unavailable(error):
 # Inicialização
 # ==============================
 if __name__ == '__main__':
+    # Criar estrutura de diretórios primeiro
+    criar_estrutura_diretorios()
+    verificar_permissoes_arquivos()
+    
+    # Depois criar tabelas
     criar_tabela_usuarios_se_nao_existir()
     
     logger.info("Iniciando aplicação Flask")
