@@ -1160,3 +1160,96 @@ Traceback (most recent call last):
   File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
     from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
 ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-31 10:34:07 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 10:34:07 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 10:34:07 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 10:34:07 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 10:34:13 - controle_patrimonial - WARNING - [app.py:134] - ⚠️ Flask-Talisman não instalado - executando sem CSP
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [db_handler.py:31] - Tabela bens criada/atualizada com sucesso
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 10:34:13 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 10:34:14 - controle_patrimonial - WARNING - [app.py:134] - ⚠️ Flask-Talisman não instalado - executando sem CSP
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [db_handler.py:31] - Tabela bens criada/atualizada com sucesso
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 10:34:14 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 11:12:17 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 11:12:17 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 11:12:17 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 11:12:17 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 11:18:32 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 11:18:32 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 11:18:32 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 11:18:32 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 12:26:15 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 12:26:15 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 12:26:15 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 12:26:15 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 18:52:20 - controle_patrimonial - WARNING - [app.py:134] - ⚠️ Flask-Talisman não instalado - executando sem CSP
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 18:52:20 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 18:52:21 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 18:52:21 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 18:52:21 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 18:52:22 - controle_patrimonial - WARNING - [app.py:134] - ⚠️ Flask-Talisman não instalado - executando sem CSP
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 18:52:22 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:131] - 🔓 Modo desenvolvimento - segurança reduzida
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 20:40:35 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [logger.py:67] - === SISTEMA INICIADO ===
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [logger.py:68] - Arquivo de log principal: D:\controle_estoque_db\logs\app.log
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [logger.py:69] - Arquivo de erros: D:\controle_estoque_db\logs\errors.log
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [logger.py:70] - Diretório de trabalho: D:\controle_estoque_db
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:131] - 🔓 Modo desenvolvimento - segurança reduzida
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:611] - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:551] - Tabela usuarios já existe
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:1104] - Iniciando aplicação Flask
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:1116] - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-10-31 20:40:36 - controle_patrimonial - INFO - [app.py:1118] - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-10-31 20:41:09 - controle_patrimonial - ERROR - [app.py:594] - Erro ao carregar contagens do banco: 'localizados'
