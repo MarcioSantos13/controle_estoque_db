@@ -373,3 +373,52 @@ Traceback (most recent call last):
   File "D:\Discovery2025\Projetos python3\controle_estoque_db\app.py", line 35, in <module>
     from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
 ImportError: cannot import name 'importar_excel_para_sqlite' from 'utils.excel_importer' (D:\Discovery2025\Projetos python3\controle_estoque_db\utils\excel_importer.py)
+2025-10-31 20:41:09 - controle_patrimonial - ERROR - [app.py:594] - Erro ao carregar contagens do banco: 'localizados'
+2025-10-31 20:48:24 - controle_patrimonial - ERROR - [app.py:594] - Erro ao carregar contagens do banco: 'localizados'
+2025-10-31 20:48:30 - controle_patrimonial - ERROR - [app.py:594] - Erro ao carregar contagens do banco: 'localizados'
+2025-10-31 21:12:59 - controle_patrimonial - ERROR - [app.py:768] - Erro em /visualizar/nao-localizados: 'dict object' has no attribute 'total_registros'
+2025-10-31 21:13:31 - controle_patrimonial - ERROR - [app.py:1074] - Erro na importação do Excel/CSV: [WinError 32] O arquivo já está sendo usado por outro processo: 'D:\\controle_estoque_db\\temp\\controle_patrimonial.xlsx'
+2025-10-31 22:02:22 - controle_patrimonial - ERROR - [app.py:1074] - Erro na importação do Excel/CSV: [WinError 32] O arquivo já está sendo usado por outro processo: 'D:\\controle_estoque_db\\temp\\controle_patrimonial.xlsx'
+2025-10-31 22:54:09 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-10-31 23:02:00 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-10-31 23:02:17 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 193639: too many values to unpack (expected 2)
+2025-10-31 23:19:43 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-10-31 23:33:24 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 193639: too many values to unpack (expected 2)
+2025-10-31 23:34:34 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 193639: too many values to unpack (expected 2)
+2025-10-31 23:35:03 - controle_patrimonial - ERROR - [app.py:1100] - Erro na página CRUD: Could not build url for endpoint 'perfil'. Did you mean 'api_obter_bem' instead?
+2025-10-31 23:50:11 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-11-01 00:57:43 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-11-01 00:57:48 - controle_patrimonial - ERROR - [app.py:1100] - Erro na página CRUD: Could not build url for endpoint 'cadastrar_usuario'. Did you mean 'api_atualizar_bem' instead?
+2025-11-01 00:58:04 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 110437: too many values to unpack (expected 2)
+2025-11-01 01:00:03 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem 001: too many values to unpack (expected 2)
+2025-11-01 01:06:20 - controle_patrimonial - CRITICAL - [logger.py:87] - EXCEÇÃO NÃO CAPTURADA:
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 1148, in <module>
+    @app.route('/perfil')
+     ~~~~~~~~~^^^^^^^^^^^
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: perfil
+Traceback (most recent call last):
+  File "D:\controle_estoque_db\app.py", line 1148, in <module>
+    @app.route('/perfil')
+     ~~~~~~~~~^^^^^^^^^^^
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 362, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\scaffold.py", line 47, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "D:\controle_estoque_db\venv\Lib\site-packages\flask\sansio\app.py", line 657, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: perfil
+2025-11-01 01:08:04 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem TESTE001: too many values to unpack (expected 2)
+2025-11-01 01:10:14 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem TESTE001: too many values to unpack (expected 2)

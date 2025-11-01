@@ -310,6 +310,79 @@ def criar_tabela_atualizada(db_path: str) -> Dict[str, Any]:
             conn.close()
 
 # ==============================
+# FUNÇÃO OBTER_BENS_PAGINADOS - CORRIGIDA
+# ==============================
+
+def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por_pagina: int = 50) -> Dict[str, Any]:
+    """
+    Obtém bens com paginação e filtros por tipo
+    Retorna: Dict com lista de bens e informações de paginação
+    """
+    conn = None
+    try:
+        conn = get_db_connection(db_path)
+        cursor = conn.cursor()
+        
+        # Query base com filtro por tipo
+        query_base = "SELECT * FROM bens WHERE 1=1"
+        params = []
+        
+        if tipo == 'localizados':
+            query_base += " AND (situacao = 'Localizado' OR situacao = 'localizado' OR situacao = 'LOCALIZADO' OR situacao LIKE '%Localizado%')"
+        elif tipo == 'nao-localizados':
+            query_base += " AND (situacao != 'Localizado' AND situacao != 'localizado' AND situacao != 'LOCALIZADO' AND situacao NOT LIKE '%Localizado%' OR situacao IS NULL OR situacao = '')"
+        # 'todos' não aplica filtro
+        
+        # Ordenação
+        query_base += " ORDER BY numero"
+        
+        # Contar total
+        count_query = f"SELECT COUNT(*) FROM ({query_base})"
+        cursor.execute(count_query, params)
+        total_registros = cursor.fetchone()[0]
+        
+        # Paginação
+        offset = (pagina - 1) * por_pagina
+        query_base += " LIMIT ? OFFSET ?"
+        params.extend([por_pagina, offset])
+        
+        # Executar query
+        cursor.execute(query_base, params)
+        bens = [dict(row) for row in cursor.fetchall()]
+        
+        # Converter datas para string
+        for bem in bens:
+            for key, value in bem.items():
+                if isinstance(value, (datetime, date)):
+                    bem[key] = value.isoformat()
+        
+        total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
+        
+        return {
+            'sucesso': True,
+            'dados': bens,
+            'pagina_atual': pagina,
+            'por_pagina': por_pagina,
+            'total_registros': total_registros,
+            'total_paginas': total_paginas
+        }
+        
+    except Exception as e:
+        logger.error(f"Erro ao buscar bens paginados: {str(e)}")
+        return {
+            'sucesso': False,
+            'dados': [],
+            'pagina_atual': 1,
+            'por_pagina': por_pagina,
+            'total_registros': 0,
+            'total_paginas': 0,
+            'mensagem': f"Erro ao buscar bens: {str(e)}"
+        }
+    finally:
+        if conn:
+            conn.close()
+
+# ==============================
 # FUNÇÃO OBTER_BENS_POR_LOCALIDADE - CORRIGIDA
 # ==============================
 
@@ -472,18 +545,6 @@ def obter_localidades(db_path: str) -> Dict[str, Any]:
         'localidades': localizacoes,
         'total': len(localizacoes)
     }
-
-# ==============================
-# FUNÇÃO OBTER_BENS_PAGINADOS - ADICIONADA
-# ==============================
-
-def obter_bens_paginados(db_path: str, pagina: int = 1, por_pagina: int = 50, filtros: Dict[str, Any] = None) -> Dict[str, Any]:
-    """
-    Obtém bens com paginação e filtros (alias para buscar_bens)
-    Retorna: Dict com lista de bens e informações de paginação
-    """
-    # Reutiliza a função buscar_bens existente
-    return buscar_bens(db_path, filtros, pagina, por_pagina)
 
 # ==============================
 # FUNÇÃO CONTAR_BENS - ADICIONADA
@@ -1441,6 +1502,10 @@ def atualizar_bem(db_path: str, numero_bem: str, dados: Dict[str, Any]) -> Dict[
         if conn:
             conn.close()
 
+# ==============================
+# FUNÇÃO OBTER_ESTATISTICAS - CORRIGIDA
+# ==============================
+
 def obter_estatisticas(db_path: str) -> Dict[str, Any]:
     """Obtém estatísticas dos bens"""
     conn = None
@@ -1454,7 +1519,11 @@ def obter_estatisticas(db_path: str) -> Dict[str, Any]:
         
         # Bens por situação
         cursor.execute("SELECT situacao, COUNT(*) FROM bens GROUP BY situacao")
-        situacoes = {row[0]: row[1] for row in cursor.fetchall()}
+        situacoes_result = cursor.fetchall()
+        situacoes = {}
+        for row in situacoes_result:
+            situacao = row[0] if row[0] else 'Não Informada'
+            situacoes[situacao] = row[1]
         
         # Bens por localização (top 10)
         cursor.execute('''
@@ -1465,17 +1534,34 @@ def obter_estatisticas(db_path: str) -> Dict[str, Any]:
             ORDER BY COUNT(*) DESC 
             LIMIT 10
         ''')
-        localizacoes = {row[0]: row[1] for row in cursor.fetchall()}
+        localizacoes_result = cursor.fetchall()
+        localizacoes = {}
+        for row in localizacoes_result:
+            localizacao = row[0] if row[0] else 'Não Informada'
+            localizacoes[localizacao] = row[1]
         
-        # Data da última atualização
+        # Data da última atualização - CORRIGIDO
         cursor.execute('''
-            SELECT MAX(data_criacao) FROM bens
-            UNION ALL
             SELECT MAX(ultima_atualizacao) FROM bens WHERE ultima_atualizacao IS NOT NULL
+            UNION ALL
+            SELECT MAX(data_criacao) FROM bens WHERE data_criacao IS NOT NULL
         ''')
         datas = cursor.fetchall()
-        datas_validas = [row[0] for row in datas if row[0] is not None]
-        ultima_atualizacao = max(datas_validas) if datas_validas else None
+        
+        ultima_atualizacao = None
+        for row in datas:
+            if row[0] is not None:
+                if isinstance(row[0], (datetime, date)):
+                    ultima_atualizacao = row[0].isoformat()
+                    break
+                elif isinstance(row[0], str):
+                    try:
+                        # Tentar converter string para datetime
+                        data_obj = datetime.fromisoformat(row[0].replace('Z', '+00:00'))
+                        ultima_atualizacao = data_obj.isoformat()
+                        break
+                    except ValueError:
+                        continue
         
         return {
             'sucesso': True,
@@ -1483,7 +1569,7 @@ def obter_estatisticas(db_path: str) -> Dict[str, Any]:
                 'total_bens': total_bens,
                 'situacoes': situacoes,
                 'localizacoes': localizacoes,
-                'ultima_atualizacao': ultima_atualizacao.isoformat() if ultima_atualizacao else None
+                'ultima_atualizacao': ultima_atualizacao
             }
         }
         
@@ -1491,7 +1577,12 @@ def obter_estatisticas(db_path: str) -> Dict[str, Any]:
         logger.error(f"Erro ao obter estatísticas: {str(e)}")
         return {
             'sucesso': False,
-            'estatisticas': {},
+            'estatisticas': {
+                'total_bens': 0,
+                'situacoes': {},
+                'localizacoes': {},
+                'ultima_atualizacao': None
+            },
             'mensagem': f"Erro ao obter estatísticas: {str(e)}"
         }
     finally:

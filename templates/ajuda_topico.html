@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Ajuda</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <header class="app-header bg-primary text-white shadow-sm">
+        <div class="container py-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="header-title mb-1">
+                        <i class="bi bi-question-circle me-2"></i>{{ titulo }}
+                    </h1>
+                    <p class="header-subtitle mb-0">Guia detalhado</p>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('ajuda') }}" class="btn btn-light btn-sm">
+                            <i class="bi bi-arrow-left me-1"></i>Voltar à Ajuda
+                        </a>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-house me-1"></i>Início
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        {% if topico == 'importacao' %}
+                        <h3 class="mb-4">📊 Importação de Dados</h3>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Importante:</strong> Apenas administradores podem importar dados.
+                        </div>
+                        
+                        <h5>Formatos Suportados:</h5>
+                        <ul>
+                            <li><strong>Excel:</strong> .xlsx, .xls</li>
+                            <li><strong>CSV:</strong> .csv (valores separados por vírgula)</li>
+                        </ul>
+                        
+                        <h5>Estrutura do Arquivo:</h5>
+                        <p>Seu arquivo deve conter as colunas:</p>
+                        <ul>
+                            <li><code>numero</code> - Número do bem (obrigatório)</li>
+                            <li><code>nome</code> - Nome/descrição do bem (obrigatório)</li>
+                            <li><code>situacao</code> - Situação (Localizado/Pendente)</li>
+                            <li><code>localizacao</code> - Localização atual</li>
+                            <li><code>responsavel</code> - Responsável pelo bem</li>
+                        </ul>
+                        
+                        <h5>Passo a Passo:</h5>
+                        <ol>
+                            <li>Clique em "Importar Excel/CSV" na página inicial</li>
+                            <li>Selecione o arquivo</li>
+                            <li>Informe o nome da aba (para Excel)</li>
+                            <li>Escolha se deseja fazer backup</li>
+                            <li>Clique em "Importar"</li>
+                        </ol>
+
+                        {% elif topico == 'busca' %}
+                        <h3 class="mb-4">🔍 Busca e Localização</h3>
+                        
+                        <h5>Como Buscar um Bem:</h5>
+                        <ol>
+                            <li>Digite o número do bem no campo principal</li>
+                            <li>Ou use a câmera para escanear o código de barras</li>
+                            <li>Informe a localização se o bem foi encontrado</li>
+                            <li>Clique em "Buscar" para atualizar</li>
+                        </ol>
+                        
+                        <h5>Dicas:</h5>
+                        <ul>
+                            <li>O sistema foca automaticamente no campo de busca</li>
+                            <li>Use a tecla <kbd>Enter</kbd> para buscar rapidamente</li>
+                            <li>O scanner funciona melhor com boa iluminação</li>
+                        </ul>
+
+                        {% elif topico == 'exportacao' %}
+                        <h3 class="mb-4">📥 Exportação de Relatórios</h3>
+                        
+                        <h5>Relatórios Disponíveis:</h5>
+                        <ul>
+                            <li><strong>Bens Localizados:</strong> Todos os bens marcados como localizados</li>
+                            <li><strong>Bens Pendentes:</strong> Bens ainda não localizados</li>
+                            <li><strong>Por Localidade:</strong> Bens agrupados por localização</li>
+                        </ul>
+                        
+                        <h5>Como Exportar:</h5>
+                        <ol>
+                            <li>Acesse a página desejada (Localizados, Pendentes ou Localidades)</li>
+                            <li>Clique no botão "Exportar" correspondente</li>
+                            <li>O arquivo Excel será baixado automaticamente</li>
+                        </ol>
+
+                        {% elif topico == 'scanner' %}
+                        <h3 class="mb-4">📷 Uso do Scanner</h3>
+                        
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Atenção:</strong> O scanner requer permissão de câmera.
+                        </div>
+                        
+                        <h5>Como Usar:</h5>
+                        <ol>
+                            <li>Clique no ícone da câmera ao lado do campo de busca</li>
+                            <li>Permita o acesso à câmera quando solicitado</li>
+                            <li>Posicione o código de barras dentro do quadro</li>
+                            <li>O sistema detectará automaticamente</li>
+                            <li>Clique em "Usar" para inserir o código</li>
+                        </ol>
+                        
+                        <h5>Problemas Comuns:</h5>
+                        <ul>
+                            <li><strong>Câmera não funciona:</strong> Verifique as permissões do navegador</li>
+                            <li><strong>Não detecta código:</strong> Melhore a iluminação e aproxime a câmera</li>
+                            <li><strong>Qualidade ruim:</strong> Limpe a lente da câmera</li>
+                        </ul>
+
+                        {% elif topico == 'cadastro' %}
+                        <h3 class="mb-4">➕ Cadastro de Bens</h3>
+                        
+                        <h5>Como Cadastrar:</h5>
+                        <ol>
+                            <li>Acesse "Gestão Completa" no menu</li>
+                            <li>Clique em "Novo Bem"</li>
+                            <li>Preencha os dados obrigatórios:
+                                <ul>
+                                    <li>Número do bem</li>
+                                    <li>Nome/descrição</li>
+                                </ul>
+                            </li>
+                            <li>Preencha os dados opcionais se desejar</li>
+                            <li>Clique em "Salvar"</li>
+                        </ol>
+                        
+                        <h5>Dados do Bem:</h5>
+                        <ul>
+                            <li><strong>Número:</strong> Identificador único (não pode repetir)</li>
+                            <li><strong>Nome:</strong> Descrição do bem patrimonial</li>
+                            <li><strong>Situação:</strong> Localizado ou Pendente</li>
+                            <li><strong>Localização:</strong> Onde o bem se encontra</li>
+                            <li><strong>Responsável:</strong> Pessoa responsável pelo bem</li>
+                        </ul>
+
+                        {% else %}
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Tópico de ajuda não encontrado.
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-4 pt-3 border-top">
+                            <a href="{{ url_for('ajuda') }}" class="btn btn-primary">
+                                <i class="bi bi-arrow-left me-1"></i>Voltar à Central de Ajuda
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="app-footer bg-dark text-white py-3 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 small">
+                        <i class="bi bi-c-circle me-1"></i> 2023 Sistema de Controle Patrimonial
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="opacity-75">Central de Ajuda • {{ titulo }}</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

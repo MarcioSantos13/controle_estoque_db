@@ -30,7 +30,7 @@
                     <h1 class="header-title mb-1">
                         <i class="bi bi-building-gear me-2"></i>Controle Patrimonial - CEAD
                     </h1>
-                    <p class="header-subtitle mb-0">Gerencie seus bens de forma simples e organizada</p>
+                    <p class="header-subtitle mb-0">Localize bens patrimoniais de forma rápida e simples</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="d-flex align-items-center justify-content-md-end gap-2">
@@ -91,7 +91,7 @@
     </header>
 
     <main class="container py-5">
-        <!-- MENSAGENS FLASH - CORREÇÃO -->
+        <!-- MENSAGENS FLASH -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-messages mb-4">
@@ -116,10 +116,20 @@
             {% endif %}
         {% endwith %}
 
-        {% if mensagem_sucesso %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i> {{ mensagem_sucesso }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% if mensagem %}
+        <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3"
+            role="alert">
+            <div class="d-flex align-items-center">
+                {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
+                <i class="bi bi-check-circle-fill me-2"></i>
+                {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                {% else %}
+                <i class="bi bi-info-circle-fill me-2"></i>
+                {% endif %}
+                <span>{{ mensagem }}</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         {% endif %}
 
@@ -131,26 +141,9 @@
                 </h2>
             </div>
             <div class="card-body p-3">
-                {% if mensagem %}
-                <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3"
-                    role="alert">
-                    <div class="d-flex align-items-center">
-                        {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        {% elif '❌' in mensagem or 'erro' in mensagem|lower %}
-                        <i class="bi bi-exclamation-circle-fill me-2"></i>
-                        {% else %}
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        {% endif %}
-                        <span>{{ mensagem }}</span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-                {% endif %}
-
                 <form method="POST" action="{{ url_for('index') }}" class="row g-3 align-items-end" autocomplete="off"
                     id="searchForm">
-                    <!-- CAMPO NÚMERO DO BEM CORRIGIDO -->
+                    <!-- CAMPO NÚMERO DO BEM -->
                     <div class="col-md-5">
                         <label for="numero_bem" class="form-label fw-semibold">
                             <i class="bi bi-upc-scan me-1"></i>Número do Bem
@@ -159,31 +152,41 @@
                             <input type="text" name="numero_bem" id="numero_bem" class="form-control form-control-lg"
                                 placeholder="Digite o número ou escaneie" required pattern="[A-Za-z0-9-\s]+"
                                 inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off"
-                                spellcheck="false">
+                                spellcheck="false" value="{{ request.form.numero_bem or '' }}">
                             <button type="button" class="btn btn-outline-primary" id="btnCamera"
                                 title="Escanear código de barras">
                                 <i class="bi bi-camera"></i>
                             </button>
                         </div>
-                        <div class="form-text">Digite o número ou use a câmera para escanear o código de barras</div>
+                        <div class="form-text">Digite o número e pressione Enter para localizar o bem</div>
                     </div>
 
                     <div class="col-md-5">
                         <label for="localizacao" class="form-label fw-semibold">
-                            <i class="bi bi-geo-alt me-1"></i>Localização
+                            <i class="bi bi-geo-alt me-1"></i>Localização (Opcional)
                         </label>
                         <input type="text" name="localizacao" id="localizacao" class="form-control form-control-lg"
-                            placeholder="Ex: Almoxarifado Central, Sala 101">
-                        <div class="form-text">Opcional - atualiza a localização</div>
+                            placeholder="Ex: Almoxarifado Central, Sala 101"
+                            value="{{ request.form.localizacao or '' }}">
+                        <div class="form-text">Opcional - corrija a localização se necessário</div>
                     </div>
 
                     <div class="col-12 col-md-12 col-lg-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary w-100" id="btnLocalizar">
                             <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
-                            <i class="bi bi-search"></i> Buscar
+                            <i class="bi bi-search"></i> Localizar
                         </button>
                     </div>
                 </form>
+
+                <!-- Instruções Rápidas -->
+                <div class="mt-3 p-3 bg-light rounded">
+                    <small class="text-muted">
+                        <i class="bi bi-lightbulb me-1"></i>
+                        <strong>Como usar:</strong> Digite o número do bem e pressione Enter para marcá-lo como localizado. 
+                        Use o campo de localização apenas se precisar corrigir.
+                    </small>
+                </div>
             </div>
         </div>
 
@@ -238,18 +241,18 @@
 
         <!-- Ações Rápidas -->
         <div class="quick-actions">
-            <h3>Ações Rápidas</h3>
+            <h3 class="text-center mb-4">Ações Rápidas</h3>
             <div class="actions-grid">
                 <a href="{{ url_for('visualizar', tipo='localizados') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-check-circle me-1"></i>Localizados
+                    <i class="bi bi-check-circle me-1"></i>Bens Localizados
                 </a>
-                <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-clock-history me-1"></i>Pendentes
+                <a href="{{ url_for('visualizar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
+                    <i class="bi bi-clock-history me-1"></i>Bens Pendentes
                 </a>
                 <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-outline-success">
                     <i class="bi bi-download me-1"></i>Exportar Localizados
                 </a>
-                <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-warning">
+                <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-download me-1"></i>Exportar Pendentes
                 </a>
                 <a href="{{ url_for('sistema_crud') }}" class="btn btn-outline-dark">
@@ -258,20 +261,24 @@
                 <a href="{{ url_for('relatorio_localidades') }}" class="btn btn-outline-info">
                     <i class="bi bi-map me-1"></i>Relatório por Localidade
                 </a>
+                {% if session.usuario_tipo == 'admin' %}
                 <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal">
                     <i class="bi bi-file-earmark-excel me-1"></i>Importar Excel/CSV
                 </button>
+                {% endif %}
             </div>
         </div>
 
         <!-- Resumo rápido -->
-        <div class="summary-text">
-            <em>Resumo:</em> {{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }}
-            • {{ nao_localizados_count|number_format }} não localizado{{ nao_localizados_count|pluralize('', 's') }}
+        <div class="summary-text text-center mt-4">
+            <em>Resumo:</em> 
+            <span class="text-success">{{ localizados_count|number_format }} localizado{{ localizados_count|pluralize('', 's') }}</span>
+            • 
+            <span class="text-warning">{{ nao_localizados_count|number_format }} pendente{{ nao_localizados_count|pluralize('', 's') }}</span>
         </div>
     </main>
 
-    <!-- Modal de Importação - ATUALIZADO -->
+    <!-- Modal de Importação -->
     <div class="modal fade import-modal" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-3">
@@ -307,7 +314,7 @@
                             <div class="form-text">Nome da aba onde estão os dados (apenas para Excel)</div>
                         </div>
 
-                        <!-- NOVA OPÇÃO: APAGAR DADOS -->
+                        <!-- OPÇÃO: APAGAR DADOS -->
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="apagar_dados" name="apagar_dados">
                             <label class="form-check-label text-danger fw-bold" for="apagar_dados">
@@ -369,7 +376,7 @@
         </div>
     </div>
 
-    <!-- Modal do Scanner CORRIGIDO -->
+    <!-- Modal do Scanner -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -382,7 +389,6 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="scanner-container">
-                        <!-- ELEMENTO VIDEO CORRETO PARA O ZXing -->
                         <video id="scanner-viewport" class="scanner-viewport" muted playsinline></video>
                         <div class="scanner-overlay">
                             <div class="scanner-frame"></div>
@@ -433,11 +439,11 @@
         </div>
     </footer>
 
-    <!-- SCRIPTS UNIFICADOS E OTIMIZADOS -->
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ===== SISTEMA UNIFICADO DE SCANNER CORRIGIDO =====
+        // ===== SISTEMA UNIFICADO DE SCANNER =====
         class SistemaPatrimonial {
             constructor() {
                 this.codeReader = null;
@@ -445,26 +451,18 @@
                 this.scannerModal = null;
                 this.numeroBemInput = null;
                 this.localizacaoInput = null;
-                this.userIsTypingInLocalizacao = false;
-                this.lastActiveElement = null;
-                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 this.currentStream = null;
-                this.selectedDeviceId = null;
                 this.usingBackCamera = true;
-                this.quaggaActive = false;
-                this.videoElement = null;
             }
 
-            // ===== INICIALIZAÇÃO PRINCIPAL =====
             async initialize() {
-                console.log("🚀 Inicializando Sistema Patrimonial com Scanner Corrigido");
+                console.log("🚀 Inicializando Sistema Patrimonial");
 
                 this.setupElements();
                 this.setupScanner();
-                this.setupSmartFocus();
                 this.setupEventListeners();
 
-                // Foco inicial
+                // Foco inicial no campo de número do bem
                 setTimeout(() => this.focusNumeroBem(), 500);
             }
 
@@ -472,10 +470,8 @@
                 this.numeroBemInput = document.getElementById('numero_bem');
                 this.localizacaoInput = document.getElementById('localizacao');
                 this.scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
-                this.videoElement = document.getElementById('scanner-viewport');
             }
 
-            // ===== SISTEMA DE SCANNER ZXing CORRIGIDO =====
             setupScanner() {
                 if (typeof ZXing === 'undefined') {
                     this.showLibraryError();
@@ -504,21 +500,16 @@
                 document.getElementById("trocar-camera-btn")?.addEventListener("click", () => this.switchCamera());
             }
 
-            // INÍCIO DO TRECHO CORRIGIDO DA CÂMERA
             async startScanner() {
                 if (this.isScanning) return;
-
                 this.showLoading();
 
                 try {
-                    // Verificar compatibilidade primeiro
                     if (!this.checkCameraCompatibility()) {
                         throw new Error("Navegador não suporta acesso à câmera");
                     }
 
                     this.updateStatus("🔍 Iniciando câmera...");
-
-                    // Tentar ZXing primeiro
                     await this.tryZXingScanner();
                     
                     this.isScanning = true;
@@ -526,7 +517,6 @@
 
                 } catch (error) {
                     console.error("❌ Erro no scanner ZXing:", error);
-                    // Tentar Quagga como fallback
                     await this.tryQuaggaScanner();
                 }
             }
@@ -541,7 +531,6 @@
                 const { BrowserMultiFormatReader } = ZXing;
                 this.codeReader = new BrowserMultiFormatReader();
 
-                // CORREÇÃO: Constraints mais flexíveis e compatíveis
                 const constraints = {
                     video: {
                         facingMode: this.usingBackCamera ? "environment" : "user",
@@ -554,21 +543,17 @@
 
                 this.updateStatus("📦 Aponte para o código de barras");
 
-                // CORREÇÃO: Usar decodeFromConstraints com elemento video
                 if (!this.videoElement) {
                     throw new Error("Elemento video não encontrado");
                 }
 
-                // Garantir que o elemento video está visível e configurado
                 this.videoElement.style.display = 'block';
                 this.videoElement.width = 400;
                 this.videoElement.height = 300;
 
-                // Obter o stream de vídeo primeiro
                 this.currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 this.videoElement.srcObject = this.currentStream;
                 
-                // Aguardar o vídeo estar pronto
                 await new Promise((resolve) => {
                     this.videoElement.onloadedmetadata = () => {
                         this.videoElement.play();
@@ -576,7 +561,6 @@
                     };
                 });
 
-                // Iniciar a decodificação
                 this.codeReader.decodeFromVideoElement(this.videoElement, (result, error) => {
                     if (result) {
                         console.log("✅ Código lido:", result.text);
@@ -640,7 +624,6 @@
                     });
                 });
             }
-            // FIM DO TRECHO CORRIGIDO DA CÂMERA
 
             showLoading() {
                 if (this.videoElement) {
@@ -661,7 +644,6 @@
                             <div class="scanner-frame"></div>
                         </div>
                     `;
-                    // Re-atribuir o elemento video após recriar o HTML
                     this.videoElement = document.getElementById('scanner-viewport');
                 }
             }
@@ -670,7 +652,6 @@
                 const cleanCode = this.cleanCode(decodedText);
                 if (!cleanCode) return;
 
-                // Feedback
                 this.beep();
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
@@ -730,7 +711,6 @@
             async stopScanner() {
                 this.isScanning = false;
                 
-                // Parar ZXing
                 if (this.codeReader) {
                     try {
                         this.codeReader.reset();
@@ -740,19 +720,16 @@
                     }
                 }
 
-                // Parar Quagga
                 if (this.quaggaActive) {
                     Quagga.stop();
                     this.quaggaActive = false;
                 }
 
-                // Parar stream de vídeo
                 if (this.currentStream) {
                     this.currentStream.getTracks().forEach(track => track.stop());
                     this.currentStream = null;
                 }
 
-                // Limpar elemento video
                 if (this.videoElement) {
                     this.videoElement.srcObject = null;
                 }
@@ -819,7 +796,6 @@
             }
 
             openScanner() {
-                // Verificar compatibilidade antes de abrir
                 if (!this.checkCameraCompatibility()) {
                     alert("Seu navegador não suporta acesso à câmera. Use um aplicativo dedicado de scanner.");
                     return;
@@ -834,159 +810,42 @@
             }
 
             // ===== SISTEMA DE FOCO INTELIGENTE =====
-            setupSmartFocus() {
-                if (!this.numeroBemInput) {
-                    console.warn('❌ Campo numero_bem não encontrado');
-                    return;
-                }
-
-                console.log('🎯 Configurando foco inteligente');
-            }
-
             setupEventListeners() {
-                // Rastrear elemento ativo
-                document.addEventListener('focusin', (e) => {
-                    this.lastActiveElement = e.target;
-
-                    if (e.target === this.localizacaoInput) {
-                        this.userIsTypingInLocalizacao = true;
-                        console.log('📍 Usuário focou na localização');
+                // Enter para submeter formulário
+                this.numeroBemInput?.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('searchForm').submit();
                     }
                 });
 
-                document.addEventListener('focusout', (e) => {
-                    if (e.target === this.localizacaoInput) {
-                        setTimeout(() => {
-                            if (document.activeElement !== this.localizacaoInput) {
-                                this.userIsTypingInLocalizacao = false;
-                            }
-                        }, 100);
+                this.localizacaoInput?.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('searchForm').submit();
                     }
                 });
 
-                // Refocar quando página ganhar visibilidade
-                document.addEventListener('visibilitychange', () => {
-                    if (!document.hidden && !this.userIsTypingInLocalizacao) {
+                // Foco automático após interações
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.modal') && 
+                        !e.target.closest('.actions-grid') &&
+                        e.target !== this.localizacaoInput) {
                         setTimeout(() => this.focusNumeroBem(), 100);
-                    }
-                });
-
-                // Refocar quando janela ganhar foco
-                window.addEventListener('focus', () => {
-                    if (!this.userIsTypingInLocalizacao) {
-                        setTimeout(() => this.focusNumeroBem(), 50);
-                    }
-                });
-
-                // Refocar após submit do formulário
-                const searchForm = document.getElementById('searchForm');
-                if (searchForm) {
-                    searchForm.addEventListener('submit', () => {
-                        this.userIsTypingInLocalizacao = false;
-                        setTimeout(() => this.focusNumeroBem(), 800);
-                    });
-                }
-
-                // Quando usuário focar na localização
-                if (this.localizacaoInput) {
-                    this.localizacaoInput.addEventListener('focus', () => {
-                        this.userIsTypingInLocalizacao = true;
-                    });
-
-                    this.localizacaoInput.addEventListener('blur', () => {
-                        setTimeout(() => {
-                            if (document.activeElement !== this.localizacaoInput) {
-                                this.userIsTypingInLocalizacao = false;
-                            }
-                        }, 500);
-                    });
-
-                    this.localizacaoInput.addEventListener('input', () => {
-                        this.userIsTypingInLocalizacao = true;
-                    });
-                }
-
-                // Prevenir perda de foco APENAS para numero_bem - VERSÃO CORRIGIDA
-                this.numeroBemInput.addEventListener('blur', (e) => {
-                    const relatedTarget = e.relatedTarget;
-
-                    // NÃO refocar se o usuário clicou em um LINK (<a> tag)
-                    if (relatedTarget && relatedTarget.tagName === 'A') {
-                        console.log('🔗 Usuário clicou em link - mantendo navegação');
-                        return;
-                    }
-
-                    // NÃO refocar se o usuário clicou em um BOTÃO de ação rápida
-                    if (relatedTarget && relatedTarget.classList.contains('btn')) {
-                        console.log('🔘 Usuário clicou em botão de ação - mantendo navegação');
-                        return;
-                    }
-
-                    if (!relatedTarget ||
-                        (relatedTarget !== this.localizacaoInput &&
-                            relatedTarget.type !== 'text' &&
-                            relatedTarget.type !== 'search' &&
-                            !relatedTarget.closest('.modal') &&
-                            !this.userIsTypingInLocalizacao)) {
-                        setTimeout(() => this.focusNumeroBem(), 10);
                     }
                 });
             }
 
             focusNumeroBem() {
-                if (!this.numeroBemInput || this.userIsTypingInLocalizacao) return;
-
-                if (this.isInputInModal()) return;
+                if (!this.numeroBemInput) return;
 
                 try {
                     this.numeroBemInput.focus();
                     this.numeroBemInput.setSelectionRange(0, this.numeroBemInput.value.length);
-
-                    this.numeroBemInput.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                        inline: 'nearest'
-                    });
-
                     console.log('🎯 Foco automático em numero_bem');
-
                 } catch (error) {
                     console.log('⚠️ Foco não pôde ser aplicado:', error);
                 }
-            }
-
-            focusLocalizacao() {
-                if (this.localizacaoInput) {
-                    this.userIsTypingInLocalizacao = true;
-                    this.localizacaoInput.focus();
-                    this.localizacaoInput.select();
-                }
-            }
-
-            forceFocusLocalizacao() {
-                this.userIsTypingInLocalizacao = true;
-                this.focusLocalizacao();
-
-                setTimeout(() => {
-                    this.userIsTypingInLocalizacao = true;
-                }, 3000);
-            }
-
-            returnFocusToNumeroBem() {
-                this.userIsTypingInLocalizacao = false;
-                setTimeout(() => this.focusNumeroBem(), 100);
-            }
-
-            isInputInModal() {
-                return document.querySelector('.modal.show') !== null;
-            }
-
-            // ===== FUNÇÕES GLOBAIS =====
-            produtoEncontrado() {
-                console.log('✅ Produto encontrado - focando na localização');
-                setTimeout(() => {
-                    this.forceFocusLocalizacao();
-                }, 800);
             }
 
             showLibraryError() {
@@ -1000,80 +859,38 @@
             }
         }
 
-        // ===== INICIALIZAÇÃO ÚNICA =====
+        // ===== INICIALIZAÇÃO =====
         document.addEventListener("DOMContentLoaded", function () {
             window.sistemaPatrimonial = new SistemaPatrimonial();
             window.sistemaPatrimonial.initialize();
 
-            // Detectar produto encontrado via alertas
-            const observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.type === 'childList') {
-                        mutation.addedNodes.forEach(function (node) {
-                            if (node.nodeType === 1 && node.classList && node.classList.contains('alert-success')) {
-                                console.log('🎯 Produto encontrado detectado - focando localização');
-                                setTimeout(() => {
-                                    window.sistemaPatrimonial.forceFocusLocalizacao();
-                                }, 1000);
-                            }
-                        });
-                    }
-                });
-            });
-
-            const alertContainer = document.querySelector('.container.mt-3');
-            if (alertContainer) {
-                observer.observe(alertContainer, { childList: true, subtree: true });
-            }
+            // Estatísticas para debug
+            console.log('📊 Estatísticas carregadas:');
+            console.log('   - Total de bens:', {{ total_count }});
+            console.log('   - Localizados:', {{ localizados_count }});
+            console.log('   - Pendentes:', {{ nao_localizados_count }});
         });
 
-        // ===== FUNÇÕES GLOBAIS SIMPLIFICADAS =====
+        // ===== FUNÇÕES GLOBAIS =====
         window.focarNumeroBem = function () {
             if (window.sistemaPatrimonial) {
-                window.sistemaPatrimonial.returnFocusToNumeroBem();
-                return true;
-            }
-            return false;
-        };
-
-        window.focarLocalizacao = function () {
-            if (window.sistemaPatrimonial) {
-                window.sistemaPatrimonial.forceFocusLocalizacao();
-                return true;
-            }
-            return false;
-        };
-
-        window.produtoEncontrado = function () {
-            if (window.sistemaPatrimonial) {
-                window.sistemaPatrimonial.produtoEncontrado();
+                window.sistemaPatrimonial.focusNumeroBem();
                 return true;
             }
             return false;
         };
 
         // ===== DEBUG DO FORMULÁRIO DE IMPORTAÇÃO =====
-        console.log("🔧 Script de importação carregado");
-
-        // Debug do formulário de importação
         document.addEventListener('DOMContentLoaded', function() {
             const importForm = document.getElementById('importForm');
             if (importForm) {
                 importForm.addEventListener('submit', function(e) {
                     console.log('📤 Formulário de importação enviado');
-                    const formData = new FormData(this);
-                    console.log('📋 Dados do formulário:');
-                    for (let [key, value] of formData.entries()) {
-                        console.log(`   ${key}: ${value}`);
-                    }
-                    
-                    // Mostrar loading
                     const btnImportar = document.getElementById('btnImportar');
                     const originalText = btnImportar.innerHTML;
                     btnImportar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Importando...';
                     btnImportar.disabled = true;
                     
-                    // Restaurar botão após 10 segundos (fallback)
                     setTimeout(() => {
                         btnImportar.innerHTML = originalText;
                         btnImportar.disabled = false;

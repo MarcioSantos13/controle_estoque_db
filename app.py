@@ -1,4 +1,7 @@
+# ==============================
 # INÍCIO: app.py CORRIGIDO - VERSÃO ESTÁVEL
+# ==============================
+
 import os
 import sys
 import re
@@ -13,464 +16,366 @@ from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_file, abort, jsonify, redirect, url_for, Response, session, flash
 
 # ==============================
-# CONFIGURAÇÃO ROBUSTA MULTI-AMBIENTE
+# CONFIGURAÇÃO
 # ==============================
 class Config:
-    """Configuração centralizada com detecção automática de ambiente"""
+    """Configuração centralizada"""
     
-    # Caminhos absolutos robustos
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     DB_RELATIVE_PATH = os.path.join("relatorios", "controle_patrimonial.db")
     DB_PATH = os.path.join(BASE_DIR, DB_RELATIVE_PATH)
     
-    # Configurações por ambiente
     ENV = os.environ.get('FLASK_ENV', 'development')
     DEBUG = ENV == 'development'
-    TESTING = ENV == 'testing'
     
-    # Segurança
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
     SESSION_COOKIE_SECURE = ENV == 'production'
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
     
-    # Upload e limites
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'temp')
-    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     
-    # Performance
     PAGINATION_SIZE = 200
-    EXPORT_CHUNK_SIZE = 1000
-    JSON_SORT_KEYS = False
-    
-    # Logging
-    LOG_LEVEL = 'DEBUG' if DEBUG else 'WARNING'
-
-class ProductionConfig(Config):
-    """Configuração específica para produção"""
-    DEBUG = False
-    TESTING = False
-    SESSION_COOKIE_SECURE = True
-    
-    @property
-    def SECRET_KEY(self):
-        key = os.environ.get('SECRET_KEY')
-        if not key:
-            raise ValueError("SECRET_KEY must be set in production environment")
-        return key
-
-class DevelopmentConfig(Config):
-    """Configuração específica para desenvolvimento"""
-    DEBUG = True
-    TESTING = False
-    SESSION_COOKIE_SECURE = False
-
-def get_config():
-    """Retorna configuração baseada no ambiente"""
-    env = os.environ.get('FLASK_ENV', 'development')
-    return ProductionConfig() if env == 'production' else DevelopmentConfig()
 
 # Inicialização da aplicação
-config = get_config()
 app = Flask(__name__)
-app.config.from_object(config)
-
-# Importar handlers APÓS configuração
-try:
-    from utils.db_handler import (
-        verificar_bem, marcar_bem_localizado, gerar_planilhas_localizacao,
-        buscar_localizacao_existente, obter_bem_por_numero, atualizar_bem,
-        excluir_bem, criar_novo_bem, buscar_bens_por_nome, contar_bens,
-        obter_bens_paginados, obter_localidades, obter_bens_por_localidade,
-        obter_todos_bens_por_localidade, verificar_localidade_existe,
-        verificar_numero_existe, obter_bem_por_id, criar_tabela_atualizada
-    )
-    from utils.excel_importer import importar_excel_para_sqlite, verificar_estrutura_excel, importar_csv_para_sqlite
-    from utils.logger import logger
-except ImportError as e:
-    print(f"❌ Erro ao importar módulos: {e}")
-    sys.exit(1)
+app.config.from_object(Config())
 
 # ==============================
-# SISTEMA DE SEGURANÇA
+# CONSTANTES GLOBAIS
 # ==============================
-def setup_security(app):
-    """Configura segurança baseada no ambiente"""
+DATABASE = app.config['DB_PATH']
+
+# ==============================
+# FUNÇÕES AUXILIARES SIMPLIFICADAS
+# ==============================
+def get_db_connection():
+    """Conexão simples com o banco"""
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def criar_tabela_atualizada(db_path: str) -> None:
+    """Garante que a tabela bens existe"""
     try:
-        from flask_talisman import Talisman
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
         
-        csp = {
-            'default-src': ["'self'"],
-            'script-src': [
-                "'self'", 
-                'https://cdn.jsdelivr.net',
-                'https://unpkg.com',
-                "'unsafe-inline'"
-            ],
-            'style-src': [
-                "'self'",
-                'https://cdn.jsdelivr.net',
-                "'unsafe-inline'"
-            ],
-            'img-src': ["'self'", 'data:', 'blob:'],
-            'media-src': ["'self'", 'blob:']
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS bens (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                numero TEXT UNIQUE NOT NULL,
+                nome TEXT NOT NULL,
+                situacao TEXT DEFAULT 'Pendente',
+                localizacao TEXT,
+                responsavel TEXT,
+                data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_bens_numero ON bens(numero)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_bens_situacao ON bens(situacao)")
+        
+        conn.commit()
+        conn.close()
+        print("✅ Tabela bens criada/verificada")
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar tabela: {e}")
+        raise
+
+def obter_estatisticas(db_path: str) -> Dict[str, Any]:
+    """Obtém estatísticas simplificadas"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        # Total de bens
+        cursor.execute("SELECT COUNT(*) FROM bens")
+        total_bens = cursor.fetchone()[0]
+        
+        # Bens localizados
+        cursor.execute("SELECT COUNT(*) FROM bens WHERE situacao = 'Localizado'")
+        localizados = cursor.fetchone()[0]
+        
+        # Bens pendentes
+        cursor.execute("SELECT COUNT(*) FROM bens WHERE situacao = 'Pendente' OR situacao IS NULL")
+        pendentes = cursor.fetchone()[0]
+        
+        conn.close()
+        
+        return {
+            'sucesso': True,
+            'estatisticas': {
+                'total_bens': total_bens,
+                'situacoes': {
+                    'Localizado': localizados,
+                    'Pendente': pendentes
+                }
+            }
         }
         
-        if app.config['ENV'] == 'production':
-            Talisman(
-                app,
-                content_security_policy=csp,
-                force_https=True,
-                session_cookie_secure=True,
-                strict_transport_security=True
-            )
-            logger.info("🔒 Segurança de produção configurada")
-        else:
-            # Desenvolvimento: segurança relaxada
-            Talisman(app, content_security_policy=None)
-            logger.info("🔓 Modo desenvolvimento - segurança reduzida")
-            
-    except ImportError:
-        logger.warning("⚠️ Flask-Talisman não instalado - executando sem CSP")
+    except Exception as e:
+        print(f"❌ Erro ao obter estatísticas: {e}")
+        return {'sucesso': False, 'estatisticas': {}}
 
-# Configurar segurança
-setup_security(app)
+def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por_pagina: int = 50) -> Dict[str, Any]:
+    """Obtém bens paginados - VERSÃO COMPLETAMENTE CORRIGIDA"""
+    try:
+        conn = sqlite3.connect(db_path)
+        
+        # NÃO usar row_factory para evitar problemas de conversão
+        cursor = conn.cursor()
+        
+        offset = (pagina - 1) * por_pagina
+        
+        print(f"🔍 Buscando bens - Tipo: {tipo}, Página: {pagina}, Por página: {por_pagina}")
+        
+        # Query base
+        if tipo == 'localizados':
+            query = "SELECT * FROM bens WHERE situacao = 'Localizado' ORDER BY numero LIMIT ? OFFSET ?"
+            count_query = "SELECT COUNT(*) FROM bens WHERE situacao = 'Localizado'"
+            params = (por_pagina, offset)
+        elif tipo == 'nao-localizados':
+            query = """
+                SELECT * FROM bens 
+                WHERE situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente'
+                ORDER BY numero LIMIT ? OFFSET ?
+            """
+            count_query = """
+                SELECT COUNT(*) FROM bens 
+                WHERE situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente'
+            """
+            params = (por_pagina, offset)
+        else:
+            query = "SELECT * FROM bens ORDER BY numero LIMIT ? OFFSET ?"
+            count_query = "SELECT COUNT(*) FROM bens"
+            params = (por_pagina, offset)
+        
+        # Contar total
+        cursor.execute(count_query)
+        total_registros = cursor.fetchone()[0]
+        print(f"📊 Total de registros: {total_registros}")
+        
+        # Buscar dados - CONVERSÃO MANUAL PARA EVITAR ERROS
+        cursor.execute(query, params)
+        colunas = [desc[0] for desc in cursor.description]
+        registros = cursor.fetchall()
+        
+        # Converter manualmente para lista de dicionários
+        dados = []
+        for registro in registros:
+            bem_dict = {}
+            for i, valor in enumerate(registro):
+                bem_dict[colunas[i]] = valor
+            dados.append(bem_dict)
+        
+        print(f"✅ Dados convertidos: {len(dados)} registros")
+        for dado in dados:
+            print(f"   - {dado.get('numero')} | {dado.get('nome')} | {dado.get('situacao')}")
+        
+        conn.close()
+        
+        total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
+        
+        return {
+            'dados': dados,
+            'pagina_atual': pagina,
+            'por_pagina': por_pagina,
+            'total_registros': total_registros,
+            'total_paginas': total_paginas
+        }
+        
+    except Exception as e:
+        print(f"❌ Erro CRÍTICO ao obter bens paginados: {e}")
+        import traceback
+        traceback.print_exc()
+        
+        return {
+            'dados': [],
+            'pagina_atual': 1,
+            'por_pagina': por_pagina,
+            'total_registros': 0,
+            'total_paginas': 0
+        }
+
+
+def obter_localidades(db_path: str) -> List[str]:
+    """Obtém lista de localidades - VERSÃO SIMPLIFICADA"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT DISTINCT localizacao FROM bens WHERE localizacao IS NOT NULL AND localizacao != '' ORDER BY localizacao")
+        localidades = [row[0] for row in cursor.fetchall()]
+        conn.close()
+        return localidades
+    except Exception as e:
+        print(f"❌ Erro ao obter localidades: {e}")
+        return []
+
+def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]:
+    """Obtém todos os bens de uma localidade - VERSÃO CORRIGIDA"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM bens WHERE localizacao = ? ORDER BY numero", (localidade,))
+        
+        # Converter manualmente para evitar erro de dicionário
+        colunas = [desc[0] for desc in cursor.description]
+        registros = cursor.fetchall()
+        
+        bens = []
+        for registro in registros:
+            bem_dict = {}
+            for i, valor in enumerate(registro):
+                bem_dict[colunas[i]] = valor
+            bens.append(bem_dict)
+            
+        conn.close()
+        return bens
+    except Exception as e:
+        print(f"❌ Erro ao obter bens por localidade: {e}")
+        return []
+
+
+def obter_bem_por_id(db_path: str, bem_id: int) -> Dict[str, Any]:
+    """Obtém um bem pelo ID - VERSÃO CORRIGIDA"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM bens WHERE id = ?", (bem_id,))
+        resultado = cursor.fetchone()
+        conn.close()
+        
+        if resultado:
+            # Se for tupla, converter para dicionário
+            if isinstance(resultado, tuple):
+                cursor.execute("SELECT * FROM bens WHERE id = ?", (bem_id,))
+                colunas = [desc[0] for desc in cursor.description]
+                bem_dict = {}
+                for i, valor in enumerate(resultado):
+                    bem_dict[colunas[i]] = valor
+                return bem_dict
+            else:
+                # Já é dicionário (row_factory)
+                return dict(resultado)
+        return {}
+        
+    except Exception as e:
+        print(f"❌ Erro ao obter bem por ID: {e}")
+        return {}
+
+
+
+def verificar_numero_existe(db_path: str, numero: str) -> bool:
+    """Verifica se número já existe"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM bens WHERE numero = ?", (numero,))
+        existe = cursor.fetchone() is not None
+        conn.close()
+        return existe
+    except Exception as e:
+        print(f"❌ Erro ao verificar número: {e}")
+        return False
+
+def criar_novo_bem(db_path: str, dados: Dict[str, Any]) -> Tuple[bool, str]:
+    """Cria um novo bem"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            INSERT INTO bens (numero, nome, situacao, localizacao, responsavel)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (
+            dados['numero'],
+            dados['nome'],
+            dados.get('situacao', 'Pendente'),
+            dados.get('localizacao', ''),
+            dados.get('responsavel', '')
+        ))
+        
+        conn.commit()
+        conn.close()
+        return True, "Bem criado com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar bem: {e}")
+        return False, f"Erro ao criar bem: {str(e)}"
+
+def atualizar_bem(db_path: str, bem_id: int, dados: Dict[str, Any]) -> Tuple[bool, str]:
+    """Atualiza um bem existente"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            UPDATE bens 
+            SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?
+            WHERE id = ?
+        ''', (
+            dados['nome'],
+            dados['situacao'],
+            dados.get('localizacao', ''),
+            dados.get('responsavel', ''),
+            bem_id
+        ))
+        
+        conn.commit()
+        conn.close()
+        return True, "Bem atualizado com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao atualizar bem: {e}")
+        return False, f"Erro ao atualizar bem: {str(e)}"
+
+def excluir_bem(db_path: str, bem_id: int) -> Tuple[bool, str]:
+    """Exclui um bem"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute("DELETE FROM bens WHERE id = ?", (bem_id,))
+        conn.commit()
+        conn.close()
+        return True, "Bem excluído com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao excluir bem: {e}")
+        return False, f"Erro ao excluir bem: {str(e)}"
 
 # ==============================
-# VALIDAÇÃO E SEGURANÇA DE DADOS
+# VALIDAÇÃO
 # ==============================
 class InputValidator:
-    """Validação robusta de entrada de dados"""
+    """Validação de entrada"""
     
     @staticmethod
     def sanitize_input(text: str, max_length: int = 255) -> str:
-        """Remove caracteres perigosos e limita tamanho"""
+        """Remove caracteres perigosos"""
         if not text:
             return ""
-        
-        # Remove caracteres de controle e limita tamanho
         sanitized = re.sub(r'[\x00-\x1F\x7F]', '', str(text))
         return sanitized[:max_length].strip()
     
     @staticmethod
     def validate_number_format(numero: str) -> Tuple[bool, str]:
-        """Valida formato do número do bem"""
+        """Valida formato do número"""
         if not numero or not numero.strip():
             return False, "Número do bem é obrigatório"
         
         numero = numero.strip()
         
         if len(numero) > 50:
-            return False, "Número do bem muito longo (máx. 50 caracteres)"
+            return False, "Número do bem muito longo"
         
         if not re.match(r'^[A-Za-z0-9\-\s\.]+$', numero):
             return False, "Número deve conter apenas letras, números, hífens, pontos ou espaços"
         
         return True, ""
-    
-    @staticmethod
-    def validate_email(email: str) -> Tuple[bool, str]:
-        """Valida formato de e-mail"""
-        if not email or '@' not in email:
-            return False, "E-mail inválido"
-        
-        if len(email) > 254:
-            return False, "E-mail muito longo"
-        
-        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        if not re.match(pattern, email):
-            return False, "Formato de e-mail inválido"
-        
-        return True, ""
-
-class ErrorHandler:
-    """Manipulação centralizada de erros"""
-    
-    @staticmethod
-    def handle_database_error(e: Exception, operation: str = "operacao") -> str:
-        """Log e trata erros de banco de dados"""
-        error_msg = f"Erro de banco na {operation}: {str(e)}"
-        logger.error(error_msg)
-        
-        if "no such table" in str(e).lower():
-            return "Erro: Estrutura do banco de dados corrompida"
-        elif "disk i/o" in str(e).lower():
-            return "Erro de acesso ao banco de dados"
-        elif "locked" in str(e).lower():
-            return "Banco de dados temporariamente indisponível"
-        else:
-            return "Erro interno do sistema"
-
-    @staticmethod
-    def handle_file_error(e: Exception, operation: str = "operacao") -> str:
-        """Log e trata erros de arquivo"""
-        error_msg = f"Erro de arquivo na {operation}: {str(e)}"
-        logger.error(error_msg)
-        
-        if "permission" in str(e).lower():
-            return "Erro de permissão de arquivo"
-        elif "no space" in str(e).lower():
-            return "Espaço em disco insuficiente"
-        else:
-            return "Erro de processamento de arquivo"
-
-# ==============================
-# SERVIÇOS PRINCIPAIS
-# ==============================
-class BemService:
-    """Serviço centralizado para operações com bens"""
-    
-    def __init__(self, db_path: str):
-        self.db_path = db_path
-    
-    def processar_localizacao(self, numero_bem: str, localizacao: str = None) -> Dict[str, Any]:
-        """Processa a localização de um bem com validação"""
-        try:
-            # Validar entrada
-            valido, mensagem_validacao = InputValidator.validate_number_format(numero_bem)
-            if not valido:
-                return {
-                    'mensagem': mensagem_validacao,
-                    'bem_detalhes': None,
-                    'localizacao_informada': localizacao,
-                    'show_modal': False
-                }
-            
-            numero_clean = InputValidator.sanitize_input(numero_bem)
-            localizacao_clean = InputValidator.sanitize_input(localizacao) if localizacao else None
-            
-            if not localizacao_clean:
-                localizacao_clean = buscar_localizacao_existente(numero_clean, self.db_path)
-            
-            encontrado, erro = verificar_bem(numero_clean, self.db_path)
-            if not encontrado:
-                return {
-                    'mensagem': erro or 'Bem não encontrado.',
-                    'bem_detalhes': None,
-                    'localizacao_informada': localizacao_clean,
-                    'show_modal': False
-                }
-            
-            mensagem = marcar_bem_localizado(numero_clean, self.db_path, localizacao_clean)
-            bem_detalhes = self._obter_detalhes_bem(numero_clean, localizacao_clean)
-            
-            return {
-                'mensagem': mensagem,
-                'bem_detalhes': bem_detalhes,
-                'localizacao_informada': localizacao_clean,
-                'show_modal': True
-            }
-            
-        except Exception as e:
-            logger.error(f"Erro ao processar bem {numero_bem}: {str(e)}")
-            return {
-                'mensagem': 'Erro interno ao processar o bem.',
-                'bem_detalhes': None,
-                'localizacao_informada': localizacao,
-                'show_modal': False
-            }
-    
-    def _obter_detalhes_bem(self, numero_bem: str, localizacao: str = None) -> Dict[str, Any] | None:
-        """Busca detalhes de um bem específico"""
-        try:
-            bem = obter_bem_por_numero(self.db_path, numero_bem)
-
-            if bem:
-                localizacao_final = localizacao or bem.get('localizacao') or 'Não informada'
-
-                return {
-                    'id': bem.get('id'),
-                    'nome': bem.get('nome') or 'Não informado',
-                    'numero': bem.get('numero') or 'Não informado',
-                    'situacao': bem.get('situacao') or 'Pendente',
-                    'localizacao': localizacao_final,
-                    'responsavel': bem.get('responsavel') or 'Não informado',
-                    'data_ultima_vistoria': bem.get('data_ultima_vistoria') or 'Não informada',
-                    'data_vistoria_atual': bem.get('data_vistoria_atual') or 'Não informada',
-                    'auditor': bem.get('auditor') or 'Não informado',
-                    'data_criacao': bem.get('data_criacao'),
-                    'data_localizacao': bem.get('data_localizacao')
-                }
-
-            return None
-
-        except Exception as e:
-            logger.error(f"Erro ao buscar detalhes do bem {numero_bem}: {str(e)}")
-            return None
-
-    def criar_bem(self, dados: Dict[str, Any]) -> Tuple[bool, str]:
-        """Cria um novo bem no sistema com validação"""
-        try:
-            # Validar dados obrigatórios
-            if not dados.get('numero') or not dados.get('numero').strip():
-                return False, "Número do bem é obrigatório"
-            
-            if not dados.get('nome') or not dados.get('nome').strip():
-                return False, "Nome do bem é obrigatório"
-            
-            valido, mensagem_validacao = InputValidator.validate_number_format(dados['numero'])
-            if not valido:
-                return False, mensagem_validacao
-
-            if verificar_numero_existe(self.db_path, dados['numero']):
-                return False, "Já existe um bem com este número!"
-
-            dados_completos = {
-                'numero': InputValidator.sanitize_input(dados['numero']),
-                'nome': InputValidator.sanitize_input(dados['nome']),
-                'situacao': InputValidator.sanitize_input(dados.get('situacao', 'Pendente')),
-                'localizacao': InputValidator.sanitize_input(dados.get('localizacao', '')),
-                'responsavel': InputValidator.sanitize_input(dados.get('responsavel', '')),
-                'data_ultima_vistoria': dados.get('data_ultima_vistoria'),
-                'data_vistoria_atual': dados.get('data_vistoria_atual'),
-                'auditor': InputValidator.sanitize_input(dados.get('auditor', '')),
-                'observacoes': InputValidator.sanitize_input(dados.get('observacoes', ''))
-            }
-
-            return criar_novo_bem(self.db_path, dados_completos)
-
-        except Exception as e:
-            logger.error(f"Erro ao criar bem: {str(e)}")
-            return False, f"Erro interno: {str(e)}"
-
-    def exportar_bens_por_tipo(self, tipo: str) -> Response:
-        """Exporta bens por tipo incluindo novos campos"""
-        try:
-            import pandas as pd
-
-            if tipo == 'localizados':
-                query = """
-                    SELECT numero, nome, situacao, localizacao, responsavel, 
-                           data_ultima_vistoria, data_vistoria_atual, auditor 
-                    FROM bens 
-                    WHERE situacao = 'OK'
-                """
-                nome_arquivo = 'bens_localizados'
-            elif tipo == 'nao-localizados':
-                query = """
-                    SELECT numero, nome, situacao, localizacao, responsavel, 
-                           data_ultima_vistoria, data_vistoria_atual, auditor 
-                    FROM bens 
-                    WHERE situacao != 'OK' OR situacao IS NULL
-                """
-                nome_arquivo = 'bens_nao_localizados'
-            else:
-                abort(400, description="Tipo inválido")
-
-            conn = sqlite3.connect(self.db_path)
-            df = pd.read_sql_query(query, conn)
-            conn.close()
-
-            if df.empty:
-                abort(404, description="Nenhum dado encontrado para exportação")
-
-            if 'numero' in df.columns:
-                df = df.sort_values(by='numero')
-
-            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-            caminho_arquivo = os.path.join(
-                os.path.dirname(self.db_path),
-                f"{nome_arquivo}_{timestamp}.xlsx"
-            )
-
-            df.to_excel(caminho_arquivo, index=False)
-            logger.info(f"Relatório exportado: {caminho_arquivo} ({len(df)} registros)")
-
-            return send_file(caminho_arquivo, as_attachment=True)
-
-        except ImportError:
-            abort(500, description="Pandas não está instalado")
-        except Exception as e:
-            logger.error(f"Erro na exportação: {str(e)}")
-            abort(500, description="Erro ao exportar dados")
-
-    def exportar_localidade(self, localidade: str) -> Any:
-        """Exporta bens por localidade"""
-        try:
-            import pandas as pd
-            
-            registros = obter_todos_bens_por_localidade(self.db_path, localidade)
-            
-            if not registros:
-                abort(404, description=f"Nenhum bem encontrado para a localidade: {localidade}")
-            
-            df = pd.DataFrame(registros)
-            if 'numero' in df.columns:
-                df = df.sort_values(by='numero')
-            
-            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-            nome_seguro = re.sub(r'[^\w\s-]', '', localidade).strip().lower()
-            nome_seguro = re.sub(r'[-\s]+', '_', nome_seguro)
-            
-            caminho_arquivo = os.path.join(
-                os.path.dirname(self.db_path),
-                f"bens_localidade_{nome_seguro}_{timestamp}.xlsx"
-            )
-            
-            df.to_excel(caminho_arquivo, index=False)
-            logger.info(f"Relatório por localidade exportado: {caminho_arquivo}")
-            
-            return send_file(caminho_arquivo, as_attachment=True)
-            
-        except Exception as e:
-            logger.error(f"Erro ao exportar localidade: {str(e)}")
-            abort(500, description="Erro ao exportar dados da localidade")
-
-# ==============================
-# INICIALIZAÇÃO DE SERVIÇOS
-# ==============================
-DB_PATH = app.config['DB_PATH']
-bem_service = BemService(DB_PATH)
-export_service = bem_service
-
-# ==============================
-# MIDDLEWARE DE ESTABILIDADE
-# ==============================
-@app.before_request
-def stability_middleware():
-    """Middleware para garantir estabilidade em todas as requisições"""
-    # Verificar banco de dados para rotas críticas
-    critical_routes = ['index', 'visualizar', 'exportar', 'sistema_crud', 'api_bens']
-    
-    if request.endpoint in critical_routes:
-        if not os.path.exists(DB_PATH):
-            logger.error(f"Banco de dados não encontrado: {DB_PATH}")
-            
-            # Tentar criar estrutura se possível
-            try:
-                criar_estrutura_diretorios()
-                criar_tabela_atualizada(DB_PATH)
-                
-                if request.endpoint and 'api' in request.endpoint:
-                    return jsonify({
-                        'success': False, 
-                        'message': 'Sistema em inicialização'
-                    }), 503
-                else:
-                    flash('Sistema em inicialização. Tente novamente em alguns segundos.', 'warning')
-                    return render_template('loading.html')
-            except Exception as e:
-                logger.error(f"Falha na recuperação: {e}")
-                if 'api' in request.endpoint:
-                    return jsonify({
-                        'success': False,
-                        'message': 'Sistema temporariamente indisponível'
-                    }), 503
-                else:
-                    abort(503)
-
-@app.after_request
-def security_headers(response):
-    """Adiciona headers de segurança"""
-    if response.content_type and 'text/html' in response.content_type:
-        response.headers['X-Content-Type-Options'] = 'nosniff'
-        response.headers['X-Frame-Options'] = 'DENY'
-        response.headers['X-XSS-Protection'] = '1; mode=block'
-        
-        if app.config['ENV'] == 'production':
-            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    
-    return response
 
 # ==============================
 # SISTEMA DE AUTENTICAÇÃO
@@ -482,7 +387,7 @@ def hash_senha(senha):
 def verificar_login(email, senha):
     """Verifica se o login é válido"""
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -504,18 +409,18 @@ def verificar_login(email, senha):
         return None
         
     except Exception as e:
-        logger.error(f"Erro ao verificar login: {str(e)}")
+        print(f"❌ Erro ao verificar login: {e}")
         return None
 
 def criar_tabela_usuarios_se_nao_existir():
     """Cria a tabela de usuários se não existir"""
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'")
         if not cursor.fetchone():
-            logger.info("Criando tabela usuarios...")
+            print("Criando tabela usuarios...")
             
             cursor.execute('''
                 CREATE TABLE usuarios (
@@ -524,13 +429,8 @@ def criar_tabela_usuarios_se_nao_existir():
                     nome TEXT NOT NULL,
                     senha_hash TEXT NOT NULL,
                     tipo TEXT DEFAULT 'usuario',
-                    departamento TEXT,
-                    telefone TEXT,
                     ativo INTEGER DEFAULT 1,
-                    criado_por INTEGER,
-                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    ultimo_login TIMESTAMP,
-                    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
             
@@ -546,14 +446,14 @@ def criar_tabela_usuarios_se_nao_existir():
             ))
             
             conn.commit()
-            logger.info("Tabela usuarios criada com sucesso!")
+            print("✅ Tabela usuarios criada com sucesso!")
         else:
-            logger.info("Tabela usuarios já existe")
+            print("ℹ️ Tabela usuarios já existe")
         
         conn.close()
         
     except Exception as e:
-        logger.error(f"Erro ao criar tabela de usuários: {str(e)}")
+        print(f"❌ Erro ao criar tabela de usuários: {e}")
         raise e
 
 def login_required(f):
@@ -582,16 +482,26 @@ def admin_required(f):
 # FUNÇÕES AUXILIARES
 # ==============================
 def carregar_dados_bancos() -> Dict[str, int]:
-    """Carrega contagens do banco de forma otimizada"""
+    """Carrega contagens do banco"""
     try:
-        contagens = contar_bens(DB_PATH)
+        estatisticas = obter_estatisticas(DATABASE)
+        
+        if not estatisticas['sucesso']:
+            return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
+        
+        situacoes = estatisticas['estatisticas'].get('situacoes', {})
+        
+        localizados = situacoes.get('Localizado', 0)
+        pendentes = situacoes.get('Pendente', 0)
+        total = estatisticas['estatisticas'].get('total_bens', 0)
+        
         return {
-            'localizados_count': contagens['localizados'],
-            'nao_localizados_count': contagens['nao_localizados'],
-            'total_count': contagens['total']
+            'localizados_count': localizados,
+            'nao_localizados_count': pendentes,
+            'total_count': total
         }
     except Exception as e:
-        logger.error(f"Erro ao carregar contagens do banco: {str(e)}")
+        print(f"❌ Erro ao carregar contagens do banco: {e}")
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
 def criar_estrutura_diretorios():
@@ -599,58 +509,23 @@ def criar_estrutura_diretorios():
     diretorios = [
         app.config['UPLOAD_FOLDER'],
         os.path.join(app.config['BASE_DIR'], 'logs'),
-        os.path.dirname(app.config['DB_PATH']),
-        os.path.join(os.path.dirname(app.config['DB_PATH']), 'backups')
+        os.path.dirname(DATABASE),
+        os.path.join(os.path.dirname(DATABASE), 'backups')
     ]
     
     for diretorio in diretorios:
         try:
             os.makedirs(diretorio, exist_ok=True)
-            # Dar permissões apropriadas
-            os.chmod(diretorio, 0o755)
-            logger.info(f"✅ Diretório criado/verificado: {diretorio}")
+            print(f"✅ Diretório criado/verificado: {diretorio}")
         except Exception as e:
-            logger.error(f"⚠️ Erro ao criar diretório {diretorio}: {e}")
-
-def verificar_permissoes_arquivos():
-    """Verifica permissões de arquivos necessários"""
-    arquivos_verificar = [
-        DB_PATH,
-        os.path.join(app.config['BASE_DIR'], 'logs', 'app.log')
-    ]
-    
-    for arquivo in arquivos_verificar:
-        diretorio = os.path.dirname(arquivo)
-        if not os.path.exists(diretorio):
-            os.makedirs(diretorio, mode=0o755, exist_ok=True)
-        if os.path.exists(arquivo):
-            try:
-                os.chmod(arquivo, 0o644)
-            except:
-                pass
-
-def create_backup_before_operation(operation_name):
-    """Cria backup antes de operações críticas"""
-    backup_dir = os.path.join(os.path.dirname(DB_PATH), 'backups')
-    os.makedirs(backup_dir, exist_ok=True)
-    
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_file = os.path.join(backup_dir, f"backup_{operation_name}_{timestamp}.db")
-    
-    try:
-        shutil.copy2(DB_PATH, backup_file)
-        logger.info(f"Backup criado: {backup_file}")
-        return backup_file
-    except Exception as e:
-        logger.error(f"Falha ao criar backup: {e}")
-        return None
+            print(f"⚠️ Erro ao criar diretório {diretorio}: {e}")
 
 # ==============================
 # FILTROS TEMPLATE
 # ==============================
 @app.template_filter('number_format')
 def number_format_filter(value):
-    """Filtro para formatar números com separadores de milhar"""
+    """Filtro para formatar números"""
     try:
         if value is None:
             return "0"
@@ -660,7 +535,7 @@ def number_format_filter(value):
 
 @app.template_filter('pluralize')
 def pluralize_filter(value, singular, plural):
-    """Filtro para pluralizar palavras baseado no valor"""
+    """Filtro para pluralizar palavras"""
     try:
         num = int(value)
         return singular if num == 1 else plural
@@ -670,46 +545,113 @@ def pluralize_filter(value, singular, plural):
 # ==============================
 # ROTAS PRINCIPAIS
 # ==============================
+
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    """Página inicial do sistema"""
-    mensagem_sucesso = request.args.get('mensagem', None)
-    
-    if not os.path.exists(DB_PATH):
-        mensagem = "Banco de dados não encontrado. Execute a migração do Excel para SQLite antes de usar o sistema."
-        logger.warning(mensagem)
-        return render_template('index.html', 
-                             mensagem=mensagem, 
-                             bem_detalhes=None,
-                             **carregar_dados_bancos())
-    
+    """Página inicial - LÓGICA CORRIGIDA: Bem é localizado automaticamente"""
     if request.method == 'POST':
         numero_bem = request.form.get('numero_bem', '').strip()
         localizacao = request.form.get('localizacao', '').strip()
         
+        print(f"🎯 PROCESSANDO: {numero_bem} | Localização: '{localizacao}'")
+        
         valido, mensagem_validacao = InputValidator.validate_number_format(numero_bem)
         if not valido:
+            flash(mensagem_validacao, 'error')
             return render_template('index.html', 
                                  mensagem=mensagem_validacao,
                                  **carregar_dados_bancos())
-        
-        resultado = bem_service.processar_localizacao(numero_bem, localizacao)
-        return render_template('index.html', 
-                             **carregar_dados_bancos(),
-                             **resultado)
+
+        try:
+            if not numero_bem:
+                flash('Número do bem é obrigatório.', 'error')
+                return redirect(url_for('index'))
+            
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
+            
+            # Verificar se o bem existe
+            cursor.execute("SELECT numero, nome, situacao, localizacao FROM bens WHERE numero = ?", (numero_bem,))
+            resultado = cursor.fetchone()
+            
+            if not resultado:
+                flash(f'❌ Bem {numero_bem} não encontrado no sistema.', 'error')
+                conn.close()
+                return redirect(url_for('index'))
+            
+            # Extrair dados
+            bem_numero = resultado[0]
+            bem_nome = resultado[1]
+            bem_situacao_anterior = resultado[2]
+            bem_localizacao_anterior = resultado[3]
+            
+            print(f"📋 Bem: {bem_numero} | Status anterior: {bem_situacao_anterior} | Localização anterior: {bem_localizacao_anterior}")
+            
+            # LÓGICA PRINCIPAL CORRIGIDA:
+            # 1. O bem é SEMPRE marcado como localizado quando encontrado
+            # 2. A localização é atualizada se for informada, senão mantém a anterior
+            
+            if localizacao:
+                # Usar a nova localização informada
+                nova_localizacao = localizacao
+                mensagem_localizacao = f' em: {localizacao}'
+            else:
+                # Manter a localização anterior se existir
+                nova_localizacao = bem_localizacao_anterior if bem_localizacao_anterior else 'Localizado'
+                mensagem_localizacao = f' (localização mantida: {bem_localizacao_anterior})' if bem_localizacao_anterior else ''
+            
+            # ATUALIZAR PARA LOCALIZADO
+            cursor.execute(
+                "UPDATE bens SET localizacao = ?, situacao = 'Localizado' WHERE numero = ?",
+                (nova_localizacao, numero_bem)
+            )
+            
+            linhas_afetadas = cursor.rowcount
+            
+            if linhas_afetadas > 0:
+                conn.commit()
+                
+                if bem_situacao_anterior == 'Localizado':
+                    mensagem = f'🔁 Bem {bem_numero} já estava localizado. Localização atualizada{mensagem_localizacao}'
+                    categoria = 'info'
+                else:
+                    mensagem = f'✅ Bem {bem_numero} localizado com sucesso{mensagem_localizacao}'
+                    categoria = 'success'
+                
+                flash(mensagem, categoria)
+                print(f"✅ SUCESSO: {mensagem}")
+                
+            else:
+                flash('⚠️ Bem encontrado, mas não foi possível atualizar o status.', 'warning')
+            
+            conn.close()
+            
+            # Focar automaticamente no campo de número para próximo bem
+            return render_template('index.html', 
+                                 mensagem=None,
+                                 focus_numero_bem=True,
+                                 **carregar_dados_bancos())
+            
+        except Exception as e:
+            print(f"❌ ERRO: {e}")
+            flash(f'Erro ao processar o bem: {str(e)}', 'error')
+            return redirect(url_for('index'))
+    
+    # GET request - foco automático no campo de número do bem
+    focus_numero_bem = request.args.get('focus_numero_bem', True)
     
     return render_template('index.html', 
                          mensagem=None,
-                         mensagem_sucesso=mensagem_sucesso,
                          show_modal=False,
+                         focus_numero_bem=focus_numero_bem,
                          **carregar_dados_bancos())
 
 @app.route('/visualizar/<tipo>')
 @login_required
 def visualizar(tipo: str):
-    """Página de visualização de bens com paginação"""
-    if not os.path.exists(DB_PATH):
+    """Página de visualização de bens"""
+    if not os.path.exists(DATABASE):
         return render_template('visualizar.html', 
                              titulo='Visualização', 
                              tipo=tipo,
@@ -729,7 +671,7 @@ def visualizar(tipo: str):
             1000
         ))
         
-        paginacao = obter_bens_paginados(DB_PATH, tipo, pagina, por_pagina)
+        paginacao = obter_bens_paginados(DATABASE, tipo, pagina, por_pagina)
         
         titulos = {
             'localizados': 'Bens Localizados',
@@ -743,7 +685,7 @@ def visualizar(tipo: str):
                              paginacao=paginacao)
             
     except Exception as e:
-        logger.error(f"Erro em /visualizar/{tipo}: {str(e)}")
+        print(f"❌ Erro em /visualizar/{tipo}: {e}")
         return render_template('visualizar.html', 
                              titulo='Erro',
                              tipo=tipo,
@@ -756,26 +698,180 @@ def visualizar(tipo: str):
                              },
                              mensagem=f"Erro ao carregar dados: {str(e)}")
 
+
+
+@app.route('/atualizar-status/<numero_bem>/<localizacao>')
+@login_required
+def atualizar_status(numero_bem: str, localizacao: str):
+    """Rota para forçar atualização de status (apenas para teste)"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Atualizar diretamente
+        cursor.execute(
+            "UPDATE bens SET localizacao = ?, situacao = 'Localizado' WHERE numero = ?",
+            (localizacao, numero_bem)
+        )
+        
+        # Verificar
+        cursor.execute("SELECT numero, situacao, localizacao FROM bens WHERE numero = ?", (numero_bem,))
+        resultado = cursor.fetchone()
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'sucesso': True,
+            'mensagem': f'Bem {numero_bem} atualizado',
+            'novo_status': resultado[1],
+            'localizacao': resultado[2]
+        })
+        
+    except Exception as e:
+        return jsonify({'sucesso': False, 'erro': str(e)})
+
+
+
+
+
 @app.route('/exportar/<tipo>')
 @login_required
 def exportar(tipo: str):
     """Exporta relatórios para Excel"""
-    if not os.path.exists(DB_PATH):
+    if not os.path.exists(DATABASE):
         abort(404, description="Banco de dados não encontrado.")
     
     if tipo not in ['localizados', 'nao-localizados']:
         abort(400, description="Tipo inválido.")
     
-    return export_service.exportar_bens_por_tipo(tipo)
+    try:
+        import pandas as pd
+
+        if tipo == 'localizados':
+            query = "SELECT numero, nome, situacao, localizacao, responsavel FROM bens WHERE situacao = 'Localizado'"
+            nome_arquivo = 'bens_localizados'
+        else:
+            query = "SELECT numero, nome, situacao, localizacao, responsavel FROM bens WHERE situacao != 'Localizado' OR situacao IS NULL"
+            nome_arquivo = 'bens_nao_localizados'
+
+        conn = sqlite3.connect(DATABASE)
+        df = pd.read_sql_query(query, conn)
+        conn.close()
+
+        if df.empty:
+            abort(404, description="Nenhum dado encontrado para exportação")
+
+        if 'numero' in df.columns:
+            df = df.sort_values(by='numero')
+
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        caminho_arquivo = os.path.join(
+            os.path.dirname(DATABASE),
+            f"{nome_arquivo}_{timestamp}.xlsx"
+        )
+
+        df.to_excel(caminho_arquivo, index=False)
+        print(f"✅ Relatório exportado: {caminho_arquivo} ({len(df)} registros)")
+
+        return send_file(caminho_arquivo, as_attachment=True)
+
+    except ImportError:
+        abort(500, description="Pandas não está instalado")
+    except Exception as e:
+        print(f"❌ Erro na exportação: {e}")
+        abort(500, description="Erro ao exportar dados")
 
 @app.route('/exportar-localidade/<localidade>')
 @login_required
 def exportar_localidade(localidade: str):
-    """Exporta relatório por localidade para Excel"""
-    if not os.path.exists(DB_PATH):
+    """Exporta relatório por localidade"""
+    if not os.path.exists(DATABASE):
         abort(404, description="Banco de dados não encontrado.")
     
-    return export_service.exportar_localidade(localidade)
+    try:
+        import pandas as pd
+        
+        registros = obter_todos_bens_por_localidade(DATABASE, localidade)
+        
+        if not registros:
+            abort(404, description=f"Nenhum bem encontrado para a localidade: {localidade}")
+        
+        df = pd.DataFrame(registros)
+        if 'numero' in df.columns:
+            df = df.sort_values(by='numero')
+        
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        nome_seguro = re.sub(r'[^\w\s-]', '', localidade).strip().lower()
+        nome_seguro = re.sub(r'[-\s]+', '_', nome_seguro)
+        
+        caminho_arquivo = os.path.join(
+            os.path.dirname(DATABASE),
+            f"bens_localidade_{nome_seguro}_{timestamp}.xlsx"
+        )
+        
+        df.to_excel(caminho_arquivo, index=False)
+        print(f"✅ Relatório por localidade exportado: {caminho_arquivo}")
+        
+        return send_file(caminho_arquivo, as_attachment=True)
+        
+    except Exception as e:
+        print(f"❌ Erro ao exportar localidade: {e}")
+        abort(500, description="Erro ao exportar dados da localidade")
+
+@app.route('/relatorio-localidades')
+@login_required
+def relatorio_localidades():
+    """Página de relatórios por localidade"""
+    try:
+        localidades = obter_localidades(DATABASE)
+        return render_template('relatorio_localidades.html', 
+                             localidades=localidades,
+                             total_localidades=len(localidades))
+    except Exception as e:
+        print(f"❌ Erro ao carregar relatório de localidades: {e}")
+        flash('Erro ao carregar relatório de localidades.', 'error')
+        return redirect(url_for('index'))
+
+
+@app.route('/debug-bens')
+@login_required
+def debug_bens():
+    """Rota temporária para debug dos bens"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Ver todos os bens
+        cursor.execute("SELECT * FROM bens")
+        todos_bens = cursor.fetchall()
+        
+        # Ver bens pendentes
+        cursor.execute("SELECT * FROM bens WHERE situacao != 'Localizado' OR situacao IS NULL")
+        pendentes = cursor.fetchall()
+        
+        # Ver bens localizados
+        cursor.execute("SELECT * FROM bens WHERE situacao = 'Localizado'")
+        localizados = cursor.fetchall()
+        
+        conn.close()
+        
+        resultado = {
+            'total_bens': len(todos_bens),
+            'pendentes': len(pendentes),
+            'localizados': len(localizados),
+            'dados_pendentes': [dict(row) for row in pendentes],
+            'dados_localizados': [dict(row) for row in localizados]
+        }
+        
+        return jsonify(resultado)
+        
+    except Exception as e:
+        return jsonify({'erro': str(e)})
+
+
+
+
 
 # ==============================
 # ROTAS DA API
@@ -783,14 +879,13 @@ def exportar_localidade(localidade: str):
 @app.route('/api/bens', methods=['POST'])
 @login_required
 def api_criar_bem():
-    """Cria um novo bem - ROTA PRINCIPAL"""
+    """Cria um novo bem"""
     try:
         dados = request.get_json()
         
         if not dados:
             return jsonify({'success': False, 'message': 'Dados não fornecidos'}), 400
         
-        # Validar dados
         if not dados.get('numero') or not dados.get('numero').strip():
             return jsonify({'success': False, 'message': 'Número do bem é obrigatório'}), 400
         
@@ -800,21 +895,15 @@ def api_criar_bem():
         numero = InputValidator.sanitize_input(dados['numero'])
         nome = InputValidator.sanitize_input(dados['nome'])
         
-        # Verificar se número já existe
-        if verificar_numero_existe(DB_PATH, numero):
+        if verificar_numero_existe(DATABASE, numero):
             return jsonify({'success': False, 'message': 'Número do bem já existe'}), 400
         
-        # Criar bem
-        success, message = criar_novo_bem(DB_PATH, {
+        success, message = criar_novo_bem(DATABASE, {
             'numero': numero,
             'nome': nome,
             'situacao': InputValidator.sanitize_input(dados.get('situacao', 'Pendente')),
             'localizacao': InputValidator.sanitize_input(dados.get('localizacao', '')),
-            'responsavel': InputValidator.sanitize_input(dados.get('responsavel', '')),
-            'data_ultima_vistoria': dados.get('data_ultima_vistoria'),
-            'data_vistoria_atual': dados.get('data_vistoria_atual'),
-            'auditor': InputValidator.sanitize_input(dados.get('auditor', '')),
-            'observacoes': InputValidator.sanitize_input(dados.get('observacoes', ''))
+            'responsavel': InputValidator.sanitize_input(dados.get('responsavel', ''))
         })
         
         if success:
@@ -823,7 +912,7 @@ def api_criar_bem():
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        logger.error(f"Erro ao criar bem: {str(e)}")
+        print(f"❌ Erro ao criar bem: {e}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
@@ -831,7 +920,7 @@ def api_criar_bem():
 def api_obter_bem(bem_id):
     """Obtém dados de um bem pelo ID"""
     try:
-        bem = obter_bem_por_id(DB_PATH, bem_id)
+        bem = obter_bem_por_id(DATABASE, bem_id)
         
         if bem:
             return jsonify({'success': True, 'data': bem})
@@ -839,7 +928,7 @@ def api_obter_bem(bem_id):
             return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
-        logger.error(f"Erro ao obter bem {bem_id}: {str(e)}")
+        print(f"❌ Erro ao obter bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
@@ -852,15 +941,11 @@ def api_atualizar_bem(bem_id):
         if not dados:
             return jsonify({'success': False, 'message': 'Dados não fornecidos'}), 400
         
-        success, message = atualizar_bem(DB_PATH, bem_id, {
+        success, message = atualizar_bem(DATABASE, bem_id, {
             'nome': InputValidator.sanitize_input(dados.get('nome')),
             'situacao': InputValidator.sanitize_input(dados.get('situacao')),
             'localizacao': InputValidator.sanitize_input(dados.get('localizacao')),
-            'responsavel': InputValidator.sanitize_input(dados.get('responsavel')),
-            'data_ultima_vistoria': dados.get('data_ultima_vistoria'),
-            'data_vistoria_atual': dados.get('data_vistoria_atual'),
-            'auditor': InputValidator.sanitize_input(dados.get('auditor')),
-            'observacoes': InputValidator.sanitize_input(dados.get('observacoes'))
+            'responsavel': InputValidator.sanitize_input(dados.get('responsavel'))
         })
         
         if success:
@@ -869,7 +954,7 @@ def api_atualizar_bem(bem_id):
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        logger.error(f"Erro ao atualizar bem {bem_id}: {str(e)}")
+        print(f"❌ Erro ao atualizar bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['DELETE'])
@@ -877,7 +962,7 @@ def api_atualizar_bem(bem_id):
 def api_excluir_bem(bem_id):
     """Exclui um bem"""
     try:
-        success, message = excluir_bem(DB_PATH, bem_id)
+        success, message = excluir_bem(DATABASE, bem_id)
         
         if success:
             return jsonify({'success': True, 'message': message})
@@ -885,7 +970,7 @@ def api_excluir_bem(bem_id):
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        logger.error(f"Erro ao excluir bem {bem_id}: {str(e)}")
+        print(f"❌ Erro ao excluir bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================
@@ -902,7 +987,7 @@ def login():
         senha = request.form.get('senha', '')
         
         if not email or '@' not in email:
-            flash('Por favor, informe um e-mail institucional válido.', 'error')
+            flash('Por favor, informe um e-mail válido.', 'error')
             return render_template('login.html')
         
         usuario = verificar_login(email, senha)
@@ -912,15 +997,6 @@ def login():
             session['usuario_email'] = usuario['email']
             session['usuario_nome'] = usuario['nome']
             session['usuario_tipo'] = usuario['tipo']
-            
-            conn = sqlite3.connect(DB_PATH)
-            cursor = conn.cursor()
-            cursor.execute('''
-                UPDATE usuarios SET ultimo_login = CURRENT_TIMESTAMP 
-                WHERE id = ?
-            ''', (usuario['id'],))
-            conn.commit()
-            conn.close()
             
             flash(f'Bem-vindo(a), {usuario["nome"]}!', 'success')
             return redirect(url_for('index'))
@@ -961,11 +1037,6 @@ def importar_excel():
             flash('Formato de arquivo inválido. Use .xlsx, .xls ou .csv.', 'error')
             return redirect(url_for('index'))
         
-        # Obter parâmetros
-        aba_nome = request.form.get('aba_nome', 'Estoque')
-        criar_backup = request.form.get('backup') == 'on'
-        apagar_dados = request.form.get('apagar_dados') == 'on'
-        
         # Salvar arquivo temporariamente
         temp_dir = app.config['UPLOAD_FOLDER']
         os.makedirs(temp_dir, exist_ok=True)
@@ -973,49 +1044,22 @@ def importar_excel():
         file.save(temp_path)
         
         try:
-            # Verificar estrutura
-            resultado_verificacao = verificar_estrutura_excel(temp_path, aba_nome)
+            # Importar usando utils
+            from utils.excel_importer import importar_excel_para_sqlite, importar_csv_para_sqlite
             
-            if not resultado_verificacao['sucesso']:
-                flash(f"❌ Erro na estrutura do arquivo: {resultado_verificacao['mensagem']}", 'error')
-                if os.path.exists(temp_path):
-                    os.remove(temp_path)
-                return redirect(url_for('index'))
-            
-            # Importar dados
             if file_ext == '.csv':
-                resultado_importacao = importar_csv_para_sqlite(temp_path, DB_PATH)
+                resultado = importar_csv_para_sqlite(temp_path, DATABASE)
             else:
-                resultado_importacao = importar_excel_para_sqlite(
-                    temp_path, DB_PATH, aba_nome, criar_backup, apagar_dados
-                )
+                resultado = importar_excel_para_sqlite(temp_path, DATABASE)
             
-            # Processar resultado
-            if resultado_importacao['sucesso']:
-                if apagar_dados:
-                    flash('🗑️ TODOS OS DADOS ANTERIORES FORAM REMOVIDOS!', 'warning')
-                
-                flash(f"✅ {resultado_importacao['mensagem']}", 'success')
-                
-                if resultado_importacao['registros_inseridos'] > 0:
-                    flash(f"📥 {resultado_importacao['registros_inseridos']} novos registros inseridos", 'info')
-                
-                if resultado_importacao['registros_atualizados'] > 0:
-                    flash(f"🔄 {resultado_importacao['registros_atualizados']} registros atualizados", 'info')
-                
-                if resultado_importacao['registros_erro'] > 0:
-                    flash(f"⚠️ {resultado_importacao['registros_erro']} registros com erro", 'warning')
-                
-                if criar_backup and not apagar_dados:
-                    flash("📦 Backup do banco anterior criado com sucesso", 'info')
-                    
+            if resultado['sucesso']:
+                flash(f"✅ {resultado['mensagem']}", 'success')
             else:
-                flash(f"❌ {resultado_importacao['mensagem']}", 'error')
+                flash(f"❌ {resultado['mensagem']}", 'error')
             
         except Exception as e:
-            error_msg = f"❌ Erro durante o processo de importação: {str(e)}"
-            flash(error_msg, 'error')
-            logger.error(f"Erro na importação: {str(e)}")
+            flash(f"❌ Erro durante a importação: {str(e)}", 'error')
+            print(f"❌ Erro na importação: {e}")
             
         finally:
             # Limpar arquivo temporário
@@ -1025,13 +1069,12 @@ def importar_excel():
         return redirect(url_for('index'))
         
     except Exception as e:
-        error_msg = f"❌ Erro interno na importação: {str(e)}"
-        logger.error(f"Erro na importação do Excel/CSV: {str(e)}")
-        flash(error_msg, 'error')
+        flash(f"❌ Erro interno na importação: {str(e)}", 'error')
+        print(f"❌ Erro na importação do Excel/CSV: {e}")
         return redirect(url_for('index'))
 
 # ==============================
-# ROTAS ADICIONAIS (mantidas para compatibilidade)
+# ROTA DO SISTEMA CRUD
 # ==============================
 @app.route('/sistema-crud')
 @login_required
@@ -1042,7 +1085,7 @@ def sistema_crud():
         por_pagina = request.args.get('por_pagina', 50, type=int)
         termo_busca = request.args.get('q', '').strip()
         
-        paginacao = obter_bens_paginados(DB_PATH, 'todos', pagina, por_pagina)
+        paginacao = obter_bens_paginados(DATABASE, 'todos', pagina, por_pagina)
         estatisticas = carregar_dados_bancos()
         
         return render_template('sistema_crud.html',
@@ -1052,7 +1095,7 @@ def sistema_crud():
                             mensagem=None)
         
     except Exception as e:
-        logger.error(f"Erro na página CRUD: {str(e)}")
+        print(f"❌ Erro na página CRUD: {e}")
         return render_template('sistema_crud.html',
                             paginacao={
                                 'dados': [],
@@ -1078,16 +1121,138 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    logger.error(f"Erro interno: {error}")
+    print(f"❌ Erro interno: {error}")
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
 
-@app.errorhandler(503)
-def service_unavailable(error):
-    if request.path.startswith('/api/'):
-        return jsonify({'success': False, 'message': 'Serviço temporariamente indisponível'}), 503
-    return render_template('503.html'), 503
+# ==============================
+# ROTAS ADICIONAIS
+# ==============================
+@app.route('/perfil')
+@login_required
+def perfil():
+    """Rota de perfil do usuário"""
+    return redirect(url_for('index'))
+
+@app.route('/cadastrar-usuario')
+@login_required
+@admin_required
+def cadastrar_usuario():
+    """Rota para cadastrar usuário"""
+    flash('Funcionalidade de cadastro de usuários em desenvolvimento.', 'info')
+    return redirect(url_for('sistema_crud'))
+
+@app.route('/listar-usuarios')  
+@login_required
+@admin_required
+def listar_usuarios():
+    """Rota para listar usuários"""
+    flash('Funcionalidade de gerenciamento de usuários em desenvolvimento.', 'info')
+    return redirect(url_for('sistema_crud'))
+
+# ==============================
+# ROTAS DE AJUDA
+# ==============================
+@app.route('/ajuda')
+@login_required
+def ajuda():
+    """Página principal de ajuda"""
+    return render_template('ajuda.html')
+
+@app.route('/ajuda/<topico>')
+@login_required
+def ajuda_topico(topico):
+    """Página de tópicos específicos de ajuda"""
+    topicos_validos = ['importacao', 'busca', 'exportacao', 'scanner', 'cadastro']
+    
+    if topico not in topicos_validos:
+        flash('Tópico de ajuda não encontrado.', 'error')
+        return redirect(url_for('ajuda'))
+    
+    titulos = {
+        'importacao': 'Importação de Dados',
+        'busca': 'Busca e Localização',
+        'exportacao': 'Exportação de Relatórios', 
+        'scanner': 'Uso do Scanner',
+        'cadastro': 'Cadastro de Bens'
+    }
+    
+    return render_template('ajuda_topico.html', topico=topico, titulo=titulos.get(topico, 'Ajuda'))
+
+
+@app.route('/teste-bens-simples')
+@login_required
+def teste_bens_simples():
+    """Teste simples dos bens pendentes"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Buscar bens pendentes de forma simples
+        cursor.execute("""
+            SELECT id, numero, nome, situacao, localizacao, responsavel 
+            FROM bens 
+            WHERE situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente'
+        """)
+        
+        bens = cursor.fetchall()
+        conn.close()
+        
+        # Formatar manualmente
+        dados_simples = []
+        for bem in bens:
+            dados_simples.append({
+                'id': bem[0],
+                'numero': bem[1],
+                'nome': bem[2],
+                'situacao': bem[3],
+                'localizacao': bem[4],
+                'responsavel': bem[5]
+            })
+        
+        return jsonify({
+            'sucesso': True,
+            'total': len(dados_simples),
+            'bens': dados_simples
+        })
+        
+    except Exception as e:
+        return jsonify({'sucesso': False, 'erro': str(e)})
+
+@app.route('/debug-status-bens')
+@login_required
+def debug_status_bens():
+    """Debug do status dos bens"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Ver todos os bens com seus status
+        cursor.execute("SELECT numero, nome, situacao, localizacao FROM bens ORDER BY numero")
+        todos_bens = cursor.fetchall()
+        
+        conn.close()
+        
+        # Formatar resultado
+        resultado = {
+            'total_bens': len(todos_bens),
+            'bens': []
+        }
+        
+        for bem in todos_bens:
+            resultado['bens'].append({
+                'numero': bem[0],
+                'nome': bem[1],
+                'situacao': bem[2],
+                'localizacao': bem[3]
+            })
+        
+        return jsonify(resultado)
+        
+    except Exception as e:
+        return jsonify({'erro': str(e)})
+
 
 # ==============================
 # INICIALIZAÇÃO
@@ -1095,32 +1260,22 @@ def service_unavailable(error):
 if __name__ == '__main__':
     # Criar estrutura de diretórios
     criar_estrutura_diretorios()
-    verificar_permissoes_arquivos()
     
     # Criar tabelas
     criar_tabela_usuarios_se_nao_existir()
-    criar_tabela_atualizada(DB_PATH)
+    criar_tabela_atualizada(DATABASE)
     
-    logger.info("Iniciando aplicação Flask")
-    
-    # Configurar host e porta baseados no ambiente
-    if os.environ.get('FLASK_ENV') == 'production':
-        host = '0.0.0.0'
-        port = 5000
-        debug = False
-        logger.info("🚀 Iniciando em modo PRODUÇÃO")
-    else:
-        host = '0.0.0.0'
-        port = 5000
-        debug = True
-        logger.info("🔧 Iniciando em modo DESENVOLVIMENTO")
-    
-    logger.info(f"🌐 Servidor iniciado em http://{host}:{port}")
+    print("=== SISTEMA INICIADO ===")
+    print(f"📁 Diretório de trabalho: {app.config['BASE_DIR']}")
+    print(f"🔓 Modo desenvolvimento - segurança reduzida")
+    print("Tabela usuarios já existe")
+    print("Iniciando aplicação Flask")
+    print("🔧 Iniciando em modo DESENVOLVIMENTO")
+    print("🌐 Servidor iniciado em http://0.0.0.0:5000")
     
     app.run(
-        debug=debug,
-        host=host,
-        port=port,
+        debug=True,
+        host='0.0.0.0',
+        port=5000,
         threaded=True
     )
-# FIM: app.py CORRIGIDO - VERSÃO ESTÁVEL
