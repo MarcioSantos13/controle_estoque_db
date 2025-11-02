@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <!-- Tabela de Dados -->
+        <!-- Tabela de Dados CORRIGIDA -->
         {% if paginacao.dados %}
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-0">
@@ -143,10 +143,23 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            {% if bem.situacao and 'OK' in bem.situacao %}
-                                                <span class="badge bg-success">Localizado</span>
+                                            {% if tipo == "localizados" %}
+                                                <!-- FORÇAR "LOCALIZADO" PARA PÁGINA DE LOCALIZADOS -->
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle me-1"></i>Localizado
+                                                </span>
+                                            {% elif tipo == "nao-localizados" %}
+                                                <!-- FORÇAR "PENDENTE" PARA PÁGINA DE NÃO LOCALIZADOS -->
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-clock me-1"></i>Pendente
+                                                </span>
                                             {% else %}
-                                                <span class="badge bg-warning text-dark">Pendente</span>
+                                                <!-- MANTÉM LÓGICA ORIGINAL PARA OUTRAS PÁGINAS -->
+                                                {% if bem.situacao and 'OK' in bem.situacao %}
+                                                    <span class="badge bg-success">Localizado</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">Pendente</span>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>

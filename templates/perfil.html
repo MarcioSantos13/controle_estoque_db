@@ -1,31 +1,274 @@
-# ==============================
-# APIs para o Sistema
-# ==============================
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Sistema Patrimonial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 2rem;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-database me-2"></i>
+                Sistema Patrimonial
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <i class="fas fa-arrow-left me-1"></i>Voltar ao Início
+                </a>
+            </div>
+        </div>
+    </nav>
 
-@app.route('/api/estatisticas')
-@login_required
-def api_estatisticas():
-    """API para obter estatísticas do sistema"""
-    try:
-        estatisticas = carregar_dados_bancos()
-        return jsonify({
-            'success': True,
-            'total_bens': estatisticas['total_count'],
-            'localizados_count': estatisticas['localizados_count'],
-            'pendentes_count': estatisticas['nao_localizados_count']
-        })
-    except Exception as e:
-        logger.error(f"Erro ao obter estatísticas: {str(e)}")
-        return jsonify({
-            'success': False,
-            'total_bens': 0,
-            'localizados_count': 0,
-            'pendentes_count': 0
-        })
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Cabeçalho -->
+                <div class="text-center mb-4">
+                    <h1 class="h3 text-dark">
+                        <i class="fas fa-user-circle text-primary me-2"></i>Meu Perfil
+                    </h1>
+                    <p class="text-muted">Gerencie suas informações pessoais</p>
+                </div>
 
-# ==============================
-# Handlers de Erro Globais
-# ==============================
-@app.errorhandler(404)
-def not_found(error):
-    # ... código existente ...
+                <!-- Mensagens Flash -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Card de Perfil -->
+                <div class="card">
+                    <!-- Cabeçalho do Perfil -->
+                    <div class="profile-header text-center">
+                        <div class="avatar rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                        <h4 class="mb-1">{{ usuario.nome }}</h4>
+                        <p class="mb-0 opacity-75">
+                            <i class="fas fa-envelope me-1"></i>{{ usuario.email }}
+                        </p>
+                        <span class="badge bg-light text-dark mt-2">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            {{ 'Administrador' if usuario.tipo == 'admin' else 'Usuário' }}
+                        </span>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <form method="POST" action="{{ url_for('perfil') }}" id="formPerfil">
+                            <div class="row">
+                                <!-- Nome Completo -->
+                                <div class="col-md-12 mb-3">
+                                    <label for="nome" class="form-label required">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" name="nome"
+                                           value="{{ usuario.nome }}" required>
+                                </div>
+
+                                <!-- E-mail -->
+                                <div class="col-md-12 mb-3">
+                                    <label for="email" class="form-label required">E-mail</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           value="{{ usuario.email }}" required>
+                                </div>
+
+                                <!-- Departamento -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="departamento" class="form-label">Departamento</label>
+                                    <select class="form-select" id="departamento" name="departamento">
+                                        <option value="">Selecione o departamento</option>
+                                        <option value="Administrativo" {{ 'selected' if usuario.departamento == 'Administrativo' }}>Administrativo</option>
+                                        <option value="Financeiro" {{ 'selected' if usuario.departamento == 'Financeiro' }}>Financeiro</option>
+                                        <option value="TI" {{ 'selected' if usuario.departamento == 'TI' }}>Tecnologia da Informação</option>
+                                        <option value="Patrimônio" {{ 'selected' if usuario.departamento == 'Patrimônio' }}>Patrimônio</option>
+                                        <option value="RH" {{ 'selected' if usuario.departamento == 'RH' }}>Recursos Humanos</option>
+                                        <option value="Outro" {{ 'selected' if usuario.departamento == 'Outro' }}>Outro</option>
+                                    </select>
+                                </div>
+
+                                <!-- Telefone -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefone" class="form-label">Telefone</label>
+                                    <input type="tel" class="form-control" id="telefone" name="telefone"
+                                           value="{{ usuario.telefone or '' }}" placeholder="(11) 99999-9999">
+                                </div>
+                            </div>
+
+                            <!-- Seção de Alteração de Senha -->
+                            <div class="border-top pt-4 mt-4">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-lock me-2"></i>Alteração de Senha
+                                    <small class="text-muted">(Preencha apenas se desejar alterar a senha)</small>
+                                </h6>
+
+                                <div class="row">
+                                    <!-- Senha Atual -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="senha_atual" class="form-label">Senha Atual</label>
+                                        <input type="password" class="form-control" id="senha_atual" name="senha_atual"
+                                               placeholder="Digite sua senha atual">
+                                    </div>
+
+                                    <!-- Nova Senha -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nova_senha" class="form-label">Nova Senha</label>
+                                        <input type="password" class="form-control" id="nova_senha" name="nova_senha"
+                                               placeholder="Digite a nova senha" minlength="6">
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Mínimo de 6 caracteres
+                                        </div>
+                                    </div>
+
+                                    <!-- Confirmar Nova Senha -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="confirmar_senha" class="form-label">Confirmar Nova Senha</label>
+                                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha"
+                                               placeholder="Digite a nova senha novamente">
+                                        <div class="invalid-feedback" id="senhaError">
+                                            As senhas não coincidem
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Informações do Sistema -->
+                            <div class="border-top pt-4 mt-4">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Informações do Sistema
+                                </h6>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Tipo de Usuário</small>
+                                        <p class="mb-2">
+                                            <strong>{{ 'Administrador' if usuario.tipo == 'admin' else 'Usuário' }}</strong>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Status da Conta</small>
+                                        <p class="mb-2">
+                                            <span class="badge bg-{{ 'success' if usuario.ativo else 'danger' }}">
+                                                {{ 'Ativo' if usuario.ativo else 'Inativo' }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Data de Criação</small>
+                                        <p class="mb-2">
+                                            <strong>{{ usuario.data_criacao[:10] if usuario.data_criacao else 'N/A' }}</strong>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Última Atualização</small>
+                                        <p class="mb-2">
+                                            <strong>{{ usuario.data_atualizacao[:10] if usuario.data_atualizacao else 'N/A' }}</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-md-2">
+                                            <i class="fas fa-times me-1"></i>Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-primary" id="btnSalvar">
+                                            <i class="fas fa-save me-1"></i>Salvar Alterações
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="text-center mt-4">
+                    <div class="btn-group">
+                        {% if session.usuario_tipo == 'admin' %}
+                        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-users me-1"></i>Gerenciar Usuários
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-sign-out-alt me-1"></i>Sair do Sistema
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validação de senha
+        document.getElementById('formPerfil').addEventListener('submit', function (e) {
+            const novaSenha = document.getElementById('nova_senha').value;
+            const confirmarSenha = document.getElementById('confirmar_senha').value;
+            const senhaError = document.getElementById('senhaError');
+
+            // Só validar se nova senha foi preenchida
+            if (novaSenha && novaSenha !== confirmarSenha) {
+                e.preventDefault();
+                senhaError.style.display = 'block';
+                document.getElementById('confirmar_senha').classList.add('is-invalid');
+            } else {
+                senhaError.style.display = 'none';
+                document.getElementById('confirmar_senha').classList.remove('is-invalid');
+            }
+        });
+
+        // Máscara de telefone
+        document.getElementById('telefone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        // Loading no botão
+        document.getElementById('formPerfil').addEventListener('submit', function () {
+            const btn = document.getElementById('btnSalvar');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Salvando...';
+            btn.disabled = true;
+        });
+    </script>
+</body>
+</html>

@@ -384,7 +384,7 @@ class InputValidator:
         return True, ""
 
 # ==============================
-# SISTEMA DE AUTENTICAÇÃO
+# SISTEMA DE AUTENTICAÇÃO E CRUD USUÁRIOS
 # ==============================
 def hash_senha(senha):
     """Gera hash da senha"""
@@ -397,7 +397,7 @@ def verificar_login(email, senha):
         cursor = conn.cursor()
         
         cursor.execute('''
-            SELECT id, email, nome, senha_hash, tipo, ativo 
+            SELECT id, email, nome, senha_hash, tipo, ativo, departamento, telefone
             FROM usuarios 
             WHERE email = ? AND ativo = 1
         ''', (email,))
@@ -410,7 +410,9 @@ def verificar_login(email, senha):
                 'id': usuario[0],
                 'email': usuario[1],
                 'nome': usuario[2],
-                'tipo': usuario[4]
+                'tipo': usuario[4],
+                'departamento': usuario[6],
+                'telefone': usuario[7]
             }
         return None
         
@@ -436,19 +438,23 @@ def criar_tabela_usuarios_se_nao_existir():
                     senha_hash TEXT NOT NULL,
                     tipo TEXT DEFAULT 'usuario',
                     ativo INTEGER DEFAULT 1,
-                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    departamento TEXT,
+                    telefone TEXT,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
             
             cursor.execute('''
-                INSERT INTO usuarios (email, nome, senha_hash, tipo, ativo)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO usuarios (email, nome, senha_hash, tipo, ativo, departamento)
+                VALUES (?, ?, ?, ?, ?, ?)
             ''', (
                 'admin@sistema.com',
                 'Administrador',
                 hash_senha('admin123'),
                 'admin',
-                1
+                1,
+                'TI'
             ))
             
             conn.commit()
@@ -483,6 +489,178 @@ def admin_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
+
+# ==============================
+# FUNÇÕES CRUD USUÁRIOS
+# ==============================
+def obter_usuarios():
+    """Obtém todos os usuários"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, email, nome, tipo, ativo, departamento, telefone, 
+                   data_criacao, data_atualizacao
+            FROM usuarios 
+            ORDER BY nome
+        ''')
+        
+        usuarios = cursor.fetchall()
+        conn.close()
+        
+        # Converter para lista de dicionários
+        usuarios_list = []
+        for usuario in usuarios:
+            usuarios_list.append({
+                'id': usuario[0],
+                'email': usuario[1],
+                'nome': usuario[2],
+                'tipo': usuario[3],
+                'ativo': usuario[4],
+                'departamento': usuario[5],
+                'telefone': usuario[6],
+                'data_criacao': usuario[7],
+                'data_atualizacao': usuario[8]
+            })
+        
+        return usuarios_list
+        
+    except Exception as e:
+        print(f"❌ Erro ao obter usuários: {e}")
+        return []
+
+def obter_usuario_por_id(usuario_id):
+    """Obtém um usuário pelo ID"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT id, email, nome, tipo, ativo, departamento, telefone,
+                   data_criacao, data_atualizacao
+            FROM usuarios 
+            WHERE id = ?
+        ''', (usuario_id,))
+        
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        if usuario:
+            return {
+                'id': usuario[0],
+                'email': usuario[1],
+                'nome': usuario[2],
+                'tipo': usuario[3],
+                'ativo': usuario[4],
+                'departamento': usuario[5],
+                'telefone': usuario[6],
+                'data_criacao': usuario[7],
+                'data_atualizacao': usuario[8]
+            }
+        return None
+        
+    except Exception as e:
+        print(f"❌ Erro ao obter usuário: {e}")
+        return None
+
+def criar_usuario(dados):
+    """Cria um novo usuário"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Verificar se email já existe
+        cursor.execute("SELECT id FROM usuarios WHERE email = ?", (dados['email'],))
+        if cursor.fetchone():
+            return False, "E-mail já cadastrado"
+        
+        cursor.execute('''
+            INSERT INTO usuarios (email, nome, senha_hash, tipo, ativo, departamento, telefone)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            dados['email'],
+            dados['nome'],
+            hash_senha(dados['senha']),
+            dados['tipo'],
+            dados.get('ativo', 1),
+            dados.get('departamento', ''),
+            dados.get('telefone', '')
+        ))
+        
+        conn.commit()
+        conn.close()
+        return True, "Usuário criado com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar usuário: {e}")
+        return False, f"Erro ao criar usuário: {str(e)}"
+
+def atualizar_usuario(usuario_id, dados):
+    """Atualiza um usuário existente"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # Verificar se email já existe em outro usuário
+        cursor.execute("SELECT id FROM usuarios WHERE email = ? AND id != ?", 
+                      (dados['email'], usuario_id))
+        if cursor.fetchone():
+            return False, "E-mail já cadastrado para outro usuário"
+        
+        # Construir query dinamicamente
+        campos = []
+        valores = []
+        
+        for campo, valor in dados.items():
+            if campo != 'senha' and valor is not None:
+                campos.append(f"{campo} = ?")
+                valores.append(valor)
+        
+        # Se há senha para atualizar
+        if dados.get('senha'):
+            campos.append("senha_hash = ?")
+            valores.append(hash_senha(dados['senha']))
+        
+        campos.append("data_atualizacao = CURRENT_TIMESTAMP")
+        
+        valores.append(usuario_id)
+        
+        query = f"UPDATE usuarios SET {', '.join(campos)} WHERE id = ?"
+        
+        cursor.execute(query, valores)
+        conn.commit()
+        conn.close()
+        
+        return True, "Usuário atualizado com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao atualizar usuário: {e}")
+        return False, f"Erro ao atualizar usuário: {str(e)}"
+
+def excluir_usuario(usuario_id):
+    """Exclui um usuário"""
+    try:
+        # Não permitir excluir o próprio usuário
+        if usuario_id == session.get('usuario_id'):
+            return False, "Não é possível excluir seu próprio usuário"
+        
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute("DELETE FROM usuarios WHERE id = ?", (usuario_id,))
+        
+        if cursor.rowcount == 0:
+            conn.close()
+            return False, "Usuário não encontrado"
+        
+        conn.commit()
+        conn.close()
+        return True, "Usuário excluído com sucesso"
+        
+    except Exception as e:
+        print(f"❌ Erro ao excluir usuário: {e}")
+        return False, f"Erro ao excluir usuário: {str(e)}"
 
 # ==============================
 # FUNÇÕES AUXILIARES
@@ -825,56 +1003,7 @@ def exportar_localidade(localidade: str):
         print(f"❌ Erro ao exportar localidade: {e}")
         abort(500, description="Erro ao exportar dados da localidade")
 
-@app.route('/relatorio-localidades')
-@login_required
-def relatorio_localidades():
-    """Página de relatórios por localidade - VERSÃO CORRIGIDA"""
-    try:
-        localidades = obter_localidades(DATABASE)
-        localidade_selecionada = request.args.get('localidade', '').strip()
-        pagina = request.args.get('pagina', 1, type=int)
-        por_pagina = request.args.get('por_pagina', 20, type=int)
-        
-        print(f"🔍 Relatório Localidades - Selecionada: '{localidade_selecionada}'")
-        
-        paginacao = None
-        mensagem = None
-        
-        if localidade_selecionada:
-            # Buscar bens da localidade selecionada
-            bens = obter_todos_bens_por_localidade(DATABASE, localidade_selecionada)
-            
-            if bens:
-                # Aplicar paginação manual
-                total_registros = len(bens)
-                offset = (pagina - 1) * por_pagina
-                dados_paginados = bens[offset:offset + por_pagina]
-                total_paginas = (total_registros + por_pagina - 1) // por_pagina
-                
-                paginacao = {
-                    'dados': dados_paginados,
-                    'pagina_atual': pagina,
-                    'por_pagina': por_pagina,
-                    'total_registros': total_registros,
-                    'total_paginas': total_paginas
-                }
-                
-                print(f"✅ Encontrados {total_registros} bens em '{localidade_selecionada}'")
-            else:
-                mensagem = f"Nenhum bem encontrado para a localidade: {localidade_selecionada}"
-                print(f"❌ {mensagem}")
-        
-        return render_template('relatorio_localidades.html', 
-                             localidades=localidades,
-                             localidade_selecionada=localidade_selecionada,
-                             paginacao=paginacao,
-                             mensagem=mensagem,
-                             total_localidades=len(localidades))
-        
-    except Exception as e:
-        print(f"❌ Erro ao carregar relatório de localidades: {e}")
-        flash('Erro ao carregar relatório de localidades.', 'error')
-        return redirect(url_for('index'))
+
 
 @app.route('/debug-bens')
 @login_required
@@ -1044,6 +1173,7 @@ def login():
             session['usuario_email'] = usuario['email']
             session['usuario_nome'] = usuario['nome']
             session['usuario_tipo'] = usuario['tipo']
+            session['usuario_departamento'] = usuario.get('departamento', '')
             
             flash(f'Bem-vindo(a), {usuario["nome"]}!', 'success')
             return redirect(url_for('index'))
@@ -1058,6 +1188,180 @@ def logout():
     session.clear()
     flash('Você saiu do sistema.', 'info')
     return redirect(url_for('login'))
+
+# ==============================
+# ROTAS DE GERENCIAMENTO DE USUÁRIOS
+# ==============================
+@app.route('/usuarios')
+@login_required
+@admin_required
+def listar_usuarios():
+    """Lista todos os usuários"""
+    usuarios = obter_usuarios()
+    return render_template('listar_usuarios.html', usuarios=usuarios)
+
+@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def cadastrar_usuario():
+    """Cadastra um novo usuário"""
+    if request.method == 'POST':
+        # Validar dados
+        if not request.form.get('nome') or not request.form.get('email'):
+            flash('Nome e e-mail são obrigatórios.', 'error')
+            return render_template('cadastrar_usuario.html', form_data=request.form)
+        
+        if not request.form.get('senha') or len(request.form.get('senha')) < 6:
+            flash('A senha deve ter pelo menos 6 caracteres.', 'error')
+            return render_template('cadastrar_usuario.html', form_data=request.form)
+        
+        if request.form.get('senha') != request.form.get('confirmar_senha'):
+            flash('As senhas não coincidem.', 'error')
+            return render_template('cadastrar_usuario.html', form_data=request.form)
+        
+        dados = {
+            'nome': request.form.get('nome'),
+            'email': request.form.get('email'),
+            'senha': request.form.get('senha'),
+            'tipo': request.form.get('tipo', 'usuario'),
+            'ativo': 1 if request.form.get('ativo') == '1' else 0,
+            'departamento': request.form.get('departamento', ''),
+            'telefone': request.form.get('telefone', '')
+        }
+        
+        sucesso, mensagem = criar_usuario(dados)
+        
+        if sucesso:
+            flash(mensagem, 'success')
+            return redirect(url_for('listar_usuarios'))
+        else:
+            flash(mensagem, 'error')
+            return render_template('cadastrar_usuario.html', form_data=request.form)
+    
+    return render_template('cadastrar_usuario.html')
+
+@app.route('/usuarios/editar/<int:usuario_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def editar_usuario(usuario_id):
+    """Edita um usuário existente"""
+    usuario = obter_usuario_por_id(usuario_id)
+    
+    if not usuario:
+        flash('Usuário não encontrado.', 'error')
+        return redirect(url_for('listar_usuarios'))
+    
+    if request.method == 'POST':
+        # Validar dados
+        if not request.form.get('nome') or not request.form.get('email'):
+            flash('Nome e e-mail são obrigatórios.', 'error')
+            return render_template('editar_usuario.html', usuario=usuario)
+        
+        dados = {
+            'nome': request.form.get('nome'),
+            'email': request.form.get('email'),
+            'tipo': request.form.get('tipo', 'usuario'),
+            'ativo': 1 if request.form.get('ativo') == '1' else 0,
+            'departamento': request.form.get('departamento', ''),
+            'telefone': request.form.get('telefone', '')
+        }
+        
+        # Se senha foi fornecida, validar
+        if request.form.get('senha'):
+            if len(request.form.get('senha')) < 6:
+                flash('A senha deve ter pelo menos 6 caracteres.', 'error')
+                return render_template('editar_usuario.html', usuario=usuario)
+            
+            if request.form.get('senha') != request.form.get('confirmar_senha'):
+                flash('As senhas não coincidem.', 'error')
+                return render_template('editar_usuario.html', usuario=usuario)
+            
+            dados['senha'] = request.form.get('senha')
+        
+        sucesso, mensagem = atualizar_usuario(usuario_id, dados)
+        
+        if sucesso:
+            flash(mensagem, 'success')
+            return redirect(url_for('listar_usuarios'))
+        else:
+            flash(mensagem, 'error')
+            return render_template('editar_usuario.html', usuario=usuario)
+    
+    return render_template('editar_usuario.html', usuario=usuario)
+
+@app.route('/usuarios/excluir/<int:usuario_id>', methods=['POST'])
+@login_required
+@admin_required
+def excluir_usuario_route(usuario_id):
+    """Exclui um usuário"""
+    sucesso, mensagem = excluir_usuario(usuario_id)
+    
+    if sucesso:
+        flash(mensagem, 'success')
+    else:
+        flash(mensagem, 'error')
+    
+    return redirect(url_for('listar_usuarios'))
+
+@app.route('/perfil', methods=['GET', 'POST'])
+@login_required
+def perfil():
+    """Página de perfil do usuário"""
+    usuario = obter_usuario_por_id(session['usuario_id'])
+    
+    if not usuario:
+        flash('Usuário não encontrado.', 'error')
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        # Validar dados
+        if not request.form.get('nome') or not request.form.get('email'):
+            flash('Nome e e-mail são obrigatórios.', 'error')
+            return render_template('perfil.html', usuario=usuario)
+        
+        dados = {
+            'nome': request.form.get('nome'),
+            'email': request.form.get('email'),
+            'departamento': request.form.get('departamento', ''),
+            'telefone': request.form.get('telefone', '')
+        }
+        
+        # Se senha foi fornecida, validar
+        if request.form.get('senha_atual') or request.form.get('nova_senha'):
+            if not request.form.get('senha_atual'):
+                flash('Senha atual é obrigatória para alterar a senha.', 'error')
+                return render_template('perfil.html', usuario=usuario)
+            
+            # Verificar senha atual
+            if not verificar_login(usuario['email'], request.form.get('senha_atual')):
+                flash('Senha atual incorreta.', 'error')
+                return render_template('perfil.html', usuario=usuario)
+            
+            if len(request.form.get('nova_senha')) < 6:
+                flash('A nova senha deve ter pelo menos 6 caracteres.', 'error')
+                return render_template('perfil.html', usuario=usuario)
+            
+            if request.form.get('nova_senha') != request.form.get('confirmar_senha'):
+                flash('As novas senhas não coincidem.', 'error')
+                return render_template('perfil.html', usuario=usuario)
+            
+            dados['senha'] = request.form.get('nova_senha')
+        
+        sucesso, mensagem = atualizar_usuario(usuario['id'], dados)
+        
+        if sucesso:
+            # Atualizar dados na sessão
+            session['usuario_nome'] = dados['nome']
+            session['usuario_email'] = dados['email']
+            session['usuario_departamento'] = dados.get('departamento', '')
+            
+            flash('Perfil atualizado com sucesso!', 'success')
+            return redirect(url_for('perfil'))
+        else:
+            flash(mensagem, 'error')
+            return render_template('perfil.html', usuario=usuario)
+    
+    return render_template('perfil.html', usuario=usuario)
 
 # ==============================
 # ROTA DE IMPORTAÇÃO
@@ -1193,6 +1497,17 @@ def sistema_crud():
                             localizados_count=0,
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
+
+# ==============================
+# ROTA DE RELATÓRIO POR LOCALIDADE
+# ==============================
+@app.route('/relatorio-localidades')
+@login_required
+def relatorio_localidades():
+    """Relatório de bens por localidade"""
+    localidades = obter_localidades(DATABASE)
+    return render_template('relatorio_localidades.html', localidades=localidades)
+
 # ==============================
 # HANDLERS DE ERRO
 # ==============================
@@ -1208,31 +1523,6 @@ def internal_error(error):
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
-
-# ==============================
-# ROTAS ADICIONAIS
-# ==============================
-@app.route('/perfil')
-@login_required
-def perfil():
-    """Rota de perfil do usuário"""
-    return redirect(url_for('index'))
-
-@app.route('/cadastrar-usuario')
-@login_required
-@admin_required
-def cadastrar_usuario():
-    """Rota para cadastrar usuário"""
-    flash('Funcionalidade de cadastro de usuários em desenvolvimento.', 'info')
-    return redirect(url_for('sistema_crud'))
-
-@app.route('/listar-usuarios')  
-@login_required
-@admin_required
-def listar_usuarios():
-    """Rota para listar usuários"""
-    flash('Funcionalidade de gerenciamento de usuários em desenvolvimento.', 'info')
-    return redirect(url_for('sistema_crud'))
 
 # ==============================
 # ROTAS DE AJUDA
