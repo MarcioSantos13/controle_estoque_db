@@ -241,32 +241,38 @@ def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]
 def obter_bem_por_id(db_path: str, bem_id: int) -> Dict[str, Any]:
     """Obtém um bem pelo ID - VERSÃO CORRIGIDA"""
     try:
+        print(f"🔍 Buscando bem por ID: {bem_id}")
+        
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
+        # Executar a consulta
         cursor.execute("SELECT * FROM bens WHERE id = ?", (bem_id,))
         resultado = cursor.fetchone()
-        conn.close()
         
         if resultado:
-            # Se for tupla, converter para dicionário
-            if isinstance(resultado, tuple):
-                cursor.execute("SELECT * FROM bens WHERE id = ?", (bem_id,))
-                colunas = [desc[0] for desc in cursor.description]
-                bem_dict = {}
-                for i, valor in enumerate(resultado):
-                    bem_dict[colunas[i]] = valor
-                return bem_dict
-            else:
-                # Já é dicionário (row_factory)
-                return dict(resultado)
-        return {}
+            # Converter para dicionário manualmente
+            colunas = [desc[0] for desc in cursor.description]
+            bem_dict = {}
+            for i, valor in enumerate(resultado):
+                bem_dict[colunas[i]] = valor
+            
+            print(f"✅ Bem encontrado: {bem_dict.get('numero')} - {bem_dict.get('nome')}")
+            conn.close()
+            return bem_dict
+        else:
+            print(f"❌ Bem com ID {bem_id} não encontrado")
+            conn.close()
+            return {}
         
     except Exception as e:
-        print(f"❌ Erro ao obter bem por ID: {e}")
+        print(f"❌ Erro ao obter bem por ID {bem_id}: {e}")
+        # Garantir que a conexão seja fechada mesmo em caso de erro
+        try:
+            conn.close()
+        except:
+            pass
         return {}
-
-
 
 def verificar_numero_existe(db_path: str, numero: str) -> bool:
     """Verifica se número já existe"""
@@ -822,17 +828,53 @@ def exportar_localidade(localidade: str):
 @app.route('/relatorio-localidades')
 @login_required
 def relatorio_localidades():
-    """Página de relatórios por localidade"""
+    """Página de relatórios por localidade - VERSÃO CORRIGIDA"""
     try:
         localidades = obter_localidades(DATABASE)
+        localidade_selecionada = request.args.get('localidade', '').strip()
+        pagina = request.args.get('pagina', 1, type=int)
+        por_pagina = request.args.get('por_pagina', 20, type=int)
+        
+        print(f"🔍 Relatório Localidades - Selecionada: '{localidade_selecionada}'")
+        
+        paginacao = None
+        mensagem = None
+        
+        if localidade_selecionada:
+            # Buscar bens da localidade selecionada
+            bens = obter_todos_bens_por_localidade(DATABASE, localidade_selecionada)
+            
+            if bens:
+                # Aplicar paginação manual
+                total_registros = len(bens)
+                offset = (pagina - 1) * por_pagina
+                dados_paginados = bens[offset:offset + por_pagina]
+                total_paginas = (total_registros + por_pagina - 1) // por_pagina
+                
+                paginacao = {
+                    'dados': dados_paginados,
+                    'pagina_atual': pagina,
+                    'por_pagina': por_pagina,
+                    'total_registros': total_registros,
+                    'total_paginas': total_paginas
+                }
+                
+                print(f"✅ Encontrados {total_registros} bens em '{localidade_selecionada}'")
+            else:
+                mensagem = f"Nenhum bem encontrado para a localidade: {localidade_selecionada}"
+                print(f"❌ {mensagem}")
+        
         return render_template('relatorio_localidades.html', 
                              localidades=localidades,
+                             localidade_selecionada=localidade_selecionada,
+                             paginacao=paginacao,
+                             mensagem=mensagem,
                              total_localidades=len(localidades))
+        
     except Exception as e:
         print(f"❌ Erro ao carregar relatório de localidades: {e}")
         flash('Erro ao carregar relatório de localidades.', 'error')
         return redirect(url_for('index'))
-
 
 @app.route('/debug-bens')
 @login_required
@@ -918,18 +960,23 @@ def api_criar_bem():
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
 def api_obter_bem(bem_id):
-    """Obtém dados de um bem pelo ID"""
+    """Obtém dados de um bem pelo ID - VERSÃO CORRIGIDA"""
     try:
+        print(f"🎯 API: Buscando bem ID {bem_id}")
+        
         bem = obter_bem_por_id(DATABASE, bem_id)
         
         if bem:
+            print(f"✅ API: Bem {bem_id} encontrado - {bem.get('numero')}")
             return jsonify({'success': True, 'data': bem})
         else:
+            print(f"❌ API: Bem {bem_id} não encontrado")
             return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
-        print(f"❌ Erro ao obter bem {bem_id}: {e}")
+        print(f"❌ Erro na API ao obter bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
+
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
@@ -1079,14 +1126,51 @@ def importar_excel():
 @app.route('/sistema-crud')
 @login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA"""
     try:
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 50, type=int)
         termo_busca = request.args.get('q', '').strip()
+        situacao_filtro = request.args.get('situacao', '').strip()
+        responsavel_filtro = request.args.get('responsavel', '').strip()
         
-        paginacao = obter_bens_paginados(DATABASE, 'todos', pagina, por_pagina)
+        print(f"🔍 FILTROS APLICADOS:")
+        print(f"   - Situação: '{situacao_filtro}'")
+        print(f"   - Busca: '{termo_busca}'")
+        print(f"   - Responsável: '{responsavel_filtro}'")
+        
+        # Determinar o tipo baseado no filtro de situação
+        tipo = 'todos'
+        if situacao_filtro == 'OK':
+            tipo = 'localizados'
+        elif situacao_filtro == 'Pendente':
+            tipo = 'nao-localizados'
+        
+        paginacao = obter_bens_paginados(DATABASE, tipo, pagina, por_pagina)
         estatisticas = carregar_dados_bancos()
+        
+        # Aplicar filtros adicionais se necessário
+        if termo_busca or responsavel_filtro:
+            dados_filtrados = []
+            for bem in paginacao['dados']:
+                # Filtro por termo de busca
+                if termo_busca:
+                    termo_match = (termo_busca.lower() in (bem.get('numero', '') or '').lower() or 
+                                  termo_busca.lower() in (bem.get('nome', '') or '').lower())
+                else:
+                    termo_match = True
+                
+                # Filtro por responsável
+                if responsavel_filtro:
+                    resp_match = responsavel_filtro.lower() in (bem.get('responsavel', '') or '').lower()
+                else:
+                    resp_match = True
+                
+                if termo_match and resp_match:
+                    dados_filtrados.append(bem)
+            
+            paginacao['dados'] = dados_filtrados
+            paginacao['total_registros'] = len(dados_filtrados)
         
         return render_template('sistema_crud.html',
                             paginacao=paginacao,
@@ -1109,7 +1193,6 @@ def sistema_crud():
                             localizados_count=0,
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
-
 # ==============================
 # HANDLERS DE ERRO
 # ==============================

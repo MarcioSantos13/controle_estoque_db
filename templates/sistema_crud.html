@@ -386,6 +386,11 @@
                             <i class="bi bi-house me-1"></i>Início
                         </a>
 
+                        <!-- Botão Debug usando rota existente 
+                        <a href="{{ url_for('debug_bens') }}" class="btn btn-outline-info btn-modern" target="_blank">
+                            <i class="bi bi-bug me-1"></i>Debug
+                        </a>
+-->
                         <!-- Dropdown do Usuário -->
                         <div class="dropdown user-dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle btn-modern" type="button"
@@ -521,7 +526,7 @@
                                         placeholder="Filtrar por responsável..."
                                         value="{{ request.args.get('responsavel', '') }}">
                                     {% if request.args.get('responsavel') %}
-                                    <a href="{{ url_for('sistema_crud', q=termo_busca) }}"
+                                    <a href="{{ url_for('sistema_crud', q=termo_busca, situacao=request.args.get('situacao', '')) }}"
                                         class="btn btn-link text-danger position-absolute end-0 top-50 translate-middle-y"
                                         style="z-index: 5;" title="Limpar filtro de responsável">
                                         <i class="bi bi-x-circle"></i>
@@ -556,37 +561,48 @@
                 </div>
             </div>
 
-
-            <!-- Filtros -->
+            <!-- Filtros CORRIGIDOS -->
             <div class="row mt-3">
                 <div class="col">
                     <div class="d-flex flex-wrap align-items-center gap-2">
-                        <span class="text-muted small">Filtrar por:</span>
+                        <span class="text-muted small">Filtrar por situação:</span>
                         <div class="btn-group">
-                            <a href="{{ url_for('sistema_crud') }}"
+                            <a href="{{ url_for('sistema_crud', q=termo_busca, responsavel=request.args.get('responsavel', '')) }}"
                                 class="btn btn-sm btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
-                                Todos
+                                Todos ({{ total_count }})
                             </a>
-                            <a href="{{ url_for('sistema_crud', situacao='OK') }}"
+                            <a href="{{ url_for('sistema_crud', situacao='OK', q=termo_busca, responsavel=request.args.get('responsavel', '')) }}"
                                 class="btn btn-sm btn-outline-success {{ 'active' if request.args.get('situacao') == 'OK' }}">
-                                Localizados
+                                Localizados ({{ localizados_count }})
                             </a>
-                            <a href="{{ url_for('sistema_crud', situacao='Pendente') }}"
+                            <a href="{{ url_for('sistema_crud', situacao='Pendente', q=termo_busca, responsavel=request.args.get('responsavel', '')) }}"
                                 class="btn btn-sm btn-outline-warning {{ 'active' if request.args.get('situacao') == 'Pendente' }}">
-                                Pendentes
+                                Pendentes ({{ nao_localizados_count }})
                             </a>
                         </div>
 
-                        {% if termo_busca or request.args.get('responsavel') %}
+                        {% if termo_busca or request.args.get('responsavel') or request.args.get('situacao') %}
                         <div class="ms-2">
                             {% if termo_busca %}
-                            <span class="filter-badge">Busca: "{{ termo_busca }}"</span>
+                            <span class="filter-badge">
+                                <i class="bi bi-search me-1"></i>Busca: "{{ termo_busca }}"
+                            </span>
                             {% endif %}
                             {% if request.args.get('responsavel') %}
-                            <span class="filter-badge">Responsável: "{{ request.args.get('responsavel') }}"</span>
+                            <span class="filter-badge">
+                                <i class="bi bi-person me-1"></i>Responsável: "{{ request.args.get('responsavel') }}"
+                            </span>
+                            {% endif %}
+                            {% if request.args.get('situacao') %}
+                            <span class="filter-badge">
+                                <i class="bi bi-funnel me-1"></i>Situação:
+                                {% if request.args.get('situacao') == 'OK' %}Localizados
+                                {% elif request.args.get('situacao') == 'Pendente' %}Pendentes
+                                {% else %}{{ request.args.get('situacao') }}{% endif %}
+                            </span>
                             {% endif %}
                             <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-outline-danger ms-1">
-                                <i class="bi bi-x"></i> Limpar
+                                <i class="bi bi-x-circle me-1"></i>Limpar Filtros
                             </a>
                         </div>
                         {% endif %}
@@ -601,6 +617,14 @@
                 <h5 class="data-table-title">
                     <i class="bi bi-list me-1 text-primary"></i>
                     Lista de Bens
+                    {% if request.args.get('situacao') == 'OK' %}
+                    <span class="badge bg-success ms-2">Localizados</span>
+                    {% elif request.args.get('situacao') == 'Pendente' %}
+                    <span class="badge bg-warning ms-2">Pendentes</span>
+                    {% endif %}
+                    {% if termo_busca %}
+                    <span class="badge bg-info ms-2">Busca: "{{ termo_busca }}"</span>
+                    {% endif %}
                 </h5>
             </div>
             <div class="table-responsive">
@@ -613,7 +637,7 @@
                             <th>Situação</th>
                             <th>Localização</th>
                             <th>Responsável</th>
-                            <th>Última Vistoria</th>
+                            <th>Data Criação</th>
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
@@ -630,19 +654,23 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="font-monospace">{{ bem.numero }}</span>
+                                <span class="font-monospace fw-bold">{{ bem.numero }}</span>
                             </td>
                             <td>{{ bem.nome }}</td>
                             <td>
-                                {% if bem.situacao == 'OK' %}
-                                <span class="badge bg-success badge-status">Localizado</span>
+                                {% if bem.situacao == 'Localizado' or bem.situacao == 'OK' %}
+                                <span class="badge bg-success badge-status">
+                                    <i class="bi bi-check-circle me-1"></i>Localizado
+                                </span>
                                 {% else %}
-                                <span class="badge bg-warning badge-status">Pendente</span>
+                                <span class="badge bg-warning badge-status">
+                                    <i class="bi bi-clock me-1"></i>Pendente
+                                </span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.localizacao %}
-                                {{ bem.localizacao }}
+                                <span class="text-success">{{ bem.localizacao }}</span>
                                 {% else %}
                                 <span class="text-muted">Não informada</span>
                                 {% endif %}
@@ -655,8 +683,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if bem.data_ultima_vistoria %}
-                                {{ bem.data_ultima_vistoria[:10] }}
+                                {% if bem.data_criacao %}
+                                {{ bem.data_criacao[:10] }}
                                 {% else %}
                                 <span class="text-muted">N/A</span>
                                 {% endif %}
@@ -686,10 +714,17 @@
                         <tr>
                             <td colspan="8" class="empty-state">
                                 <i class="bi bi-inbox"></i>
-                                <p>Nenhum bem encontrado</p>
-                                {% if termo_busca %}
+                                <p class="mb-2">Nenhum bem encontrado</p>
+                                <small class="text-muted mb-3 d-block">
+                                    {% if termo_busca or request.args.get('situacao') %}
+                                    Tente ajustar os filtros ou buscar por outros termos
+                                    {% else %}
+                                    Não há bens cadastrados no sistema
+                                    {% endif %}
+                                </small>
+                                {% if termo_busca or request.args.get('situacao') %}
                                 <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
-                                    Limpar busca
+                                    <i class="bi bi-x-circle me-1"></i>Limpar filtros
                                 </a>
                                 {% endif %}
                             </td>
@@ -707,8 +742,8 @@
                         {% if paginacao.pagina_atual > 1 %}
                         <li class="page-item">
                             <a class="page-link"
-                                href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                                Anterior
+                                href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=request.args.get('situacao', ''), responsavel=request.args.get('responsavel', '')) }}">
+                                <i class="bi bi-chevron-left"></i> Anterior
                             </a>
                         </li>
                         {% endif %}
@@ -717,7 +752,7 @@
                         {% if pagina >= paginacao.pagina_atual - 2 and pagina <= paginacao.pagina_atual + 2 %} <li
                             class="page-item {{ 'active' if pagina == paginacao.pagina_atual }}">
                             <a class="page-link"
-                                href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
+                                href="{{ url_for('sistema_crud', pagina=pagina, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=request.args.get('situacao', ''), responsavel=request.args.get('responsavel', '')) }}">
                                 {{ pagina }}
                             </a>
                             </li>
@@ -726,8 +761,8 @@
 
                             {% if paginacao.pagina_atual < paginacao.total_paginas %} <li class="page-item">
                                 <a class="page-link"
-                                    href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca) }}">
-                                    Próxima
+                                    href="{{ url_for('sistema_crud', pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina, q=termo_busca, situacao=request.args.get('situacao', ''), responsavel=request.args.get('responsavel', '')) }}">
+                                    Próxima <i class="bi bi-chevron-right"></i>
                                 </a>
                                 </li>
                                 {% endif %}
@@ -738,14 +773,22 @@
 
             <!-- Informações de Paginação -->
             <div class="pagination-container">
-                <div class="text-center text-muted">
-                    <small>
-                        Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros|number_format }}
-                        registro{{ paginacao.total_registros|pluralize('', 's') }}
-                        {% if paginacao.total_paginas > 1 %}
-                        - Página {{ paginacao.pagina_atual }} de {{ paginacao.total_paginas }}
-                        {% endif %}
-                    </small>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            Mostrando <strong>{{ paginacao.dados|length }}</strong> de
+                            <strong>{{ paginacao.total_registros|number_format }}</strong>
+                            registro{{ paginacao.total_registros|pluralize('', 's') }}
+                        </small>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <small class="text-muted">
+                            {% if paginacao.total_paginas > 1 %}
+                            Página <strong>{{ paginacao.pagina_atual }}</strong> de
+                            <strong>{{ paginacao.total_paginas }}</strong>
+                            {% endif %}
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -768,12 +811,14 @@
                                 <div class="mb-3">
                                     <label for="numero" class="form-label">Número do Bem *</label>
                                     <input type="text" class="form-control" id="numero" name="numero" required>
+                                    <div class="form-text">Identificador único do bem patrimonial</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nome" class="form-label">Nome do Bem *</label>
                                     <input type="text" class="form-control" id="nome" name="nome" required>
+                                    <div class="form-text">Descrição do bem patrimonial</div>
                                 </div>
                             </div>
                         </div>
@@ -784,14 +829,18 @@
                                     <label for="situacao" class="form-label">Situação</label>
                                     <select class="form-select" id="situacao" name="situacao">
                                         <option value="Pendente">Pendente</option>
-                                        <option value="OK">Localizado</option>
+                                        <option value="Localizado">Localizado</option>
+                                        <option value="OK">OK (Localizado)</option>
                                     </select>
+                                    <div class="form-text">Status atual do bem</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="localizacao" class="form-label">Localização</label>
-                                    <input type="text" class="form-control" id="localizacao" name="localizacao">
+                                    <input type="text" class="form-control" id="localizacao" name="localizacao"
+                                        placeholder="Ex: Sala 101, Almoxarifado">
+                                    <div class="form-text">Onde o bem se encontra atualmente</div>
                                 </div>
                             </div>
                         </div>
@@ -800,44 +849,38 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="responsavel" class="form-label">Responsável</label>
-                                    <input type="text" class="form-control" id="responsavel" name="responsavel">
+                                    <input type="text" class="form-control" id="responsavel" name="responsavel"
+                                        placeholder="Nome do responsável">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="auditor" class="form-label">Auditor</label>
-                                    <input type="text" class="form-control" id="auditor" name="auditor">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="data_ultima_vistoria" class="form-label">Data Última Vistoria</label>
-                                    <input type="date" class="form-control" id="data_ultima_vistoria"
-                                        name="data_ultima_vistoria">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="data_vistoria_atual" class="form-label">Data Vistoria Atual</label>
-                                    <input type="date" class="form-control" id="data_vistoria_atual"
-                                        name="data_vistoria_atual">
+                                    <input type="text" class="form-control" id="auditor" name="auditor"
+                                        placeholder="Nome do auditor">
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="observacoes" class="form-label">Observações</label>
-                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
+                                placeholder="Observações adicionais sobre o bem"></textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <small>
+                                <i class="bi bi-info-circle me-1"></i>
+                                Campos marcados com * são obrigatórios. O número do bem deve ser único no sistema.
+                            </small>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="btnSalvar" onclick="salvarBem()">Salvar
-                        Alterações</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvar" onclick="salvarBem()">
+                        <i class="bi bi-check-circle me-1"></i>Salvar Alterações
+                    </button>
                 </div>
             </div>
         </div>
@@ -852,12 +895,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                    </div>
                     <p>Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?</p>
                     <p class="text-danger"><small>Esta ação não pode ser desfeita.</small></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">
+                        <i class="bi bi-trash me-1"></i>Excluir
+                    </button>
                 </div>
             </div>
         </div>
@@ -895,9 +945,16 @@
             if (btnConfirmarExclusao) {
                 btnConfirmarExclusao.addEventListener('click', executarExclusao);
             }
+
+            // Log dos filtros ativos
+            console.log("🔍 Filtros ativos:", {
+                situacao: "{{ request.args.get('situacao', 'Nenhum') }}",
+                busca: "{{ termo_busca }}",
+                responsavel: "{{ request.args.get('responsavel', 'Nenhum') }}"
+            });
         });
 
-        // FUNÇÃO PARA NOVO BEM - CORRIGIDA
+        // FUNÇÃO PARA NOVO BEM
         function abrirModalNovoBem(event) {
             if (event) event.preventDefault();
             console.log("➕ ABRINDO MODAL PARA NOVO BEM");
@@ -927,11 +984,6 @@
                     input.readOnly = false;
                 });
 
-                // Definir data atual como padrão para vistoria atual
-                const hoje = new Date().toISOString().split('T')[0];
-                document.getElementById('data_vistoria_atual').value = hoje;
-                document.getElementById('data_ultima_vistoria').value = '';
-
                 document.getElementById('btnSalvar').style.display = 'block';
 
                 // Abrir o modal
@@ -947,7 +999,7 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID
         function editarBem(bemId) {
             console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -962,7 +1014,7 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR COM SUBDIRETÓRIO
+            // USAR URL RELATIVA
             const rota = `/api/bens/${bemId}`;
             console.log(`📡 Buscando dados via: ${rota}`);
 
@@ -997,7 +1049,7 @@
                 });
         }
 
-        // FUNÇÃO PARA VISUALIZAR - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
+        // FUNÇÃO PARA VISUALIZAR
         function visualizarBem(bemId) {
             console.log("👁️ VISUALIZAR BEM - ID:", bemId);
 
@@ -1012,7 +1064,7 @@
             btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
             btnSalvar.disabled = true;
 
-            // USAR URL RELATIVA - CORREÇÃO PARA SERVIDOR COM SUBDIRETÓRIO
+            // USAR URL RELATIVA
             const rota = `/api/bens/${bemId}`;
             console.log(`📡 Buscando dados para visualização via: ${rota}`);
 
@@ -1064,43 +1116,6 @@
                 document.getElementById('auditor').value = bem.auditor || '';
                 document.getElementById('observacoes').value = bem.observacoes || '';
 
-                // Datas - tratamento mais robusto
-                try {
-                    if (bem.data_ultima_vistoria) {
-                        let dataUltima = bem.data_ultima_vistoria;
-                        // Se for string, converter para formato date
-                        if (typeof dataUltima === 'string') {
-                            if (dataUltima.includes('T')) {
-                                dataUltima = dataUltima.split('T')[0];
-                            } else if (dataUltima.includes(' ')) {
-                                dataUltima = dataUltima.split(' ')[0];
-                            }
-                        }
-                        document.getElementById('data_ultima_vistoria').value = dataUltima;
-                    } else {
-                        document.getElementById('data_ultima_vistoria').value = '';
-                    }
-
-                    if (bem.data_vistoria_atual) {
-                        let dataAtual = bem.data_vistoria_atual;
-                        // Se for string, converter para formato date
-                        if (typeof dataAtual === 'string') {
-                            if (dataAtual.includes('T')) {
-                                dataAtual = dataAtual.split('T')[0];
-                            } else if (dataAtual.includes(' ')) {
-                                dataAtual = dataAtual.split(' ')[0];
-                            }
-                        }
-                        document.getElementById('data_vistoria_atual').value = dataAtual;
-                    } else {
-                        document.getElementById('data_vistoria_atual').value = '';
-                    }
-                } catch (error) {
-                    console.error("Erro ao processar datas:", error);
-                    document.getElementById('data_ultima_vistoria').value = '';
-                    document.getElementById('data_vistoria_atual').value = '';
-                }
-
                 // Habilitar campos para edição (número como readonly)
                 const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
                 inputs.forEach(input => {
@@ -1121,7 +1136,7 @@
             }
         }
 
-        // FUNÇÃO SALVAR BEM - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
+        // FUNÇÃO SALVAR BEM
         async function salvarBem() {
             console.log("💾 INICIANDO SALVAMENTO DO BEM");
 
@@ -1221,41 +1236,6 @@
                 document.getElementById('auditor').value = bem.auditor || '';
                 document.getElementById('observacoes').value = bem.observacoes || '';
 
-                // Datas - tratamento mais robusto
-                try {
-                    if (bem.data_ultima_vistoria) {
-                        let dataUltima = bem.data_ultima_vistoria;
-                        if (typeof dataUltima === 'string') {
-                            if (dataUltima.includes('T')) {
-                                dataUltima = dataUltima.split('T')[0];
-                            } else if (dataUltima.includes(' ')) {
-                                dataUltima = dataUltima.split(' ')[0];
-                            }
-                        }
-                        document.getElementById('data_ultima_vistoria').value = dataUltima;
-                    } else {
-                        document.getElementById('data_ultima_vistoria').value = '';
-                    }
-
-                    if (bem.data_vistoria_atual) {
-                        let dataAtual = bem.data_vistoria_atual;
-                        if (typeof dataAtual === 'string') {
-                            if (dataAtual.includes('T')) {
-                                dataAtual = dataAtual.split('T')[0];
-                            } else if (dataAtual.includes(' ')) {
-                                dataAtual = dataAtual.split(' ')[0];
-                            }
-                        }
-                        document.getElementById('data_vistoria_atual').value = dataAtual;
-                    } else {
-                        document.getElementById('data_vistoria_atual').value = '';
-                    }
-                } catch (error) {
-                    console.error("Erro ao processar datas:", error);
-                    document.getElementById('data_ultima_vistoria').value = '';
-                    document.getElementById('data_vistoria_atual').value = '';
-                }
-
                 // Desabilitar campos para visualização
                 const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
                 inputs.forEach(input => input.disabled = true);
@@ -1271,7 +1251,7 @@
             }
         }
 
-        // FUNÇÕES DE EXCLUSÃO - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
+        // FUNÇÕES DE EXCLUSÃO
         function confirmarExclusao(bemId, nomeBem) {
             console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
             bemIdParaExcluir = bemId;
@@ -1281,7 +1261,7 @@
             modalConfirmacao.show();
         }
 
-        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO - CORRIGIDA PARA SERVIDOR COM SUBDIRETÓRIO
+        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
         async function executarExclusao() {
             if (!bemIdParaExcluir) return;
 
