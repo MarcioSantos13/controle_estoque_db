@@ -1501,12 +1501,95 @@ def sistema_crud():
 # ==============================
 # ROTA DE RELATÓRIO POR LOCALIDADE
 # ==============================
+
 @app.route('/relatorio-localidades')
 @login_required
 def relatorio_localidades():
-    """Relatório de bens por localidade"""
-    localidades = obter_localidades(DATABASE)
-    return render_template('relatorio_localidades.html', localidades=localidades)
+    """Relatório de bens por localidade - VERSÃO COMPLETA E CORRIGIDA"""
+    try:
+        # Obter parâmetros da requisição
+        localidade_selecionada = request.args.get('localidade', '').strip()
+        pagina = max(1, request.args.get('pagina', 1, type=int))
+        por_pagina = max(10, min(request.args.get('por_pagina', 20, type=int), 100))
+        
+        # Obter lista de todas as localidades
+        localidades = obter_localidades(DATABASE)
+        total_localidades = len(localidades)
+        
+        # Inicializar paginação vazia
+        paginacao = None
+        
+        # Se uma localidade foi selecionada, buscar os bens
+        if localidade_selecionada:
+            print(f"🔍 Buscando bens para localidade: {localidade_selecionada}")
+            
+            # Calcular offset para paginação
+            offset = (pagina - 1) * por_pagina
+            
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
+            
+            # Contar total de bens na localidade
+            cursor.execute("SELECT COUNT(*) FROM bens WHERE localizacao = ?", (localidade_selecionada,))
+            total_registros = cursor.fetchone()[0]
+            
+            # Buscar bens paginados
+            cursor.execute("""
+                SELECT * FROM bens 
+                WHERE localizacao = ? 
+                ORDER BY numero 
+                LIMIT ? OFFSET ?
+            """, (localidade_selecionada, por_pagina, offset))
+            
+            # Converter para lista de dicionários
+            colunas = [desc[0] for desc in cursor.description]
+            registros = cursor.fetchall()
+            
+            dados = []
+            for registro in registros:
+                bem_dict = {}
+                for i, valor in enumerate(registro):
+                    bem_dict[colunas[i]] = valor
+                dados.append(bem_dict)
+            
+            conn.close()
+            
+            # Calcular total de páginas
+            total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
+            
+            paginacao = {
+                'dados': dados,
+                'pagina_atual': pagina,
+                'por_pagina': por_pagina,
+                'total_registros': total_registros,
+                'total_paginas': total_paginas
+            }
+            
+            print(f"✅ Encontrados {total_registros} bens para localidade '{localidade_selecionada}'")
+        
+        return render_template('relatorio_localidades.html',
+                            localidades=localidades,
+                            localidade_selecionada=localidade_selecionada,
+                            paginacao=paginacao,
+                            total_localidades=total_localidades,
+                            now=datetime.now())
+        
+    except Exception as e:
+        print(f"❌ Erro no relatório por localidade: {e}")
+        import traceback
+        traceback.print_exc()
+        
+        # Retornar template mesmo em caso de erro, mas com dados vazios
+        return render_template('relatorio_localidades.html',
+                            localidades=[],
+                            localidade_selecionada='',
+                            paginacao=None,
+                            total_localidades=0,
+                            mensagem=f"Erro ao carregar relatório: {str(e)}",
+                            now=datetime.now())
+
+
+
 
 # ==============================
 # HANDLERS DE ERRO
