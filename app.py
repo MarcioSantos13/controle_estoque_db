@@ -46,6 +46,46 @@ app.config.from_object(Config())
 DATABASE = app.config['DB_PATH']
 
 # ==============================
+# SISTEMA DE LOGGING SIMPLIFICADO
+# ==============================
+import logging
+from logging.handlers import RotatingFileHandler
+
+def setup_simple_logging():
+    """Configuração simples de logging que não quebra a aplicação"""
+    try:
+        # Tentar criar diretório de logs
+        log_dir = os.path.join(app.config['BASE_DIR'], 'logs')
+        os.makedirs(log_dir, exist_ok=True)
+        
+        log_file = os.path.join(log_dir, 'app.log')
+        
+        # Configurar handler de arquivo
+        file_handler = RotatingFileHandler(
+            log_file,
+            maxBytes=10*1024*1024,
+            backupCount=5,
+            encoding='utf-8'
+        )
+        file_handler.setLevel(logging.INFO)
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        file_handler.setFormatter(formatter)
+        
+        # Configurar logger da aplicação
+        app.logger.addHandler(file_handler)
+        app.logger.setLevel(logging.INFO)
+        
+    except Exception as e:
+        # Fallback: logging básico para console
+        logging.basicConfig(level=logging.INFO)
+        app.logger.warning(f"Log em arquivo não disponível, usando console: {e}")
+
+# Configurar logging
+setup_simple_logging()
+
+# ==============================
 # FUNÇÕES AUXILIARES SIMPLIFICADAS
 # ==============================
 def get_db_connection():
@@ -77,10 +117,10 @@ def criar_tabela_atualizada(db_path: str) -> None:
         
         conn.commit()
         conn.close()
-        print("✅ Tabela bens criada/verificada")
+        app.logger.info("✅ Tabela bens criada/verificada")
         
     except Exception as e:
-        print(f"❌ Erro ao criar tabela: {e}")
+        app.logger.error(f"❌ Erro ao criar tabela: {e}")
         raise
 
 def obter_estatisticas(db_path: str) -> Dict[str, Any]:
@@ -115,7 +155,7 @@ def obter_estatisticas(db_path: str) -> Dict[str, Any]:
         }
         
     except Exception as e:
-        print(f"❌ Erro ao obter estatísticas: {e}")
+        app.logger.error(f"❌ Erro ao obter estatísticas: {e}")
         return {'sucesso': False, 'estatisticas': {}}
 
 def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por_pagina: int = 50) -> Dict[str, Any]:
@@ -128,7 +168,7 @@ def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por
         
         offset = (pagina - 1) * por_pagina
         
-        print(f"🔍 Buscando bens - Tipo: {tipo}, Página: {pagina}, Por página: {por_pagina}")
+        app.logger.info(f"🔍 Buscando bens - Tipo: {tipo}, Página: {pagina}, Por página: {por_pagina}")
         
         # Query base
         if tipo == 'localizados':
@@ -154,7 +194,7 @@ def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por
         # Contar total
         cursor.execute(count_query)
         total_registros = cursor.fetchone()[0]
-        print(f"📊 Total de registros: {total_registros}")
+        app.logger.info(f"📊 Total de registros: {total_registros}")
         
         # Buscar dados - CONVERSÃO MANUAL PARA EVITAR ERROS
         cursor.execute(query, params)
@@ -169,9 +209,7 @@ def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por
                 bem_dict[colunas[i]] = valor
             dados.append(bem_dict)
         
-        print(f"✅ Dados convertidos: {len(dados)} registros")
-        for dado in dados:
-            print(f"   - {dado.get('numero')} | {dado.get('nome')} | {dado.get('situacao')}")
+        app.logger.info(f"✅ Dados convertidos: {len(dados)} registros")
         
         conn.close()
         
@@ -186,9 +224,7 @@ def obter_bens_paginados(db_path: str, tipo: str = 'todos', pagina: int = 1, por
         }
         
     except Exception as e:
-        print(f"❌ Erro CRÍTICO ao obter bens paginados: {e}")
-        import traceback
-        traceback.print_exc()
+        app.logger.error(f"❌ Erro CRÍTICO ao obter bens paginados: {e}")
         
         return {
             'dados': [],
@@ -209,7 +245,7 @@ def obter_localidades(db_path: str) -> List[str]:
         conn.close()
         return localidades
     except Exception as e:
-        print(f"❌ Erro ao obter localidades: {e}")
+        app.logger.error(f"❌ Erro ao obter localidades: {e}")
         return []
 
 def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]:
@@ -234,14 +270,14 @@ def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]
         conn.close()
         return bens
     except Exception as e:
-        print(f"❌ Erro ao obter bens por localidade: {e}")
+        app.logger.error(f"❌ Erro ao obter bens por localidade: {e}")
         return []
 
 
 def obter_bem_por_id(db_path: str, bem_id: int) -> Dict[str, Any]:
     """Obtém um bem pelo ID - VERSÃO CORRIGIDA"""
     try:
-        print(f"🔍 Buscando bem por ID: {bem_id}")
+        app.logger.info(f"🔍 Buscando bem por ID: {bem_id}")
         
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -257,16 +293,16 @@ def obter_bem_por_id(db_path: str, bem_id: int) -> Dict[str, Any]:
             for i, valor in enumerate(resultado):
                 bem_dict[colunas[i]] = valor
             
-            print(f"✅ Bem encontrado: {bem_dict.get('numero')} - {bem_dict.get('nome')}")
+            app.logger.info(f"✅ Bem encontrado: {bem_dict.get('numero')} - {bem_dict.get('nome')}")
             conn.close()
             return bem_dict
         else:
-            print(f"❌ Bem com ID {bem_id} não encontrado")
+            app.logger.info(f"❌ Bem com ID {bem_id} não encontrado")
             conn.close()
             return {}
         
     except Exception as e:
-        print(f"❌ Erro ao obter bem por ID {bem_id}: {e}")
+        app.logger.error(f"❌ Erro ao obter bem por ID {bem_id}: {e}")
         # Garantir que a conexão seja fechada mesmo em caso de erro
         try:
             conn.close()
@@ -284,7 +320,7 @@ def verificar_numero_existe(db_path: str, numero: str) -> bool:
         conn.close()
         return existe
     except Exception as e:
-        print(f"❌ Erro ao verificar número: {e}")
+        app.logger.error(f"❌ Erro ao verificar número: {e}")
         return False
 
 def criar_novo_bem(db_path: str, dados: Dict[str, Any]) -> Tuple[bool, str]:
@@ -309,7 +345,7 @@ def criar_novo_bem(db_path: str, dados: Dict[str, Any]) -> Tuple[bool, str]:
         return True, "Bem criado com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao criar bem: {e}")
+        app.logger.error(f"❌ Erro ao criar bem: {e}")
         return False, f"Erro ao criar bem: {str(e)}"
 
 def atualizar_bem(db_path: str, bem_id: int, dados: Dict[str, Any]) -> Tuple[bool, str]:
@@ -335,7 +371,7 @@ def atualizar_bem(db_path: str, bem_id: int, dados: Dict[str, Any]) -> Tuple[boo
         return True, "Bem atualizado com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao atualizar bem: {e}")
+        app.logger.error(f"❌ Erro ao atualizar bem: {e}")
         return False, f"Erro ao atualizar bem: {str(e)}"
 
 def excluir_bem(db_path: str, bem_id: int) -> Tuple[bool, str]:
@@ -350,7 +386,7 @@ def excluir_bem(db_path: str, bem_id: int) -> Tuple[bool, str]:
         return True, "Bem excluído com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao excluir bem: {e}")
+        app.logger.error(f"❌ Erro ao excluir bem: {e}")
         return False, f"Erro ao excluir bem: {str(e)}"
 
 # ==============================
@@ -417,7 +453,7 @@ def verificar_login(email, senha):
         return None
         
     except Exception as e:
-        print(f"❌ Erro ao verificar login: {e}")
+        app.logger.error(f"❌ Erro ao verificar login: {e}")
         return None
 
 def criar_tabela_usuarios_se_nao_existir():
@@ -428,7 +464,7 @@ def criar_tabela_usuarios_se_nao_existir():
         
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'")
         if not cursor.fetchone():
-            print("Criando tabela usuarios...")
+            app.logger.info("Criando tabela usuarios...")
             
             cursor.execute('''
                 CREATE TABLE usuarios (
@@ -458,14 +494,14 @@ def criar_tabela_usuarios_se_nao_existir():
             ))
             
             conn.commit()
-            print("✅ Tabela usuarios criada com sucesso!")
+            app.logger.info("✅ Tabela usuarios criada com sucesso!")
         else:
-            print("ℹ️ Tabela usuarios já existe")
+            app.logger.info("ℹ️ Tabela usuarios já existe")
         
         conn.close()
         
     except Exception as e:
-        print(f"❌ Erro ao criar tabela de usuários: {e}")
+        app.logger.error(f"❌ Erro ao criar tabela de usuários: {e}")
         raise e
 
 def login_required(f):
@@ -527,7 +563,7 @@ def obter_usuarios():
         return usuarios_list
         
     except Exception as e:
-        print(f"❌ Erro ao obter usuários: {e}")
+        app.logger.error(f"❌ Erro ao obter usuários: {e}")
         return []
 
 def obter_usuario_por_id(usuario_id):
@@ -561,7 +597,7 @@ def obter_usuario_por_id(usuario_id):
         return None
         
     except Exception as e:
-        print(f"❌ Erro ao obter usuário: {e}")
+        app.logger.error(f"❌ Erro ao obter usuário: {e}")
         return None
 
 def criar_usuario(dados):
@@ -593,7 +629,7 @@ def criar_usuario(dados):
         return True, "Usuário criado com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao criar usuário: {e}")
+        app.logger.error(f"❌ Erro ao criar usuário: {e}")
         return False, f"Erro ao criar usuário: {str(e)}"
 
 def atualizar_usuario(usuario_id, dados):
@@ -635,7 +671,7 @@ def atualizar_usuario(usuario_id, dados):
         return True, "Usuário atualizado com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao atualizar usuário: {e}")
+        app.logger.error(f"❌ Erro ao atualizar usuário: {e}")
         return False, f"Erro ao atualizar usuário: {str(e)}"
 
 def excluir_usuario(usuario_id):
@@ -659,7 +695,7 @@ def excluir_usuario(usuario_id):
         return True, "Usuário excluído com sucesso"
         
     except Exception as e:
-        print(f"❌ Erro ao excluir usuário: {e}")
+        app.logger.error(f"❌ Erro ao excluir usuário: {e}")
         return False, f"Erro ao excluir usuário: {str(e)}"
 
 # ==============================
@@ -685,7 +721,7 @@ def carregar_dados_bancos() -> Dict[str, int]:
             'total_count': total
         }
     except Exception as e:
-        print(f"❌ Erro ao carregar contagens do banco: {e}")
+        app.logger.error(f"❌ Erro ao carregar contagens do banco: {e}")
         return {'localizados_count': 0, 'nao_localizados_count': 0, 'total_count': 0}
 
 def criar_estrutura_diretorios():
@@ -700,9 +736,9 @@ def criar_estrutura_diretorios():
     for diretorio in diretorios:
         try:
             os.makedirs(diretorio, exist_ok=True)
-            print(f"✅ Diretório criado/verificado: {diretorio}")
+            app.logger.info(f"✅ Diretório criado/verificado: {diretorio}")
         except Exception as e:
-            print(f"⚠️ Erro ao criar diretório {diretorio}: {e}")
+            app.logger.warning(f"⚠️ Erro ao criar diretório {diretorio}: {e}")
 
 # ==============================
 # FILTROS TEMPLATE
@@ -738,7 +774,7 @@ def index():
         numero_bem = request.form.get('numero_bem', '').strip()
         localizacao = request.form.get('localizacao', '').strip()
         
-        print(f"🎯 PROCESSANDO: {numero_bem} | Localização: '{localizacao}'")
+        app.logger.info(f"🎯 PROCESSANDO: {numero_bem} | Localização: '{localizacao}'")
         
         valido, mensagem_validacao = InputValidator.validate_number_format(numero_bem)
         if not valido:
@@ -770,7 +806,7 @@ def index():
             bem_situacao_anterior = resultado[2]
             bem_localizacao_anterior = resultado[3]
             
-            print(f"📋 Bem: {bem_numero} | Status anterior: {bem_situacao_anterior} | Localização anterior: {bem_localizacao_anterior}")
+            app.logger.info(f"📋 Bem: {bem_numero} | Status anterior: {bem_situacao_anterior} | Localização anterior: {bem_localizacao_anterior}")
             
             # LÓGICA PRINCIPAL CORRIGIDA:
             # 1. O bem é SEMPRE marcado como localizado quando encontrado
@@ -804,7 +840,7 @@ def index():
                     categoria = 'success'
                 
                 flash(mensagem, categoria)
-                print(f"✅ SUCESSO: {mensagem}")
+                app.logger.info(f"✅ SUCESSO: {mensagem}")
                 
             else:
                 flash('⚠️ Bem encontrado, mas não foi possível atualizar o status.', 'warning')
@@ -818,7 +854,7 @@ def index():
                                  **carregar_dados_bancos())
             
         except Exception as e:
-            print(f"❌ ERRO: {e}")
+            app.logger.error(f"❌ ERRO: {e}")
             flash(f'Erro ao processar o bem: {str(e)}', 'error')
             return redirect(url_for('index'))
     
@@ -869,7 +905,7 @@ def visualizar(tipo: str):
                              paginacao=paginacao)
             
     except Exception as e:
-        print(f"❌ Erro em /visualizar/{tipo}: {e}")
+        app.logger.error(f"❌ Erro em /visualizar/{tipo}: {e}")
         return render_template('visualizar.html', 
                              titulo='Erro',
                              tipo=tipo,
@@ -956,14 +992,14 @@ def exportar(tipo: str):
         )
 
         df.to_excel(caminho_arquivo, index=False)
-        print(f"✅ Relatório exportado: {caminho_arquivo} ({len(df)} registros)")
+        app.logger.info(f"✅ Relatório exportado: {caminho_arquivo} ({len(df)} registros)")
 
         return send_file(caminho_arquivo, as_attachment=True)
 
     except ImportError:
         abort(500, description="Pandas não está instalado")
     except Exception as e:
-        print(f"❌ Erro na exportação: {e}")
+        app.logger.error(f"❌ Erro na exportação: {e}")
         abort(500, description="Erro ao exportar dados")
 
 @app.route('/exportar-localidade/<localidade>')
@@ -995,12 +1031,12 @@ def exportar_localidade(localidade: str):
         )
         
         df.to_excel(caminho_arquivo, index=False)
-        print(f"✅ Relatório por localidade exportado: {caminho_arquivo}")
+        app.logger.info(f"✅ Relatório por localidade exportado: {caminho_arquivo}")
         
         return send_file(caminho_arquivo, as_attachment=True)
         
     except Exception as e:
-        print(f"❌ Erro ao exportar localidade: {e}")
+        app.logger.error(f"❌ Erro ao exportar localidade: {e}")
         abort(500, description="Erro ao exportar dados da localidade")
 
 
@@ -1083,7 +1119,7 @@ def api_criar_bem():
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        print(f"❌ Erro ao criar bem: {e}")
+        app.logger.error(f"❌ Erro ao criar bem: {e}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
@@ -1091,19 +1127,19 @@ def api_criar_bem():
 def api_obter_bem(bem_id):
     """Obtém dados de um bem pelo ID - VERSÃO CORRIGIDA"""
     try:
-        print(f"🎯 API: Buscando bem ID {bem_id}")
+        app.logger.info(f"🎯 API: Buscando bem ID {bem_id}")
         
         bem = obter_bem_por_id(DATABASE, bem_id)
         
         if bem:
-            print(f"✅ API: Bem {bem_id} encontrado - {bem.get('numero')}")
+            app.logger.info(f"✅ API: Bem {bem_id} encontrado - {bem.get('numero')}")
             return jsonify({'success': True, 'data': bem})
         else:
-            print(f"❌ API: Bem {bem_id} não encontrado")
+            app.logger.info(f"❌ API: Bem {bem_id} não encontrado")
             return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
-        print(f"❌ Erro na API ao obter bem {bem_id}: {e}")
+        app.logger.error(f"❌ Erro na API ao obter bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 
@@ -1130,7 +1166,7 @@ def api_atualizar_bem(bem_id):
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        print(f"❌ Erro ao atualizar bem {bem_id}: {e}")
+        app.logger.error(f"❌ Erro ao atualizar bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['DELETE'])
@@ -1146,7 +1182,7 @@ def api_excluir_bem(bem_id):
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        print(f"❌ Erro ao excluir bem {bem_id}: {e}")
+        app.logger.error(f"❌ Erro ao excluir bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 # ==============================
@@ -1410,7 +1446,7 @@ def importar_excel():
             
         except Exception as e:
             flash(f"❌ Erro durante a importação: {str(e)}", 'error')
-            print(f"❌ Erro na importação: {e}")
+            app.logger.error(f"❌ Erro na importação: {e}")
             
         finally:
             # Limpar arquivo temporário
@@ -1421,7 +1457,7 @@ def importar_excel():
         
     except Exception as e:
         flash(f"❌ Erro interno na importação: {str(e)}", 'error')
-        print(f"❌ Erro na importação do Excel/CSV: {e}")
+        app.logger.error(f"❌ Erro na importação do Excel/CSV: {e}")
         return redirect(url_for('index'))
 
 # ==============================
@@ -1438,10 +1474,10 @@ def sistema_crud():
         situacao_filtro = request.args.get('situacao', '').strip()
         responsavel_filtro = request.args.get('responsavel', '').strip()
         
-        print(f"🔍 FILTROS APLICADOS:")
-        print(f"   - Situação: '{situacao_filtro}'")
-        print(f"   - Busca: '{termo_busca}'")
-        print(f"   - Responsável: '{responsavel_filtro}'")
+        app.logger.info(f"🔍 FILTROS APLICADOS:")
+        app.logger.info(f"   - Situação: '{situacao_filtro}'")
+        app.logger.info(f"   - Busca: '{termo_busca}'")
+        app.logger.info(f"   - Responsável: '{responsavel_filtro}'")
         
         # Determinar o tipo baseado no filtro de situação
         tipo = 'todos'
@@ -1483,7 +1519,7 @@ def sistema_crud():
                             mensagem=None)
         
     except Exception as e:
-        print(f"❌ Erro na página CRUD: {e}")
+        app.logger.error(f"❌ Erro na página CRUD: {e}")
         return render_template('sistema_crud.html',
                             paginacao={
                                 'dados': [],
@@ -1521,7 +1557,7 @@ def relatorio_localidades():
         
         # Se uma localidade foi selecionada, buscar os bens
         if localidade_selecionada:
-            print(f"🔍 Buscando bens para localidade: {localidade_selecionada}")
+            app.logger.info(f"🔍 Buscando bens para localidade: {localidade_selecionada}")
             
             # Calcular offset para paginação
             offset = (pagina - 1) * por_pagina
@@ -1565,7 +1601,7 @@ def relatorio_localidades():
                 'total_paginas': total_paginas
             }
             
-            print(f"✅ Encontrados {total_registros} bens para localidade '{localidade_selecionada}'")
+            app.logger.info(f"✅ Encontrados {total_registros} bens para localidade '{localidade_selecionada}'")
         
         return render_template('relatorio_localidades.html',
                             localidades=localidades,
@@ -1575,9 +1611,7 @@ def relatorio_localidades():
                             now=datetime.now())
         
     except Exception as e:
-        print(f"❌ Erro no relatório por localidade: {e}")
-        import traceback
-        traceback.print_exc()
+        app.logger.error(f"❌ Erro no relatório por localidade: {e}")
         
         # Retornar template mesmo em caso de erro, mas com dados vazios
         return render_template('relatorio_localidades.html',
@@ -1602,7 +1636,7 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    print(f"❌ Erro interno: {error}")
+    app.logger.error(f"❌ Erro interno: {error}")
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
