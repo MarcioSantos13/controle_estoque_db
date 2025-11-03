@@ -1215,3 +1215,142 @@ main {
 .camera-active {
   filter: brightness(1.1) contrast(1.1);
 }
+
+/* SCANNER OTIMIZADO - ADICIONE AO FINAL DO SEU CSS */
+
+/* Container do scanner responsivo */
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+/* Overlay do scanner */
+.scanner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scanner-frame {
+    width: 250px;
+    height: 150px;
+    border: 3px solid #00ff00;
+    border-radius: 12px;
+    background: transparent;
+    position: relative;
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.7);
+}
+
+.scanner-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #00ff00;
+    animation: scanLine 2s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+
+/* Feedback visual */
+.scan-feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    z-index: 9999;
+    display: none;
+}
+
+.scan-feedback.show {
+    display: block;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
+
+/* Botões do scanner otimizados para mobile */
+.scanner-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.scanner-buttons .btn {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+}
+
+/* Manual entry */
+.manual-entry-container {
+    padding: 20px;
+    display: none;
+}
+
+.manual-entry-container.active {
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .scanner-container {
+        height: 250px;
+    }
+    
+    .scanner-frame {
+        width: 200px;
+        height: 120px;
+    }
+    
+    .scanner-buttons .btn {
+        min-width: 100px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .scanner-container {
+        height: 200px;
+    }
+    
+    .scanner-frame {
+        width: 180px;
+        height: 100px;
+    }
+    
+    .scanner-buttons {
+        flex-direction: column;
+    }
+    
+    .scanner-buttons .btn {
+        min-width: auto;
+        width: 100%;
+    }
+}
