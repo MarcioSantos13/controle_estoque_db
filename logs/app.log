@@ -1735,3 +1735,96 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-01 01:09:47 - controle_patrimonial - INFO - [app.py:1163] - 🔧 Iniciando em modo DESENVOLVIMENTO
 2025-11-01 01:09:47 - controle_patrimonial - INFO - [app.py:1165] - 🌐 Servidor iniciado em http://0.0.0.0:5000
 2025-11-01 01:10:14 - controle_patrimonial - ERROR - [app.py:269] - Erro ao processar bem TESTE001: too many values to unpack (expected 2)
+2025-11-03 14:16:44,314 - app - INFO - ==================================================
+2025-11-03 14:16:44,319 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:16:44,320 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:16:44,320 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:16:44,320 - app - INFO - ==================================================
+2025-11-03 14:16:44,332 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:16:44,332 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:16:44,332 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:16:44,333 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:16:44,354 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:16:44,359 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:16:44,360 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:16:44,360 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:16:44,360 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:16:44,361 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:16:45,023 - app - INFO - ==================================================
+2025-11-03 14:16:45,023 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:16:45,024 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:16:45,024 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:16:45,024 - app - INFO - ==================================================
+2025-11-03 14:16:45,025 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:16:45,026 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:16:45,026 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:16:45,027 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:16:45,029 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:16:45,036 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:16:45,036 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:16:45,036 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:16:45,036 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:16:45,037 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:17:50,660 - app - INFO - ==================================================
+2025-11-03 14:17:50,660 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:17:50,660 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:17:50,660 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:17:50,661 - app - INFO - ==================================================
+2025-11-03 14:17:50,661 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:17:50,662 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:17:50,662 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:17:50,663 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:17:50,664 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:17:50,669 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:17:50,670 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:17:50,670 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:17:50,671 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:17:50,671 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:17:51,225 - app - INFO - ==================================================
+2025-11-03 14:17:51,226 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:17:51,226 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:17:51,226 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:17:51,227 - app - INFO - ==================================================
+2025-11-03 14:17:51,227 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:17:51,228 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:17:51,228 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:17:51,228 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:17:51,230 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:17:51,236 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:17:51,236 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:17:51,237 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:17:51,237 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:17:51,237 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:32:20,847 - app - INFO - ==================================================
+2025-11-03 14:32:20,848 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:32:20,848 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:32:20,848 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:32:20,848 - app - INFO - ==================================================
+2025-11-03 14:32:20,856 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:32:20,857 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:32:20,857 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:32:20,857 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:32:20,859 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:32:20,865 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:32:20,866 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:32:20,866 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:32:20,866 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:32:20,866 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:32:21,393 - app - INFO - ==================================================
+2025-11-03 14:32:21,394 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-03 14:32:21,394 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:32:21,394 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-03 14:32:21,395 - app - INFO - ==================================================
+2025-11-03 14:32:21,403 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-03 14:32:21,403 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-03 14:32:21,404 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-03 14:32:21,404 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-03 14:32:21,406 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-03 14:32:21,411 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-03 14:32:21,412 - app - INFO - === SISTEMA INICIADO ===
+2025-11-03 14:32:21,412 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-03 14:32:21,412 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-03 14:32:21,412 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-03 14:32:31,697 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-03 14:32:31,699 - app - INFO - 📊 Total de registros: 765
+2025-11-03 14:32:31,700 - app - INFO - ✅ Dados convertidos: 200 registros
