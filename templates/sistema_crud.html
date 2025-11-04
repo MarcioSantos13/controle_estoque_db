@@ -386,11 +386,6 @@
                             <i class="bi bi-house me-1"></i>Início
                         </a>
 
-                        <!-- Botão Debug usando rota existente 
-                        <a href="{{ url_for('debug_bens') }}" class="btn btn-outline-info btn-modern" target="_blank">
-                            <i class="bi bi-bug me-1"></i>Debug
-                        </a>
--->
                         <!-- Dropdown do Usuário -->
                         <div class="dropdown user-dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle btn-modern" type="button"
@@ -1136,17 +1131,25 @@
             }
         }
 
-        // FUNÇÃO SALVAR BEM
+        // FUNÇÃO SALVAR BEM - CORRIGIDA
         async function salvarBem() {
             console.log("💾 INICIANDO SALVAMENTO DO BEM");
 
-            const formData = new FormData(document.getElementById('formBem'));
+            // Coletar dados diretamente dos campos do formulário
             const bemId = document.getElementById('bemId').value;
+            const dados = {
+                numero: document.getElementById('numero').value,
+                nome: document.getElementById('nome').value,
+                situacao: document.getElementById('situacao').value,
+                localizacao: document.getElementById('localizacao').value,
+                responsavel: document.getElementById('responsavel').value,
+                auditor: document.getElementById('auditor').value,
+                observacoes: document.getElementById('observacoes').value
+            };
 
-            // Converter FormData para objeto JavaScript
-            const dados = {};
-            for (let [key, value] of formData.entries()) {
-                dados[key] = value;
+            // Adicionar ID se estiver editando
+            if (bemId) {
+                dados.id = bemId;
             }
 
             console.log("📤 Dados a serem enviados:", dados);
