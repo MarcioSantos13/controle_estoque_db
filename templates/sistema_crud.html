@@ -1175,7 +1175,7 @@
 
         try {
             console.log(`🔍 Buscando bem ${bemId}...`);
-            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
+            const data = await apiRequestSuperRobusta(`./api/bens/${bemId}`);
             
             if (data.success && data.data) {
                 console.log("✅ Dados recebidos, abrindo modal...");
