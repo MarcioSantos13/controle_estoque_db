@@ -954,7 +954,7 @@ function getBaseUrl() {
     else if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
         const baseUrl = window.location.origin;
         console.log("💻 LOCAL - URL Base sem /estoque:", baseUrl);
-        return baseUrl;
+        return baseUrl;        
     }
     // Fallback - se não identificar, usar com /estoque (assume servidor)
     else {
