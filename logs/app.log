@@ -2549,3 +2549,65 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-09 21:37:43,911 - app - INFO - 📊 Total de registros: 765
 2025-11-09 21:37:43,912 - app - INFO - ✅ Dados convertidos: 200 registros
 2025-11-09 21:37:48,504 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251109-213748.xlsx (765 registros)
+2025-11-09 23:03:13,133 - app - INFO - ==================================================
+2025-11-09 23:03:13,133 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 23:03:13,134 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 23:03:13,134 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 23:03:13,134 - app - INFO - ==================================================
+2025-11-09 23:03:13,139 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 23:03:13,139 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 23:03:13,140 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 23:03:13,140 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 23:03:13,143 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 23:03:13,145 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-09 23:03:13,145 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 23:03:13,145 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 23:03:13,145 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 23:03:13,146 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 23:03:13,379 - app - INFO - ==================================================
+2025-11-09 23:03:13,380 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 23:03:13,380 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 23:03:13,380 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 23:03:13,380 - app - INFO - ==================================================
+2025-11-09 23:03:13,385 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 23:03:13,386 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 23:03:13,386 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 23:03:13,387 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 23:03:13,388 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 23:03:13,389 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-09 23:03:13,390 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 23:03:13,390 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 23:03:13,390 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 23:03:13,390 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 23:04:18,391 - app - INFO - 🔍 Buscando bens para localidade: SALA CTIC
+2025-11-09 23:04:18,393 - app - INFO - ✅ Encontrados 1 bens para localidade 'SALA CTIC'
+2025-11-09 23:04:22,079 - app - INFO - 🔍 Buscando bens para localidade: SALA CTIC
+2025-11-09 23:04:22,081 - app - INFO - ✅ Encontrados 1 bens para localidade 'SALA CTIC'
+2025-11-09 23:04:23,380 - app - INFO - 🔍 Buscando bens para localidade: Sala 002
+2025-11-09 23:04:23,383 - app - INFO - ✅ Encontrados 1 bens para localidade 'Sala 002'
+2025-11-09 23:04:24,787 - app - INFO - 🔍 Buscando bens para localidade: Sala 002
+2025-11-09 23:04:24,788 - app - INFO - ✅ Encontrados 1 bens para localidade 'Sala 002'
+2025-11-09 23:04:26,896 - app - INFO - 🔍 Buscando bens para localidade: Sala da Direção
+2025-11-09 23:04:26,897 - app - INFO - ✅ Encontrados 19 bens para localidade 'Sala da Direção'
+2025-11-09 23:04:28,136 - app - INFO - 🔍 Buscando bens para localidade: Secretaria
+2025-11-09 23:04:28,139 - app - INFO - ✅ Encontrados 37 bens para localidade 'Secretaria'
+2025-11-09 23:04:30,310 - app - INFO - 🔍 Buscando bens para localidade: Secretaria
+2025-11-09 23:04:30,313 - app - INFO - ✅ Encontrados 37 bens para localidade 'Secretaria'
+2025-11-09 23:04:34,539 - app - INFO - 🔍 Buscando bens para localidade: Localizado
+2025-11-09 23:04:34,541 - app - INFO - ✅ Encontrados 1 bens para localidade 'Localizado'
+2025-11-09 23:04:39,095 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 23:04:39,096 - app - INFO -    - Situação: ''
+2025-11-09 23:04:39,096 - app - INFO -    - Busca: ''
+2025-11-09 23:04:39,096 - app - INFO -    - Responsável: ''
+2025-11-09 23:04:39,096 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 23:04:39,098 - app - INFO - 📊 Total de registros: 769
+2025-11-09 23:04:39,099 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 23:09:16,148 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-09 23:09:16,150 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-09 23:09:16,238 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-09 23:09:25,454 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-09 23:09:25,456 - app - INFO - 📊 Total de registros: 765
+2025-11-09 23:09:25,457 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-09 23:09:34,357 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 23:09:34,358 - app - INFO - 📊 Total de registros: 4
+2025-11-09 23:09:34,359 - app - INFO - ✅ Dados convertidos: 4 registros
