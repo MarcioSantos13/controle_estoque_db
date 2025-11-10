@@ -937,27 +937,36 @@
     let tentativasFallback = 0;
     const MAX_TENTATIVAS = 5;
 
-    // DETECÇÃO DE AMBIENTE COM FALLBACK
-    function getBaseUrl() {
-        try {
-            const currentPath = window.location.pathname;
-            
-            // Cache da URL base para evitar recálculos
-            if (!window._cachedBaseUrl) {
-                if (currentPath.includes('/estoque/')) {
-                    window._cachedBaseUrl = window.location.origin + '/estoque';
-                } else {
-                    window._cachedBaseUrl = window.location.origin;
-                }
-                console.log("📍 URL Base detectada:", window._cachedBaseUrl);
-            }
-            
-            return window._cachedBaseUrl;
-        } catch (error) {
-            console.error("💥 Erro ao detectar URL base, usando fallback:", error);
-            return window.location.origin; // Fallback mínimo
-        }
+// FUNÇÃO CORRIGIDA - SEMPRE INCLUI /estoque NO SERVIDOR
+function getBaseUrl() {
+    const currentUrl = window.location.href;
+    
+    console.log("🔍 Detectando URL base...");
+    console.log("📍 URL atual:", currentUrl);
+    
+    // SE estiver no servidor (164.41.170.85), SEMPRE usar /estoque
+    if (currentUrl.includes('164.41.170.85')) {
+        const baseUrl = window.location.origin + '/estoque';
+        console.log("🌐 SERVIDOR - URL Base com /estoque:", baseUrl);
+        return baseUrl;
+    } 
+    // SE estiver localmente, NÃO usar /estoque
+    else if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
+        const baseUrl = window.location.origin;
+        console.log("💻 LOCAL - URL Base sem /estoque:", baseUrl);
+        return baseUrl;
     }
+    // Fallback - se não identificar, usar com /estoque (assume servidor)
+    else {
+        const baseUrl = window.location.origin + '/estoque';
+        console.log("⚡ FALLBACK - URL Base com /estoque:", baseUrl);
+        return baseUrl;
+    }
+}
+
+
+
+
 
     // SISTEMA DE CACHE LOCAL
     function getFromCache(key) {
@@ -1175,7 +1184,7 @@
 
         try {
             console.log(`🔍 Buscando bem ${bemId}...`);
-            const data = await apiRequestSuperRobusta(`./api/bens/${bemId}`);
+            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
             
             if (data.success && data.data) {
                 console.log("✅ Dados recebidos, abrindo modal...");
