@@ -926,26 +926,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
-    console.log("=== SISTEMA CRUD INICIADO - URL FIX ===");
+    console.log("=== SISTEMA CRUD INICIADO - VERSÃO CORRIGIDA ===");
 
     // VARIÁVEIS GLOBAIS
     let bemIdParaExcluir = null;
     let modalBemInstance = null;
 
-    // FUNÇÃO FIXA - SEMPRE USA /estoque NO SERVIDOR
+    // FUNÇÃO PARA DETECTAR URL BASE - CORRIGIDA
     function getBaseUrl() {
-        // URL FIXA para o servidor - SEMPRE com /estoque
-        const baseUrl = 'https://164.41.170.85/estoque';
-        console.log("📍 URL Base FIXA:", baseUrl);
-        return baseUrl;
+        // SEMPRE usar /estoque no servidor
+        if (window.location.hostname === '164.41.170.85') {
+            return 'https://164.41.170.85/estoque';
+        } else {
+            return window.location.origin;
+        }
     }
 
     // Inicialização quando o DOM estiver carregado
     document.addEventListener('DOMContentLoaded', function () {
-        console.log("✅ Sistema CRUD carregado");
-        console.log("🎯 URL Base:", getBaseUrl());
-        console.log("🌐 Página atual:", window.location.href);
+        console.log("✅ Sistema CRUD carregado com sucesso!");
+        console.log("📍 URL Base:", getBaseUrl());
+        console.log("🌐 Hostname:", window.location.hostname);
 
         // Inicializar instância do modal
         const modalElement = document.getElementById('modalBem');
@@ -953,158 +956,193 @@
             modalBemInstance = new bootstrap.Modal(modalElement);
         }
 
-        // Adicionar event listeners
+        // Adicionar event listener para o botão Novo Bem
         const btnNovoBem = document.getElementById('btnNovoBem');
         if (btnNovoBem) {
             btnNovoBem.addEventListener('click', abrirModalNovoBem);
         }
 
+        // Adicionar event listener para o botão de confirmação de exclusão
         const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
         if (btnConfirmarExclusao) {
             btnConfirmarExclusao.addEventListener('click', executarExclusao);
         }
 
         // Teste automático
-        testarURLCorreta();
+        testarConexaoAPI();
     });
 
-    // TESTE DA URL
-    function testarURLCorreta() {
+    // TESTE DE CONEXÃO
+    function testarConexaoAPI() {
         const baseUrl = getBaseUrl();
-        const testUrl = baseUrl + '/api/bens/769';
-        console.log("🧪 URL de teste:", testUrl);
+        const testUrl = `${baseUrl}/api/bens/769`;
+        console.log("🧪 Testando URL:", testUrl);
         
         fetch(testUrl)
             .then(response => response.json())
             .then(data => {
-                console.log("✅ Teste bem-sucedido:", data.success);
+                console.log("✅ Teste API:", data.success ? "FUNCIONANDO" : "FALHOU");
             })
             .catch(error => {
-                console.error("❌ Teste falhou:", error);
+                console.error("❌ Teste API FALHOU:", error);
             });
     }
 
-    // FUNÇÃO EDIÇÃO CORRIGIDA
-    async function editarBem(bemId) {
-        console.log("🎯 EDITAR BEM - ID:", bemId);
-
-        if (!bemId) {
-            alert("❌ ID do bem inválido.");
-            return;
-        }
-
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-        btnSalvar.disabled = true;
-
-        // URL CORRETA com /estoque/
-        const baseUrl = getBaseUrl();
-        const url = `${baseUrl}/api/bens/${bemId}`;
-        
-        console.log("🔗 URL gerada:", url);
-
-        try {
-            const response = await fetch(url);
-            console.log("📡 Status:", response.status);
-            console.log("📡 URL real:", response.url);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (data.success && data.data) {
-                preencherModalEdicao(data.data);
-            } else {
-                throw new Error(data.message || "Dados inválidos");
-            }
-            
-        } catch (error) {
-            console.error("💥 Erro:", error);
-            alert("❌ Erro: " + error.message + "\n\nURL: " + url);
-        } finally {
-            btnSalvar.innerHTML = originalText;
-            btnSalvar.disabled = false;
-        }
-    }
-
-    // ... (mantenha as outras funções como estão)
     // FUNÇÃO PARA NOVO BEM
     function abrirModalNovoBem(event) {
         if (event) event.preventDefault();
         console.log("➕ ABRINDO MODAL PARA NOVO BEM");
 
         try {
+            // Resetar o formulário e limpar todos os campos
+            const form = document.getElementById('formBem');
+            if (form) {
+                form.reset();
+            }
+
+            // Limpar campos específicos
             document.getElementById('modalBemTitle').textContent = 'Novo Bem';
             document.getElementById('bemId').value = '';
-            
-            const form = document.getElementById('formBem');
-            if (form) form.reset();
-            
+            document.getElementById('numero').value = '';
+            document.getElementById('nome').value = '';
+            document.getElementById('localizacao').value = '';
+            document.getElementById('responsavel').value = '';
+            document.getElementById('auditor').value = '';
+            document.getElementById('observacao').value = '';
+            document.getElementById('situacao').value = 'Pendente';
+
+            // Habilitar todos os campos para edição
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
                 input.readOnly = false;
             });
-            
+
             document.getElementById('btnSalvar').style.display = 'block';
 
+            // Abrir o modal
             if (modalBemInstance) {
                 modalBemInstance.show();
+                console.log("✅ Modal Novo Bem aberto com sucesso");
+            } else {
+                console.error("❌ Instância do modal não disponível");
             }
         } catch (error) {
-            console.error("💥 Erro ao abrir modal:", error);
-            alert("Erro: " + error.message);
+            console.error("💥 Erro ao abrir modal novo bem:", error);
+            alert("Erro ao abrir formulário de novo bem: " + error.message);
         }
     }
 
-    // FUNÇÃO PARA VISUALIZAR
-    async function visualizarBem(bemId) {
-        console.log("👁️ VISUALIZAR BEM - ID:", bemId);
+    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+    function editarBem(bemId) {
+        console.log("🎯 EDITAR BEM - ID:", bemId);
 
         if (!bemId) {
-            alert("❌ ID do bem inválido.");
+            alert("ERRO: ID do bem inválido.");
             return;
         }
 
+        // Mostrar loading
         const btnSalvar = document.getElementById('btnSalvar');
         const originalText = btnSalvar.innerHTML;
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
         btnSalvar.disabled = true;
 
+        // ✅✅✅ URL CORRETA - USANDO BASE URL ✅✅✅
         const baseUrl = getBaseUrl();
-        const url = `${baseUrl}/api/bens/${bemId}`;
+        const rota = `${baseUrl}/api/bens/${bemId}`;
+        
+        console.log(`📡 Buscando dados via: ${rota}`);
 
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            if (data.success && data.data) {
-                preencherModalVisualizacao(data.data);
-            } else {
-                throw new Error(data.message || "Dados inválidos recebidos");
-            }
-        } catch (error) {
-            console.error("💥 Erro ao visualizar bem:", error);
-            alert("❌ Erro: " + error.message);
-        } finally {
-            btnSalvar.innerHTML = originalText;
-            btnSalvar.disabled = false;
+        fetch(rota)
+            .then(response => {
+                console.log("📡 Status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("📊 Dados COMPLETOS recebidos:", data);
+
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+
+                if (data.success && data.data) {
+                    preencherModalEdicao(data.data);
+                } else {
+                    console.error("❌ Erro na resposta:", data);
+                    alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+                }
+            })
+            .catch(error => {
+                console.error("💥 Erro ao buscar bem:", error);
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+                alert("❌ Erro ao carregar dados do bem: " + error.message);
+            });
+    }
+
+    // FUNÇÃO PARA VISUALIZAR - CORRIGIDA
+    function visualizarBem(bemId) {
+        console.log("👁️ VISUALIZAR BEM - ID:", bemId);
+
+        if (!bemId) {
+            alert("ID do bem inválido.");
+            return;
         }
+
+        // Mostrar loading
+        const btnSalvar = document.getElementById('btnSalvar');
+        const originalText = btnSalvar.innerHTML;
+        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
+        btnSalvar.disabled = true;
+
+        // ✅✅✅ URL CORRETA - USANDO BASE URL ✅✅✅
+        const baseUrl = getBaseUrl();
+        const rota = `${baseUrl}/api/bens/${bemId}`;
+        console.log(`📡 Buscando dados para visualização via: ${rota}`);
+
+        fetch(rota)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+
+                if (data.success && data.data) {
+                    preencherModalVisualizacao(data.data);
+                } else {
+                    alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
+                }
+            })
+            .catch(error => {
+                console.error("💥 Erro ao buscar bem para visualização:", error);
+                // Restaurar botão
+                btnSalvar.innerHTML = originalText;
+                btnSalvar.disabled = false;
+                alert("❌ Erro ao carregar dados do bem: " + error.message);
+            });
     }
 
     // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
     function preencherModalEdicao(bem) {
-        console.log("📝 Preenchendo modal de EDIÇÃO:", bem);
+        console.log("📝 Preenchendo modal de EDIÇÃO com:", bem);
 
         if (!bem) {
-            alert("❌ Dados do bem não recebidos");
+            alert("Dados do bem não recebidos");
             return;
         }
 
         try {
+            // Preencher todos os campos
             document.getElementById('modalBemTitle').textContent = `Editar Bem: ${bem.nome || 'Sem nome'}`;
             document.getElementById('bemId').value = bem.id || '';
             document.getElementById('numero').value = bem.numero || '';
@@ -1115,28 +1153,31 @@
             document.getElementById('auditor').value = bem.auditor || '';
             document.getElementById('observacao').value = bem.observacao || '';
 
+            // Habilitar campos para edição (número como readonly)
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
-                if (input.id === 'numero') input.readOnly = true;
+                if (input.id === 'numero') {
+                    input.readOnly = true; // Número não pode ser alterado na edição
+                }
             });
-            
             document.getElementById('btnSalvar').style.display = 'block';
 
+            // Abrir modal
             if (modalBemInstance) {
                 modalBemInstance.show();
-                console.log("✅ Modal de edição aberto com sucesso!");
             }
         } catch (error) {
-            console.error("💥 Erro ao preencher modal:", error);
-            alert("❌ Erro: " + error.message);
+            console.error("💥 Erro ao preencher modal de edição:", error);
+            alert("Erro ao carregar formulário de edição: " + error.message);
         }
     }
 
-    // FUNÇÃO SALVAR BEM
+    // FUNÇÃO SALVAR BEM - CORRIGIDA
     async function salvarBem() {
-        console.log("💾 SALVANDO BEM");
+        console.log("💾 INICIANDO SALVAMENTO DO BEM");
 
+        // Coletar dados diretamente dos campos do formulário
         const bemId = document.getElementById('bemId').value;
         const dados = {
             numero: document.getElementById('numero').value,
@@ -1148,32 +1189,43 @@
             observacao: document.getElementById('observacao').value
         };
 
-        if (bemId) dados.id = bemId;
+        // Adicionar ID se estiver editando
+        if (bemId) {
+            dados.id = bemId;
+        }
 
-        console.log("📤 Dados para salvar:", dados);
+        console.log("📤 Dados a serem enviados:", dados);
 
+        // Validar campos obrigatórios
         if (!dados.numero || !dados.nome) {
-            alert("❌ Número e Nome são obrigatórios.");
+            alert("❌ Campos obrigatórios: Número e Nome do Bem devem ser preenchidos.");
             return;
         }
 
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
-        btnSalvar.disabled = true;
-
-        const baseUrl = getBaseUrl();
-        let url, method;
-
-        if (bemId) {
-            method = 'PUT';
-            url = `${baseUrl}/api/bens/${bemId}`;
-        } else {
-            method = 'POST';
-            url = `${baseUrl}/api/bens`;
-        }
-
         try {
+            let method;
+            let url;
+
+            // Mostrar loading no botão
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
+            btnSalvar.disabled = true;
+
+            const baseUrl = getBaseUrl();
+
+            if (bemId) {
+                // EDIÇÃO - URL CORRETA
+                method = 'PUT';
+                url = `${baseUrl}/api/bens/${bemId}`;
+            } else {
+                // NOVO BEM - URL CORRETA
+                method = 'POST';
+                url = `${baseUrl}/api/bens`;
+            }
+
+            console.log(`📤 Enviando ${method} para ${url}`);
+
             const response = await fetch(url, {
                 method: method,
                 headers: {
@@ -1187,30 +1239,40 @@
 
             if (result.success) {
                 alert("✅ " + result.message);
-                if (modalBemInstance) modalBemInstance.hide();
-                setTimeout(() => location.reload(), 1000);
+                if (modalBemInstance) {
+                    modalBemInstance.hide();
+                }
+                // Recarregar a página para mostrar os dados atualizados
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             } else {
-                throw new Error(result.message || "Erro ao salvar");
+                alert("❌ Erro: " + result.message);
             }
         } catch (error) {
             console.error("💥 Erro ao salvar:", error);
             alert("❌ Erro: " + error.message);
         } finally {
-            btnSalvar.innerHTML = originalText;
-            btnSalvar.disabled = false;
+            // Restaurar botão
+            const btnSalvar = document.getElementById('btnSalvar');
+            if (btnSalvar) {
+                btnSalvar.innerHTML = 'Salvar Alterações';
+                btnSalvar.disabled = false;
+            }
         }
     }
 
     // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO
     function preencherModalVisualizacao(bem) {
-        console.log("👀 Preenchendo modal de VISUALIZAÇÃO");
+        console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
 
         if (!bem) {
-            alert("❌ Dados do bem não recebidos");
+            alert("Dados do bem não recebidos");
             return;
         }
 
         try {
+            // Preencher todos os campos
             document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
             document.getElementById('bemId').value = bem.id || '';
             document.getElementById('numero').value = bem.numero || '';
@@ -1221,22 +1283,24 @@
             document.getElementById('auditor').value = bem.auditor || '';
             document.getElementById('observacao').value = bem.observacao || '';
 
+            // Desabilitar campos para visualização
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => input.disabled = true);
             document.getElementById('btnSalvar').style.display = 'none';
 
+            // Abrir modal
             if (modalBemInstance) {
                 modalBemInstance.show();
             }
         } catch (error) {
-            console.error("💥 Erro ao preencher visualização:", error);
-            alert("❌ Erro: " + error.message);
+            console.error("💥 Erro ao preencher modal de visualização:", error);
+            alert("Erro ao carregar formulário de visualização: " + error.message);
         }
     }
 
     // FUNÇÕES DE EXCLUSÃO
     function confirmarExclusao(bemId, nomeBem) {
-        console.log("🗑️ EXCLUIR BEM - ID:", bemId);
+        console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
         bemIdParaExcluir = bemId;
         document.getElementById('nomeBemExcluir').textContent = nomeBem || 'Este bem';
 
@@ -1244,26 +1308,37 @@
         modalConfirmacao.show();
     }
 
+    // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
     async function executarExclusao() {
         if (!bemIdParaExcluir) return;
 
-        const baseUrl = getBaseUrl();
-        const url = `${baseUrl}/api/bens/${bemIdParaExcluir}`;
-
         try {
+            const baseUrl = getBaseUrl();
+            const url = `${baseUrl}/api/bens/${bemIdParaExcluir}`;
+            console.log(`🗑️ Executando DELETE para ${url}`);
+
             const response = await fetch(url, {
                 method: 'DELETE'
             });
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
 
             const result = await response.json();
 
             if (result.success) {
                 alert("✅ " + result.message);
                 const modalConfirmacao = bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao'));
-                if (modalConfirmacao) modalConfirmacao.hide();
-                setTimeout(() => location.reload(), 1000);
+                if (modalConfirmacao) {
+                    modalConfirmacao.hide();
+                }
+                // Recarregar a página
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             } else {
-                throw new Error(result.message || "Erro ao excluir");
+                alert("❌ Erro: " + result.message);
             }
         } catch (error) {
             console.error("💥 Erro ao excluir:", error);
@@ -1281,14 +1356,15 @@
         document.getElementById('btnSalvar').style.display = 'block';
     });
 
-    // DEBUG
-    window.debugURL = function() {
-        console.log("=== DEBUG URL ===");
+    // DEBUG FUNCTION
+    window.debugAPI = function() {
+        console.log("=== DEBUG ===");
         console.log("📍 getBaseUrl():", getBaseUrl());
         console.log("🌐 Location:", window.location.href);
-        console.log("🧪 Exemplo rota:", getBaseUrl() + '/api/bens/770');
+        console.log("🧪 Exemplo URL:", getBaseUrl() + '/api/bens/769');
     };
-</script>
+</script>    
 
 </body>
+
 </html>
