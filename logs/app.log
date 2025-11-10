@@ -2700,3 +2700,166 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-10 07:23:28,753 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
 2025-11-10 07:23:28,754 - app - INFO - 📊 Total de registros: 769
 2025-11-10 07:23:28,755 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-10 10:21:02,371 - app - INFO - ==================================================
+2025-11-10 10:21:02,371 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:02,372 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:02,372 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:02,372 - app - INFO - ==================================================
+2025-11-10 10:21:02,380 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:02,381 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:02,381 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:02,382 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:02,385 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:02,390 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:02,390 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:02,390 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:02,390 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:02,391 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:21:08,086 - app - INFO - ==================================================
+2025-11-10 10:21:08,087 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:08,087 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:08,087 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:08,088 - app - INFO - ==================================================
+2025-11-10 10:21:08,096 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:08,097 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:08,097 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:08,098 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:08,100 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:08,106 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:08,106 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:08,106 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:08,107 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:08,107 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:21:11,714 - app - INFO - ==================================================
+2025-11-10 10:21:11,715 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:11,715 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:11,715 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:11,716 - app - INFO - ==================================================
+2025-11-10 10:21:11,725 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:11,725 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:11,725 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:11,726 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:11,727 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:11,733 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:11,733 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:11,733 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:11,734 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:11,734 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:21:38,834 - app - INFO - ==================================================
+2025-11-10 10:21:38,835 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:38,835 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:38,836 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:38,836 - app - INFO - ==================================================
+2025-11-10 10:21:38,844 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:38,844 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:38,845 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:38,845 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:38,847 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:38,852 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:38,852 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:38,852 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:38,853 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:38,853 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:21:46,554 - app - INFO - ==================================================
+2025-11-10 10:21:46,554 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:46,554 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:46,555 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:46,555 - app - INFO - ==================================================
+2025-11-10 10:21:46,563 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:46,564 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:46,564 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:46,564 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:46,566 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:46,572 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:46,572 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:46,572 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:46,573 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:46,573 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:21:49,200 - app - INFO - ==================================================
+2025-11-10 10:21:49,200 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:21:49,201 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:49,201 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:21:49,201 - app - INFO - ==================================================
+2025-11-10 10:21:49,210 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:21:49,210 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:21:49,211 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:21:49,211 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:21:49,213 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:21:49,218 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:21:49,219 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:21:49,219 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:21:49,219 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:21:49,220 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:23:01,423 - app - INFO - ==================================================
+2025-11-10 10:23:01,424 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:23:01,424 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:23:01,424 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:23:01,424 - app - INFO - ==================================================
+2025-11-10 10:23:01,433 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:23:01,433 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:23:01,434 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:23:01,434 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:23:01,436 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:23:01,442 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:23:01,443 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:23:01,443 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:23:01,443 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:23:01,444 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:23:01,969 - app - INFO - ==================================================
+2025-11-10 10:23:01,969 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-10 10:23:01,969 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:23:01,970 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-10 10:23:01,970 - app - INFO - ==================================================
+2025-11-10 10:23:01,978 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-10 10:23:01,979 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-10 10:23:01,979 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-10 10:23:01,979 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-10 10:23:01,981 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-10 10:23:01,986 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-10 10:23:01,987 - app - INFO - === SISTEMA INICIADO ===
+2025-11-10 10:23:01,987 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-10 10:23:01,987 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-10 10:23:01,987 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-10 10:23:45,321 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-10 10:23:45,323 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-10 10:23:45,377 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-10 10:23:48,776 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-10 10:23:48,778 - app - INFO - 📊 Total de registros: 4
+2025-11-10 10:23:48,778 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-10 10:23:55,478 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-10 10:23:55,481 - app - INFO - 📊 Total de registros: 4
+2025-11-10 10:23:55,481 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-10 10:24:00,795 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-10 10:24:00,797 - app - INFO - 📊 Total de registros: 765
+2025-11-10 10:24:00,798 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-10 10:24:10,077 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-10 10:24:10,077 - app - INFO -    - Situação: ''
+2025-11-10 10:24:10,077 - app - INFO -    - Busca: ''
+2025-11-10 10:24:10,077 - app - INFO -    - Responsável: ''
+2025-11-10 10:24:10,078 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-10 10:24:10,079 - app - INFO - 📊 Total de registros: 769
+2025-11-10 10:24:10,080 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-10 10:24:12,243 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 10:24:12,243 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRHnYQ.DQTg6k5pfrUFOYRNE0zX79ud7oI'}
+2025-11-10 10:24:12,244 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 10:24:12,244 - app - INFO - 🔧 Método: GET
+2025-11-10 10:24:12,245 - app - INFO - 👤 Usuário: 6
+2025-11-10 10:24:12,245 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 10:24:12,247 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 10:24:12,249 - app - INFO - ✅ Bem 769 encontrado - 001
+2025-11-10 10:24:16,906 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 10:24:16,907 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRHnYQ.DQTg6k5pfrUFOYRNE0zX79ud7oI'}
+2025-11-10 10:24:16,907 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 10:24:16,908 - app - INFO - 🔧 Método: GET
+2025-11-10 10:24:16,908 - app - INFO - 👤 Usuário: 6
+2025-11-10 10:24:16,908 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 10:24:16,910 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 10:24:16,912 - app - INFO - ✅ Bem 769 encontrado - 001
+2025-11-10 10:24:22,179 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 10:24:22,179 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRHnYQ.DQTg6k5pfrUFOYRNE0zX79ud7oI'}
+2025-11-10 10:24:22,180 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 10:24:22,180 - app - INFO - 🔧 Método: GET
+2025-11-10 10:24:22,180 - app - INFO - 👤 Usuário: 6
+2025-11-10 10:24:22,180 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 10:24:22,182 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 10:24:22,184 - app - INFO - ✅ Bem 769 encontrado - 001

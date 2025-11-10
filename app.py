@@ -1178,22 +1178,33 @@ def api_criar_bem():
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
 def api_obter_bem(bem_id):
-    """Obtém dados de um bem pelo ID - VERSÃO CORRIGIDA"""
+    """Obtém dados de um bem pelo ID - COM LOGS DETALHADOS"""
     try:
-        app.logger.info(f"🎯 API: Buscando bem ID {bem_id}")
+        app.logger.info(f"🎯 API GET: Buscando bem ID {bem_id}")
+        app.logger.info(f"📡 Headers: {dict(request.headers)}")
+        app.logger.info(f"🌐 URL: {request.url}")
+        app.logger.info(f"🔧 Método: {request.method}")
+        app.logger.info(f"👤 Usuário: {session.get('usuario_id')}")
+        
+        # Verificar se o banco existe e está acessível
+        if not os.path.exists(DATABASE):
+            app.logger.error(f"❌ Banco de dados não encontrado: {DATABASE}")
+            return jsonify({'success': False, 'message': 'Banco de dados não disponível'}), 500
         
         bem = obter_bem_por_id(DATABASE, bem_id)
         
         if bem:
-            app.logger.info(f"✅ API: Bem {bem_id} encontrado - {bem.get('numero')}")
+            app.logger.info(f"✅ Bem {bem_id} encontrado - {bem.get('numero')}")
             return jsonify({'success': True, 'data': bem})
         else:
-            app.logger.info(f"❌ API: Bem {bem_id} não encontrado")
+            app.logger.info(f"❌ Bem {bem_id} não encontrado no banco")
             return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
-        app.logger.error(f"❌ Erro na API ao obter bem {bem_id}: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
+        app.logger.error(f"💥 Erro crítico na API ao obter bem {bem_id}: {e}")
+        app.logger.error(f"📋 Traceback: {traceback.format_exc()}")
+        return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
+
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
@@ -1257,6 +1268,32 @@ def api_excluir_bem(bem_id):
     except Exception as e:
         app.logger.error(f"❌ Erro ao excluir bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@app.route('/api/health')
+def api_health():
+    """Rota para verificar saúde da API"""
+    return jsonify({
+        'status': 'online',
+        'timestamp': datetime.now().isoformat(),
+        'database': os.path.exists(DATABASE),
+        'environment': app.config['ENV']
+    })
+
+@app.route('/api/debug-routes')
+@login_required
+def api_debug_routes():
+    """Debug: Lista todas as rotas disponíveis"""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': list(rule.methods),
+            'path': str(rule)
+        })
+    return jsonify({'routes': routes})
+
+
 
 # ==============================
 # ROTAS DE AUTENTICAÇÃO
