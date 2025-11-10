@@ -926,193 +926,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
 <script>
-    console.log("=== SISTEMA CRUD INICIADO - VERSÃO ULTRA ROBUSTA ===");
+    console.log("=== SISTEMA CRUD INICIADO - URL FIX ===");
 
     // VARIÁVEIS GLOBAIS
     let bemIdParaExcluir = null;
     let modalBemInstance = null;
-    let cacheBens = new Map(); // Cache local para bens
-    let tentativasFallback = 0;
-    const MAX_TENTATIVAS = 5;
 
-// FUNÇÃO CORRIGIDA - SEMPRE INCLUI /estoque NO SERVIDOR
-function getBaseUrl() {
-    const currentUrl = window.location.href;
-    
-    console.log("🔍 Detectando URL base...");
-    console.log("📍 URL atual:", currentUrl);
-    
-    // SE estiver no servidor (164.41.170.85), SEMPRE usar /estoque
-    if (currentUrl.includes('164.41.170.85')) {
-        const baseUrl = window.location.origin + '/estoque';
-        console.log("🌐 SERVIDOR - URL Base com /estoque:", baseUrl);
-        return baseUrl;
-    } 
-    // SE estiver localmente, NÃO usar /estoque
-    else if (currentUrl.includes('localhost') || currentUrl.includes('127.0.0.1')) {
-        const baseUrl = window.location.origin;
-        console.log("💻 LOCAL - URL Base sem /estoque:", baseUrl);
-        return baseUrl;        
-    }
-    // Fallback - se não identificar, usar com /estoque (assume servidor)
-    else {
-        const baseUrl = window.location.origin + '/estoque';
-        console.log("⚡ FALLBACK - URL Base com /estoque:", baseUrl);
+    // FUNÇÃO FIXA - SEMPRE USA /estoque NO SERVIDOR
+    function getBaseUrl() {
+        // URL FIXA para o servidor - SEMPRE com /estoque
+        const baseUrl = 'https://164.41.170.85/estoque';
+        console.log("📍 URL Base FIXA:", baseUrl);
         return baseUrl;
     }
-}
 
-
-
-
-
-    // SISTEMA DE CACHE LOCAL
-    function getFromCache(key) {
-        const cached = cacheBens.get(key);
-        if (cached && (Date.now() - cached.timestamp) < 30000) { // 30 segundos
-            console.log("💾 Retornando do cache:", key);
-            return cached.data;
-        }
-        return null;
-    }
-
-    function setToCache(key, data) {
-        cacheBens.set(key, {
-            data: data,
-            timestamp: Date.now()
-        });
-    }
-
-    // FUNÇÃO ULTRA-ROBUSTA COM MÚLTIPLAS CAMADAS DE FALLBACK
-    async function apiRequestSuperRobusta(endpoint, options = {}) {
-        const baseUrl = getBaseUrl();
-        const url = `${baseUrl}${endpoint}`;
-        const cacheKey = `${options.method || 'GET'}_${endpoint}`;
-        
-        console.log(`🚀 API Request Super Robusta: ${options.method || 'GET'} ${url}`);
-        
-        // Tentativa 1: Usar cache se for GET
-        if (!options.method || options.method === 'GET') {
-            const cached = getFromCache(cacheKey);
-            if (cached) {
-                return cached;
-            }
-        }
-        
-        const configs = [
-            // Configuração padrão
-            {
-                name: "Padrão",
-                options: {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    },
-                    credentials: 'same-origin',
-                    mode: 'cors'
-                },
-                timeout: 8000
-            },
-            // Configuração alternativa (sem credentials)
-            {
-                name: "Alternativa",
-                options: {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    mode: 'cors'
-                },
-                timeout: 5000
-            },
-            // Configuração mínima
-            {
-                name: "Mínima", 
-                options: {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                },
-                timeout: 3000
-            }
-        ];
-        
-        for (let config of configs) {
-            console.log(`🔄 Tentando configuração: ${config.name}`);
-            
-            try {
-                const finalOptions = { 
-                    ...config.options, 
-                    ...options,
-                    signal: AbortSignal.timeout(config.timeout)
-                };
-                
-                const response = await fetch(url, finalOptions);
-                console.log(`📡 Response [${config.name}]: ${response.status}`);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    // Salvar no cache se for GET bem-sucedido
-                    if (!options.method || options.method === 'GET') {
-                        setToCache(cacheKey, data);
-                    }
-                    
-                    console.log(`✅ Sucesso com configuração: ${config.name}`);
-                    return data;
-                } else if (response.status === 404) {
-                    throw new Error(`HTTP 404 - Recurso não encontrado`);
-                } else {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-            } catch (error) {
-                console.warn(`⚠️ Falha com ${config.name}:`, error.name, error.message);
-                
-                // Se não for erro de network, para aqui
-                if (!error.message.includes('fetch') && 
-                    !error.message.includes('Network') && 
-                    error.name !== 'TimeoutError' &&
-                    error.name !== 'AbortError') {
-                    throw error;
-                }
-                
-                // Aguarda um pouco antes da próxima tentativa
-                if (config !== configs[configs.length - 1]) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-            }
-        }
-        
-        // Se todas as configurações falharem
-        throw new Error('Todas as tentativas de conexão falharam');
-    }
-
-    // Inicialização
+    // Inicialização quando o DOM estiver carregado
     document.addEventListener('DOMContentLoaded', function () {
-        console.log("✅ Sistema CRUD carregado - Versão Ultra Robusta");
-        console.log("🌐 User Agent:", navigator.userAgent);
-        console.log("📶 Online:", navigator.onLine);
-        
-        // Monitorar status de rede
-        window.addEventListener('online', () => {
-            console.log("🌐 Conexão restaurada!");
-        });
-        
-        window.addEventListener('offline', () => {
-            console.warn("⚠️ Conexão perdida!");
-        });
+        console.log("✅ Sistema CRUD carregado");
+        console.log("🎯 URL Base:", getBaseUrl());
+        console.log("🌐 Página atual:", window.location.href);
 
-        // Inicializar modal
+        // Inicializar instância do modal
         const modalElement = document.getElementById('modalBem');
         if (modalElement) {
             modalBemInstance = new bootstrap.Modal(modalElement);
         }
 
-        // Event listeners
+        // Adicionar event listeners
         const btnNovoBem = document.getElementById('btnNovoBem');
         if (btnNovoBem) {
             btnNovoBem.addEventListener('click', abrirModalNovoBem);
@@ -1123,46 +964,27 @@ function getBaseUrl() {
             btnConfirmarExclusao.addEventListener('click', executarExclusao);
         }
 
-        // Teste de conexão
-        testarConexaoAvancado();
+        // Teste automático
+        testarURLCorreta();
     });
 
-    // TESTE DE CONEXÃO AVANÇADO
-    async function testarConexaoAvancado() {
-        console.log("🧪 TESTE DE CONEXÃO AVANÇADO");
+    // TESTE DA URL
+    function testarURLCorreta() {
+        const baseUrl = getBaseUrl();
+        const testUrl = baseUrl + '/api/bens/769';
+        console.log("🧪 URL de teste:", testUrl);
         
-        const testes = [
-            { url: '/api/bens/769', desc: 'API Principal' },
-            { url: '/api/health', desc: 'Health Check' }
-        ];
-        
-        for (let teste of testes) {
-            try {
-                console.log(`🔍 Testando: ${teste.desc}`);
-                const data = await apiRequestSuperRobusta(teste.url);
-                console.log(`✅ ${teste.desc}: FUNCIONANDO`, data.success);
-            } catch (error) {
-                console.error(`❌ ${teste.desc}: FALHOU`, error.message);
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
+        fetch(testUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log("✅ Teste bem-sucedido:", data.success);
+            })
+            .catch(error => {
+                console.error("❌ Teste falhou:", error);
+            });
     }
 
-    // DEBUG FUNCTION CORRIGIDA
-    window.debugAPI = function() {
-        console.log("=== DEBUG COMPLETO ===");
-        console.log("📍 URL Base:", getBaseUrl());
-        console.log("🌐 Online:", navigator.onLine);
-        console.log("💾 Cache size:", cacheBens.size);
-        console.log("🔄 Tentativas Fallback:", tentativasFallback);
-        console.log("🧭 Performance:", {
-            memory: performance.memory ? performance.memory.usedJSHeapSize : 'N/A',
-            timing: performance.timing ? performance.timing.loadEventEnd - performance.timing.navigationStart : 'N/A'
-        });
-        testarConexaoAvancado();
-    };
-
-    // FUNÇÃO EDIÇÃO COM PROTECÇÃO MÁXIMA
+    // FUNÇÃO EDIÇÃO CORRIGIDA
     async function editarBem(bemId) {
         console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -1171,65 +993,44 @@ function getBaseUrl() {
             return;
         }
 
-        // Verificar se está online
-        if (!navigator.onLine) {
-            alert("❌ Você está offline. Verifique sua conexão com a internet.");
-            return;
-        }
-
         const btnSalvar = document.getElementById('btnSalvar');
         const originalText = btnSalvar.innerHTML;
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
         btnSalvar.disabled = true;
 
+        // URL CORRETA com /estoque/
+        const baseUrl = getBaseUrl();
+        const url = `${baseUrl}/api/bens/${bemId}`;
+        
+        console.log("🔗 URL gerada:", url);
+
         try {
-            console.log(`🔍 Buscando bem ${bemId}...`);
-            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
+            const response = await fetch(url);
+            console.log("📡 Status:", response.status);
+            console.log("📡 URL real:", response.url);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
             
             if (data.success && data.data) {
-                console.log("✅ Dados recebidos, abrindo modal...");
                 preencherModalEdicao(data.data);
             } else {
-                throw new Error(data.message || "Resposta inválida do servidor");
+                throw new Error(data.message || "Dados inválidos");
             }
             
         } catch (error) {
-            console.error("💥 ERRO CRÍTICO ao editar:", error);
-            
-            let mensagem = "❌ Erro ao carregar dados:\n\n";
-            
-            if (error.message.includes('offline') || !navigator.onLine) {
-                mensagem += "📡 Você está OFFLINE\n";
-                mensagem += "💡 Verifique sua conexão com a internet";
-            } else if (error.message.includes('404')) {
-                mensagem += "🔍 Bem não encontrado (404)\n";
-                mensagem += "💡 O bem pode ter sido removido";
-            } else if (error.message.includes('Timeout') || error.message.includes('Abort')) {
-                mensagem += "⏰ Timeout - Servidor não respondeu\n";
-                mensagem += "💡 Servidor pode estar sobrecarregado";
-            } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-                mensagem += "🌐 Erro de rede\n";
-                mensagem += "💡 Problema de conectividade com o servidor";
-            } else {
-                mensagem += `🔧 Erro: ${error.message}`;
-            }
-            
-            mensagem += "\n\n🔄 Tentando recarregar a página automaticamente em 5 segundos...";
-            alert(mensagem);
-            
-            // Auto-reload após erro
-            setTimeout(() => {
-                console.log("🔄 Recarregando página automaticamente...");
-                window.location.reload();
-            }, 5000);
-            
+            console.error("💥 Erro:", error);
+            alert("❌ Erro: " + error.message + "\n\nURL: " + url);
         } finally {
             btnSalvar.innerHTML = originalText;
             btnSalvar.disabled = false;
         }
     }
 
-    // ... (as outras funções permanecem as mesmas da versão anterior)
+    // ... (mantenha as outras funções como estão)
     // FUNÇÃO PARA NOVO BEM
     function abrirModalNovoBem(event) {
         if (event) event.preventDefault();
@@ -1273,8 +1074,12 @@ function getBaseUrl() {
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
         btnSalvar.disabled = true;
 
+        const baseUrl = getBaseUrl();
+        const url = `${baseUrl}/api/bens/${bemId}`;
+
         try {
-            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
+            const response = await fetch(url);
+            const data = await response.json();
             
             if (data.success && data.data) {
                 preencherModalVisualizacao(data.data);
@@ -1357,19 +1162,28 @@ function getBaseUrl() {
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
         btnSalvar.disabled = true;
 
+        const baseUrl = getBaseUrl();
+        let url, method;
+
+        if (bemId) {
+            method = 'PUT';
+            url = `${baseUrl}/api/bens/${bemId}`;
+        } else {
+            method = 'POST';
+            url = `${baseUrl}/api/bens`;
+        }
+
         try {
-            let result;
-            if (bemId) {
-                result = await apiRequestSuperRobusta(`/api/bens/${bemId}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(dados)
-                });
-            } else {
-                result = await apiRequestSuperRobusta('/api/bens', {
-                    method: 'POST',
-                    body: JSON.stringify(dados)
-                });
-            }
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            });
+
+            const result = await response.json();
 
             if (result.success) {
                 alert("✅ " + result.message);
@@ -1433,10 +1247,15 @@ function getBaseUrl() {
     async function executarExclusao() {
         if (!bemIdParaExcluir) return;
 
+        const baseUrl = getBaseUrl();
+        const url = `${baseUrl}/api/bens/${bemIdParaExcluir}`;
+
         try {
-            const result = await apiRequestSuperRobusta(`/api/bens/${bemIdParaExcluir}`, {
+            const response = await fetch(url, {
                 method: 'DELETE'
             });
+
+            const result = await response.json();
 
             if (result.success) {
                 alert("✅ " + result.message);
@@ -1461,8 +1280,15 @@ function getBaseUrl() {
         });
         document.getElementById('btnSalvar').style.display = 'block';
     });
-</script>
 
+    // DEBUG
+    window.debugURL = function() {
+        console.log("=== DEBUG URL ===");
+        console.log("📍 getBaseUrl():", getBaseUrl());
+        console.log("🌐 Location:", window.location.href);
+        console.log("🧪 Exemplo rota:", getBaseUrl() + '/api/bens/770');
+    };
+</script>
 
 </body>
 </html>
