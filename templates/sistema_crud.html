@@ -955,12 +955,12 @@
         }
     }
 
-    // FUNÇÃO ROBUSTA PARA FAZER REQUISIÇÕES
-    async function apiRequest(endpoint, options = {}) {
+    // FUNÇÃO ROBUSTA COM RETRY AUTOMÁTICO
+    async function apiRequest(endpoint, options = {}, retries = 3, delay = 1000) {
         const baseUrl = getBaseUrl();
         const url = `${baseUrl}${endpoint}`;
         
-        console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
+        console.log(`📡 API Request [${retries} tentativas]: ${options.method || 'GET'} ${url}`);
         
         const defaultOptions = {
             headers: {
@@ -972,19 +972,53 @@
         
         const finalOptions = { ...defaultOptions, ...options };
         
-        try {
-            const response = await fetch(url, finalOptions);
-            console.log(`📡 API Response: ${response.status} ${response.statusText}`);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                console.log(`🔄 Tentativa ${attempt}/${retries} para: ${endpoint}`);
+                
+                // Adicionar timeout de 8 segundos
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                finalOptions.signal = controller.signal;
+                
+                const response = await fetch(url, finalOptions);
+                clearTimeout(timeoutId);
+                
+                console.log(`📡 API Response: ${response.status} ${response.statusText}`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error(`HTTP 404 - Recurso não encontrado: ${url}`);
+                    }
+                    throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log(`✅ Sucesso na tentativa ${attempt}`);
+                return data;
+                
+            } catch (error) {
+                console.error(`💥 Erro na tentativa ${attempt}/${retries}:`, error.name, error.message);
+                
+                // Limpar timeout
+                clearTimeout(timeoutId);
+                
+                // Se for o último attempt ou erro que não vale retry
+                if (attempt === retries || 
+                    error.name === 'AbortError' || 
+                    error.message.includes('404')) {
+                    throw error;
+                }
+                
+                // Se for erro de network, espera e tenta novamente
+                if (error.name === 'TypeError' || error.message.includes('Failed to fetch') || error.message.includes('NETWORK_CHANGED')) {
+                    console.log(`⏳ Aguardando ${delay}ms antes da próxima tentativa...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; // Exponential backoff
+                } else {
+                    throw error;
+                }
             }
-            
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error(`💥 API Error [${endpoint}]:`, error);
-            throw error;
         }
     }
 
@@ -992,7 +1026,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         console.log("✅ Sistema CRUD carregado com sucesso!");
         
-        // Detectar ambiente
         const baseUrl = getBaseUrl();
         console.log("🎯 URL Base final:", baseUrl);
 
@@ -1032,36 +1065,20 @@
             }
         } catch (error) {
             console.error("💥 FALHA NO TESTE DA API:", error);
-            
-            // Tentar URL alternativa para diagnóstico
-            console.log("🔄 Tentando diagnóstico de ambiente...");
-            testarAmbientesAlternativos();
         }
     }
 
-    // DIAGNÓSTICO DE AMBIENTES
-    async function testarAmbientesAlternativos() {
-        const testUrls = [
-            window.location.origin + '/api/bens/769', // Local
-            window.location.origin + '/estoque/api/bens/769' // Servidor
-        ];
-        
-        for (const url of testUrls) {
-            try {
-                console.log(`🔍 Testando URL: ${url}`);
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.success) {
-                    console.log(`🎯 URL FUNCIONA: ${url}`);
-                    console.log("💡 Dica: Configure a URL base correta no código");
-                    break;
-                }
-            } catch (error) {
-                console.log(`❌ URL FALHOU: ${url} - ${error.message}`);
-            }
-        }
-    }
+    // FUNÇÃO PARA DEBUG (agora definida corretamente)
+    window.debugAPI = function() {
+        console.log("=== DEBUG DA API ===");
+        console.log("📍 URL Base:", getBaseUrl());
+        console.log("🌐 Location:", window.location.href);
+        console.log("📶 Navigator:", {
+            online: navigator.onLine,
+            connection: navigator.connection ? navigator.connection.effectiveType : 'N/A'
+        });
+        testarConexaoAPI();
+    };
 
     // FUNÇÃO PARA NOVO BEM
     function abrirModalNovoBem(event) {
@@ -1072,11 +1089,9 @@
             document.getElementById('modalBemTitle').textContent = 'Novo Bem';
             document.getElementById('bemId').value = '';
             
-            // Resetar formulário
             const form = document.getElementById('formBem');
             if (form) form.reset();
             
-            // Habilitar campos
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
@@ -1094,7 +1109,7 @@
         }
     }
 
-    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - VERSÃO ROBUSTA
+    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - COM RETRY
     async function editarBem(bemId) {
         console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -1110,7 +1125,7 @@
         btnSalvar.disabled = true;
 
         try {
-            const data = await apiRequest(`/api/bens/${bemId}`);
+            const data = await apiRequest(`/api/bens/${bemId}`, {}, 3, 1000);
             
             if (data.success && data.data) {
                 preencherModalEdicao(data.data);
@@ -1122,10 +1137,20 @@
             
             let mensagem = "Erro ao carregar dados do bem:\n\n";
             mensagem += error.message + "\n\n";
-            mensagem += "💡 Verifique:\n";
-            mensagem += "• Conexão com a internet\n";
-            mensagem += "• Se o servidor está online\n";
-            mensagem += "• URL base: " + getBaseUrl();
+            
+            if (error.message.includes('NETWORK_CHANGED') || error.message.includes('Failed to fetch')) {
+                mensagem += "🔧 Problema de rede detectado.\n";
+                mensagem += "💡 Tente:\n";
+                mensagem += "• Verificar sua conexão de internet\n";
+                mensagem += "• Recarregar a página (Ctrl+F5)\n";
+                mensagem += "• Tentar novamente em alguns segundos";
+            } else if (error.message.includes('404')) {
+                mensagem += "🔍 O bem pode ter sido removido ou a URL está incorreta.\n";
+                mensagem += "💡 Recarregue a página para atualizar a lista.";
+            } else if (error.message.includes('AbortError')) {
+                mensagem += "⏰ Timeout - O servidor demorou muito para responder.\n";
+                mensagem += "💡 Tente novamente ou verifique a carga do servidor.";
+            }
             
             alert("❌ " + mensagem);
         } finally {
@@ -1162,7 +1187,6 @@
             console.error("💥 Erro ao visualizar bem:", error);
             alert("❌ Erro: " + error.message);
         } finally {
-            // Restaurar botão
             btnSalvar.innerHTML = originalText;
             btnSalvar.disabled = false;
         }
@@ -1188,13 +1212,10 @@
             document.getElementById('auditor').value = bem.auditor || '';
             document.getElementById('observacao').value = bem.observacao || '';
 
-            // Habilitar campos (número como readonly)
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
-                if (input.id === 'numero') {
-                    input.readOnly = true;
-                }
+                if (input.id === 'numero') input.readOnly = true;
             });
             
             document.getElementById('btnSalvar').style.display = 'block';
@@ -1209,11 +1230,10 @@
         }
     }
 
-    // FUNÇÃO SALVAR BEM - VERSÃO ROBUSTA
+    // FUNÇÃO SALVAR BEM
     async function salvarBem() {
         console.log("💾 SALVANDO BEM");
 
-        // Coletar dados
         const bemId = document.getElementById('bemId').value;
         const dados = {
             numero: document.getElementById('numero').value,
@@ -1229,13 +1249,11 @@
 
         console.log("📤 Dados para salvar:", dados);
 
-        // Validar
         if (!dados.numero || !dados.nome) {
             alert("❌ Número e Nome são obrigatórios.");
             return;
         }
 
-        // Mostrar loading
         const btnSalvar = document.getElementById('btnSalvar');
         const originalText = btnSalvar.innerHTML;
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
@@ -1257,9 +1275,7 @@
 
             if (result.success) {
                 alert("✅ " + result.message);
-                if (modalBemInstance) {
-                    modalBemInstance.hide();
-                }
+                if (modalBemInstance) modalBemInstance.hide();
                 setTimeout(() => location.reload(), 1000);
             } else {
                 throw new Error(result.message || "Erro ao salvar");
@@ -1293,7 +1309,6 @@
             document.getElementById('auditor').value = bem.auditor || '';
             document.getElementById('observacao').value = bem.observacao || '';
 
-            // Desabilitar campos
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => input.disabled = true);
             document.getElementById('btnSalvar').style.display = 'none';
@@ -1348,15 +1363,9 @@
         });
         document.getElementById('btnSalvar').style.display = 'block';
     });
-
-    // FUNÇÃO DE DEBUG (para usar no console do navegador)
-    window.debugAPI = function() {
-        console.log("=== DEBUG DA API ===");
-        console.log("📍 URL Base:", getBaseUrl());
-        console.log("🌐 Location:", window.location.href);
-        testarConexaoAPI();
-    };
 </script>
+
+
 
 </body>
 </html>
