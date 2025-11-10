@@ -632,6 +632,8 @@
                             <th>Situação</th>
                             <th>Localização</th>
                             <th>Responsável</th>
+                            <th>Observação</th>
+                            <th>Auditor</th>
                             <th>Data Criação</th>
                             <th class="text-center">Ações</th>
                         </tr>
@@ -678,6 +680,20 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% if bem.observacao %}
+                                <span class="text-info">{{ bem.observacao|truncate(30) }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bem.auditor %}
+                                <span class="text-primary">{{ bem.auditor }}</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
                                 {% if bem.data_criacao %}
                                 {{ bem.data_criacao[:10] }}
                                 {% else %}
@@ -707,7 +723,7 @@
                         </tr>
                         {% else %}
                         <tr>
-                            <td colspan="8" class="empty-state">
+                            <td colspan="10" class="empty-state">
                                 <i class="bi bi-inbox"></i>
                                 <p class="mb-2">Nenhum bem encontrado</p>
                                 <small class="text-muted mb-3 d-block">
@@ -858,8 +874,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="observacoes" class="form-label">Observações</label>
-                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
+                            <label for="observacao" class="form-label">Observação</label>
+                            <textarea class="form-control" id="observacao" name="observacao" rows="3"
                                 placeholder="Observações adicionais sobre o bem"></textarea>
                         </div>
 
@@ -969,7 +985,7 @@
                 document.getElementById('localizacao').value = '';
                 document.getElementById('responsavel').value = '';
                 document.getElementById('auditor').value = '';
-                document.getElementById('observacoes').value = '';
+                document.getElementById('observacao').value = '';
                 document.getElementById('situacao').value = 'Pendente';
 
                 // Habilitar todos os campos para edição
@@ -1109,7 +1125,7 @@
                 document.getElementById('localizacao').value = bem.localizacao || '';
                 document.getElementById('responsavel').value = bem.responsavel || '';
                 document.getElementById('auditor').value = bem.auditor || '';
-                document.getElementById('observacoes').value = bem.observacoes || '';
+                document.getElementById('observacao').value = bem.observacao || '';
 
                 // Habilitar campos para edição (número como readonly)
                 const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
@@ -1144,7 +1160,7 @@
                 localizacao: document.getElementById('localizacao').value,
                 responsavel: document.getElementById('responsavel').value,
                 auditor: document.getElementById('auditor').value,
-                observacoes: document.getElementById('observacoes').value
+                observacao: document.getElementById('observacao').value
             };
 
             // Adicionar ID se estiver editando
@@ -1237,7 +1253,7 @@
                 document.getElementById('localizacao').value = bem.localizacao || '';
                 document.getElementById('responsavel').value = bem.responsavel || '';
                 document.getElementById('auditor').value = bem.auditor || '';
-                document.getElementById('observacoes').value = bem.observacoes || '';
+                document.getElementById('observacao').value = bem.observacao || '';
 
                 // Desabilitar campos para visualização
                 const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
@@ -1312,5 +1328,4 @@
         });
     </script>
 </body>
-
 </html>

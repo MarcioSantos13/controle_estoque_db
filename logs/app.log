@@ -2017,3 +2017,535 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-04 00:56:19,403 - app - INFO - 🔍 Buscando bem por ID: 769
 2025-11-04 00:56:19,404 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
 2025-11-04 00:56:19,404 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:23:31,858 - app - INFO - ==================================================
+2025-11-09 20:23:31,858 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:23:31,858 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:23:31,859 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:23:31,859 - app - INFO - ==================================================
+2025-11-09 20:23:31,864 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:23:31,864 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:23:31,865 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:23:31,865 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:23:31,868 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:23:31,870 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:23:31,870 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:23:31,870 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:23:31,871 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:23:31,871 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:23:32,140 - app - INFO - ==================================================
+2025-11-09 20:23:32,140 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:23:32,140 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:23:32,140 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:23:32,140 - app - INFO - ==================================================
+2025-11-09 20:23:32,145 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:23:32,146 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:23:32,146 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:23:32,146 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:23:32,147 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:23:32,149 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:23:32,149 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:23:32,149 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:23:32,150 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:23:32,150 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:23:53,192 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 20:23:53,193 - app - INFO - 📊 Total de registros: 4
+2025-11-09 20:23:53,212 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 20:24:02,295 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-09 20:24:02,298 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-09 20:24:02,391 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-09 20:24:25,629 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: 'Sala 00001'
+2025-11-09 20:24:25,630 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-09 20:24:25,713 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada em: Sala 00001
+2025-11-09 20:24:29,225 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 20:24:29,226 - app - INFO - 📊 Total de registros: 4
+2025-11-09 20:24:29,226 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 20:24:44,127 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:24:44,127 - app - INFO -    - Situação: ''
+2025-11-09 20:24:44,127 - app - INFO -    - Busca: ''
+2025-11-09 20:24:44,127 - app - INFO -    - Responsável: ''
+2025-11-09 20:24:44,128 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:24:44,128 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:24:44,130 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:24:46,636 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:24:46,636 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:24:46,637 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:24:46,638 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:25:12,408 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:25:12,408 - app - INFO -    - Situação: ''
+2025-11-09 20:25:12,409 - app - INFO -    - Busca: ''
+2025-11-09 20:25:12,409 - app - INFO -    - Responsável: ''
+2025-11-09 20:25:12,410 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:25:12,412 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:25:12,412 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:25:13,694 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:25:13,694 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:25:13,696 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:25:13,696 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:25:28,112 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:25:28,113 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:25:28,114 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:25:28,114 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:26:05,423 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:26:05,423 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:26:05,424 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:26:05,425 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:26:13,904 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:26:13,905 - app - INFO -    - Situação: ''
+2025-11-09 20:26:13,905 - app - INFO -    - Busca: ''
+2025-11-09 20:26:13,905 - app - INFO -    - Responsável: ''
+2025-11-09 20:26:13,909 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:26:13,911 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:26:13,913 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:26:16,061 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:26:16,062 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:26:16,063 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:26:16,063 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:26:21,166 - app - INFO - 🎯 API: Buscando bem ID 770
+2025-11-09 20:26:21,167 - app - INFO - 🔍 Buscando bem por ID: 770
+2025-11-09 20:26:21,168 - app - INFO - ✅ Bem encontrado: 002 - Mesa 002
+2025-11-09 20:26:21,168 - app - INFO - ✅ API: Bem 770 encontrado - 002
+2025-11-09 20:26:26,834 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:26:26,834 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:26:26,835 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:26:26,835 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:26:40,292 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:26:40,293 - app - INFO -    - Situação: ''
+2025-11-09 20:26:40,293 - app - INFO -    - Busca: ''
+2025-11-09 20:26:40,293 - app - INFO -    - Responsável: ''
+2025-11-09 20:26:40,294 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:26:40,296 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:26:40,297 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:26:41,118 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:26:41,119 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:26:41,120 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:26:41,121 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:31:23,841 - app - INFO - ==================================================
+2025-11-09 20:31:23,841 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:31:23,842 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:31:23,842 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:31:23,842 - app - INFO - ==================================================
+2025-11-09 20:31:23,847 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:31:23,847 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:31:23,848 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:31:23,848 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:31:23,849 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:31:23,850 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:31:23,851 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:31:23,851 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:31:23,851 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:31:23,851 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:31:29,144 - app - INFO - ==================================================
+2025-11-09 20:31:29,144 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:31:29,145 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:31:29,145 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:31:29,145 - app - INFO - ==================================================
+2025-11-09 20:31:29,150 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:31:29,150 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:31:29,151 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:31:29,151 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:31:29,152 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:31:29,154 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:31:29,154 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:31:29,154 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:31:29,154 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:31:29,154 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:31:36,465 - app - INFO - ==================================================
+2025-11-09 20:31:36,465 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:31:36,465 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:31:36,465 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:31:36,466 - app - INFO - ==================================================
+2025-11-09 20:31:36,471 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:31:36,471 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:31:36,471 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:31:36,472 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:31:36,473 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:31:36,474 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:31:36,475 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:31:36,475 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:31:36,475 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:31:36,475 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:31:40,762 - app - INFO - ==================================================
+2025-11-09 20:31:40,762 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:31:40,762 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:31:40,763 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:31:40,763 - app - INFO - ==================================================
+2025-11-09 20:31:40,768 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:31:40,769 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:31:40,769 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:31:40,769 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:31:40,770 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:31:40,772 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:31:40,772 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:31:40,772 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:31:40,772 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:31:40,773 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:32:41,427 - app - INFO - ==================================================
+2025-11-09 20:32:41,427 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:32:41,427 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:32:41,427 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:32:41,427 - app - INFO - ==================================================
+2025-11-09 20:32:41,432 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:32:41,433 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:32:41,433 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:32:41,434 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:32:41,435 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:32:41,437 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:32:41,437 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:32:41,437 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:32:41,437 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:32:41,438 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:32:43,699 - app - INFO - ==================================================
+2025-11-09 20:32:43,699 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:32:43,700 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:32:43,700 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:32:43,700 - app - INFO - ==================================================
+2025-11-09 20:32:43,705 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:32:43,705 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:32:43,705 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:32:43,705 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:32:43,707 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:32:43,709 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:32:43,709 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:32:43,709 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:32:43,709 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:32:43,710 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:32:49,997 - app - INFO - ==================================================
+2025-11-09 20:32:49,997 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:32:49,997 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:32:49,997 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:32:49,997 - app - INFO - ==================================================
+2025-11-09 20:32:50,002 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:32:50,003 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:32:50,003 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:32:50,003 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:32:50,004 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:32:50,006 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:32:50,006 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:32:50,006 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:32:50,006 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:32:50,007 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:36:44,608 - app - INFO - ==================================================
+2025-11-09 20:36:44,608 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:36:44,608 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:36:44,608 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:36:44,608 - app - INFO - ==================================================
+2025-11-09 20:36:44,614 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:36:44,615 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:36:44,615 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:36:44,615 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:36:44,617 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:36:44,618 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:36:44,619 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:36:44,619 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:36:44,619 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:36:44,619 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:36:52,943 - app - INFO - ==================================================
+2025-11-09 20:36:52,943 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:36:52,944 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:36:52,944 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:36:52,944 - app - INFO - ==================================================
+2025-11-09 20:36:52,949 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:36:52,949 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:36:52,950 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:36:52,950 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:36:52,951 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:36:52,953 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:36:52,953 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:36:52,953 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:36:52,953 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:36:52,953 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:37:05,107 - app - INFO - ==================================================
+2025-11-09 20:37:05,107 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:37:05,107 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:37:05,107 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:37:05,107 - app - INFO - ==================================================
+2025-11-09 20:37:05,113 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:37:05,113 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:37:05,113 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:37:05,113 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:37:05,115 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:37:05,117 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:37:05,117 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:37:05,117 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:37:05,117 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:37:05,118 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:37:05,336 - app - INFO - ==================================================
+2025-11-09 20:37:05,337 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 20:37:05,337 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 20:37:05,337 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 20:37:05,337 - app - INFO - ==================================================
+2025-11-09 20:37:05,342 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 20:37:05,343 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 20:37:05,343 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 20:37:05,343 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 20:37:05,344 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 20:37:05,346 - app - INFO - ✅ Tabela bens criada/verificada
+2025-11-09 20:37:05,346 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 20:37:05,346 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 20:37:05,347 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 20:37:05,347 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 20:37:16,621 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-09 20:37:16,623 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 00001
+2025-11-09 20:37:16,713 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 00001)
+2025-11-09 20:37:22,112 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 20:37:22,113 - app - INFO - 📊 Total de registros: 4
+2025-11-09 20:37:22,113 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 20:37:30,434 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-09 20:37:30,435 - app - INFO - 📊 Total de registros: 765
+2025-11-09 20:37:30,436 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-09 20:37:40,826 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:37:40,826 - app - INFO -    - Situação: ''
+2025-11-09 20:37:40,827 - app - INFO -    - Busca: ''
+2025-11-09 20:37:40,827 - app - INFO -    - Responsável: ''
+2025-11-09 20:37:40,827 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:37:40,828 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:37:40,829 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:37:43,561 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:37:43,562 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:37:43,563 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:37:43,563 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:38:06,672 - app - INFO - 🎯 API: Atualizando bem ID 769
+2025-11-09 20:38:06,673 - app - INFO - 📦 Dados recebidos: {'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio', 'auditor': 'Aditor001', 'observacoes': 'Obs 001', 'id': '769'}
+2025-11-09 20:38:06,673 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio'}
+2025-11-09 20:38:06,673 - app - INFO - 🔧 Atualizando bem ID 769 com dados: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio'}
+2025-11-09 20:38:06,675 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?']
+2025-11-09 20:38:06,675 - app - INFO - 📝 Valores: ['Mesa redonda 001', 'Localizado', 'Sala 00001', 'Marcio']
+2025-11-09 20:38:06,675 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ? WHERE id = ?
+2025-11-09 20:38:06,675 - app - INFO - 📝 Com valores: ['Mesa redonda 001', 'Localizado', 'Sala 00001', 'Marcio', 769]
+2025-11-09 20:38:06,799 - app - INFO - ✅ Bem 769 atualizado com sucesso
+2025-11-09 20:38:06,799 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:38:06,802 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:38:09,517 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:38:09,517 - app - INFO -    - Situação: ''
+2025-11-09 20:38:09,517 - app - INFO -    - Busca: ''
+2025-11-09 20:38:09,518 - app - INFO -    - Responsável: ''
+2025-11-09 20:38:09,518 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:38:09,520 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:38:09,521 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:38:10,866 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 20:38:10,867 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 20:38:10,868 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 20:38:10,869 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 20:57:24,411 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:57:24,411 - app - INFO -    - Situação: ''
+2025-11-09 20:57:24,411 - app - INFO -    - Busca: ''
+2025-11-09 20:57:24,411 - app - INFO -    - Responsável: 'Marcio1'
+2025-11-09 20:57:24,412 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:57:24,414 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:57:24,415 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:57:28,015 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:57:28,016 - app - INFO -    - Situação: ''
+2025-11-09 20:57:28,016 - app - INFO -    - Busca: ''
+2025-11-09 20:57:28,016 - app - INFO -    - Responsável: ''
+2025-11-09 20:57:28,016 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:57:28,017 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:57:28,018 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:57:37,046 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:57:37,046 - app - INFO -    - Situação: ''
+2025-11-09 20:57:37,046 - app - INFO -    - Busca: ''
+2025-11-09 20:57:37,046 - app - INFO -    - Responsável: 'Marcio'
+2025-11-09 20:57:37,047 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:57:37,048 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:57:37,048 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:57:48,654 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:57:48,654 - app - INFO -    - Situação: ''
+2025-11-09 20:57:48,654 - app - INFO -    - Busca: ''
+2025-11-09 20:57:48,654 - app - INFO -    - Responsável: ''
+2025-11-09 20:57:48,655 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:57:48,656 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:57:48,656 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:57:53,341 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:57:53,341 - app - INFO -    - Situação: ''
+2025-11-09 20:57:53,341 - app - INFO -    - Busca: '001'
+2025-11-09 20:57:53,341 - app - INFO -    - Responsável: ''
+2025-11-09 20:57:53,341 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:57:53,342 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:57:53,343 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:58:07,448 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:58:07,448 - app - INFO -    - Situação: ''
+2025-11-09 20:58:07,449 - app - INFO -    - Busca: ''
+2025-11-09 20:58:07,449 - app - INFO -    - Responsável: ''
+2025-11-09 20:58:07,449 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:58:07,450 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:58:07,451 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 20:58:11,576 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 20:58:11,576 - app - INFO -    - Situação: ''
+2025-11-09 20:58:11,577 - app - INFO -    - Busca: '2022001015'
+2025-11-09 20:58:11,577 - app - INFO -    - Responsável: ''
+2025-11-09 20:58:11,577 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 20:58:11,578 - app - INFO - 📊 Total de registros: 769
+2025-11-09 20:58:11,579 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:30:23,074 - app - INFO - ==================================================
+2025-11-09 21:30:23,075 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 21:30:23,075 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 21:30:23,075 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 21:30:23,075 - app - INFO - ==================================================
+2025-11-09 21:30:23,080 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 21:30:23,080 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 21:30:23,081 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 21:30:23,081 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 21:30:23,082 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 21:30:23,200 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-09 21:30:23,201 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 21:30:23,202 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 21:30:23,203 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 21:30:23,203 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 21:30:23,425 - app - INFO - ==================================================
+2025-11-09 21:30:23,425 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-09 21:30:23,426 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-09 21:30:23,426 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-09 21:30:23,426 - app - INFO - ==================================================
+2025-11-09 21:30:23,431 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-09 21:30:23,432 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-09 21:30:23,432 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-09 21:30:23,432 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-09 21:30:23,435 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-09 21:30:23,437 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-09 21:30:23,437 - app - INFO - === SISTEMA INICIADO ===
+2025-11-09 21:30:23,437 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-09 21:30:23,438 - app - INFO - 🔧 Iniciando em modo DESENVOLVIMENTO
+2025-11-09 21:30:23,438 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-09 21:30:40,720 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-09 21:30:40,722 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 00001
+2025-11-09 21:30:40,810 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 00001)
+2025-11-09 21:30:47,725 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 21:30:47,726 - app - INFO - 📊 Total de registros: 4
+2025-11-09 21:30:47,727 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 21:30:52,237 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-09 21:30:52,238 - app - INFO - 📊 Total de registros: 765
+2025-11-09 21:30:52,239 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-09 21:31:01,982 - app - INFO - 🔍 Buscando bens para localidade: Localizado
+2025-11-09 21:31:01,984 - app - INFO - ✅ Encontrados 1 bens para localidade 'Localizado'
+2025-11-09 21:31:04,757 - app - INFO - 🔍 Buscando bens para localidade: SALA CTIC
+2025-11-09 21:31:04,759 - app - INFO - ✅ Encontrados 1 bens para localidade 'SALA CTIC'
+2025-11-09 21:31:07,087 - app - INFO - 🔍 Buscando bens para localidade: Sala 00001
+2025-11-09 21:31:07,088 - app - INFO - ✅ Encontrados 1 bens para localidade 'Sala 00001'
+2025-11-09 21:31:09,617 - app - INFO - 🔍 Buscando bens para localidade: Sala 002
+2025-11-09 21:31:09,618 - app - INFO - ✅ Encontrados 1 bens para localidade 'Sala 002'
+2025-11-09 21:31:20,709 - app - INFO - 🔍 Buscando bens para localidade: SALA CTIC
+2025-11-09 21:31:20,710 - app - INFO - ✅ Encontrados 1 bens para localidade 'SALA CTIC'
+2025-11-09 21:31:22,184 - app - INFO - 🔍 Buscando bens para localidade: Localizado
+2025-11-09 21:31:22,186 - app - INFO - ✅ Encontrados 1 bens para localidade 'Localizado'
+2025-11-09 21:31:24,531 - app - INFO - 🔍 Buscando bens para localidade: Assessoria e Coord. UAB
+2025-11-09 21:31:24,534 - app - INFO - ✅ Encontrados 20 bens para localidade 'Assessoria e Coord. UAB'
+2025-11-09 21:31:47,739 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:31:47,739 - app - INFO -    - Situação: ''
+2025-11-09 21:31:47,740 - app - INFO -    - Busca: ''
+2025-11-09 21:31:47,740 - app - INFO -    - Responsável: ''
+2025-11-09 21:31:47,740 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:31:47,741 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:31:47,741 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:31:51,630 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 21:31:51,630 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:31:51,632 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:31:51,633 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 21:32:08,407 - app - INFO - 🎯 API: Atualizando bem ID 769
+2025-11-09 21:32:08,407 - app - INFO - 📦 Dados recebidos: {'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio', 'auditor': 'Auditor 01', 'observacao': 'Observação 001', 'id': '769'}
+2025-11-09 21:32:08,407 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 01'}
+2025-11-09 21:32:08,408 - app - INFO - 🔧 Atualizando bem ID 769 com dados: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 00001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 01'}
+2025-11-09 21:32:08,409 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?', 'observacao = ?', 'auditor = ?']
+2025-11-09 21:32:08,409 - app - INFO - 📝 Valores: ['Mesa redonda 001', 'Localizado', 'Sala 00001', 'Marcio', 'Observação 001', 'Auditor 01']
+2025-11-09 21:32:08,409 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?, observacao = ?, auditor = ? WHERE id = ?
+2025-11-09 21:32:08,410 - app - INFO - 📝 Com valores: ['Mesa redonda 001', 'Localizado', 'Sala 00001', 'Marcio', 'Observação 001', 'Auditor 01', 769]
+2025-11-09 21:32:08,539 - app - INFO - ✅ Bem 769 atualizado com sucesso
+2025-11-09 21:32:08,540 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:32:08,542 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:32:11,277 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:32:11,278 - app - INFO -    - Situação: ''
+2025-11-09 21:32:11,278 - app - INFO -    - Busca: ''
+2025-11-09 21:32:11,278 - app - INFO -    - Responsável: ''
+2025-11-09 21:32:11,278 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:32:11,280 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:32:11,281 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:32:12,625 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 21:32:12,626 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:32:12,628 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:32:12,629 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 21:33:11,491 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 21:33:11,491 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:33:11,492 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:33:11,493 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 21:33:16,618 - app - INFO - 🎯 API: Buscando bem ID 769
+2025-11-09 21:33:16,618 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:33:16,619 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:33:16,620 - app - INFO - ✅ API: Bem 769 encontrado - 001
+2025-11-09 21:33:33,092 - app - INFO - 🎯 API: Atualizando bem ID 769
+2025-11-09 21:33:33,093 - app - INFO - 📦 Dados recebidos: {'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'auditor': 'Auditor 001', 'observacao': 'Observação 001', 'id': '769'}
+2025-11-09 21:33:33,093 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 001'}
+2025-11-09 21:33:33,093 - app - INFO - 🔧 Atualizando bem ID 769 com dados: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 001'}
+2025-11-09 21:33:33,094 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?', 'observacao = ?', 'auditor = ?']
+2025-11-09 21:33:33,094 - app - INFO - 📝 Valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 001']
+2025-11-09 21:33:33,095 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?, observacao = ?, auditor = ? WHERE id = ?
+2025-11-09 21:33:33,095 - app - INFO - 📝 Com valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 001', 769]
+2025-11-09 21:33:33,236 - app - INFO - ✅ Bem 769 atualizado com sucesso
+2025-11-09 21:33:33,236 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-09 21:33:33,238 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-09 21:33:35,431 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:33:35,432 - app - INFO -    - Situação: ''
+2025-11-09 21:33:35,432 - app - INFO -    - Busca: ''
+2025-11-09 21:33:35,432 - app - INFO -    - Responsável: ''
+2025-11-09 21:33:35,433 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:33:35,434 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:33:35,434 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:34:34,256 - app - INFO - 🎯 API: Buscando bem ID 770
+2025-11-09 21:34:34,256 - app - INFO - 🔍 Buscando bem por ID: 770
+2025-11-09 21:34:34,257 - app - INFO - ✅ Bem encontrado: 002 - Mesa 002
+2025-11-09 21:34:34,258 - app - INFO - ✅ API: Bem 770 encontrado - 002
+2025-11-09 21:34:52,413 - app - INFO - 🎯 API: Atualizando bem ID 770
+2025-11-09 21:34:52,414 - app - INFO - 📦 Dados recebidos: {'numero': '002', 'nome': 'Mesa 002', 'situacao': 'Pendente', 'localizacao': 'Sala 002', 'responsavel': 'Marcio', 'auditor': 'Auditor 002', 'observacao': 'observação 002', 'id': '770'}
+2025-11-09 21:34:52,414 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa 002', 'situacao': 'Pendente', 'localizacao': 'Sala 002', 'responsavel': 'Marcio', 'observacao': 'observação 002', 'auditor': 'Auditor 002'}
+2025-11-09 21:34:52,415 - app - INFO - 🔧 Atualizando bem ID 770 com dados: {'nome': 'Mesa 002', 'situacao': 'Pendente', 'localizacao': 'Sala 002', 'responsavel': 'Marcio', 'observacao': 'observação 002', 'auditor': 'Auditor 002'}
+2025-11-09 21:34:52,416 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?', 'observacao = ?', 'auditor = ?']
+2025-11-09 21:34:52,416 - app - INFO - 📝 Valores: ['Mesa 002', 'Pendente', 'Sala 002', 'Marcio', 'observação 002', 'Auditor 002']
+2025-11-09 21:34:52,416 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?, observacao = ?, auditor = ? WHERE id = ?
+2025-11-09 21:34:52,416 - app - INFO - 📝 Com valores: ['Mesa 002', 'Pendente', 'Sala 002', 'Marcio', 'observação 002', 'Auditor 002', 770]
+2025-11-09 21:34:52,521 - app - INFO - ✅ Bem 770 atualizado com sucesso
+2025-11-09 21:34:52,521 - app - INFO - 🔍 Buscando bem por ID: 770
+2025-11-09 21:34:52,524 - app - INFO - ✅ Bem encontrado: 002 - Mesa 002
+2025-11-09 21:34:55,070 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:34:55,070 - app - INFO -    - Situação: ''
+2025-11-09 21:34:55,070 - app - INFO -    - Busca: ''
+2025-11-09 21:34:55,070 - app - INFO -    - Responsável: ''
+2025-11-09 21:34:55,071 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:34:55,072 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:34:55,072 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:35:11,800 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:35:11,800 - app - INFO -    - Situação: ''
+2025-11-09 21:35:11,800 - app - INFO -    - Busca: ''
+2025-11-09 21:35:11,800 - app - INFO -    - Responsável: 'Marcio'
+2025-11-09 21:35:11,801 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:35:11,802 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:35:11,802 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:35:33,142 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:35:33,142 - app - INFO -    - Situação: 'OK'
+2025-11-09 21:35:33,142 - app - INFO -    - Busca: ''
+2025-11-09 21:35:33,142 - app - INFO -    - Responsável: 'Marcio'
+2025-11-09 21:35:33,143 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 50
+2025-11-09 21:35:33,143 - app - INFO - 📊 Total de registros: 4
+2025-11-09 21:35:33,144 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 21:35:40,436 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:35:40,436 - app - INFO -    - Situação: ''
+2025-11-09 21:35:40,436 - app - INFO -    - Busca: ''
+2025-11-09 21:35:40,436 - app - INFO -    - Responsável: ''
+2025-11-09 21:35:40,437 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-09 21:35:40,438 - app - INFO - 📊 Total de registros: 769
+2025-11-09 21:35:40,439 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-09 21:35:42,124 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-09 21:35:42,125 - app - INFO -    - Situação: 'OK'
+2025-11-09 21:35:42,125 - app - INFO -    - Busca: ''
+2025-11-09 21:35:42,125 - app - INFO -    - Responsável: ''
+2025-11-09 21:35:42,125 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 50
+2025-11-09 21:35:42,126 - app - INFO - 📊 Total de registros: 4
+2025-11-09 21:35:42,127 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 21:36:25,046 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-09 21:36:25,048 - app - INFO - 📊 Total de registros: 4
+2025-11-09 21:36:25,048 - app - INFO - ✅ Dados convertidos: 4 registros
+2025-11-09 21:36:26,272 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251109-213625.xlsx (4 registros)
+2025-11-09 21:36:37,208 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251109-213637.xlsx (4 registros)
+2025-11-09 21:37:26,195 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-09 21:37:26,196 - app - INFO - 📊 Total de registros: 765
+2025-11-09 21:37:26,197 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-09 21:37:43,909 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-09 21:37:43,911 - app - INFO - 📊 Total de registros: 765
+2025-11-09 21:37:43,912 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-09 21:37:48,504 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20251109-213748.xlsx (765 registros)

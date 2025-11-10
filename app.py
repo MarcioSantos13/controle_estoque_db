@@ -105,7 +105,7 @@ def get_db_connection():
     return conn
 
 def criar_tabela_atualizada(db_path: str) -> None:
-    """Garante que a tabela bens existe"""
+    """Garante que a tabela bens existe com todos os campos"""
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -118,16 +118,29 @@ def criar_tabela_atualizada(db_path: str) -> None:
                 situacao TEXT DEFAULT 'Pendente',
                 localizacao TEXT,
                 responsavel TEXT,
+                observacao TEXT,
+                auditor TEXT,
                 data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        
+        # Adicionar colunas se não existirem (para migração)
+        try:
+            cursor.execute("ALTER TABLE bens ADD COLUMN observacao TEXT")
+        except sqlite3.OperationalError:
+            pass  # Coluna já existe
+            
+        try:
+            cursor.execute("ALTER TABLE bens ADD COLUMN auditor TEXT")
+        except sqlite3.OperationalError:
+            pass  # Coluna já existe
         
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_bens_numero ON bens(numero)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_bens_situacao ON bens(situacao)")
         
         conn.commit()
         conn.close()
-        app.logger.info("✅ Tabela bens criada/verificada")
+        app.logger.info("✅ Tabela bens criada/verificada com campos completos")
         
     except Exception as e:
         app.logger.error(f"❌ Erro ao criar tabela: {e}")
@@ -338,14 +351,16 @@ def criar_novo_bem(db_path: str, dados: Dict[str, Any]) -> Tuple[bool, str]:
         cursor = conn.cursor()
         
         cursor.execute('''
-            INSERT INTO bens (numero, nome, situacao, localizacao, responsavel)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO bens (numero, nome, situacao, localizacao, responsavel, observacao, auditor)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (
             dados['numero'],
             dados['nome'],
             dados.get('situacao', 'Pendente'),
             dados.get('localizacao', ''),
-            dados.get('responsavel', '')
+            dados.get('responsavel', ''),
+            dados.get('observacao', ''),
+            dados.get('auditor', '')
         ))
         
         conn.commit()
@@ -357,29 +372,69 @@ def criar_novo_bem(db_path: str, dados: Dict[str, Any]) -> Tuple[bool, str]:
         return False, f"Erro ao criar bem: {str(e)}"
 
 def atualizar_bem(db_path: str, bem_id: int, dados: Dict[str, Any]) -> Tuple[bool, str]:
-    """Atualiza um bem existente"""
+    """Atualiza um bem existente - VERSÃO CORRIGIDA COM CAMPOS COMPLETOS"""
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
-        cursor.execute('''
-            UPDATE bens 
-            SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?
-            WHERE id = ?
-        ''', (
-            dados['nome'],
-            dados['situacao'],
-            dados.get('localizacao', ''),
-            dados.get('responsavel', ''),
-            bem_id
-        ))
+        app.logger.info(f"🔧 Atualizando bem ID {bem_id} com dados: {dados}")
+        
+        # Verificar se o bem existe
+        cursor.execute("SELECT id FROM bens WHERE id = ?", (bem_id,))
+        if not cursor.fetchone():
+            conn.close()
+            return False, "Bem não encontrado"
+        
+        # Construir query dinamicamente com todos os campos
+        campos = []
+        valores = []
+        
+        # Mapear campos do formulário para colunas do banco
+        mapeamento_campos = {
+            'nome': 'nome',
+            'situacao': 'situacao', 
+            'localizacao': 'localizacao',
+            'responsavel': 'responsavel',
+            'observacao': 'observacao',
+            'auditor': 'auditor'
+        }
+        
+        for campo_form, campo_db in mapeamento_campos.items():
+            if campo_form in dados and dados[campo_form] is not None:
+                campos.append(f"{campo_db} = ?")
+                valores.append(dados[campo_form])
+        
+        # Log para debug
+        app.logger.info(f"📝 Campos a atualizar: {campos}")
+        app.logger.info(f"📝 Valores: {valores}")
+        
+        if not campos:
+            conn.close()
+            return False, "Nenhum campo para atualizar"
+        
+        # Adicionar o ID no final
+        valores.append(bem_id)
+        
+        # Montar e executar a query
+        query = f"UPDATE bens SET {', '.join(campos)} WHERE id = ?"
+        app.logger.info(f"📝 Executando query: {query}")
+        app.logger.info(f"📝 Com valores: {valores}")
+        
+        cursor.execute(query, valores)
+        linhas_afetadas = cursor.rowcount
         
         conn.commit()
         conn.close()
-        return True, "Bem atualizado com sucesso"
+        
+        if linhas_afetadas > 0:
+            app.logger.info(f"✅ Bem {bem_id} atualizado com sucesso")
+            return True, "Bem atualizado com sucesso"
+        else:
+            app.logger.warning(f"⚠️ Nenhuma linha afetada na atualização do bem {bem_id}")
+            return False, "Nenhuma alteração foi realizada"
         
     except Exception as e:
-        app.logger.error(f"❌ Erro ao atualizar bem: {e}")
+        app.logger.error(f"❌ Erro ao atualizar bem {bem_id}: {e}")
         return False, f"Erro ao atualizar bem: {str(e)}"
 
 def excluir_bem(db_path: str, bem_id: int) -> Tuple[bool, str]:
@@ -971,10 +1026,10 @@ def exportar(tipo: str):
         import pandas as pd
 
         if tipo == 'localizados':
-            query = "SELECT numero, nome, situacao, localizacao, responsavel FROM bens WHERE situacao = 'Localizado'"
+            query = "SELECT numero, nome, situacao, localizacao, responsavel, observacao, auditor FROM bens WHERE situacao = 'Localizado'"
             nome_arquivo = 'bens_localizados'
         else:
-            query = "SELECT numero, nome, situacao, localizacao, responsavel FROM bens WHERE situacao != 'Localizado' OR situacao IS NULL"
+            query = "SELECT numero, nome, situacao, localizacao, responsavel, observacao, auditor FROM bens WHERE situacao != 'Localizado' OR situacao IS NULL"
             nome_arquivo = 'bens_nao_localizados'
 
         conn = sqlite3.connect(DATABASE)
@@ -1106,7 +1161,9 @@ def api_criar_bem():
             'nome': nome,
             'situacao': InputValidator.sanitize_input(dados.get('situacao', 'Pendente')),
             'localizacao': InputValidator.sanitize_input(dados.get('localizacao', '')),
-            'responsavel': InputValidator.sanitize_input(dados.get('responsavel', ''))
+            'responsavel': InputValidator.sanitize_input(dados.get('responsavel', '')),
+            'observacao': InputValidator.sanitize_input(dados.get('observacao', '')),
+            'auditor': InputValidator.sanitize_input(dados.get('auditor', ''))
         })
         
         if success:
@@ -1141,28 +1198,49 @@ def api_obter_bem(bem_id):
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
 def api_atualizar_bem(bem_id):
-    """Atualiza um bem existente"""
+    """Atualiza um bem existente - VERSÃO CORRIGIDA COM CAMPOS COMPLETOS"""
     try:
         dados = request.get_json()
         
         if not dados:
             return jsonify({'success': False, 'message': 'Dados não fornecidos'}), 400
         
-        success, message = atualizar_bem(DATABASE, bem_id, {
-            'nome': InputValidator.sanitize_input(dados.get('nome')),
-            'situacao': InputValidator.sanitize_input(dados.get('situacao')),
-            'localizacao': InputValidator.sanitize_input(dados.get('localizacao')),
-            'responsavel': InputValidator.sanitize_input(dados.get('responsavel'))
-        })
+        app.logger.info(f"🎯 API: Atualizando bem ID {bem_id}")
+        app.logger.info(f"📦 Dados recebidos: {dados}")
+        
+        # Validar dados obrigatórios
+        if 'nome' not in dados or not dados['nome'].strip():
+            return jsonify({'success': False, 'message': 'Nome do bem é obrigatório'}), 400
+        
+        # Preparar dados para atualização
+        dados_atualizacao = {
+            'nome': InputValidator.sanitize_input(dados.get('nome', '')),
+            'situacao': InputValidator.sanitize_input(dados.get('situacao', 'Pendente')),
+            'localizacao': InputValidator.sanitize_input(dados.get('localizacao', '')),
+            'responsavel': InputValidator.sanitize_input(dados.get('responsavel', '')),
+            'observacao': InputValidator.sanitize_input(dados.get('observacao', '')),
+            'auditor': InputValidator.sanitize_input(dados.get('auditor', ''))
+        }
+        
+        # Log dos dados preparados
+        app.logger.info(f"📝 Dados preparados para atualização: {dados_atualizacao}")
+        
+        success, message = atualizar_bem(DATABASE, bem_id, dados_atualizacao)
         
         if success:
-            return jsonify({'success': True, 'message': message})
+            # Buscar dados atualizados para retornar
+            bem_atualizado = obter_bem_por_id(DATABASE, bem_id)
+            return jsonify({
+                'success': True, 
+                'message': message,
+                'data': bem_atualizado
+            })
         else:
             return jsonify({'success': False, 'message': message}), 400
         
     except Exception as e:
-        app.logger.error(f"❌ Erro ao atualizar bem {bem_id}: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
+        app.logger.error(f"❌ Erro na API ao atualizar bem {bem_id}: {e}")
+        return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
 
 @app.route('/api/bens/<int:bem_id>', methods=['DELETE'])
 @login_required
@@ -1615,6 +1693,38 @@ def relatorio_localidades():
                             total_localidades=0,
                             mensagem=f"Erro ao carregar relatório: {str(e)}",
                             now=datetime.now())
+
+@app.route('/debug-atualizar/<int:bem_id>', methods=['POST'])
+@login_required
+def debug_atualizar(bem_id):
+    """Rota temporária para debug da atualização"""
+    try:
+        # Pegar todos os dados do formulário
+        dados = {
+            'nome': request.form.get('nome', '').strip(),
+            'situacao': request.form.get('situacao', '').strip(),
+            'localizacao': request.form.get('localizacao', '').strip(),
+            'responsavel': request.form.get('responsavel', '').strip(),
+            'observacao': request.form.get('observacao', '').strip(),
+            'auditor': request.form.get('auditor', '').strip()
+        }
+        
+        app.logger.info(f"🔧 DEBUG: Atualizando bem {bem_id}")
+        app.logger.info(f"🔧 DEBUG: Dados do formulário: {dados}")
+        
+        success, message = atualizar_bem(DATABASE, bem_id, dados)
+        
+        if success:
+            flash(f'✅ {message}', 'success')
+        else:
+            flash(f'❌ {message}', 'error')
+            
+        return redirect(url_for('sistema_crud'))
+        
+    except Exception as e:
+        app.logger.error(f"❌ DEBUG: Erro na atualização: {e}")
+        flash(f'❌ Erro: {str(e)}', 'error')
+        return redirect(url_for('sistema_crud'))
 
 # ==============================
 # ROTAS DE AJUDA (QUE ESTAVAM FALTANDO)
