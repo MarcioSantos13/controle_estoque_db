@@ -926,116 +926,184 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
-    console.log("=== SISTEMA CRUD INICIADO ===");
+    console.log("=== SISTEMA CRUD INICIADO - VERSÃO ULTRA ROBUSTA ===");
 
     // VARIÁVEIS GLOBAIS
     let bemIdParaExcluir = null;
     let modalBemInstance = null;
+    let cacheBens = new Map(); // Cache local para bens
+    let tentativasFallback = 0;
+    const MAX_TENTATIVAS = 5;
 
-    // FUNÇÃO INTELIGENTE PARA DETECTAR A URL BASE
+    // DETECÇÃO DE AMBIENTE COM FALLBACK
     function getBaseUrl() {
-        const currentUrl = window.location.href;
-        const currentPath = window.location.pathname;
-        
-        console.log("🔍 Detectando ambiente...");
-        console.log("📍 URL completa:", currentUrl);
-        console.log("📁 Caminho atual:", currentPath);
-        
-        // Se estiver no servidor (contém /estoque/ no path)
-        if (currentPath.includes('/estoque/')) {
-            const baseUrl = window.location.origin + '/estoque';
-            console.log("🌐 Ambiente: SERVIDOR - URL Base:", baseUrl);
-            return baseUrl;
-        } else {
-            // Se estiver localmente
-            const baseUrl = window.location.origin;
-            console.log("💻 Ambiente: LOCAL - URL Base:", baseUrl);
-            return baseUrl;
+        try {
+            const currentPath = window.location.pathname;
+            
+            // Cache da URL base para evitar recálculos
+            if (!window._cachedBaseUrl) {
+                if (currentPath.includes('/estoque/')) {
+                    window._cachedBaseUrl = window.location.origin + '/estoque';
+                } else {
+                    window._cachedBaseUrl = window.location.origin;
+                }
+                console.log("📍 URL Base detectada:", window._cachedBaseUrl);
+            }
+            
+            return window._cachedBaseUrl;
+        } catch (error) {
+            console.error("💥 Erro ao detectar URL base, usando fallback:", error);
+            return window.location.origin; // Fallback mínimo
         }
     }
 
-    // FUNÇÃO ROBUSTA COM RETRY AUTOMÁTICO
-    async function apiRequest(endpoint, options = {}, retries = 3, delay = 1000) {
+    // SISTEMA DE CACHE LOCAL
+    function getFromCache(key) {
+        const cached = cacheBens.get(key);
+        if (cached && (Date.now() - cached.timestamp) < 30000) { // 30 segundos
+            console.log("💾 Retornando do cache:", key);
+            return cached.data;
+        }
+        return null;
+    }
+
+    function setToCache(key, data) {
+        cacheBens.set(key, {
+            data: data,
+            timestamp: Date.now()
+        });
+    }
+
+    // FUNÇÃO ULTRA-ROBUSTA COM MÚLTIPLAS CAMADAS DE FALLBACK
+    async function apiRequestSuperRobusta(endpoint, options = {}) {
         const baseUrl = getBaseUrl();
         const url = `${baseUrl}${endpoint}`;
+        const cacheKey = `${options.method || 'GET'}_${endpoint}`;
         
-        console.log(`📡 API Request [${retries} tentativas]: ${options.method || 'GET'} ${url}`);
+        console.log(`🚀 API Request Super Robusta: ${options.method || 'GET'} ${url}`);
         
-        const defaultOptions = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+        // Tentativa 1: Usar cache se for GET
+        if (!options.method || options.method === 'GET') {
+            const cached = getFromCache(cacheKey);
+            if (cached) {
+                return cached;
+            }
+        }
+        
+        const configs = [
+            // Configuração padrão
+            {
+                name: "Padrão",
+                options: {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    credentials: 'same-origin',
+                    mode: 'cors'
+                },
+                timeout: 8000
             },
-            credentials: 'same-origin'
-        };
+            // Configuração alternativa (sem credentials)
+            {
+                name: "Alternativa",
+                options: {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    mode: 'cors'
+                },
+                timeout: 5000
+            },
+            // Configuração mínima
+            {
+                name: "Mínima", 
+                options: {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                },
+                timeout: 3000
+            }
+        ];
         
-        const finalOptions = { ...defaultOptions, ...options };
-        
-        for (let attempt = 1; attempt <= retries; attempt++) {
+        for (let config of configs) {
+            console.log(`🔄 Tentando configuração: ${config.name}`);
+            
             try {
-                console.log(`🔄 Tentativa ${attempt}/${retries} para: ${endpoint}`);
-                
-                // Adicionar timeout de 8 segundos
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-                finalOptions.signal = controller.signal;
+                const finalOptions = { 
+                    ...config.options, 
+                    ...options,
+                    signal: AbortSignal.timeout(config.timeout)
+                };
                 
                 const response = await fetch(url, finalOptions);
-                clearTimeout(timeoutId);
+                console.log(`📡 Response [${config.name}]: ${response.status}`);
                 
-                console.log(`📡 API Response: ${response.status} ${response.statusText}`);
-                
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error(`HTTP 404 - Recurso não encontrado: ${url}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Salvar no cache se for GET bem-sucedido
+                    if (!options.method || options.method === 'GET') {
+                        setToCache(cacheKey, data);
                     }
-                    throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+                    
+                    console.log(`✅ Sucesso com configuração: ${config.name}`);
+                    return data;
+                } else if (response.status === 404) {
+                    throw new Error(`HTTP 404 - Recurso não encontrado`);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-                
-                const data = await response.json();
-                console.log(`✅ Sucesso na tentativa ${attempt}`);
-                return data;
                 
             } catch (error) {
-                console.error(`💥 Erro na tentativa ${attempt}/${retries}:`, error.name, error.message);
+                console.warn(`⚠️ Falha com ${config.name}:`, error.name, error.message);
                 
-                // Limpar timeout
-                clearTimeout(timeoutId);
-                
-                // Se for o último attempt ou erro que não vale retry
-                if (attempt === retries || 
-                    error.name === 'AbortError' || 
-                    error.message.includes('404')) {
+                // Se não for erro de network, para aqui
+                if (!error.message.includes('fetch') && 
+                    !error.message.includes('Network') && 
+                    error.name !== 'TimeoutError' &&
+                    error.name !== 'AbortError') {
                     throw error;
                 }
                 
-                // Se for erro de network, espera e tenta novamente
-                if (error.name === 'TypeError' || error.message.includes('Failed to fetch') || error.message.includes('NETWORK_CHANGED')) {
-                    console.log(`⏳ Aguardando ${delay}ms antes da próxima tentativa...`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2; // Exponential backoff
-                } else {
-                    throw error;
+                // Aguarda um pouco antes da próxima tentativa
+                if (config !== configs[configs.length - 1]) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
         }
+        
+        // Se todas as configurações falharem
+        throw new Error('Todas as tentativas de conexão falharam');
     }
 
-    // Inicialização quando o DOM estiver carregado
+    // Inicialização
     document.addEventListener('DOMContentLoaded', function () {
-        console.log("✅ Sistema CRUD carregado com sucesso!");
+        console.log("✅ Sistema CRUD carregado - Versão Ultra Robusta");
+        console.log("🌐 User Agent:", navigator.userAgent);
+        console.log("📶 Online:", navigator.onLine);
         
-        const baseUrl = getBaseUrl();
-        console.log("🎯 URL Base final:", baseUrl);
+        // Monitorar status de rede
+        window.addEventListener('online', () => {
+            console.log("🌐 Conexão restaurada!");
+        });
+        
+        window.addEventListener('offline', () => {
+            console.warn("⚠️ Conexão perdida!");
+        });
 
-        // Inicializar instância do modal
+        // Inicializar modal
         const modalElement = document.getElementById('modalBem');
         if (modalElement) {
             modalBemInstance = new bootstrap.Modal(modalElement);
         }
 
-        // Adicionar event listeners
+        // Event listeners
         const btnNovoBem = document.getElementById('btnNovoBem');
         if (btnNovoBem) {
             btnNovoBem.addEventListener('click', abrirModalNovoBem);
@@ -1046,40 +1114,113 @@
             btnConfirmarExclusao.addEventListener('click', executarExclusao);
         }
 
-        // Teste automático da API
-        testarConexaoAPI();
+        // Teste de conexão
+        testarConexaoAvancado();
     });
 
-    // FUNÇÃO DE TESTE DA API
-    async function testarConexaoAPI() {
-        console.log("🧪 INICIANDO TESTE DE CONEXÃO...");
+    // TESTE DE CONEXÃO AVANÇADO
+    async function testarConexaoAvancado() {
+        console.log("🧪 TESTE DE CONEXÃO AVANÇADO");
         
-        try {
-            const data = await apiRequest('/api/bens/769');
-            console.log("✅ TESTE BEM-SUCEDIDO!", data);
-            
-            if (data.success) {
-                console.log("🎯 API está funcionando perfeitamente!");
-            } else {
-                console.warn("⚠️ API respondeu mas com erro:", data.message);
+        const testes = [
+            { url: '/api/bens/769', desc: 'API Principal' },
+            { url: '/api/health', desc: 'Health Check' }
+        ];
+        
+        for (let teste of testes) {
+            try {
+                console.log(`🔍 Testando: ${teste.desc}`);
+                const data = await apiRequestSuperRobusta(teste.url);
+                console.log(`✅ ${teste.desc}: FUNCIONANDO`, data.success);
+            } catch (error) {
+                console.error(`❌ ${teste.desc}: FALHOU`, error.message);
             }
-        } catch (error) {
-            console.error("💥 FALHA NO TESTE DA API:", error);
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
     }
 
-    // FUNÇÃO PARA DEBUG (agora definida corretamente)
+    // DEBUG FUNCTION CORRIGIDA
     window.debugAPI = function() {
-        console.log("=== DEBUG DA API ===");
+        console.log("=== DEBUG COMPLETO ===");
         console.log("📍 URL Base:", getBaseUrl());
-        console.log("🌐 Location:", window.location.href);
-        console.log("📶 Navigator:", {
-            online: navigator.onLine,
-            connection: navigator.connection ? navigator.connection.effectiveType : 'N/A'
+        console.log("🌐 Online:", navigator.onLine);
+        console.log("💾 Cache size:", cacheBens.size);
+        console.log("🔄 Tentativas Fallback:", tentativasFallback);
+        console.log("🧭 Performance:", {
+            memory: performance.memory ? performance.memory.usedJSHeapSize : 'N/A',
+            timing: performance.timing ? performance.timing.loadEventEnd - performance.timing.navigationStart : 'N/A'
         });
-        testarConexaoAPI();
+        testarConexaoAvancado();
     };
 
+    // FUNÇÃO EDIÇÃO COM PROTECÇÃO MÁXIMA
+    async function editarBem(bemId) {
+        console.log("🎯 EDITAR BEM - ID:", bemId);
+
+        if (!bemId) {
+            alert("❌ ID do bem inválido.");
+            return;
+        }
+
+        // Verificar se está online
+        if (!navigator.onLine) {
+            alert("❌ Você está offline. Verifique sua conexão com a internet.");
+            return;
+        }
+
+        const btnSalvar = document.getElementById('btnSalvar');
+        const originalText = btnSalvar.innerHTML;
+        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
+        btnSalvar.disabled = true;
+
+        try {
+            console.log(`🔍 Buscando bem ${bemId}...`);
+            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
+            
+            if (data.success && data.data) {
+                console.log("✅ Dados recebidos, abrindo modal...");
+                preencherModalEdicao(data.data);
+            } else {
+                throw new Error(data.message || "Resposta inválida do servidor");
+            }
+            
+        } catch (error) {
+            console.error("💥 ERRO CRÍTICO ao editar:", error);
+            
+            let mensagem = "❌ Erro ao carregar dados:\n\n";
+            
+            if (error.message.includes('offline') || !navigator.onLine) {
+                mensagem += "📡 Você está OFFLINE\n";
+                mensagem += "💡 Verifique sua conexão com a internet";
+            } else if (error.message.includes('404')) {
+                mensagem += "🔍 Bem não encontrado (404)\n";
+                mensagem += "💡 O bem pode ter sido removido";
+            } else if (error.message.includes('Timeout') || error.message.includes('Abort')) {
+                mensagem += "⏰ Timeout - Servidor não respondeu\n";
+                mensagem += "💡 Servidor pode estar sobrecarregado";
+            } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+                mensagem += "🌐 Erro de rede\n";
+                mensagem += "💡 Problema de conectividade com o servidor";
+            } else {
+                mensagem += `🔧 Erro: ${error.message}`;
+            }
+            
+            mensagem += "\n\n🔄 Tentando recarregar a página automaticamente em 5 segundos...";
+            alert(mensagem);
+            
+            // Auto-reload após erro
+            setTimeout(() => {
+                console.log("🔄 Recarregando página automaticamente...");
+                window.location.reload();
+            }, 5000);
+            
+        } finally {
+            btnSalvar.innerHTML = originalText;
+            btnSalvar.disabled = false;
+        }
+    }
+
+    // ... (as outras funções permanecem as mesmas da versão anterior)
     // FUNÇÃO PARA NOVO BEM
     function abrirModalNovoBem(event) {
         if (event) event.preventDefault();
@@ -1109,57 +1250,6 @@
         }
     }
 
-    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - COM RETRY
-    async function editarBem(bemId) {
-        console.log("🎯 EDITAR BEM - ID:", bemId);
-
-        if (!bemId) {
-            alert("❌ ID do bem inválido.");
-            return;
-        }
-
-        // Mostrar loading
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-        btnSalvar.disabled = true;
-
-        try {
-            const data = await apiRequest(`/api/bens/${bemId}`, {}, 3, 1000);
-            
-            if (data.success && data.data) {
-                preencherModalEdicao(data.data);
-            } else {
-                throw new Error(data.message || "Dados inválidos recebidos");
-            }
-        } catch (error) {
-            console.error("💥 Erro ao editar bem:", error);
-            
-            let mensagem = "Erro ao carregar dados do bem:\n\n";
-            mensagem += error.message + "\n\n";
-            
-            if (error.message.includes('NETWORK_CHANGED') || error.message.includes('Failed to fetch')) {
-                mensagem += "🔧 Problema de rede detectado.\n";
-                mensagem += "💡 Tente:\n";
-                mensagem += "• Verificar sua conexão de internet\n";
-                mensagem += "• Recarregar a página (Ctrl+F5)\n";
-                mensagem += "• Tentar novamente em alguns segundos";
-            } else if (error.message.includes('404')) {
-                mensagem += "🔍 O bem pode ter sido removido ou a URL está incorreta.\n";
-                mensagem += "💡 Recarregue a página para atualizar a lista.";
-            } else if (error.message.includes('AbortError')) {
-                mensagem += "⏰ Timeout - O servidor demorou muito para responder.\n";
-                mensagem += "💡 Tente novamente ou verifique a carga do servidor.";
-            }
-            
-            alert("❌ " + mensagem);
-        } finally {
-            // Restaurar botão
-            btnSalvar.innerHTML = originalText;
-            btnSalvar.disabled = false;
-        }
-    }
-
     // FUNÇÃO PARA VISUALIZAR
     async function visualizarBem(bemId) {
         console.log("👁️ VISUALIZAR BEM - ID:", bemId);
@@ -1169,14 +1259,13 @@
             return;
         }
 
-        // Mostrar loading
         const btnSalvar = document.getElementById('btnSalvar');
         const originalText = btnSalvar.innerHTML;
         btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
         btnSalvar.disabled = true;
 
         try {
-            const data = await apiRequest(`/api/bens/${bemId}`);
+            const data = await apiRequestSuperRobusta(`/api/bens/${bemId}`);
             
             if (data.success && data.data) {
                 preencherModalVisualizacao(data.data);
@@ -1262,12 +1351,12 @@
         try {
             let result;
             if (bemId) {
-                result = await apiRequest(`/api/bens/${bemId}`, {
+                result = await apiRequestSuperRobusta(`/api/bens/${bemId}`, {
                     method: 'PUT',
                     body: JSON.stringify(dados)
                 });
             } else {
-                result = await apiRequest('/api/bens', {
+                result = await apiRequestSuperRobusta('/api/bens', {
                     method: 'POST',
                     body: JSON.stringify(dados)
                 });
@@ -1336,7 +1425,7 @@
         if (!bemIdParaExcluir) return;
 
         try {
-            const result = await apiRequest(`/api/bens/${bemIdParaExcluir}`, {
+            const result = await apiRequestSuperRobusta(`/api/bens/${bemIdParaExcluir}`, {
                 method: 'DELETE'
             });
 
@@ -1364,7 +1453,6 @@
         document.getElementById('btnSalvar').style.display = 'block';
     });
 </script>
-
 
 
 </body>
