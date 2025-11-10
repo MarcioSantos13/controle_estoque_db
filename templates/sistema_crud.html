@@ -1010,7 +1010,7 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - VERSÃO CORRIGIDA
+    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - VERSÃO CORRIGIDA PARA SERVIDOR
 function editarBem(bemId) {
     console.log("🎯 EDITAR BEM - ID:", bemId);
 
@@ -1025,47 +1025,60 @@ function editarBem(bemId) {
     btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
     btnSalvar.disabled = true;
 
-    // USAR URL ABSOLUTA para evitar problemas de rota
+    // USAR URL ABSOLUTA baseada na origem atual
     const baseUrl = window.location.origin;
     const rota = `${baseUrl}/api/bens/${bemId}`;
     
     console.log(`📡 Buscando dados via URL completa: ${rota}`);
     console.log(`📍 Origin: ${baseUrl}`);
     console.log(`🔧 Bem ID: ${bemId}`);
+    console.log(`🌐 Página atual: ${window.location.href}`);
 
+    // Fazer a requisição com tratamento robusto
     fetch(rota, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
         },
-        credentials: 'same-origin' // Importante para manter a sessão
+        credentials: 'include', // IMPORTANTE: incluir cookies/sessão
+        mode: 'cors'
     })
     .then(response => {
         console.log("📡 Status:", response.status);
+        console.log("📡 Status Text:", response.statusText);
+        console.log("📡 OK:", response.ok);
         console.log("📡 Headers:", Object.fromEntries(response.headers.entries()));
         
         if (!response.ok) {
-            // Tentar obter mais detalhes do erro
-            return response.text().then(text => {
-                console.error("❌ Response text:", text);
-                throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
-            });
+            // Se for 404, verificar se é rota ou bem não encontrado
+            if (response.status === 404) {
+                throw new Error(`Bem não encontrado ou rota inexistente. Status: ${response.status}`);
+            }
+            throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
         }
         return response.json();
     })
     .then(data => {
-        console.log("📊 Dados recebidos:", data);
+        console.log("📊 Dados COMPLETOS recebidos:", data);
 
         // Restaurar botão
         btnSalvar.innerHTML = originalText;
         btnSalvar.disabled = false;
 
         if (data.success && data.data) {
+            console.log("✅ Dados válidos recebidos, preenchendo modal...");
             preencherModalEdicao(data.data);
         } else {
-            console.error("❌ Erro na resposta:", data);
-            alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+            console.error("❌ Erro na estrutura da resposta:", data);
+            let mensagemErro = "Erro na resposta do servidor: ";
+            if (data.message) {
+                mensagemErro += data.message;
+            } else {
+                mensagemErro += "Estrutura de dados inválida";
+            }
+            alert(mensagemErro);
         }
     })
     .catch(error => {
@@ -1075,15 +1088,30 @@ function editarBem(bemId) {
         btnSalvar.disabled = false;
         
         // Mensagem mais detalhada para o usuário
-        let mensagemErro = "Erro ao carregar dados do bem: " + error.message;
+        let mensagemErro = "Erro ao carregar dados do bem:\n\n" + error.message;
+        
         if (error.message.includes('404')) {
-            mensagemErro += "\n\nPossíveis causas:\n• Rota da API não encontrada\n• Problema de configuração do servidor\n• ID do bem inválido";
+            mensagemErro += "\n\n🔍 Possíveis causas:\n";
+            mensagemErro += "• O bem pode ter sido excluído\n";
+            mensagemErro += "• Problema de rede/conectividade\n";
+            mensagemErro += "• URL da API incorreta\n\n";
+            mensagemErro += "💡 Dica: Recarregue a página e tente novamente";
+        } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+            mensagemErro += "\n\n🌐 Problema de rede detectado. Verifique sua conexão.";
         }
+        
         alert("❌ " + mensagemErro);
+        
+        // Log adicional para debug
+        console.error("🔧 Debug Info:", {
+            bemId: bemId,
+            url: rota,
+            baseUrl: baseUrl,
+            currentPath: window.location.pathname,
+            error: error
+        });
     });
 }
-
-
 
         // FUNÇÃO PARA VISUALIZAR
         function visualizarBem(bemId) {
