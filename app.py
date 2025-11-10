@@ -1,5 +1,5 @@
 # ==============================
-# INÍCIO: app.py CORRIGIDO - VERSÃO ESTÁVEL
+# app.py CORRIGIDO - VERSÃO COM DIAGNÓSTICO COMPLETO
 # ==============================
 
 import os
@@ -9,6 +9,7 @@ import sqlite3
 import shutil
 import io
 import hashlib
+import traceback
 from functools import wraps
 from datetime import datetime
 from typing import Tuple, Dict, Any, List
@@ -94,6 +95,35 @@ def setup_app_logging():
 
 # Configurar logging
 setup_app_logging()
+
+# ==============================
+# MIDDLEWARE DE LOG DE REQUISIÇÕES
+# ==============================
+@app.before_request
+def log_requests():
+    """Log detalhado de todas as requisições"""
+    if request.path.startswith('/api/'):
+        app.logger.info(f"🌐 API Request: {request.method} {request.path}")
+        app.logger.info(f"📦 Query params: {dict(request.args)}")
+        app.logger.info(f"👤 User ID: {session.get('usuario_id')}")
+        app.logger.info(f"🔧 User Agent: {request.headers.get('User-Agent')}")
+
+@app.after_request
+def log_responses(response):
+    """Log detalhado de todas as respostas da API"""
+    if request.path.startswith('/api/'):
+        app.logger.info(f"📡 API Response: {request.method} {request.path} -> {response.status_code}")
+        
+        # Log do corpo da resposta para erros
+        if response.status_code >= 400:
+            try:
+                response_data = response.get_json()
+                if response_data:
+                    app.logger.error(f"❌ API Error Response: {response_data}")
+            except:
+                pass
+                
+    return response
 
 # ==============================
 # FUNÇÕES AUXILIARES SIMPLIFICADAS
@@ -826,6 +856,124 @@ def pluralize_filter(value, singular, plural):
         return plural
 
 # ==============================
+# ROTAS DE DIAGNÓSTICO E HEALTH CHECK
+# ==============================
+
+@app.route('/api/health')
+def api_health():
+    """Rota para verificar saúde da API"""
+    health_info = {
+        'status': 'online',
+        'timestamp': datetime.now().isoformat(),
+        'environment': app.config['ENV'],
+        'debug': app.config['DEBUG'],
+        'database_exists': os.path.exists(DATABASE),
+        'database_path': DATABASE,
+        'base_dir': app.config['BASE_DIR']
+    }
+    
+    # Testar conexão com o banco
+    try:
+        if os.path.exists(DATABASE):
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM bens")
+            total_bens = cursor.fetchone()[0]
+            health_info['database_connection'] = 'ok'
+            health_info['total_bens'] = total_bens
+            conn.close()
+        else:
+            health_info['database_connection'] = 'database_not_found'
+    except Exception as e:
+        health_info['database_connection'] = 'error'
+        health_info['database_error'] = str(e)
+    
+    app.logger.info(f"🔧 Health Check: {health_info}")
+    return jsonify(health_info)
+
+@app.route('/api/diagnostico')
+def api_diagnostico():
+    """Rota de diagnóstico completo"""
+    diagnostico = {
+        'servidor': {
+            'timestamp': datetime.now().isoformat(),
+            'ambiente': app.config['ENV'],
+            'debug': app.config['DEBUG'],
+            'base_dir': app.config['BASE_DIR'],
+            'secret_key_configured': bool(app.config['SECRET_KEY'] and app.config['SECRET_KEY'] != 'dev-key-change-in-production')
+        },
+        'database': {
+            'caminho': DATABASE,
+            'existe': os.path.exists(DATABASE),
+            'tamanho': os.path.getsize(DATABASE) if os.path.exists(DATABASE) else 0,
+            'caminho_relativo': app.config['DB_RELATIVE_PATH']
+        },
+        'sessao': {
+            'usuario_id': session.get('usuario_id'),
+            'usuario_nome': session.get('usuario_nome'),
+            'usuario_tipo': session.get('usuario_tipo')
+        },
+        'requisicao': {
+            'url': request.url,
+            'method': request.method,
+            'headers': dict(request.headers),
+            'remote_addr': request.remote_addr
+        }
+    }
+    
+    # Testar conexão com o banco e estrutura
+    try:
+        if os.path.exists(DATABASE):
+            conn = sqlite3.connect(DATABASE)
+            cursor = conn.cursor()
+            
+            # Contar bens
+            cursor.execute("SELECT COUNT(*) FROM bens")
+            total_bens = cursor.fetchone()[0]
+            diagnostico['database']['total_bens'] = total_bens
+            
+            # Verificar tabelas
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            tabelas = [row[0] for row in cursor.fetchall()]
+            diagnostico['database']['tabelas'] = tabelas
+            
+            # Verificar estrutura da tabela bens
+            if 'bens' in tabelas:
+                cursor.execute("PRAGMA table_info(bens)")
+                colunas = [{'name': row[1], 'type': row[2]} for row in cursor.fetchall()]
+                diagnostico['database']['estrutura_bens'] = colunas
+            
+            conn.close()
+        else:
+            diagnostico['database']['erro'] = 'Arquivo de banco não encontrado'
+            
+    except Exception as e:
+        diagnostico['database']['erro'] = str(e)
+        diagnostico['database']['erro_traceback'] = traceback.format_exc()
+    
+    app.logger.info(f"🔧 Diagnóstico completo: {diagnostico}")
+    return jsonify(diagnostico)
+
+@app.route('/api/debug-routes')
+@login_required
+def api_debug_routes():
+    """Debug: Lista todas as rotas disponíveis"""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        if not rule.rule.startswith('/static/'):  # Ignorar rotas estáticas
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': list(rule.methods),
+                'path': str(rule)
+            })
+    
+    # Ordenar por path
+    routes.sort(key=lambda x: x['path'])
+    
+    app.logger.info(f"🔧 Debug Routes: {len(routes)} rotas disponíveis")
+    return jsonify({'total_routes': len(routes), 'routes': routes})
+
+# ==============================
 # ROTAS PRINCIPAIS
 # ==============================
 
@@ -1132,7 +1280,7 @@ def debug_bens():
         return jsonify({'erro': str(e)})
 
 # ==============================
-# ROTAS DA API
+# ROTAS DA API - VERSÃO COM DIAGNÓSTICO COMPLETO
 # ==============================
 @app.route('/api/bens', methods=['POST'])
 @login_required
@@ -1178,7 +1326,7 @@ def api_criar_bem():
 @app.route('/api/bens/<int:bem_id>', methods=['GET'])
 @login_required
 def api_obter_bem(bem_id):
-    """Obtém dados de um bem pelo ID - COM LOGS DETALHADOS"""
+    """Obtém dados de um bem pelo ID - VERSÃO COM DIAGNÓSTICO COMPLETO"""
     try:
         app.logger.info(f"🎯 API GET: Buscando bem ID {bem_id}")
         app.logger.info(f"📡 Headers: {dict(request.headers)}")
@@ -1191,20 +1339,21 @@ def api_obter_bem(bem_id):
             app.logger.error(f"❌ Banco de dados não encontrado: {DATABASE}")
             return jsonify({'success': False, 'message': 'Banco de dados não disponível'}), 500
         
+        app.logger.info(f"🔍 Verificando existência do bem ID {bem_id} no banco...")
         bem = obter_bem_por_id(DATABASE, bem_id)
         
         if bem:
-            app.logger.info(f"✅ Bem {bem_id} encontrado - {bem.get('numero')}")
+            app.logger.info(f"✅ Bem {bem_id} encontrado - {bem.get('numero')} - {bem.get('nome')}")
+            app.logger.info(f"📊 Dados retornados: {bem}")
             return jsonify({'success': True, 'data': bem})
         else:
-            app.logger.info(f"❌ Bem {bem_id} não encontrado no banco")
+            app.logger.info(f"❌ Bem com ID {bem_id} não encontrado no banco")
             return jsonify({'success': False, 'message': 'Bem não encontrado'}), 404
             
     except Exception as e:
         app.logger.error(f"💥 Erro crítico na API ao obter bem {bem_id}: {e}")
         app.logger.error(f"📋 Traceback: {traceback.format_exc()}")
         return jsonify({'success': False, 'message': f'Erro interno: {str(e)}'}), 500
-
 
 @app.route('/api/bens/<int:bem_id>', methods=['PUT'])
 @login_required
@@ -1268,32 +1417,6 @@ def api_excluir_bem(bem_id):
     except Exception as e:
         app.logger.error(f"❌ Erro ao excluir bem {bem_id}: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
-
-
-@app.route('/api/health')
-def api_health():
-    """Rota para verificar saúde da API"""
-    return jsonify({
-        'status': 'online',
-        'timestamp': datetime.now().isoformat(),
-        'database': os.path.exists(DATABASE),
-        'environment': app.config['ENV']
-    })
-
-@app.route('/api/debug-routes')
-@login_required
-def api_debug_routes():
-    """Debug: Lista todas as rotas disponíveis"""
-    routes = []
-    for rule in app.url_map.iter_rules():
-        routes.append({
-            'endpoint': rule.endpoint,
-            'methods': list(rule.methods),
-            'path': str(rule)
-        })
-    return jsonify({'routes': routes})
-
-
 
 # ==============================
 # ROTAS DE AUTENTICAÇÃO
@@ -1764,7 +1887,7 @@ def debug_atualizar(bem_id):
         return redirect(url_for('sistema_crud'))
 
 # ==============================
-# ROTAS DE AJUDA (QUE ESTAVAM FALTANDO)
+# ROTAS DE AJUDA
 # ==============================
 @app.route('/ajuda')
 @login_required
@@ -1797,13 +1920,15 @@ def ajuda_topico(topico):
 # ==============================
 @app.errorhandler(404)
 def not_found(error):
+    app.logger.error(f"❌ 404 Not Found: {request.url}")
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Recurso não encontrado'}), 404
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
 def internal_error(error):
-    app.logger.error(f"❌ Erro interno: {error}")
+    app.logger.error(f"❌ Erro interno 500: {error}")
+    app.logger.error(f"📋 Traceback: {traceback.format_exc()}")
     if request.path.startswith('/api/'):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
@@ -1819,10 +1944,16 @@ if __name__ == '__main__':
     criar_tabela_usuarios_se_nao_existir()
     criar_tabela_atualizada(DATABASE)
     
-    app.logger.info("=== SISTEMA INICIADO ===")
+    app.logger.info("=== SISTEMA INICIADO COM DIAGNÓSTICO ===")
     app.logger.info(f"📁 Diretório de trabalho: {app.config['BASE_DIR']}")
-    app.logger.info("🔧 Iniciando em modo DESENVOLVIMENTO")
+    app.logger.info(f"🗄️  Banco de dados: {DATABASE}")
+    app.logger.info(f"🔧 Ambiente: {app.config['ENV']}")
+    app.logger.info(f"🐛 Debug: {app.config['DEBUG']}")
     app.logger.info("🌐 Servidor iniciado em http://0.0.0.0:5000")
+    app.logger.info("🔍 Rotas de diagnóstico disponíveis:")
+    app.logger.info("   - /api/health")
+    app.logger.info("   - /api/diagnostico") 
+    app.logger.info("   - /api/debug-routes")
     
     app.run(
         debug=True,

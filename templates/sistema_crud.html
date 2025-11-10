@@ -1010,55 +1010,80 @@
             }
         }
 
-        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID
-        function editarBem(bemId) {
-            console.log("🎯 EDITAR BEM - ID:", bemId);
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - VERSÃO CORRIGIDA
+function editarBem(bemId) {
+    console.log("🎯 EDITAR BEM - ID:", bemId);
 
-            if (!bemId) {
-                alert("ERRO: ID do bem inválido.");
-                return;
-            }
+    if (!bemId || bemId === 'null' || bemId === 'undefined') {
+        alert("ERRO: ID do bem inválido: " + bemId);
+        return;
+    }
 
-            // Mostrar loading
-            const btnSalvar = document.getElementById('btnSalvar');
-            const originalText = btnSalvar.innerHTML;
-            btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-            btnSalvar.disabled = true;
+    // Mostrar loading
+    const btnSalvar = document.getElementById('btnSalvar');
+    const originalText = btnSalvar.innerHTML;
+    btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
+    btnSalvar.disabled = true;
 
-            // USAR URL RELATIVA
-            const rota = `/api/bens/${bemId}`;
-            console.log(`📡 Buscando dados via: ${rota}`);
+    // USAR URL ABSOLUTA para evitar problemas de rota
+    const baseUrl = window.location.origin;
+    const rota = `${baseUrl}/api/bens/${bemId}`;
+    
+    console.log(`📡 Buscando dados via URL completa: ${rota}`);
+    console.log(`📍 Origin: ${baseUrl}`);
+    console.log(`🔧 Bem ID: ${bemId}`);
 
-            fetch(rota)
-                .then(response => {
-                    console.log("📡 Status:", response.status);
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("📊 Dados COMPLETOS recebidos:", data);
-
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-
-                    if (data.success && data.data) {
-                        preencherModalEdicao(data.data);
-                    } else {
-                        console.error("❌ Erro na resposta:", data);
-                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                    }
-                })
-                .catch(error => {
-                    console.error("💥 Erro ao buscar bem:", error);
-                    // Restaurar botão
-                    btnSalvar.innerHTML = originalText;
-                    btnSalvar.disabled = false;
-                    alert("❌ Erro ao carregar dados do bem: " + error.message);
-                });
+    fetch(rota, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin' // Importante para manter a sessão
+    })
+    .then(response => {
+        console.log("📡 Status:", response.status);
+        console.log("📡 Headers:", Object.fromEntries(response.headers.entries()));
+        
+        if (!response.ok) {
+            // Tentar obter mais detalhes do erro
+            return response.text().then(text => {
+                console.error("❌ Response text:", text);
+                throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+            });
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log("📊 Dados recebidos:", data);
+
+        // Restaurar botão
+        btnSalvar.innerHTML = originalText;
+        btnSalvar.disabled = false;
+
+        if (data.success && data.data) {
+            preencherModalEdicao(data.data);
+        } else {
+            console.error("❌ Erro na resposta:", data);
+            alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+        }
+    })
+    .catch(error => {
+        console.error("💥 Erro ao buscar bem:", error);
+        // Restaurar botão
+        btnSalvar.innerHTML = originalText;
+        btnSalvar.disabled = false;
+        
+        // Mensagem mais detalhada para o usuário
+        let mensagemErro = "Erro ao carregar dados do bem: " + error.message;
+        if (error.message.includes('404')) {
+            mensagemErro += "\n\nPossíveis causas:\n• Rota da API não encontrada\n• Problema de configuração do servidor\n• ID do bem inválido";
+        }
+        alert("❌ " + mensagemErro);
+    });
+}
+
+
 
         // FUNÇÃO PARA VISUALIZAR
         function visualizarBem(bemId) {
