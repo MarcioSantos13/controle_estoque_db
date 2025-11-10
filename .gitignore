@@ -19,3 +19,4 @@ logs/app.log
 logs/errors.log
 logs/errors.log
 utils/__pycache__/excel_importer.cpython-313.pyc
+logs/app.log
