@@ -1,4 +1,4 @@
-# utils/excel_importer.py - VERSÃO COMPLETA E CORRIGIDA
+# utils/excel_importer.py - VERSÃO CORRIGIDA PARA SUA PLANILHA
 import sqlite3
 import pandas as pd
 import os
@@ -138,10 +138,10 @@ def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -
         colunas_lower = [str(col).lower() for col in colunas]
         
         encontrou_numero = any(any(palavra in col for palavra in 
-                                ['numero', 'número', 'patrimonio', 'patrimônio', 'codigo', 'código']) 
+                                ['numero', 'número', 'patrimonio', 'patrimônio', 'codigo', 'código', 'nº', 'num']) 
                               for col in colunas_lower)
         encontrou_nome = any(any(palavra in col for palavra in 
-                               ['nome', 'descrição', 'descricao', 'item', 'equipamento']) 
+                               ['nome', 'descrição', 'descricao', 'item', 'equipamento', 'denominação']) 
                             for col in colunas_lower)
         
         valido = encontrou_numero and encontrou_nome
@@ -152,6 +152,20 @@ def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -
         if not encontrou_nome:
             mensagem += "\n❌ Coluna de nome não encontrada"
         
+        # Verificar colunas específicas da sua planilha
+        encontrou_responsavel = any('responsavel' in col.lower() for col in colunas_lower)
+        encontrou_auditor = any('auditor' in col.lower() for col in colunas_lower)
+        
+        if encontrou_responsavel:
+            mensagem += "\n✅ Coluna 'Responsavel' encontrada"
+        else:
+            mensagem += "\n❌ Coluna 'Responsavel' NÃO encontrada"
+            
+        if encontrou_auditor:
+            mensagem += "\n✅ Coluna 'Auditor' encontrada"
+        else:
+            mensagem += "\n❌ Coluna 'Auditor' NÃO encontrada"
+        
         return {
             'sucesso': True,
             'valido': valido,
@@ -160,6 +174,8 @@ def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -
             'total_linhas': len(df) if 'nrows' not in locals() else 'N/A',
             'encontrou_numero': encontrou_numero,
             'encontrou_nome': encontrou_nome,
+            'encontrou_responsavel': encontrou_responsavel,
+            'encontrou_auditor': encontrou_auditor,
             'extensao': extensao
         }
         
@@ -307,12 +323,12 @@ def apagar_todos_dados(db_path: str = None) -> Tuple[bool, str]:
             conn.close()
 
 def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_antes: bool = False) -> Dict[str, Any]:
-    """Processa o DataFrame para importação - VERSÃO CORRIGIDA"""
+    """Processa o DataFrame para importação - VERSÃO CORRIGIDA PARA SUA PLANILHA"""
     
     conn = None
     try:
-        # Detectar colunas
-        mapeamento = detectar_colunas(df)
+        # Detectar colunas - COM DEBUG DETALHADO
+        mapeamento = detectar_colunas_com_debug(df)
         
         if not mapeamento['numero'] or not mapeamento['nome']:
             return criar_resposta_erro("Colunas obrigatórias (número e nome) não encontradas")
@@ -324,42 +340,60 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
         atualizados = 0
         erros = 0
         
-        # DEBUG: Mostrar mapeamento detectado
-        logger.info(f"🔍 MAPEAMENTO DETECTADO:")
-        logger.info(f"  Número: {mapeamento['numero']}")
-        logger.info(f"  Nome: {mapeamento['nome']}")
-        logger.info(f"  Situação: {mapeamento['situacao']}")
-        logger.info(f"  Localização: {mapeamento['localizacao']}")
-        logger.info(f"  Responsável: {mapeamento['responsavel']}")
+        # DEBUG DETALHADO: Mostrar primeiras linhas para verificar dados
+        logger.info("🔍 AMOSTRA DOS DADOS (primeiras 3 linhas):")
+        for i in range(min(3, len(df))):
+            linha_info = []
+            for campo, coluna in mapeamento.items():
+                if coluna and coluna in df.columns:
+                    valor = df.iloc[i][coluna]
+                    linha_info.append(f"{campo}: {valor}")
+            logger.info(f"  Linha {i+1}: {', '.join(linha_info)}")
         
         for index, row in df.iterrows():
             try:
                 # Extrair valores básicos
-                numero = str(row[mapeamento['numero']]).strip() if pd.notna(row[mapeamento['numero']]) else None
-                nome = str(row[mapeamento['nome']]).strip() if pd.notna(row[mapeamento['nome']]) else None
+                numero_valor = row[mapeamento['numero']]
+                nome_valor = row[mapeamento['nome']]
+                
+                numero = str(numero_valor).strip() if pd.notna(numero_valor) else None
+                nome = str(nome_valor).strip() if pd.notna(nome_valor) else None
                 
                 if not numero or not nome:
+                    logger.debug(f"Linha {index + 2}: Número ou nome vazio - Número: {numero}, Nome: {nome}")
                     erros += 1
                     continue
                 
                 # Valores opcionais - CORRIGIDO: Incluindo responsavel
-                situacao = str(row.get(mapeamento.get('situacao'), 'Pendente')).strip() if pd.notna(row.get(mapeamento.get('situacao'))) else 'Pendente'
-                localizacao = str(row.get(mapeamento.get('localizacao'))).strip() if pd.notna(row.get(mapeamento.get('localizacao'))) else ''
+                situacao_valor = row.get(mapeamento.get('situacao'))
+                situacao = str(situacao_valor).strip() if pd.notna(situacao_valor) else 'Pendente'
                 
-                # ✅ CORREÇÃO: Extrair responsavel do Excel
+                localizacao_valor = row.get(mapeamento.get('localizacao'))
+                localizacao = str(localizacao_valor).strip() if pd.notna(localizacao_valor) else ''
+                
+                # ✅ CORREÇÃO: Extrair responsavel do Excel - COM DEBUG
                 responsavel = ''
                 if mapeamento.get('responsavel'):
-                    responsavel = str(row.get(mapeamento.get('responsavel'))).strip() if pd.notna(row.get(mapeamento.get('responsavel'))) else ''
+                    responsavel_valor = row.get(mapeamento.get('responsavel'))
+                    if pd.notna(responsavel_valor):
+                        responsavel = str(responsavel_valor).strip()
+                        logger.debug(f"Linha {index + 2}: Responsavel extraído = '{responsavel}'")
+                    else:
+                        logger.debug(f"Linha {index + 2}: Responsavel está vazio/NaN")
+                else:
+                    logger.warning(f"Linha {index + 2}: Coluna responsavel não mapeada")
                 
-                # ✅ CORREÇÃO: Extrair auditor do Excel (se existir)
+                # ✅ CORREÇÃO: Extrair auditor do Excel
                 auditor = ''
                 if mapeamento.get('auditor'):
-                    auditor = str(row.get(mapeamento.get('auditor'))).strip() if pd.notna(row.get(mapeamento.get('auditor'))) else ''
+                    auditor_valor = row.get(mapeamento.get('auditor'))
+                    auditor = str(auditor_valor).strip() if pd.notna(auditor_valor) else ''
                 
-                # ✅ CORREÇÃO: Extrair observacao do Excel (se existir)
+                # ✅ CORREÇÃO: Extrair observacao do Excel
                 observacao = ''
                 if mapeamento.get('observacao'):
-                    observacao = str(row.get(mapeamento.get('observacao'))).strip() if pd.notna(row.get(mapeamento.get('observacao'))) else ''
+                    observacao_valor = row.get(mapeamento.get('observacao'))
+                    observacao = str(observacao_valor).strip() if pd.notna(observacao_valor) else ''
                 
                 # Verificar se existe
                 cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
@@ -374,6 +408,7 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
                         WHERE numero=?
                     ''', (nome, situacao, localizacao, responsavel, auditor, observacao, numero))
                     atualizados += 1
+                    logger.debug(f"Linha {index + 2}: ATUALIZADO - Número: {numero}, Responsavel: '{responsavel}'")
                 else:
                     # ✅ CORREÇÃO: INSERT incluindo responsavel, auditor e observacao
                     cursor.execute('''
@@ -381,6 +416,7 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
                         VALUES (?, ?, ?, ?, ?, ?, ?)
                     ''', (numero, nome, situacao, localizacao, responsavel, auditor, observacao))
                     inseridos += 1
+                    logger.debug(f"Linha {index + 2}: INSERIDO - Número: {numero}, Responsavel: '{responsavel}'")
                 
                 # Commit periódico
                 if (inseridos + atualizados) % 20 == 0:
@@ -388,7 +424,8 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
                     
             except Exception as e:
                 erros += 1
-                logger.debug(f"Erro na linha {index + 2}: {e}")
+                logger.error(f"Erro na linha {index + 2}: {e}")
+                logger.error(f"Dados da linha problemática: Número: {numero}, Nome: {nome}")
         
         conn.commit()
         
@@ -399,6 +436,7 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
         logger.info(f"  Inseridos: {inseridos}")
         logger.info(f"  Atualizados: {atualizados}")
         logger.info(f"  Erros: {erros}")
+        logger.info(f"  Mapeamento usado: {mapeamento}")
         
         return {
             'sucesso': True,
@@ -419,8 +457,8 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
         if conn:
             conn.close()
 
-def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
-    """Detecta automaticamente as colunas - VERSÃO MELHORADA"""
+def detectar_colunas_com_debug(df: pd.DataFrame) -> Dict[str, Any]:
+    """Detecta automaticamente as colunas - VERSÃO COM DEBUG DETALHADO"""
     df.columns = [str(col).strip() for col in df.columns]
     
     mapeamento = {
@@ -433,32 +471,73 @@ def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
         'observacao': None
     }
     
-    colunas_lower = [col.lower() for col in df.columns]
+    colunas_originais = df.columns.tolist()
+    colunas_lower = [col.lower() for col in colunas_originais]
     
-    # Buscar por padrões
-    for idx, col in enumerate(colunas_lower):
-        if any(p in col for p in ['numero', 'número', 'patrim', 'cod', 'nº', 'id', 'código']):
-            mapeamento['numero'] = df.columns[idx]
-        elif any(p in col for p in ['nome', 'descri', 'item', 'equipamento', 'bem', 'denominação']):
-            mapeamento['nome'] = df.columns[idx]
-        elif any(p in col for p in ['situação', 'situacao', 'status', 'estado']):
-            mapeamento['situacao'] = df.columns[idx]
-        elif any(p in col for p in ['localização', 'localizacao', 'local', 'setor', 'departamento']):
-            mapeamento['localizacao'] = df.columns[idx]
-        elif any(p in col for p in ['responsavel', 'responsável', 'encarregado', 'curador']):
-            mapeamento['responsavel'] = df.columns[idx]
-        elif any(p in col for p in ['auditor', 'auditoria', 'fiscal']):
-            mapeamento['auditor'] = df.columns[idx]
-        elif any(p in col for p in ['observação', 'observacao', 'obs', 'nota', 'comentário']):
-            mapeamento['observacao'] = df.columns[idx]
+    logger.info("🎯 DETECÇÃO DE COLUNAS - COLUNAS ORIGINAIS:")
+    for i, col in enumerate(colunas_originais):
+        logger.info(f"  Coluna {i}: '{col}' (lower: '{col.lower()}')")
     
-    # DEBUG: Log do mapeamento
-    logger.info("🎯 MAPEAMENTO DE COLUNAS DETECTADO:")
+    # Buscar por padrões ESPECÍFICOS para sua planilha
+    for idx, col in enumerate(colunas_originais):
+        col_lower = col.lower()
+        
+        # NÚMERO - Busca exata para sua planilha
+        if any(p in col_lower for p in ['numero', 'número', 'nº', 'num', 'código', 'codigo', 'patrim']):
+            if 'bem' in col_lower or any(p in col_lower for p in ['numero', 'nº']):
+                mapeamento['numero'] = col
+                logger.info(f"  ✅ NÚMERO: '{col}' → mapeado")
+        
+        # NOME - Busca exata
+        elif 'nome' in col_lower:
+            mapeamento['nome'] = col
+            logger.info(f"  ✅ NOME: '{col}' → mapeado")
+        
+        # SITUAÇÃO - Busca exata  
+        elif any(p in col_lower for p in ['situação', 'situacao', 'status']):
+            mapeamento['situacao'] = col
+            logger.info(f"  ✅ SITUAÇÃO: '{col}' → mapeado")
+        
+        # LOCALIZAÇÃO - Busca exata
+        elif any(p in col_lower for p in ['localização', 'localizacao', 'local']):
+            mapeamento['localizacao'] = col
+            logger.info(f"  ✅ LOCALIZAÇÃO: '{col}' → mapeado")
+        
+        # RESPONSAVEL - BUSCA EXATA (SEM ACENTO - COMO ESTÁ NA SUA PLANILHA)
+        elif 'responsavel' in col_lower:
+            mapeamento['responsavel'] = col
+            logger.info(f"  ✅ RESPONSAVEL: '{col}' → mapeado")
+        
+        # AUDITOR - Busca exata
+        elif 'auditor' in col_lower:
+            mapeamento['auditor'] = col
+            logger.info(f"  ✅ AUDITOR: '{col}' → mapeado")
+    
+    # Se não encontrou por busca exata, tentar busca mais ampla
+    if not mapeamento['numero']:
+        for idx, col in enumerate(colunas_originais):
+            if any(p in col.lower() for p in ['numero', 'nº', 'num', 'código']):
+                mapeamento['numero'] = col
+                logger.info(f"  ✅ NÚMERO (fallback): '{col}' → mapeado")
+                break
+    
+    # DEBUG FINAL
+    logger.info("🎯 MAPEAMENTO FINAL DETECTADO:")
     for campo, coluna in mapeamento.items():
-        status = f"✅ {coluna}" if coluna else "❌ Não encontrada"
+        status = f"✅ '{coluna}'" if coluna else "❌ Não encontrada"
         logger.info(f"  {campo.upper():12}: {status}")
     
+    # Verificar se as colunas realmente existem no DataFrame
+    for campo, coluna in mapeamento.items():
+        if coluna and coluna not in df.columns:
+            logger.error(f"❌ ERRO: Coluna '{coluna}' não existe no DataFrame!")
+            mapeamento[campo] = None
+    
     return mapeamento
+
+def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
+    """Wrapper para manter compatibilidade"""
+    return detectar_colunas_com_debug(df)
 
 # ==============================
 # FUNÇÕES ADICIONAIS PARA DEBUG
@@ -484,17 +563,25 @@ def verificar_mapeamento_detalhado(caminho_arquivo: str, aba_nome: str = 'Estoqu
             return {'sucesso': False, 'erro': 'Arquivo vazio'}
         
         # Detectar colunas
-        mapeamento = detectar_colunas(df)
+        mapeamento = detectar_colunas_com_debug(df)
         
-        # Amostra de dados
+        # Amostra de dados DETALHADA
         amostra = {}
         for campo, coluna in mapeamento.items():
             if coluna and coluna in df.columns:
-                valores = df[coluna].head(3).tolist()
+                valores = []
+                for i in range(min(5, len(df))):
+                    valor = df.iloc[i][coluna]
+                    valores.append({
+                        'linha': i + 2,
+                        'valor': str(valor) if pd.notna(valor) else 'VAZIO',
+                        'tipo': type(valor).__name__
+                    })
                 amostra[campo] = {
                     'coluna': coluna,
-                    'valores_amostra': valores,
-                    'vazios': df[coluna].isna().sum()
+                    'valores_detalhados': valores,
+                    'total_vazios': df[coluna].isna().sum(),
+                    'total_preenchidos': df[coluna].notna().sum()
                 }
         
         return {
@@ -502,7 +589,8 @@ def verificar_mapeamento_detalhado(caminho_arquivo: str, aba_nome: str = 'Estoqu
             'mapeamento': mapeamento,
             'amostra': amostra,
             'colunas_originais': df.columns.tolist(),
-            'total_linhas': len(df)
+            'total_linhas': len(df),
+            'colunas_detectadas': [col for col in mapeamento.values() if col]
         }
         
     except Exception as e:
@@ -534,3 +622,59 @@ def testar_importacao_com_debug(caminho_arquivo: str, db_path: str = None) -> Di
     except Exception as e:
         logger.error(f"Erro no teste de importação: {e}")
         return {'sucesso': False, 'erro': str(e)}
+
+def verificar_dados_importados(db_path: str = None, limite: int = 10) -> Dict[str, Any]:
+    """Verifica os dados que foram importados para o banco"""
+    if db_path is None:
+        db_path = DB_PATH
+        
+    conn = None
+    try:
+        conn = get_db_connection(db_path)
+        cursor = conn.cursor()
+        
+        # Verificar totais
+        cursor.execute("SELECT COUNT(*) as total FROM bens")
+        total = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) as com_responsavel FROM bens WHERE responsavel IS NOT NULL AND responsavel != ''")
+        com_responsavel = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) as sem_responsavel FROM bens WHERE responsavel IS NULL OR responsavel = ''")
+        sem_responsavel = cursor.fetchone()[0]
+        
+        # Amostra de dados
+        cursor.execute('''
+            SELECT numero, nome, situacao, localizacao, responsavel, auditor, observacao 
+            FROM bens 
+            ORDER BY id DESC 
+            LIMIT ?
+        ''', (limite,))
+        
+        amostra = []
+        for row in cursor.fetchall():
+            amostra.append({
+                'numero': row[0],
+                'nome': row[1],
+                'situacao': row[2],
+                'localizacao': row[3],
+                'responsavel': row[4] or 'VAZIO',
+                'auditor': row[5] or 'VAZIO',
+                'observacao': row[6] or 'VAZIO'
+            })
+        
+        return {
+            'sucesso': True,
+            'total_registros': total,
+            'com_responsavel': com_responsavel,
+            'sem_responsavel': sem_responsavel,
+            'percentual_com_responsavel': (com_responsavel / total * 100) if total > 0 else 0,
+            'amostra': amostra
+        }
+        
+    except Exception as e:
+        logger.error(f"Erro ao verificar dados importados: {e}")
+        return {'sucesso': False, 'erro': str(e)}
+    finally:
+        if conn:
+            conn.close()
