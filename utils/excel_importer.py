@@ -1,4 +1,4 @@
-# utils/excel_importer.py - VERSÃO CORRIGIDA PARA SUA PLANILHA
+# utils/excel_importer.py - VERSÃO CORRIGIDA PARA SERVIDOR
 import sqlite3
 import pandas as pd
 import os
@@ -25,7 +25,7 @@ def importar_excel_para_sqlite(
     criar_backup: bool = True, 
     apagar_dados_antes: bool = False
 ) -> Dict[str, Any]:
-    """Função principal de importação"""
+    """Função principal de importação - VERSÃO ROBUSTA"""
     
     if db_path is None:
         db_path = DB_PATH
@@ -66,8 +66,10 @@ def importar_excel_para_sqlite(
         if df is None or df.empty:
             return criar_resposta_erro("Arquivo está vazio ou inválido")
         
+        logger.info(f"📊 Arquivo carregado: {len(df)} linhas, {len(df.columns)} colunas")
+        
         # 5. Processar dados
-        return processar_dataframe_importacao(df, db_path, apagar_dados_antes)
+        return processar_dataframe_importacao_robusta(df, db_path, apagar_dados_antes)
         
     except Exception as e:
         error_msg = f"Erro crítico na importação: {str(e)}"
@@ -105,7 +107,7 @@ def importar_csv_para_sqlite(caminho_csv: str, db_path: str = None, delimiter: s
         logger.info(f"📊 CSV carregado: {len(df)} linhas, {len(df.columns)} colunas")
         
         # Processar importação
-        return processar_dataframe_importacao(df, db_path, False)
+        return processar_dataframe_importacao_robusta(df, db_path, False)
         
     except Exception as e:
         error_msg = f"Erro na importação CSV: {str(e)}"
@@ -126,19 +128,24 @@ def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -
         
         # Ler amostra do arquivo
         if extensao == '.csv':
-            df = ler_arquivo_csv(caminho_arquivo, nrows=5)
+            df = ler_arquivo_csv(caminho_arquivo, nrows=10)
         else:
-            df = ler_arquivo_excel(caminho_arquivo, aba_nome, nrows=5)
+            df = ler_arquivo_excel(caminho_arquivo, aba_nome, nrows=10)
         
         if df is None or df.empty:
             return criar_resposta_estrutura(False, "Arquivo vazio ou inválido")
         
         # Validar colunas
         colunas = df.columns.tolist()
-        colunas_lower = [str(col).lower() for col in colunas]
+        colunas_lower = [str(col).lower().strip() for col in colunas]
+        
+        # DEBUG: Mostrar todas as colunas detectadas
+        logger.info("🎯 COLUNAS DETECTADAS NO ARQUIVO:")
+        for i, col in enumerate(colunas):
+            logger.info(f"  {i+1}. '{col}' (lower: '{col.lower()}')")
         
         encontrou_numero = any(any(palavra in col for palavra in 
-                                ['numero', 'número', 'patrimonio', 'patrimônio', 'codigo', 'código', 'nº', 'num']) 
+                                ['numero', 'número', 'patrimonio', 'patrimônio', 'codigo', 'código', 'nº', 'num', 'bem']) 
                               for col in colunas_lower)
         encontrou_nome = any(any(palavra in col for palavra in 
                                ['nome', 'descrição', 'descricao', 'item', 'equipamento', 'denominação']) 
@@ -152,30 +159,33 @@ def verificar_estrutura_excel(caminho_arquivo: str, aba_nome: str = 'Estoque') -
         if not encontrou_nome:
             mensagem += "\n❌ Coluna de nome não encontrada"
         
-        # Verificar colunas específicas da sua planilha
-        encontrou_responsavel = any('responsavel' in col.lower() for col in colunas_lower)
-        encontrou_auditor = any('auditor' in col.lower() for col in colunas_lower)
+        # Verificar colunas específicas
+        encontrou_responsavel = any('responsavel' in col for col in colunas_lower)
+        encontrou_auditor = any('auditor' in col for col in colunas_lower)
+        encontrou_situacao = any(any(p in col for p in ['situação', 'situacao', 'status']) for col in colunas_lower)
+        encontrou_localizacao = any(any(p in col for p in ['localização', 'localizacao', 'local']) for col in colunas_lower)
         
-        if encontrou_responsavel:
-            mensagem += "\n✅ Coluna 'Responsavel' encontrada"
-        else:
-            mensagem += "\n❌ Coluna 'Responsavel' NÃO encontrada"
-            
-        if encontrou_auditor:
-            mensagem += "\n✅ Coluna 'Auditor' encontrada"
-        else:
-            mensagem += "\n❌ Coluna 'Auditor' NÃO encontrada"
+        mensagem += f"\n📊 Detalhes:"
+        mensagem += f"\n  • Número: {'✅' if encontrou_numero else '❌'}"
+        mensagem += f"\n  • Nome: {'✅' if encontrou_nome else '❌'}"
+        mensagem += f"\n  • Situação: {'✅' if encontrou_situacao else '❌'}"
+        mensagem += f"\n  • Localização: {'✅' if encontrou_localizacao else '❌'}"
+        mensagem += f"\n  • Responsável: {'✅' if encontrou_responsavel else '❌'}"
+        mensagem += f"\n  • Auditor: {'✅' if encontrou_auditor else '❌'}"
         
         return {
             'sucesso': True,
             'valido': valido,
             'mensagem': mensagem,
             'colunas': colunas,
-            'total_linhas': len(df) if 'nrows' not in locals() else 'N/A',
+            'colunas_lower': colunas_lower,
+            'total_linhas': len(df),
             'encontrou_numero': encontrou_numero,
             'encontrou_nome': encontrou_nome,
             'encontrou_responsavel': encontrou_responsavel,
             'encontrou_auditor': encontrou_auditor,
+            'encontrou_situacao': encontrou_situacao,
+            'encontrou_localizacao': encontrou_localizacao,
             'extensao': extensao
         }
         
@@ -206,12 +216,16 @@ def ler_arquivo_csv(caminho: str, nrows: int = None):
     """Lê arquivo CSV"""
     try:
         # Detectar encoding
-        encodings = ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252']
+        encodings = ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252', 'windows-1252']
         for encoding in encodings:
             try:
-                return pd.read_csv(caminho, encoding=encoding, nrows=nrows)
-            except UnicodeDecodeError:
+                df = pd.read_csv(caminho, encoding=encoding, nrows=nrows, delimiter=',', skipinitialspace=True)
+                logger.info(f"✅ CSV lido com encoding: {encoding}")
+                return df
+            except (UnicodeDecodeError, pd.errors.ParserError) as e:
+                logger.debug(f"Encoding {encoding} falhou: {e}")
                 continue
+        logger.error("❌ Nenhum encoding funcionou para o CSV")
         return None
     except Exception as e:
         logger.error(f"Erro ao ler CSV: {e}")
@@ -220,7 +234,22 @@ def ler_arquivo_csv(caminho: str, nrows: int = None):
 def ler_arquivo_excel(caminho: str, aba_nome: str = 'Estoque', nrows: int = None):
     """Lê arquivo Excel"""
     try:
-        return pd.read_excel(caminho, sheet_name=aba_nome, nrows=nrows)
+        # Tentar ler com engine automática
+        try:
+            df = pd.read_excel(caminho, sheet_name=aba_nome, nrows=nrows, engine=None)
+            logger.info("✅ Excel lido com engine automática")
+            return df
+        except Exception as e:
+            logger.warning(f"Engine automática falhou, tentando openpyxl: {e}")
+            try:
+                df = pd.read_excel(caminho, sheet_name=aba_nome, nrows=nrows, engine='openpyxl')
+                logger.info("✅ Excel lido com openpyxl")
+                return df
+            except Exception as e2:
+                logger.warning(f"Openpyxl falhou, tentando xlrd: {e2}")
+                df = pd.read_excel(caminho, sheet_name=aba_nome, nrows=nrows, engine='xlrd')
+                logger.info("✅ Excel lido com xlrd")
+                return df
     except Exception as e:
         logger.error(f"Erro ao ler Excel: {e}")
         return None
@@ -256,6 +285,7 @@ def salvar_arquivo_temporario(arquivo_flask) -> str:
         temp_dir = tempfile.gettempdir()
         temp_path = os.path.join(temp_dir, f"temp_import_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{arquivo_flask.filename}")
         arquivo_flask.save(temp_path)
+        logger.info(f"✅ Arquivo temporário salvo: {temp_path}")
         return temp_path
     except Exception as e:
         logger.error(f"Erro ao salvar arquivo temporário: {e}")
@@ -268,6 +298,7 @@ def remover_arquivo_seguro(caminho_arquivo: str):
             try:
                 if os.path.exists(caminho_arquivo):
                     os.remove(caminho_arquivo)
+                    logger.info(f"✅ Arquivo temporário removido: {caminho_arquivo}")
                     break
             except PermissionError:
                 import time
@@ -276,7 +307,7 @@ def remover_arquivo_seguro(caminho_arquivo: str):
         logger.warning(f"Não foi possível remover arquivo: {e}")
 
 # ==============================
-# FUNÇÕES DE PROCESSAMENTO
+# FUNÇÕES DE PROCESSAMENTO - VERSÃO ROBUSTA
 # ==============================
 
 def apagar_todos_dados(db_path: str = None) -> Tuple[bool, str]:
@@ -322,13 +353,13 @@ def apagar_todos_dados(db_path: str = None) -> Tuple[bool, str]:
         if conn:
             conn.close()
 
-def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_antes: bool = False) -> Dict[str, Any]:
-    """Processa o DataFrame para importação - VERSÃO CORRIGIDA PARA SUA PLANILHA"""
+def processar_dataframe_importacao_robusta(df: pd.DataFrame, db_path: str, apagar_dados_antes: bool = False) -> Dict[str, Any]:
+    """Processa o DataFrame para importação - VERSÃO ROBUSTA PARA SERVIDOR"""
     
     conn = None
     try:
-        # Detectar colunas - COM DEBUG DETALHADO
-        mapeamento = detectar_colunas_com_debug(df)
+        # Detectar colunas - COM FALLBACKS ROBUSTOS
+        mapeamento = detectar_colunas_robusto(df)
         
         if not mapeamento['numero'] or not mapeamento['nome']:
             return criar_resposta_erro("Colunas obrigatórias (número e nome) não encontradas")
@@ -339,68 +370,56 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
         inseridos = 0
         atualizados = 0
         erros = 0
+        linhas_processadas = 0
         
-        # DEBUG DETALHADO: Mostrar primeiras linhas para verificar dados
-        logger.info("🔍 AMOSTRA DOS DADOS (primeiras 3 linhas):")
-        for i in range(min(3, len(df))):
+        # DEBUG: Mostrar primeiras linhas para verificar dados
+        logger.info("🔍 AMOSTRA DOS DADOS (primeiras 5 linhas):")
+        for i in range(min(5, len(df))):
             linha_info = []
             for campo, coluna in mapeamento.items():
                 if coluna and coluna in df.columns:
                     valor = df.iloc[i][coluna]
-                    linha_info.append(f"{campo}: {valor}")
-            logger.info(f"  Linha {i+1}: {', '.join(linha_info)}")
+                    linha_info.append(f"{campo}: '{valor}'")
+                else:
+                    linha_info.append(f"{campo}: NÃO MAPEADO")
+            logger.info(f"  Linha {i+2}: {', '.join(linha_info)}")
         
+        # PROCESSAMENTO PRINCIPAL
         for index, row in df.iterrows():
+            linhas_processadas += 1
             try:
-                # Extrair valores básicos
-                numero_valor = row[mapeamento['numero']]
-                nome_valor = row[mapeamento['nome']]
+                # EXTRAÇÃO ROBUSTA DE VALORES
+                numero = extrair_valor_seguro(row, mapeamento['numero'])
+                nome = extrair_valor_seguro(row, mapeamento['nome'])
                 
-                numero = str(numero_valor).strip() if pd.notna(numero_valor) else None
-                nome = str(nome_valor).strip() if pd.notna(nome_valor) else None
-                
-                if not numero or not nome:
-                    logger.debug(f"Linha {index + 2}: Número ou nome vazio - Número: {numero}, Nome: {nome}")
+                # VALIDAÇÃO CRÍTICA
+                if not numero or numero == 'nan' or numero == 'None' or str(numero).strip() == '':
+                    logger.debug(f"Linha {index + 2}: Número inválido - '{numero}'")
+                    erros += 1
+                    continue
+                    
+                if not nome or nome == 'nan' or nome == 'None' or str(nome).strip() == '':
+                    logger.debug(f"Linha {index + 2}: Nome inválido - '{nome}'")
                     erros += 1
                     continue
                 
-                # Valores opcionais - CORRIGIDO: Incluindo responsavel
-                situacao_valor = row.get(mapeamento.get('situacao'))
-                situacao = str(situacao_valor).strip() if pd.notna(situacao_valor) else 'Pendente'
+                # Limpar valores
+                numero = str(numero).strip()
+                nome = str(nome).strip()
                 
-                localizacao_valor = row.get(mapeamento.get('localizacao'))
-                localizacao = str(localizacao_valor).strip() if pd.notna(localizacao_valor) else ''
-                
-                # ✅ CORREÇÃO: Extrair responsavel do Excel - COM DEBUG
-                responsavel = ''
-                if mapeamento.get('responsavel'):
-                    responsavel_valor = row.get(mapeamento.get('responsavel'))
-                    if pd.notna(responsavel_valor):
-                        responsavel = str(responsavel_valor).strip()
-                        logger.debug(f"Linha {index + 2}: Responsavel extraído = '{responsavel}'")
-                    else:
-                        logger.debug(f"Linha {index + 2}: Responsavel está vazio/NaN")
-                else:
-                    logger.warning(f"Linha {index + 2}: Coluna responsavel não mapeada")
-                
-                # ✅ CORREÇÃO: Extrair auditor do Excel
-                auditor = ''
-                if mapeamento.get('auditor'):
-                    auditor_valor = row.get(mapeamento.get('auditor'))
-                    auditor = str(auditor_valor).strip() if pd.notna(auditor_valor) else ''
-                
-                # ✅ CORREÇÃO: Extrair observacao do Excel
-                observacao = ''
-                if mapeamento.get('observacao'):
-                    observacao_valor = row.get(mapeamento.get('observacao'))
-                    observacao = str(observacao_valor).strip() if pd.notna(observacao_valor) else ''
+                # VALORES OPCIONAIS
+                situacao = extrair_valor_seguro(row, mapeamento.get('situacao'), 'Pendente')
+                localizacao = extrair_valor_seguro(row, mapeamento.get('localizacao'), '')
+                responsavel = extrair_valor_seguro(row, mapeamento.get('responsavel'), '')
+                auditor = extrair_valor_seguro(row, mapeamento.get('auditor'), '')
+                observacao = extrair_valor_seguro(row, mapeamento.get('observacao'), '')
                 
                 # Verificar se existe
                 cursor.execute("SELECT id FROM bens WHERE numero = ?", (numero,))
                 existe = cursor.fetchone()
                 
                 if existe:
-                    # ✅ CORREÇÃO: UPDATE incluindo responsavel, auditor e observacao
+                    # UPDATE
                     cursor.execute('''
                         UPDATE bens SET 
                             nome=?, situacao=?, localizacao=?, responsavel=?, auditor=?, observacao=?, 
@@ -408,57 +427,97 @@ def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_
                         WHERE numero=?
                     ''', (nome, situacao, localizacao, responsavel, auditor, observacao, numero))
                     atualizados += 1
-                    logger.debug(f"Linha {index + 2}: ATUALIZADO - Número: {numero}, Responsavel: '{responsavel}'")
+                    
+                    if atualizados <= 5:  # Log apenas os primeiros para debug
+                        logger.info(f"📝 ATUALIZADO #{atualizados}: {numero} - '{nome}' | Responsável: '{responsavel}'")
                 else:
-                    # ✅ CORREÇÃO: INSERT incluindo responsavel, auditor e observacao
+                    # INSERT
                     cursor.execute('''
                         INSERT INTO bens (numero, nome, situacao, localizacao, responsavel, auditor, observacao) 
                         VALUES (?, ?, ?, ?, ?, ?, ?)
                     ''', (numero, nome, situacao, localizacao, responsavel, auditor, observacao))
                     inseridos += 1
-                    logger.debug(f"Linha {index + 2}: INSERIDO - Número: {numero}, Responsavel: '{responsavel}'")
+                    
+                    if inseridos <= 5:  # Log apenas os primeiros para debug
+                        logger.info(f"🆕 INSERIDO #{inseridos}: {numero} - '{nome}' | Responsável: '{responsavel}'")
                 
                 # Commit periódico
-                if (inseridos + atualizados) % 20 == 0:
+                if (inseridos + atualizados) % 50 == 0:
                     conn.commit()
+                    logger.info(f"💾 Commit intermediário: {inseridos + atualizados} registros")
                     
             except Exception as e:
                 erros += 1
-                logger.error(f"Erro na linha {index + 2}: {e}")
-                logger.error(f"Dados da linha problemática: Número: {numero}, Nome: {nome}")
+                logger.error(f"❌ ERRO na linha {index + 2}: {str(e)}")
+                # Log dos valores problemáticos
+                try:
+                    numero_debug = extrair_valor_seguro(row, mapeamento['numero'], 'ERRO')
+                    nome_debug = extrair_valor_seguro(row, mapeamento['nome'], 'ERRO')
+                    logger.error(f"   Dados da linha: Número='{numero_debug}', Nome='{nome_debug}'")
+                except:
+                    logger.error("   Não foi possível extrair dados para debug")
         
+        # COMMIT FINAL
         conn.commit()
+        logger.info(f"💾 Commit final realizado")
         
         total = inseridos + atualizados + erros
         mensagem = f"✅ Importação concluída! {inseridos} novos, {atualizados} atualizados, {erros} erros"
         
-        logger.info(f"📊 RESUMO DA IMPORTAÇÃO:")
+        if erros == total:
+            mensagem = f"❌ FALHA CRÍTICA: Todos os {total} registros falharam!"
+        
+        logger.info(f"📊 RESUMO FINAL:")
+        logger.info(f"  Linhas processadas: {linhas_processadas}")
         logger.info(f"  Inseridos: {inseridos}")
         logger.info(f"  Atualizados: {atualizados}")
         logger.info(f"  Erros: {erros}")
-        logger.info(f"  Mapeamento usado: {mapeamento}")
+        logger.info(f"  Taxa de sucesso: {(inseridos + atualizados) / total * 100:.1f}%")
         
         return {
-            'sucesso': True,
+            'sucesso': True if (inseridos + atualizados) > 0 else False,
             'mensagem': mensagem,
             'registros_processados': total,
             'registros_inseridos': inseridos,
             'registros_atualizados': atualizados,
             'registros_erro': erros,
-            'mapeamento': mapeamento  # ✅ Adicionado para debug
+            'mapeamento': mapeamento
         }
         
     except Exception as e:
-        logger.error(f"Erro no processamento: {e}")
+        logger.error(f"💥 ERRO CRÍTICO no processamento: {e}")
         if conn:
             conn.rollback()
+            logger.info("🔙 Rollback realizado")
         return criar_resposta_erro(f"Erro no processamento: {str(e)}")
     finally:
         if conn:
             conn.close()
+            logger.info("🔒 Conexão com banco fechada")
 
-def detectar_colunas_com_debug(df: pd.DataFrame) -> Dict[str, Any]:
-    """Detecta automaticamente as colunas - VERSÃO COM DEBUG DETALHADO"""
+def extrair_valor_seguro(row, coluna, valor_default=''):
+    """Extrai valor de forma segura, tratando NaN e None"""
+    if not coluna or coluna not in row:
+        return valor_default
+    
+    valor = row[coluna]
+    
+    # Tratar pandas NaN, None e strings vazias
+    if pd.isna(valor) or valor is None:
+        return valor_default
+    
+    valor_str = str(valor).strip()
+    
+    # Tratar strings que representam NaN
+    if valor_str.lower() in ['nan', 'none', 'null', '']:
+        return valor_default
+    
+    return valor_str
+
+def detectar_colunas_robusto(df: pd.DataFrame) -> Dict[str, Any]:
+    """Detecta automaticamente as colunas - VERSÃO ROBUSTA"""
+    
+    # Garantir que as colunas são strings
     df.columns = [str(col).strip() for col in df.columns]
     
     mapeamento = {
@@ -474,207 +533,136 @@ def detectar_colunas_com_debug(df: pd.DataFrame) -> Dict[str, Any]:
     colunas_originais = df.columns.tolist()
     colunas_lower = [col.lower() for col in colunas_originais]
     
-    logger.info("🎯 DETECÇÃO DE COLUNAS - COLUNAS ORIGINAIS:")
-    for i, col in enumerate(colunas_originais):
-        logger.info(f"  Coluna {i}: '{col}' (lower: '{col.lower()}')")
+    logger.info("🎯 DETECÇÃO DE COLUNAS - MODO ROBUSTO")
+    logger.info(f"Colunas disponíveis ({len(colunas_originais)}): {colunas_originais}")
     
-    # Buscar por padrões ESPECÍFICOS para sua planilha
-    for idx, col in enumerate(colunas_originais):
-        col_lower = col.lower()
-        
-        # NÚMERO - Busca exata para sua planilha
-        if any(p in col_lower for p in ['numero', 'número', 'nº', 'num', 'código', 'codigo', 'patrim']):
-            if 'bem' in col_lower or any(p in col_lower for p in ['numero', 'nº']):
-                mapeamento['numero'] = col
-                logger.info(f"  ✅ NÚMERO: '{col}' → mapeado")
-        
-        # NOME - Busca exata
-        elif 'nome' in col_lower:
-            mapeamento['nome'] = col
-            logger.info(f"  ✅ NOME: '{col}' → mapeado")
-        
-        # SITUAÇÃO - Busca exata  
-        elif any(p in col_lower for p in ['situação', 'situacao', 'status']):
-            mapeamento['situacao'] = col
-            logger.info(f"  ✅ SITUAÇÃO: '{col}' → mapeado")
-        
-        # LOCALIZAÇÃO - Busca exata
-        elif any(p in col_lower for p in ['localização', 'localizacao', 'local']):
-            mapeamento['localizacao'] = col
-            logger.info(f"  ✅ LOCALIZAÇÃO: '{col}' → mapeado")
-        
-        # RESPONSAVEL - BUSCA EXATA (SEM ACENTO - COMO ESTÁ NA SUA PLANILHA)
-        elif 'responsavel' in col_lower:
-            mapeamento['responsavel'] = col
-            logger.info(f"  ✅ RESPONSAVEL: '{col}' → mapeado")
-        
-        # AUDITOR - Busca exata
-        elif 'auditor' in col_lower:
-            mapeamento['auditor'] = col
-            logger.info(f"  ✅ AUDITOR: '{col}' → mapeado")
+    # MAPEAMENTO DIRETO - busca exata primeiro
+    mapeamento_direto = {
+        'numero': ['numero do bem', 'nº do bem', 'número do bem', 'patrimonio', 'código'],
+        'nome': ['nome'],
+        'situacao': ['situação', 'situacao', 'status'],
+        'localizacao': ['localização', 'localizacao', 'local'],
+        'responsavel': ['responsavel', 'responsável'],
+        'auditor': ['auditor'],
+        'observacao': ['observação', 'observacao', 'obs']
+    }
     
-    # Se não encontrou por busca exata, tentar busca mais ampla
-    if not mapeamento['numero']:
-        for idx, col in enumerate(colunas_originais):
-            if any(p in col.lower() for p in ['numero', 'nº', 'num', 'código']):
-                mapeamento['numero'] = col
-                logger.info(f"  ✅ NÚMERO (fallback): '{col}' → mapeado")
+    for campo, padroes in mapeamento_direto.items():
+        for padrao in padroes:
+            if padrao in colunas_lower:
+                idx = colunas_lower.index(padrao)
+                mapeamento[campo] = colunas_originais[idx]
+                logger.info(f"  ✅ {campo.upper():12} → '{colunas_originais[idx]}' (padrão: '{padrao}')")
                 break
     
-    # DEBUG FINAL
-    logger.info("🎯 MAPEAMENTO FINAL DETECTADO:")
+    # FALLBACKS INTELIGENTES para campos obrigatórios
+    if not mapeamento['numero']:
+        for idx, col in enumerate(colunas_originais):
+            col_lower = col.lower()
+            if any(p in col_lower for p in ['numero', 'nº', 'num', 'código', 'codigo', 'patrim']):
+                mapeamento['numero'] = col
+                logger.info(f"  ✅ NÚMERO (fallback) → '{col}'")
+                break
+    
+    if not mapeamento['nome']:
+        for idx, col in enumerate(colunas_originais):
+            col_lower = col.lower()
+            if any(p in col_lower for p in ['nome', 'descrição', 'descricao', 'item']):
+                mapeamento['nome'] = col
+                logger.info(f"  ✅ NOME (fallback) → '{col}'")
+                break
+    
+    # FALLBACK ULTIMO RECURSO - usar primeira e segunda coluna
+    if not mapeamento['numero'] and len(colunas_originais) >= 1:
+        mapeamento['numero'] = colunas_originais[0]
+        logger.warning(f"  ⚠️ NÚMERO (emergência) → primeira coluna: '{colunas_originais[0]}'")
+    
+    if not mapeamento['nome'] and len(colunas_originais) >= 2:
+        mapeamento['nome'] = colunas_originais[1]
+        logger.warning(f"  ⚠️ NOME (emergência) → segunda coluna: '{colunas_originais[1]}'")
+    
+    # VERIFICAÇÃO FINAL
+    logger.info("🎯 MAPEAMENTO FINAL:")
     for campo, coluna in mapeamento.items():
         status = f"✅ '{coluna}'" if coluna else "❌ Não encontrada"
         logger.info(f"  {campo.upper():12}: {status}")
     
-    # Verificar se as colunas realmente existem no DataFrame
-    for campo, coluna in mapeamento.items():
-        if coluna and coluna not in df.columns:
-            logger.error(f"❌ ERRO: Coluna '{coluna}' não existe no DataFrame!")
-            mapeamento[campo] = None
-    
     return mapeamento
 
-def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
-    """Wrapper para manter compatibilidade"""
-    return detectar_colunas_com_debug(df)
-
 # ==============================
-# FUNÇÕES ADICIONAIS PARA DEBUG
+# FUNÇÕES DE DEBUG E DIAGNÓSTICO
 # ==============================
 
-def verificar_mapeamento_detalhado(caminho_arquivo: str, aba_nome: str = 'Estoque') -> Dict[str, Any]:
-    """Função especial para debug detalhado do mapeamento"""
+def diagnosticar_problema_importacao(caminho_arquivo: str, aba_nome: str = 'Estoque') -> Dict[str, Any]:
+    """Diagnóstico completo do problema de importação"""
     try:
-        logger.info(f"🔍 VERIFICAÇÃO DETALHADA: {caminho_arquivo}")
+        logger.info(f"🔧 DIAGNÓSTICO COMPLETO: {caminho_arquivo}")
         
         if not os.path.exists(caminho_arquivo):
             return {'sucesso': False, 'erro': 'Arquivo não encontrado'}
         
+        # 1. Verificar estrutura
+        estrutura = verificar_estrutura_excel(caminho_arquivo, aba_nome)
+        
+        # 2. Ler dados completos
         extensao = os.path.splitext(caminho_arquivo)[1].lower()
-        
-        # Ler arquivo
         if extensao == '.csv':
-            df = ler_arquivo_csv(caminho_arquivo, nrows=10)
+            df = ler_arquivo_csv(caminho_arquivo)
         else:
-            df = ler_arquivo_excel(caminho_arquivo, aba_nome, nrows=10)
+            df = ler_arquivo_excel(caminho_arquivo, aba_nome)
         
-        if df is None or df.empty:
-            return {'sucesso': False, 'erro': 'Arquivo vazio'}
+        if df is None:
+            return {'sucesso': False, 'erro': 'Não foi possível ler o arquivo'}
         
-        # Detectar colunas
-        mapeamento = detectar_colunas_com_debug(df)
-        
-        # Amostra de dados DETALHADA
-        amostra = {}
-        for campo, coluna in mapeamento.items():
-            if coluna and coluna in df.columns:
-                valores = []
-                for i in range(min(5, len(df))):
-                    valor = df.iloc[i][coluna]
-                    valores.append({
-                        'linha': i + 2,
-                        'valor': str(valor) if pd.notna(valor) else 'VAZIO',
-                        'tipo': type(valor).__name__
-                    })
-                amostra[campo] = {
-                    'coluna': coluna,
-                    'valores_detalhados': valores,
-                    'total_vazios': df[coluna].isna().sum(),
-                    'total_preenchidos': df[coluna].notna().sum()
-                }
-        
-        return {
-            'sucesso': True,
-            'mapeamento': mapeamento,
-            'amostra': amostra,
-            'colunas_originais': df.columns.tolist(),
+        # 3. Análise detalhada dos dados
+        analise_dados = {
             'total_linhas': len(df),
-            'colunas_detectadas': [col for col in mapeamento.values() if col]
+            'total_colunas': len(df.columns),
+            'colunas': df.columns.tolist(),
+            'primeiras_linhas': []
         }
         
-    except Exception as e:
-        logger.error(f"Erro na verificação detalhada: {e}")
-        return {'sucesso': False, 'erro': str(e)}
-
-def testar_importacao_com_debug(caminho_arquivo: str, db_path: str = None) -> Dict[str, Any]:
-    """Função de teste com debug completo"""
-    try:
-        logger.info(f"🧪 TESTE DE IMPORTAÇÃO COM DEBUG: {caminho_arquivo}")
+        # Amostra das primeiras 5 linhas
+        for i in range(min(5, len(df))):
+            linha = {}
+            for coluna in df.columns:
+                valor = df.iloc[i][coluna]
+                linha[coluna] = {
+                    'valor': str(valor) if pd.notna(valor) else 'NaN',
+                    'tipo': type(valor).__name__,
+                    'vazio': pd.isna(valor)
+                }
+            analise_dados['primeiras_linhas'].append(linha)
         
-        # 1. Verificação detalhada
-        verificacao = verificar_mapeamento_detalhado(caminho_arquivo)
-        if not verificacao['sucesso']:
-            return verificacao
+        # 4. Verificar valores das colunas críticas
+        mapeamento = detectar_colunas_robusto(df)
+        problemas = []
         
-        # 2. Importação real
-        resultado = importar_excel_para_sqlite(
-            caminho_arquivo, 
-            db_path, 
-            apagar_dados_antes=True
-        )
-        
-        # 3. Combinar resultados
-        resultado['verificacao'] = verificacao
-        
-        return resultado
-        
-    except Exception as e:
-        logger.error(f"Erro no teste de importação: {e}")
-        return {'sucesso': False, 'erro': str(e)}
-
-def verificar_dados_importados(db_path: str = None, limite: int = 10) -> Dict[str, Any]:
-    """Verifica os dados que foram importados para o banco"""
-    if db_path is None:
-        db_path = DB_PATH
-        
-    conn = None
-    try:
-        conn = get_db_connection(db_path)
-        cursor = conn.cursor()
-        
-        # Verificar totais
-        cursor.execute("SELECT COUNT(*) as total FROM bens")
-        total = cursor.fetchone()[0]
-        
-        cursor.execute("SELECT COUNT(*) as com_responsavel FROM bens WHERE responsavel IS NOT NULL AND responsavel != ''")
-        com_responsavel = cursor.fetchone()[0]
-        
-        cursor.execute("SELECT COUNT(*) as sem_responsavel FROM bens WHERE responsavel IS NULL OR responsavel = ''")
-        sem_responsavel = cursor.fetchone()[0]
-        
-        # Amostra de dados
-        cursor.execute('''
-            SELECT numero, nome, situacao, localizacao, responsavel, auditor, observacao 
-            FROM bens 
-            ORDER BY id DESC 
-            LIMIT ?
-        ''', (limite,))
-        
-        amostra = []
-        for row in cursor.fetchall():
-            amostra.append({
-                'numero': row[0],
-                'nome': row[1],
-                'situacao': row[2],
-                'localizacao': row[3],
-                'responsavel': row[4] or 'VAZIO',
-                'auditor': row[5] or 'VAZIO',
-                'observacao': row[6] or 'VAZIO'
-            })
+        for campo in ['numero', 'nome']:
+            if mapeamento[campo]:
+                coluna = mapeamento[campo]
+                valores = df[coluna]
+                vazios = valores.isna().sum()
+                problemas.append(f"Coluna '{coluna}' ({campo}): {vazios} vazios de {len(valores)}")
         
         return {
             'sucesso': True,
-            'total_registros': total,
-            'com_responsavel': com_responsavel,
-            'sem_responsavel': sem_responsavel,
-            'percentual_com_responsavel': (com_responsavel / total * 100) if total > 0 else 0,
-            'amostra': amostra
+            'estrutura': estrutura,
+            'analise_dados': analise_dados,
+            'mapeamento': mapeamento,
+            'problemas_detectados': problemas,
+            'recomendacao': 'Verifique se as colunas de número e nome estão preenchidas corretamente'
         }
         
     except Exception as e:
-        logger.error(f"Erro ao verificar dados importados: {e}")
+        logger.error(f"Erro no diagnóstico: {e}")
         return {'sucesso': False, 'erro': str(e)}
-    finally:
-        if conn:
-            conn.close()
+
+# Manter funções antigas para compatibilidade
+def processar_dataframe_importacao(df: pd.DataFrame, db_path: str, apagar_dados_antes: bool = False) -> Dict[str, Any]:
+    """Wrapper para compatibilidade"""
+    return processar_dataframe_importacao_robusta(df, db_path, apagar_dados_antes)
+
+def detectar_colunas(df: pd.DataFrame) -> Dict[str, Any]:
+    """Wrapper para compatibilidade"""
+    return detectar_colunas_robusto(df)
