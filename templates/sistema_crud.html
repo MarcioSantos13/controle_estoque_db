@@ -4,239 +4,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema CRUD - Controle Patrimonial</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>UNB - Sistema de Gestão Patrimonial</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         :root {
-            --primary-color: #0d6efd;
-            --success-color: #198754;
-            --warning-color: #ffc107;
-            --light-bg: #f5f7fb;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --light-bg: #f8fafc;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--light-bg);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .app-container {
             max-width: 100%;
-            padding: 1.5rem;
+            padding: 1rem;
+            min-height: 100vh;
         }
 
         /* Header Modernizado */
         .app-header {
-            background: white;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
             box-shadow: var(--card-shadow);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
         }
 
         .app-title {
-            font-weight: 700;
+            font-weight: 800;
             color: #1e293b;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .app-subtitle {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 500;
         }
 
         /* Cards de Estatísticas */
-        .stats-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            height: 100%;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
+        .stats-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            background: white;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .stats-card.total::before { background: var(--gradient-primary); }
+        .stats-card.localizados::before { background: var(--gradient-success); }
+        .stats-card.pendentes::before { background: var(--gradient-warning); }
+
         .stats-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--hover-shadow);
         }
 
         .stats-card .card-body {
-            padding: 1.5rem;
+            padding: 2rem;
+            position: relative;
         }
 
         .stats-card .card-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
         }
 
         .stats-card .card-text {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
         }
+
+        .stats-card .card-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .stats-card.total .card-icon { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
+        .stats-card.localizados .card-icon { background: rgba(5, 150, 105, 0.1); color: var(--success-color); }
+        .stats-card.pendentes .card-icon { background: rgba(217, 119, 6, 0.1); color: var(--warning-color); }
 
         /* Barra de Ferramentas */
         .toolbar-section {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: var(--card-shadow);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .search-container .input-group {
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
         }
 
         .search-container .form-control {
             border: none;
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1rem;
+            font-size: 0.95rem;
         }
 
         .search-container .form-control:focus {
             box-shadow: none;
+            border-color: var(--primary-color);
         }
 
         .search-container .input-group-text {
             background: white;
             border: none;
             color: #64748b;
+            padding: 0.875rem 1rem;
         }
 
         /* Botões Modernos */
         .btn-modern {
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 0.625rem 1.25rem;
-            transition: all 0.2s ease;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
         }
 
         .btn-modern:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .btn-modern:active {
             transform: translateY(0);
         }
 
-        .btn-modern i {
-            margin-right: 0.5rem;
+        .btn-primary-modern {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-success-modern {
+            background: var(--gradient-success);
+            color: white;
         }
 
         /* Tabela Modernizada */
         .data-table-container {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: var(--card-shadow);
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .data-table-header {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
 
         .data-table-title {
-            font-weight: 600;
+            font-weight: 700;
             color: #1e293b;
             margin: 0;
             display: flex;
             align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
         }
 
         .table {
             margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         .table th {
-            font-weight: 600;
+            font-weight: 700;
             border-top: none;
             color: #475569;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 1rem 0.75rem;
+            padding: 1.25rem 1rem;
             background-color: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .table td {
             vertical-align: middle;
-            padding: 1rem 0.75rem;
+            padding: 1.25rem 1rem;
             border-color: rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .table-hover tbody tr {
+            transition: all 0.2s ease;
         }
 
         .table-hover tbody tr:hover {
-            background-color: rgba(15, 118, 254, 0.04);
+            background-color: rgba(37, 99, 235, 0.04);
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Badges */
         .badge-status {
             font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.35rem 0.65rem;
-            border-radius: 6px;
+            font-weight: 600;
+            padding: 0.5rem 0.875rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
         .filter-badge {
             background-color: #f1f5f9;
             color: #475569;
             font-weight: 500;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
             display: inline-flex;
             align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
         }
 
         /* Ações da Tabela */
         .action-buttons {
             white-space: nowrap;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
         }
 
         .action-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid #e2e8f0;
             background: white;
             transition: all 0.2s ease;
+            color: #64748b;
         }
 
         .action-btn:hover {
             background: #f8fafc;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        .action-btn.edit:hover { color: var(--primary-color); border-color: var(--primary-color); }
+        .action-btn.view:hover { color: var(--success-color); border-color: var(--success-color); }
+        .action-btn.delete:hover { color: var(--danger-color); border-color: var(--danger-color); }
 
         /* Paginação */
         .pagination-container {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
             background-color: #f8fafc;
         }
 
         .page-link {
-            border-radius: 6px;
+            border-radius: 8px;
             margin: 0 2px;
             border: 1px solid #e2e8f0;
             color: #475569;
-            padding: 0.5rem 0.75rem;
+            padding: 0.625rem 0.875rem;
+            font-weight: 500;
         }
 
         .page-link:hover {
@@ -245,7 +361,7 @@
         }
 
         .page-item.active .page-link {
-            background-color: var(--primary-color);
+            background: var(--gradient-primary);
             border-color: var(--primary-color);
         }
 
@@ -253,20 +369,33 @@
         .user-dropdown .dropdown-toggle {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .user-dropdown .dropdown-toggle:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
         }
 
         .user-dropdown .dropdown-menu {
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            box-shadow: var(--hover-shadow);
             border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 0.5rem;
         }
 
         .user-dropdown .dropdown-item {
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         .user-dropdown .dropdown-item:hover {
@@ -275,21 +404,21 @@
 
         /* Estados Vazios */
         .empty-state {
-            padding: 3rem 1.5rem;
+            padding: 4rem 2rem;
             text-align: center;
             color: #64748b;
         }
 
         .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
             .app-container {
-                padding: 1rem;
+                padding: 0.75rem;
             }
 
             .app-header {
@@ -297,11 +426,16 @@
             }
 
             .toolbar-section {
-                padding: 1.25rem;
+                padding: 1.5rem;
             }
 
             .data-table-header {
-                padding: 1rem;
+                padding: 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .btn-group-responsive {
@@ -319,36 +453,68 @@
 
             .action-buttons {
                 display: flex;
-                gap: 0.25rem;
+                gap: 0.375rem;
             }
         }
 
         /* IDs Indisponíveis */
         .id-indisponivel {
-            color: #dc3545;
+            color: #dc2626;
             font-style: italic;
             font-size: 0.875rem;
+            background: rgba(220, 38, 38, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
         }
 
         /* Modais */
         .modal-content {
-            border-radius: 12px;
+            border-radius: 16px;
             border: none;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: var(--hover-shadow);
+            overflow: hidden;
         }
 
         .modal-header {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .modal-title {
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .modal-body {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .modal-footer {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Formulários */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
         }
 
         /* Loading States */
@@ -358,50 +524,97 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            border-radius: 12px;
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .spinner-modern {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
 
 <body>
-    <div class="app-container">
+    <div class="app-container fade-in">
         <!-- Cabeçalho Modernizado -->
         <div class="app-header">
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h1 class="app-title">
-                        <i class="bi bi-database me-2 text-primary"></i>UNB - Gerenciamento de Bens
+                        <i class="bi bi-building me-2"></i>UNB - Gestão Patrimonial
                     </h1>
-                    <p class="app-subtitle">Gerencie todos os bens do patrimônio de forma eficiente</p>
+                    <p class="app-subtitle">Sistema integrado de controle e gerenciamento de bens patrimoniais</p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <div class="d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
+                    <div class="d-flex align-items-center justify-content-md-end gap-3 flex-wrap">
                         <!-- Botão Início -->
                         <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-modern">
-                            <i class="bi bi-house me-1"></i>Início
+                            <i class="bi bi-house"></i>
+                            <span class="d-none d-md-inline">Início</span>
                         </a>
 
                         <!-- Dropdown do Usuário -->
                         <div class="dropdown user-dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle btn-modern" type="button"
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-1"></i>
-                                {% if session.usuario_nome %}
-                                {{ session.usuario_nome }}
-                                {% else %}
-                                Usuário
-                                {% endif %}
+                                <i class="bi bi-person-circle"></i>
+                                <span class="d-none d-md-inline">
+                                    {% if session.usuario_nome %}
+                                    {{ session.usuario_nome }}
+                                    {% else %}
+                                    Usuário
+                                    {% endif %}
+                                </span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
                                 <li>
                                     <span class="dropdown-item-text">
                                         <small class="text-muted">
-                                            <i class="bi bi-envelope me-1"></i>
+                                            <i class="bi bi-envelope me-2"></i>
                                             {% if session.usuario_email %}
                                             {{ session.usuario_email }}
                                             {% else %}
@@ -410,9 +623,7 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('index') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -421,18 +632,16 @@
                                 {% if session.usuario_tipo == 'admin' %}
                                 <li>
                                     <a class="dropdown-item" href="#">
-                                        <i class="bi bi-person-plus me-2"></i>Cadastrar Usuário (Em breve)
+                                        <i class="bi bi-person-plus me-2"></i>Cadastrar Usuário
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
-                                        <i class="bi bi-people me-2"></i>Gerenciar Usuários (Em breve)
+                                        <i class="bi bi-people me-2"></i>Gerenciar Usuários
                                     </a>
                                 </li>
                                 {% endif %}
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -445,50 +654,41 @@
             </div>
         </div>
 
-        <!-- Estatísticas -->
-        <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-                <div class="card stats-card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h4 class="card-title">{{ total_count|number_format }}</h4>
-                                <p class="card-text">Total de Bens</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-box-seam fa-2x opacity-75"></i>
-                            </div>
-                        </div>
+        <!-- Estatísticas em Grid -->
+        <div class="stats-grid">
+            <div class="stats-card total">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                    <h3 class="card-title">{{ total_count|number_format }}</h3>
+                    <p class="card-text">Total de Bens Cadastrados</p>
+                    <div class="progress" style="height: 4px; background: rgba(37, 99, 235, 0.2);">
+                        <div class="progress-bar" style="width: 100%; background: var(--primary-color);"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card stats-card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h4 class="card-title">{{ localizados_count|number_format }}</h4>
-                                <p class="card-text">Bens Localizados</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-check-circle fa-2x opacity-75"></i>
-                            </div>
-                        </div>
+            <div class="stats-card localizados">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <h3 class="card-title">{{ localizados_count|number_format }}</h3>
+                    <p class="card-text">Bens Localizados</p>
+                    <div class="progress" style="height: 4px; background: rgba(5, 150, 105, 0.2);">
+                        <div class="progress-bar" style="width: {{ (localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--success-color);"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card stats-card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h4 class="card-title">{{ nao_localizados_count|number_format }}</h4>
-                                <p class="card-text">Bens Pendentes</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-clock fa-2x opacity-75"></i>
-                            </div>
-                        </div>
+            <div class="stats-card pendentes">
+                <div class="card-body">
+                    <div class="card-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <h3 class="card-title">{{ nao_localizados_count|number_format }}</h3>
+                    <p class="card-text">Bens Pendentes</p>
+                    <div class="progress" style="height: 4px; background: rgba(217, 119, 6, 0.2);">
+                        <div class="progress-bar" style="width: {{ (nao_localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--warning-color);"></div>
                     </div>
                 </div>
             </div>
@@ -499,7 +699,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 mb-3 mb-lg-0">
                     <!-- Busca -->
-                    <form method="GET" class="row g-2">
+                    <form method="GET" class="row g-3">
                         <div class="col-md-5">
                             <div class="search-container">
                                 <div class="input-group">
@@ -531,36 +731,40 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary w-100 btn-modern">
-                                <i class="bi bi-search me-1"></i>Buscar
+                            <button type="submit" class="btn btn-primary-modern w-100 btn-modern">
+                                <i class="bi bi-search"></i>
+                                <span class="d-none d-md-inline">Buscar</span>
                             </button>
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-                        <button type="button" class="btn btn-success btn-modern" id="btnNovoBem">
-                            <i class="bi bi-plus-circle me-1"></i>Novo Bem
+                        <button type="button" class="btn btn-success-modern btn-modern" id="btnNovoBem">
+                            <i class="bi bi-plus-circle"></i>
+                            <span class="d-none d-md-inline">Novo Bem</span>
                         </button>
                         <div class="btn-group btn-group-responsive">
                             <a href="{{ url_for('exportar', tipo='localizados') }}"
                                 class="btn btn-outline-primary btn-modern">
-                                <i class="bi bi-download me-1"></i>Localizados
+                                <i class="bi bi-download"></i>
+                                <span class="d-none d-md-inline">Localizados</span>
                             </a>
                             <a href="{{ url_for('exportar', tipo='nao-localizados') }}"
                                 class="btn btn-outline-warning btn-modern">
-                                <i class="bi bi-download me-1"></i>Pendentes
+                                <i class="bi bi-download"></i>
+                                <span class="d-none d-md-inline">Pendentes</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Filtros CORRIGIDOS -->
+            <!-- Filtros -->
             <div class="row mt-3">
                 <div class="col">
-                    <div class="d-flex flex-wrap align-items-center gap-2">
-                        <span class="text-muted small">Filtrar por situação:</span>
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <span class="text-muted small fw-600">Filtrar por situação:</span>
                         <div class="btn-group">
                             <a href="{{ url_for('sistema_crud', q=termo_busca, responsavel=request.args.get('responsavel', '')) }}"
                                 class="btn btn-sm btn-outline-secondary {{ 'active' if not request.args.get('situacao') }}">
@@ -610,8 +814,8 @@
         <div class="data-table-container">
             <div class="data-table-header">
                 <h5 class="data-table-title">
-                    <i class="bi bi-list me-1 text-primary"></i>
-                    Lista de Bens
+                    <i class="bi bi-table"></i>
+                    Lista de Bens Patrimoniais
                     {% if request.args.get('situacao') == 'OK' %}
                     <span class="badge bg-success ms-2">Localizados</span>
                     {% elif request.args.get('situacao') == 'Pendente' %}
@@ -628,7 +832,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Número</th>
-                            <th>Nome</th>
+                            <th>Nome do Bem</th>
                             <th>Situação</th>
                             <th>Localização</th>
                             <th>Responsável</th>
@@ -643,75 +847,74 @@
                         <tr>
                             <td>
                                 {% if bem.id and bem.id != 'None' and bem.id != 'null' and bem.id != '' %}
-                                <strong>#{{ bem.id }}</strong>
+                                <strong class="text-primary">#{{ bem.id }}</strong>
                                 {% else %}
-                                <span class="id-indisponivel" title="ID não disponível - Problema na consulta SQL">
-                                    #---<br><small>Sem ID</small>
+                                <span class="id-indisponivel" title="ID não disponível">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>Sem ID
                                 </span>
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="font-monospace fw-bold">{{ bem.numero }}</span>
+                                <span class="font-monospace fw-bold text-dark">{{ bem.numero }}</span>
                             </td>
-                            <td>{{ bem.nome }}</td>
+                            <td>
+                                <span class="fw-600">{{ bem.nome }}</span>
+                            </td>
                             <td>
                                 {% if bem.situacao == 'Localizado' or bem.situacao == 'OK' %}
-                                <span class="badge bg-success badge-status">
+                                <span class="badge-status bg-success text-white">
                                     <i class="bi bi-check-circle me-1"></i>Localizado
                                 </span>
                                 {% else %}
-                                <span class="badge bg-warning badge-status">
+                                <span class="badge-status bg-warning text-dark">
                                     <i class="bi bi-clock me-1"></i>Pendente
                                 </span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.localizacao %}
-                                <span class="text-success">{{ bem.localizacao }}</span>
+                                <span class="text-success fw-500">{{ bem.localizacao }}</span>
                                 {% else %}
                                 <span class="text-muted">Não informada</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.responsavel %}
-                                {{ bem.responsavel }}
+                                <span class="fw-500">{{ bem.responsavel }}</span>
                                 {% else %}
                                 <span class="text-muted">Não informado</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.observacao %}
-                                <span class="text-info">{{ bem.observacao|truncate(30) }}</span>
+                                <span class="text-info" title="{{ bem.observacao }}">{{ bem.observacao|truncate(30) }}</span>
                                 {% else %}
                                 <span class="text-muted">-</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.auditor %}
-                                <span class="text-primary">{{ bem.auditor }}</span>
+                                <span class="text-primary fw-500">{{ bem.auditor }}</span>
                                 {% else %}
                                 <span class="text-muted">-</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if bem.data_criacao %}
-                                {{ bem.data_criacao[:10] }}
+                                <small class="text-muted">{{ bem.data_criacao[:10] }}</small>
                                 {% else %}
                                 <span class="text-muted">N/A</span>
                                 {% endif %}
                             </td>
-                            <td class="action-buttons text-center">
+                            <td class="action-buttons">
                                 {% if bem.id %}
-                                <button class="btn btn-sm btn-outline-primary action-btn"
-                                    onclick="editarBem({{ bem.id }})" title="Editar">
+                                <button class="action-btn edit" onclick="editarBem({{ bem.id }})" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-info action-btn"
-                                    onclick="visualizarBem({{ bem.id }})" title="Visualizar">
+                                <button class="action-btn view" onclick="visualizarBem({{ bem.id }})" title="Visualizar">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger action-btn"
-                                    onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
+                                <button class="action-btn delete" onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 {% else %}
@@ -725,7 +928,7 @@
                         <tr>
                             <td colspan="10" class="empty-state">
                                 <i class="bi bi-inbox"></i>
-                                <p class="mb-2">Nenhum bem encontrado</p>
+                                <h5 class="mb-2">Nenhum bem encontrado</h5>
                                 <small class="text-muted mb-3 d-block">
                                     {% if termo_busca or request.args.get('situacao') %}
                                     Tente ajustar os filtros ou buscar por outros termos
@@ -734,7 +937,7 @@
                                     {% endif %}
                                 </small>
                                 {% if termo_busca or request.args.get('situacao') %}
-                                <a href="{{ url_for('sistema_crud') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ url_for('sistema_crud') }}" class="btn btn-primary-modern btn-modern">
                                     <i class="bi bi-x-circle me-1"></i>Limpar filtros
                                 </a>
                                 {% endif %}
@@ -810,7 +1013,9 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalBemTitle">Detalhes do Bem</h5>
+                    <h5 class="modal-title" id="modalBemTitle">
+                        <i class="bi bi-box-seam me-2"></i>Detalhes do Bem
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
@@ -879,17 +1084,19 @@
                                 placeholder="Observações adicionais sobre o bem"></textarea>
                         </div>
 
-                        <div class="alert alert-info">
+                        <div class="alert alert-info border-0 bg-light">
                             <small>
-                                <i class="bi bi-info-circle me-1"></i>
+                                <i class="bi bi-info-circle me-2"></i>
                                 Campos marcados com * são obrigatórios. O número do bem deve ser único no sistema.
                             </small>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="btnSalvar" onclick="salvarBem()">
+                    <button type="button" class="btn btn-secondary btn-modern" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Fechar
+                    </button>
+                    <button type="button" class="btn btn-primary-modern btn-modern" id="btnSalvar" onclick="salvarBem()">
                         <i class="bi bi-check-circle me-1"></i>Salvar Alterações
                     </button>
                 </div>
@@ -902,21 +1109,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <h5 class="modal-title text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Exclusão
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
                         <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                     </div>
-                    <p>Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?</p>
-                    <p class="text-danger"><small>Esta ação não pode ser desfeita.</small></p>
+                    <p class="text-center">Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?</p>
+                    <p class="text-danger text-center"><small>Esta ação não pode ser desfeita.</small></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary btn-modern" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i>Cancelar
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">
+                    <button type="button" class="btn btn-danger btn-modern" id="btnConfirmarExclusao">
                         <i class="bi bi-trash me-1"></i>Excluir
                     </button>
                 </div>
@@ -926,449 +1135,454 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        console.log("=== SISTEMA CRUD MODERNO INICIADO ===");
 
-<script>
-    console.log("=== SISTEMA CRUD INICIADO - VERSÃO CORRIGIDA ===");
+        // VARIÁVEIS GLOBAIS
+        let bemIdParaExcluir = null;
+        let modalBemInstance = null;
 
-    console.log("=== SISTEMA CRUD INICIADO ===");
-
-// === FIM DA FUNÇÃO ADICIONADA ===
-
-    // VARIÁVEIS GLOBAIS
-    let bemIdParaExcluir = null;
-    let modalBemInstance = null;
-
-    // FUNÇÃO PARA DETECTAR URL BASE - CORRIGIDA
-    function getBaseUrl() {
-        // SEMPRE usar /estoque no servidor
-        if (window.location.hostname === '164.41.170.85') {
-            return 'https://164.41.170.85/estoque';
-        } else {
-            return window.location.origin;
-        }
-    }
-
-    // Inicialização quando o DOM estiver carregado
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log("✅ Sistema CRUD carregado com sucesso!");
-        console.log("📍 URL Base:", getBaseUrl());
-        console.log("🌐 Hostname:", window.location.hostname);
-
-        // Inicializar instância do modal
-        const modalElement = document.getElementById('modalBem');
-        if (modalElement) {
-            modalBemInstance = new bootstrap.Modal(modalElement);
+        // FUNÇÃO ÚNICA PARA DETECTAR URL BASE - CORRIGIDA
+        function getBaseUrl() {
+            console.log("🔧 getBaseUrl() executado - Hostname:", window.location.hostname);
+            
+            // SEMPRE usar /estoque no servidor
+            if (window.location.hostname === '164.41.170.85') {
+                return 'https://164.41.170.85/estoque';
+            } else {
+                return window.location.origin;
+            }
         }
 
-        // Adicionar event listener para o botão Novo Bem
-        const btnNovoBem = document.getElementById('btnNovoBem');
-        if (btnNovoBem) {
-            btnNovoBem.addEventListener('click', abrirModalNovoBem);
-        }
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("✅ Sistema CRUD Moderno carregado com sucesso!");
+            console.log("📍 URL Base:", getBaseUrl());
+            console.log("🌐 Hostname:", window.location.hostname);
 
-        // Adicionar event listener para o botão de confirmação de exclusão
-        const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
-        if (btnConfirmarExclusao) {
-            btnConfirmarExclusao.addEventListener('click', executarExclusao);
-        }
-
-        // Teste automático
-        testarConexaoAPI();
-    });
-
-    // TESTE DE CONEXÃO
-    function testarConexaoAPI() {
-        const baseUrl = getBaseUrl();
-        const testUrl = `${baseUrl}/api/bens/769`;
-        console.log("🧪 Testando URL:", testUrl);
-        
-        fetch(testUrl)
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Teste API:", data.success ? "FUNCIONANDO" : "FALHOU");
-            })
-            .catch(error => {
-                console.error("❌ Teste API FALHOU:", error);
-            });
-    }
-
-    // FUNÇÃO PARA NOVO BEM
-    function abrirModalNovoBem(event) {
-        if (event) event.preventDefault();
-        console.log("➕ ABRINDO MODAL PARA NOVO BEM");
-
-        try {
-            // Resetar o formulário e limpar todos os campos
-            const form = document.getElementById('formBem');
-            if (form) {
-                form.reset();
+            // Inicializar instância do modal
+            const modalElement = document.getElementById('modalBem');
+            if (modalElement) {
+                modalBemInstance = new bootstrap.Modal(modalElement);
             }
 
-            // Limpar campos específicos
-            document.getElementById('modalBemTitle').textContent = 'Novo Bem';
-            document.getElementById('bemId').value = '';
-            document.getElementById('numero').value = '';
-            document.getElementById('nome').value = '';
-            document.getElementById('localizacao').value = '';
-            document.getElementById('responsavel').value = '';
-            document.getElementById('auditor').value = '';
-            document.getElementById('observacao').value = '';
-            document.getElementById('situacao').value = 'Pendente';
+            // Adicionar event listener para o botão Novo Bem
+            const btnNovoBem = document.getElementById('btnNovoBem');
+            if (btnNovoBem) {
+                btnNovoBem.addEventListener('click', abrirModalNovoBem);
+            }
 
-            // Habilitar todos os campos para edição
+            // Adicionar event listener para o botão de confirmação de exclusão
+            const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
+            if (btnConfirmarExclusao) {
+                btnConfirmarExclusao.addEventListener('click', executarExclusao);
+            }
+
+            // Teste automático da API
+            testarConexaoAPI();
+        });
+
+        // TESTE DE CONEXÃO
+        function testarConexaoAPI() {
+            const baseUrl = getBaseUrl();
+            const testUrl = `${baseUrl}/api/bens/769`;
+            console.log("🧪 Testando URL:", testUrl);
+            
+            fetch(testUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("✅ Teste API:", data.success ? "FUNCIONANDO" : "FALHOU");
+                })
+                .catch(error => {
+                    console.error("❌ Teste API FALHOU:", error);
+                });
+        }
+
+        // FUNÇÃO PARA NOVO BEM
+        function abrirModalNovoBem(event) {
+            if (event) event.preventDefault();
+            console.log("➕ ABRINDO MODAL PARA NOVO BEM");
+
+            try {
+                // Resetar o formulário e limpar todos os campos
+                const form = document.getElementById('formBem');
+                if (form) {
+                    form.reset();
+                }
+
+                // Limpar campos específicos
+                document.getElementById('modalBemTitle').innerHTML = '<i class="bi bi-plus-circle me-2"></i>Novo Bem';
+                document.getElementById('bemId').value = '';
+                document.getElementById('numero').value = '';
+                document.getElementById('nome').value = '';
+                document.getElementById('localizacao').value = '';
+                document.getElementById('responsavel').value = '';
+                document.getElementById('auditor').value = '';
+                document.getElementById('observacao').value = '';
+                document.getElementById('situacao').value = 'Pendente';
+
+                // Habilitar todos os campos para edição
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    input.readOnly = false;
+                });
+
+                document.getElementById('btnSalvar').style.display = 'block';
+
+                // Abrir o modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
+                    console.log("✅ Modal Novo Bem aberto com sucesso");
+                } else {
+                    console.error("❌ Instância do modal não disponível");
+                }
+            } catch (error) {
+                console.error("💥 Erro ao abrir modal novo bem:", error);
+                alert("Erro ao abrir formulário de novo bem: " + error.message);
+            }
+        }
+
+        // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
+        function editarBem(bemId) {
+            console.log("🎯 EDITAR BEM - ID:", bemId);
+
+            if (!bemId) {
+                alert("ERRO: ID do bem inválido.");
+                return;
+            }
+
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<div class="spinner-modern me-2"></div> Carregando...';
+            btnSalvar.disabled = true;
+
+            // ✅ URL CORRETA - USANDO BASE URL ✅
+            const baseUrl = getBaseUrl();
+            const rota = `${baseUrl}/api/bens/${bemId}`;
+            
+            console.log(`📡 Buscando dados via: ${rota}`);
+
+            fetch(rota)
+                .then(response => {
+                    console.log("📡 Status:", response.status);
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("📊 Dados COMPLETOS recebidos:", data);
+
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
+                    if (data.success && data.data) {
+                        preencherModalEdicao(data.data);
+                    } else {
+                        console.error("❌ Erro na resposta:", data);
+                        alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
+                    }
+                })
+                .catch(error => {
+                    console.error("💥 Erro ao buscar bem:", error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro ao carregar dados do bem: " + error.message);
+                });
+        }
+
+        // FUNÇÃO PARA VISUALIZAR - CORRIGIDA
+        function visualizarBem(bemId) {
+            console.log("👁️ VISUALIZAR BEM - ID:", bemId);
+
+            if (!bemId) {
+                alert("ID do bem inválido.");
+                return;
+            }
+
+            // Mostrar loading
+            const btnSalvar = document.getElementById('btnSalvar');
+            const originalText = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<div class="spinner-modern me-2"></div> Carregando...';
+            btnSalvar.disabled = true;
+
+            // ✅ URL CORRETA - USANDO BASE URL ✅
+            const baseUrl = getBaseUrl();
+            const rota = `${baseUrl}/api/bens/${bemId}`;
+            console.log(`📡 Buscando dados para visualização via: ${rota}`);
+
+            fetch(rota)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+
+                    if (data.success && data.data) {
+                        preencherModalVisualizacao(data.data);
+                    } else {
+                        alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
+                    }
+                })
+                .catch(error => {
+                    console.error("💥 Erro ao buscar bem para visualização:", error);
+                    // Restaurar botão
+                    btnSalvar.innerHTML = originalText;
+                    btnSalvar.disabled = false;
+                    alert("❌ Erro ao carregar dados do bem: " + error.message);
+                });
+        }
+
+        // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
+        function preencherModalEdicao(bem) {
+            console.log("📝 Preenchendo modal de EDIÇÃO com:", bem);
+
+            if (!bem) {
+                alert("Dados do bem não recebidos");
+                return;
+            }
+
+            try {
+                // Preencher todos os campos
+                document.getElementById('modalBemTitle').innerHTML = `<i class="bi bi-pencil me-2"></i>Editar Bem: ${bem.nome || 'Sem nome'}`;
+                document.getElementById('bemId').value = bem.id || '';
+                document.getElementById('numero').value = bem.numero || '';
+                document.getElementById('nome').value = bem.nome || '';
+                document.getElementById('situacao').value = bem.situacao || 'Pendente';
+                document.getElementById('localizacao').value = bem.localizacao || '';
+                document.getElementById('responsavel').value = bem.responsavel || '';
+                document.getElementById('auditor').value = bem.auditor || '';
+                document.getElementById('observacao').value = bem.observacao || '';
+
+                // Habilitar campos para edição (número como readonly)
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    if (input.id === 'numero') {
+                        input.readOnly = true; // Número não pode ser alterado na edição
+                    }
+                });
+                document.getElementById('btnSalvar').style.display = 'block';
+
+                // Abrir modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
+                }
+            } catch (error) {
+                console.error("💥 Erro ao preencher modal de edição:", error);
+                alert("Erro ao carregar formulário de edição: " + error.message);
+            }
+        }
+
+        // FUNÇÃO SALVAR BEM - CORRIGIDA
+        async function salvarBem() {
+            console.log("💾 INICIANDO SALVAMENTO DO BEM");
+
+            // Coletar dados diretamente dos campos do formulário
+            const bemId = document.getElementById('bemId').value;
+            const dados = {
+                numero: document.getElementById('numero').value,
+                nome: document.getElementById('nome').value,
+                situacao: document.getElementById('situacao').value,
+                localizacao: document.getElementById('localizacao').value,
+                responsavel: document.getElementById('responsavel').value,
+                auditor: document.getElementById('auditor').value,
+                observacao: document.getElementById('observacao').value
+            };
+
+            // Adicionar ID se estiver editando
+            if (bemId) {
+                dados.id = bemId;
+            }
+
+            console.log("📤 Dados a serem enviados:", dados);
+
+            // Validar campos obrigatórios
+            if (!dados.numero || !dados.nome) {
+                alert("❌ Campos obrigatórios: Número e Nome do Bem devem ser preenchidos.");
+                return;
+            }
+
+            try {
+                let method;
+                let url;
+
+                // Mostrar loading no botão
+                const btnSalvar = document.getElementById('btnSalvar');
+                const originalText = btnSalvar.innerHTML;
+                btnSalvar.innerHTML = '<div class="spinner-modern me-2"></div> Salvando...';
+                btnSalvar.disabled = true;
+
+                const baseUrl = getBaseUrl();
+
+                if (bemId) {
+                    // EDIÇÃO - URL CORRETA
+                    method = 'PUT';
+                    url = `${baseUrl}/api/bens/${bemId}`;
+                } else {
+                    // NOVO BEM - URL CORRETA
+                    method = 'POST';
+                    url = `${baseUrl}/api/bens`;
+                }
+
+                console.log(`📤 Enviando ${method} para ${url}`);
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("✅ " + result.message);
+                    if (modalBemInstance) {
+                        modalBemInstance.hide();
+                    }
+                    // Recarregar a página para mostrar os dados atualizados
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alert("❌ Erro: " + result.message);
+                }
+            } catch (error) {
+                console.error("💥 Erro ao salvar:", error);
+                alert("❌ Erro: " + error.message);
+            } finally {
+                // Restaurar botão
+                const btnSalvar = document.getElementById('btnSalvar');
+                if (btnSalvar) {
+                    btnSalvar.innerHTML = '<i class="bi bi-check-circle me-1"></i>Salvar Alterações';
+                    btnSalvar.disabled = false;
+                }
+            }
+        }
+
+        // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO
+        function preencherModalVisualizacao(bem) {
+            console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
+
+            if (!bem) {
+                alert("Dados do bem não recebidos");
+                return;
+            }
+
+            try {
+                // Preencher todos os campos
+                document.getElementById('modalBemTitle').innerHTML = `<i class="bi bi-eye me-2"></i>Visualizar Bem: ${bem.nome || 'Sem nome'}`;
+                document.getElementById('bemId').value = bem.id || '';
+                document.getElementById('numero').value = bem.numero || '';
+                document.getElementById('nome').value = bem.nome || '';
+                document.getElementById('situacao').value = bem.situacao || 'Pendente';
+                document.getElementById('localizacao').value = bem.localizacao || '';
+                document.getElementById('responsavel').value = bem.responsavel || '';
+                document.getElementById('auditor').value = bem.auditor || '';
+                document.getElementById('observacao').value = bem.observacao || '';
+
+                // Desabilitar campos para visualização
+                const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
+                inputs.forEach(input => input.disabled = true);
+                document.getElementById('btnSalvar').style.display = 'none';
+
+                // Abrir modal
+                if (modalBemInstance) {
+                    modalBemInstance.show();
+                }
+            } catch (error) {
+                console.error("💥 Erro ao preencher modal de visualização:", error);
+                alert("Erro ao carregar formulário de visualização: " + error.message);
+            }
+        }
+
+        // FUNÇÕES DE EXCLUSÃO
+        function confirmarExclusao(bemId, nomeBem) {
+            console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
+            bemIdParaExcluir = bemId;
+            document.getElementById('nomeBemExcluir').textContent = nomeBem || 'Este bem';
+
+            const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
+            modalConfirmacao.show();
+        }
+
+        // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
+        async function executarExclusao() {
+            if (!bemIdParaExcluir) return;
+
+            try {
+                const baseUrl = getBaseUrl();
+                const url = `${baseUrl}/api/bens/${bemIdParaExcluir}`;
+                console.log(`🗑️ Executando DELETE para ${url}`);
+
+                const response = await fetch(url, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("✅ " + result.message);
+                    const modalConfirmacao = bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao'));
+                    if (modalConfirmacao) {
+                        modalConfirmacao.hide();
+                    }
+                    // Recarregar a página
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alert("❌ Erro: " + result.message);
+                }
+            } catch (error) {
+                console.error("💥 Erro ao excluir:", error);
+                alert("❌ Erro: " + error.message);
+            }
+        }
+
+        // Reativar campos quando modal fechar
+        document.getElementById('modalBem').addEventListener('hidden.bs.modal', function () {
             const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
             inputs.forEach(input => {
                 input.disabled = false;
                 input.readOnly = false;
             });
-
             document.getElementById('btnSalvar').style.display = 'block';
+        });
 
-            // Abrir o modal
-            if (modalBemInstance) {
-                modalBemInstance.show();
-                console.log("✅ Modal Novo Bem aberto com sucesso");
-            } else {
-                console.error("❌ Instância do modal não disponível");
-            }
-        } catch (error) {
-            console.error("💥 Erro ao abrir modal novo bem:", error);
-            alert("Erro ao abrir formulário de novo bem: " + error.message);
-        }
-    }
-
-    // FUNÇÃO PRINCIPAL PARA EDITAR POR ID - CORRIGIDA
-    function editarBem(bemId) {
-        console.log("🎯 EDITAR BEM - ID:", bemId);
-
-        if (!bemId) {
-            alert("ERRO: ID do bem inválido.");
-            return;
-        }
-
-        // Mostrar loading
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-        btnSalvar.disabled = true;
-
-        // ✅✅✅ URL CORRETA - USANDO BASE URL ✅✅✅
-        const baseUrl = getBaseUrl();
-        const rota = `${baseUrl}/api/bens/${bemId}`;
-        
-        console.log(`📡 Buscando dados via: ${rota}`);
-
-        fetch(rota)
-            .then(response => {
-                console.log("📡 Status:", response.status);
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("📊 Dados COMPLETOS recebidos:", data);
-
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-
-                if (data.success && data.data) {
-                    preencherModalEdicao(data.data);
-                } else {
-                    console.error("❌ Erro na resposta:", data);
-                    alert("Erro: " + (data.message || "Não foi possível carregar os dados do bem."));
-                }
-            })
-            .catch(error => {
-                console.error("💥 Erro ao buscar bem:", error);
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-                alert("❌ Erro ao carregar dados do bem: " + error.message);
-            });
-    }
-
-    // FUNÇÃO PARA VISUALIZAR - CORRIGIDA
-    function visualizarBem(bemId) {
-        console.log("👁️ VISUALIZAR BEM - ID:", bemId);
-
-        if (!bemId) {
-            alert("ID do bem inválido.");
-            return;
-        }
-
-        // Mostrar loading
-        const btnSalvar = document.getElementById('btnSalvar');
-        const originalText = btnSalvar.innerHTML;
-        btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Carregando...';
-        btnSalvar.disabled = true;
-
-        // ✅✅✅ URL CORRETA - USANDO BASE URL ✅✅✅
-        const baseUrl = getBaseUrl();
-        const rota = `${baseUrl}/api/bens/${bemId}`;
-        console.log(`📡 Buscando dados para visualização via: ${rota}`);
-
-        fetch(rota)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-
-                if (data.success && data.data) {
-                    preencherModalVisualizacao(data.data);
-                } else {
-                    alert("Erro: " + (data.message || "Não foi possível carregar os dados para visualização."));
-                }
-            })
-            .catch(error => {
-                console.error("💥 Erro ao buscar bem para visualização:", error);
-                // Restaurar botão
-                btnSalvar.innerHTML = originalText;
-                btnSalvar.disabled = false;
-                alert("❌ Erro ao carregar dados do bem: " + error.message);
-            });
-    }
-
-    // FUNÇÃO PARA PREENCHER MODAL DE EDIÇÃO
-    function preencherModalEdicao(bem) {
-        console.log("📝 Preenchendo modal de EDIÇÃO com:", bem);
-
-        if (!bem) {
-            alert("Dados do bem não recebidos");
-            return;
-        }
-
-        try {
-            // Preencher todos os campos
-            document.getElementById('modalBemTitle').textContent = `Editar Bem: ${bem.nome || 'Sem nome'}`;
-            document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('numero').value = bem.numero || '';
-            document.getElementById('nome').value = bem.nome || '';
-            document.getElementById('situacao').value = bem.situacao || 'Pendente';
-            document.getElementById('localizacao').value = bem.localizacao || '';
-            document.getElementById('responsavel').value = bem.responsavel || '';
-            document.getElementById('auditor').value = bem.auditor || '';
-            document.getElementById('observacao').value = bem.observacao || '';
-
-            // Habilitar campos para edição (número como readonly)
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => {
-                input.disabled = false;
-                if (input.id === 'numero') {
-                    input.readOnly = true; // Número não pode ser alterado na edição
-                }
-            });
-            document.getElementById('btnSalvar').style.display = 'block';
-
-            // Abrir modal
-            if (modalBemInstance) {
-                modalBemInstance.show();
-            }
-        } catch (error) {
-            console.error("💥 Erro ao preencher modal de edição:", error);
-            alert("Erro ao carregar formulário de edição: " + error.message);
-        }
-    }
-
-    // FUNÇÃO SALVAR BEM - CORRIGIDA
-    async function salvarBem() {
-        console.log("💾 INICIANDO SALVAMENTO DO BEM");
-
-        // Coletar dados diretamente dos campos do formulário
-        const bemId = document.getElementById('bemId').value;
-        const dados = {
-            numero: document.getElementById('numero').value,
-            nome: document.getElementById('nome').value,
-            situacao: document.getElementById('situacao').value,
-            localizacao: document.getElementById('localizacao').value,
-            responsavel: document.getElementById('responsavel').value,
-            auditor: document.getElementById('auditor').value,
-            observacao: document.getElementById('observacao').value
+        // DEBUG FUNCTION
+        window.debugAPI = function() {
+            console.log("=== DEBUG ===");
+            console.log("📍 getBaseUrl():", getBaseUrl());
+            console.log("🌐 Location:", window.location.href);
+            console.log("🧪 Exemplo URL:", getBaseUrl() + '/api/bens/769');
         };
 
-        // Adicionar ID se estiver editando
-        if (bemId) {
-            dados.id = bemId;
-        }
-
-        console.log("📤 Dados a serem enviados:", dados);
-
-        // Validar campos obrigatórios
-        if (!dados.numero || !dados.nome) {
-            alert("❌ Campos obrigatórios: Número e Nome do Bem devem ser preenchidos.");
-            return;
-        }
-
-        try {
-            let method;
-            let url;
-
-            // Mostrar loading no botão
-            const btnSalvar = document.getElementById('btnSalvar');
-            const originalText = btnSalvar.innerHTML;
-            btnSalvar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Salvando...';
-            btnSalvar.disabled = true;
-
-            const baseUrl = getBaseUrl();
-
-            if (bemId) {
-                // EDIÇÃO - URL CORRETA
-                method = 'PUT';
-                url = `${baseUrl}/api/bens/${bemId}`;
-            } else {
-                // NOVO BEM - URL CORRETA
-                method = 'POST';
-                url = `${baseUrl}/api/bens`;
-            }
-
-            console.log(`📤 Enviando ${method} para ${url}`);
-
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(dados)
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                alert("✅ " + result.message);
-                if (modalBemInstance) {
-                    modalBemInstance.hide();
+        // Service Worker cleanup
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log('ServiceWorker unregistered');
                 }
-                // Recarregar a página para mostrar os dados atualizados
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            } else {
-                alert("❌ Erro: " + result.message);
-            }
-        } catch (error) {
-            console.error("💥 Erro ao salvar:", error);
-            alert("❌ Erro: " + error.message);
-        } finally {
-            // Restaurar botão
-            const btnSalvar = document.getElementById('btnSalvar');
-            if (btnSalvar) {
-                btnSalvar.innerHTML = 'Salvar Alterações';
-                btnSalvar.disabled = false;
-            }
-        }
-    }
-
-    // FUNÇÃO PARA PREENCHER MODAL DE VISUALIZAÇÃO
-    function preencherModalVisualizacao(bem) {
-        console.log("👀 Preenchendo modal de VISUALIZAÇÃO com:", bem);
-
-        if (!bem) {
-            alert("Dados do bem não recebidos");
-            return;
-        }
-
-        try {
-            // Preencher todos os campos
-            document.getElementById('modalBemTitle').textContent = `Visualizar Bem: ${bem.nome || 'Sem nome'}`;
-            document.getElementById('bemId').value = bem.id || '';
-            document.getElementById('numero').value = bem.numero || '';
-            document.getElementById('nome').value = bem.nome || '';
-            document.getElementById('situacao').value = bem.situacao || 'Pendente';
-            document.getElementById('localizacao').value = bem.localizacao || '';
-            document.getElementById('responsavel').value = bem.responsavel || '';
-            document.getElementById('auditor').value = bem.auditor || '';
-            document.getElementById('observacao').value = bem.observacao || '';
-
-            // Desabilitar campos para visualização
-            const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-            inputs.forEach(input => input.disabled = true);
-            document.getElementById('btnSalvar').style.display = 'none';
-
-            // Abrir modal
-            if (modalBemInstance) {
-                modalBemInstance.show();
-            }
-        } catch (error) {
-            console.error("💥 Erro ao preencher modal de visualização:", error);
-            alert("Erro ao carregar formulário de visualização: " + error.message);
-        }
-    }
-
-    // FUNÇÕES DE EXCLUSÃO
-    function confirmarExclusao(bemId, nomeBem) {
-        console.log("🗑️ EXCLUIR BEM - ID:", bemId, "Nome:", nomeBem);
-        bemIdParaExcluir = bemId;
-        document.getElementById('nomeBemExcluir').textContent = nomeBem || 'Este bem';
-
-        const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
-        modalConfirmacao.show();
-    }
-
-    // FUNÇÃO SEPARADA PARA EXECUTAR A EXCLUSÃO
-    async function executarExclusao() {
-        if (!bemIdParaExcluir) return;
-
-        try {
-            const baseUrl = getBaseUrl();
-            const url = `${baseUrl}/api/bens/${bemIdParaExcluir}`;
-            console.log(`🗑️ Executando DELETE para ${url}`);
-
-            const response = await fetch(url, {
-                method: 'DELETE'
             });
-
-            if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`);
-            }
-
-            const result = await response.json();
-
-            if (result.success) {
-                alert("✅ " + result.message);
-                const modalConfirmacao = bootstrap.Modal.getInstance(document.getElementById('modalConfirmacao'));
-                if (modalConfirmacao) {
-                    modalConfirmacao.hide();
-                }
-                // Recarregar a página
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            } else {
-                alert("❌ Erro: " + result.message);
-            }
-        } catch (error) {
-            console.error("💥 Erro ao excluir:", error);
-            alert("❌ Erro: " + error.message);
         }
-    }
-
-    // Reativar campos quando modal fechar
-    document.getElementById('modalBem').addEventListener('hidden.bs.modal', function () {
-        const inputs = document.querySelectorAll('#formBem input, #formBem select, #formBem textarea');
-        inputs.forEach(input => {
-            input.disabled = false;
-            input.readOnly = false;
-        });
-        document.getElementById('btnSalvar').style.display = 'block';
-    });
-
-    // DEBUG FUNCTION
-    window.debugAPI = function() {
-        console.log("=== DEBUG ===");
-        console.log("📍 getBaseUrl():", getBaseUrl());
-        console.log("🌐 Location:", window.location.href);
-        console.log("🧪 Exemplo URL:", getBaseUrl() + '/api/bens/769');
-    };
-</script>    
-
+    </script>    
 </body>
-
 </html>

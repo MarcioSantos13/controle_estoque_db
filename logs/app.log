@@ -5732,3 +5732,278 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-10 15:25:36,523 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
 2025-11-10 15:25:36,524 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
 2025-11-10 15:25:36,524 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-10 15:38:18,015 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-10 15:38:18,016 - app - INFO -    - Situação: ''
+2025-11-10 15:38:18,016 - app - INFO -    - Busca: ''
+2025-11-10 15:38:18,016 - app - INFO -    - Responsável: ''
+2025-11-10 15:38:18,017 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-10 15:38:18,018 - app - INFO - 📊 Total de registros: 769
+2025-11-10 15:38:18,019 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-10 15:38:18,116 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-10 15:38:18,117 - app - INFO - 📦 Query params: {}
+2025-11-10 15:38:18,118 - app - INFO - 👤 User ID: 6
+2025-11-10 15:38:18,118 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-10 15:38:18,118 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 15:38:18,119 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRIO1w.QKilAiWDGRHbMuw8OA8qhcoioU0'}
+2025-11-10 15:38:18,119 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 15:38:18,119 - app - INFO - 🔧 Método: GET
+2025-11-10 15:38:18,119 - app - INFO - 👤 Usuário: 6
+2025-11-10 15:38:18,120 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-10 15:38:18,120 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 15:38:18,121 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 15:38:18,124 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-10 15:38:18,125 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-10 15:38:18,125 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-10 15:38:20,610 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-10 15:38:20,611 - app - INFO - 📦 Query params: {}
+2025-11-10 15:38:20,611 - app - INFO - 👤 User ID: 6
+2025-11-10 15:38:20,611 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-10 15:38:20,611 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 15:38:20,612 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRIO1w.QKilAiWDGRHbMuw8OA8qhcoioU0'}
+2025-11-10 15:38:20,612 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 15:38:20,612 - app - INFO - 🔧 Método: GET
+2025-11-10 15:38:20,612 - app - INFO - 👤 Usuário: 6
+2025-11-10 15:38:20,613 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-10 15:38:20,613 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 15:38:20,614 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 15:38:20,616 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-10 15:38:20,617 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-10 15:38:20,617 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-10 15:38:23,291 - app - INFO - 🌐 API Request: PUT /api/bens/769
+2025-11-10 15:38:23,291 - app - INFO - 📦 Query params: {}
+2025-11-10 15:38:23,292 - app - INFO - 👤 User ID: 6
+2025-11-10 15:38:23,292 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-10 15:38:23,292 - app - INFO - 🎯 API: Atualizando bem ID 769
+2025-11-10 15:38:23,293 - app - INFO - 📦 Dados recebidos: {'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'auditor': 'Auditor 01', 'observacao': 'Observação 001', 'id': '769'}
+2025-11-10 15:38:23,293 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 01'}
+2025-11-10 15:38:23,293 - app - INFO - 🔧 Atualizando bem ID 769 com dados: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 01'}
+2025-11-10 15:38:23,295 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?', 'observacao = ?', 'auditor = ?']
+2025-11-10 15:38:23,295 - app - INFO - 📝 Valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 01']
+2025-11-10 15:38:23,295 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?, observacao = ?, auditor = ? WHERE id = ?
+2025-11-10 15:38:23,296 - app - INFO - 📝 Com valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 01', 769]
+2025-11-10 15:38:23,358 - app - INFO - ✅ Bem 769 atualizado com sucesso
+2025-11-10 15:38:23,359 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 15:38:23,361 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 15:38:23,364 - app - INFO - 📡 API Response: PUT /api/bens/769 -> 200
+2025-11-10 15:38:25,846 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-10 15:38:25,847 - app - INFO -    - Situação: ''
+2025-11-10 15:38:25,847 - app - INFO -    - Busca: ''
+2025-11-10 15:38:25,848 - app - INFO -    - Responsável: ''
+2025-11-10 15:38:25,849 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-10 15:38:25,851 - app - INFO - 📊 Total de registros: 769
+2025-11-10 15:38:25,853 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-10 15:38:25,881 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-10 15:38:25,881 - app - INFO - 📦 Query params: {}
+2025-11-10 15:38:25,881 - app - INFO - 👤 User ID: 6
+2025-11-10 15:38:25,882 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-10 15:38:25,882 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-10 15:38:25,882 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRIO1w.QKilAiWDGRHbMuw8OA8qhcoioU0'}
+2025-11-10 15:38:25,883 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-10 15:38:25,883 - app - INFO - 🔧 Método: GET
+2025-11-10 15:38:25,883 - app - INFO - 👤 Usuário: 6
+2025-11-10 15:38:25,884 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-10 15:38:25,884 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-10 15:38:25,886 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-10 15:38:25,889 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-10 15:38:25,890 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-10 15:38:25,890 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:33:48,805 - app - INFO - ==================================================
+2025-11-11 11:33:48,806 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-11 11:33:48,806 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-11 11:33:48,806 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-11 11:33:48,806 - app - INFO - ==================================================
+2025-11-11 11:33:48,815 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-11 11:33:48,816 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-11 11:33:48,816 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-11 11:33:48,817 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-11 11:33:48,828 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-11 11:33:48,838 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-11 11:33:48,838 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-11 11:33:48,839 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-11 11:33:48,839 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-11 11:33:48,840 - app - INFO - 🔧 Ambiente: development
+2025-11-11 11:33:48,840 - app - INFO - 🐛 Debug: True
+2025-11-11 11:33:48,840 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-11 11:33:48,841 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-11 11:33:48,841 - app - INFO -    - /api/health
+2025-11-11 11:33:48,841 - app - INFO -    - /api/diagnostico
+2025-11-11 11:33:48,842 - app - INFO -    - /api/debug-routes
+2025-11-11 11:33:49,317 - app - INFO - ==================================================
+2025-11-11 11:33:49,318 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-11 11:33:49,318 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-11 11:33:49,318 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-11 11:33:49,318 - app - INFO - ==================================================
+2025-11-11 11:33:49,327 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-11 11:33:49,327 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-11 11:33:49,327 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-11 11:33:49,328 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-11 11:33:49,330 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-11 11:33:49,335 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-11 11:33:49,336 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-11 11:33:49,336 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-11 11:33:49,336 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-11 11:33:49,336 - app - INFO - 🔧 Ambiente: development
+2025-11-11 11:33:49,337 - app - INFO - 🐛 Debug: True
+2025-11-11 11:33:49,337 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-11 11:33:49,337 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-11 11:33:49,337 - app - INFO -    - /api/health
+2025-11-11 11:33:49,337 - app - INFO -    - /api/diagnostico
+2025-11-11 11:33:49,337 - app - INFO -    - /api/debug-routes
+2025-11-11 11:34:03,906 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-11 11:34:03,908 - app - INFO - 📊 Total de registros: 765
+2025-11-11 11:34:03,909 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-11 11:34:15,778 - app - INFO - 🎯 PROCESSANDO: 2020240743 | Localização: ''
+2025-11-11 11:34:15,779 - app - INFO - 📋 Bem: 2020240743 | Status anterior: Pendente | Localização anterior: 
+2025-11-11 11:34:15,839 - app - INFO - ✅ SUCESSO: ✅ Bem 2020240743 localizado com sucesso
+2025-11-11 11:34:26,319 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:34:26,319 - app - INFO -    - Situação: ''
+2025-11-11 11:34:26,319 - app - INFO -    - Busca: ''
+2025-11-11 11:34:26,319 - app - INFO -    - Responsável: ''
+2025-11-11 11:34:26,320 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-11 11:34:26,321 - app - INFO - 📊 Total de registros: 769
+2025-11-11 11:34:26,322 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:34:26,444 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:34:26,444 - app - INFO - 📦 Query params: {}
+2025-11-11 11:34:26,445 - app - INFO - 👤 User ID: 6
+2025-11-11 11:34:26,445 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:34:26,445 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:34:26,445 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:34:26,446 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:34:26,446 - app - INFO - 🔧 Método: GET
+2025-11-11 11:34:26,447 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:34:26,447 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:34:26,447 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:34:26,449 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:34:26,451 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:34:26,452 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:34:26,452 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:34:30,353 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:34:30,354 - app - INFO - 📦 Query params: {}
+2025-11-11 11:34:30,354 - app - INFO - 👤 User ID: 6
+2025-11-11 11:34:30,354 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:34:30,355 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:34:30,355 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:34:30,356 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:34:30,356 - app - INFO - 🔧 Método: GET
+2025-11-11 11:34:30,356 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:34:30,356 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:34:30,357 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:34:30,358 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:34:30,361 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:34:30,361 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:34:30,361 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:34:44,801 - app - INFO - 🌐 API Request: DELETE /api/bens/770
+2025-11-11 11:34:44,802 - app - INFO - 📦 Query params: {}
+2025-11-11 11:34:44,802 - app - INFO - 👤 User ID: 6
+2025-11-11 11:34:44,802 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:34:44,875 - app - INFO - 📡 API Response: DELETE /api/bens/770 -> 200
+2025-11-11 11:34:47,843 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:34:47,844 - app - INFO -    - Situação: ''
+2025-11-11 11:34:47,844 - app - INFO -    - Busca: ''
+2025-11-11 11:34:47,844 - app - INFO -    - Responsável: ''
+2025-11-11 11:34:47,845 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-11 11:34:47,846 - app - INFO - 📊 Total de registros: 768
+2025-11-11 11:34:47,846 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:34:47,871 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:34:47,871 - app - INFO - 📦 Query params: {}
+2025-11-11 11:34:47,872 - app - INFO - 👤 User ID: 6
+2025-11-11 11:34:47,872 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:34:47,872 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:34:47,873 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:34:47,873 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:34:47,874 - app - INFO - 🔧 Método: GET
+2025-11-11 11:34:47,874 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:34:47,874 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:34:47,874 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:34:47,876 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:34:47,879 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:34:47,880 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:34:47,880 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:35:06,999 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:35:07,000 - app - INFO -    - Situação: ''
+2025-11-11 11:35:07,000 - app - INFO -    - Busca: '110437'
+2025-11-11 11:35:07,000 - app - INFO -    - Responsável: ''
+2025-11-11 11:35:07,001 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-11 11:35:07,002 - app - INFO - 📊 Total de registros: 768
+2025-11-11 11:35:07,003 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:35:07,028 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:35:07,029 - app - INFO - 📦 Query params: {}
+2025-11-11 11:35:07,029 - app - INFO - 👤 User ID: 6
+2025-11-11 11:35:07,029 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:35:07,030 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:35:07,030 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud?q=110437&responsavel=', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:35:07,031 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:35:07,031 - app - INFO - 🔧 Método: GET
+2025-11-11 11:35:07,031 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:35:07,032 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:35:07,032 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:35:07,033 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:35:07,036 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:35:07,036 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:35:07,037 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:35:16,471 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:35:16,472 - app - INFO -    - Situação: ''
+2025-11-11 11:35:16,473 - app - INFO -    - Busca: '110437'
+2025-11-11 11:35:16,473 - app - INFO -    - Responsável: ''
+2025-11-11 11:35:16,473 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 2, Por página: 50
+2025-11-11 11:35:16,475 - app - INFO - 📊 Total de registros: 768
+2025-11-11 11:35:16,475 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:35:16,500 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:35:16,500 - app - INFO - 📦 Query params: {}
+2025-11-11 11:35:16,500 - app - INFO - 👤 User ID: 6
+2025-11-11 11:35:16,501 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:35:16,501 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:35:16,501 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud?pagina=2&por_pagina=50&q=110437&situacao=&responsavel=', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:35:16,502 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:35:16,502 - app - INFO - 🔧 Método: GET
+2025-11-11 11:35:16,502 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:35:16,503 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:35:16,503 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:35:16,505 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:35:16,508 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:35:16,508 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:35:16,509 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:35:21,519 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:35:21,520 - app - INFO -    - Situação: ''
+2025-11-11 11:35:21,520 - app - INFO -    - Busca: ''
+2025-11-11 11:35:21,520 - app - INFO -    - Responsável: ''
+2025-11-11 11:35:21,521 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-11 11:35:21,522 - app - INFO - 📊 Total de registros: 768
+2025-11-11 11:35:21,523 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:35:21,551 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:35:21,551 - app - INFO - 📦 Query params: {}
+2025-11-11 11:35:21,551 - app - INFO - 👤 User ID: 6
+2025-11-11 11:35:21,552 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:35:21,552 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:35:21,552 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:35:21,552 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:35:21,553 - app - INFO - 🔧 Método: GET
+2025-11-11 11:35:21,553 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:35:21,553 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:35:21,553 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:35:21,555 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:35:21,558 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:35:21,558 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:35:21,559 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-11 11:35:27,914 - app - INFO - 🔍 FILTROS APLICADOS:
+2025-11-11 11:35:27,914 - app - INFO -    - Situação: ''
+2025-11-11 11:35:27,914 - app - INFO -    - Busca: '2020240743'
+2025-11-11 11:35:27,914 - app - INFO -    - Responsável: ''
+2025-11-11 11:35:27,915 - app - INFO - 🔍 Buscando bens - Tipo: todos, Página: 1, Por página: 50
+2025-11-11 11:35:27,916 - app - INFO - 📊 Total de registros: 768
+2025-11-11 11:35:27,917 - app - INFO - ✅ Dados convertidos: 50 registros
+2025-11-11 11:35:27,943 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-11 11:35:27,943 - app - INFO - 📦 Query params: {}
+2025-11-11 11:35:27,943 - app - INFO - 👤 User ID: 6
+2025-11-11 11:35:27,943 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-11 11:35:27,944 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-11 11:35:27,944 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud?q=2020240743&responsavel=', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRNJZw.JsihLhxKK2Q8tPeXJNwVfRvLxaw'}
+2025-11-11 11:35:27,945 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-11 11:35:27,946 - app - INFO - 🔧 Método: GET
+2025-11-11 11:35:27,946 - app - INFO - 👤 Usuário: 6
+2025-11-11 11:35:27,946 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-11 11:35:27,947 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-11 11:35:27,948 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-11 11:35:27,951 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-11 11:35:27,951 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-11 11:35:27,951 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
