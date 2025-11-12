@@ -1933,13 +1933,9 @@ def internal_error(error):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
 
-
-
 # ==============================
 # ROTAS DE DEBUG
 # ==============================
-
-
 @app.route('/debug')
 def debug_info():
     """Página de debug para verificar o estado do servidor"""
@@ -2044,9 +2040,6 @@ def debug_static():
     </html>
     ''', static_css=os.path.exists('static/style.css'))
 
-
-
-
 # ==============================
 # INICIALIZAÇÃO
 # ==============================
@@ -2075,4 +2068,3 @@ if __name__ == '__main__':
         port=5000,
         threaded=True
     )
-    
