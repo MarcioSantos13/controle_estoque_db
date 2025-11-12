@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Correção cirúrgica para adicionar suporte AJAX à função index
+Correção cirúrgica para adicionar suporte AJAX à função index - VERSÃO CORRIGIDA
 """
 import os
 import re
@@ -33,7 +33,7 @@ def correcao_cirurgica_index():
     
     print(f"📍 Função index encontrada")
     
-    # Criar a versão corrigida
+    # Criar a versão corrigida - CORRIGINDO INDENTAÇÃO
     nova_funcao = parte_inicial + '''
     # VERIFICAÇÃO AJAX - CORREÇÃO CIRÚRGICA
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -67,14 +67,14 @@ def correcao_cirurgica_index():
                 }), 404
             
             # Atualizar como localizado
-            cursor.execute('''
+            cursor.execute(''''''
                 UPDATE bem_patrimonial 
                 SET estado = 'localizado', 
                     localizacao = COALESCE(?, localizacao),
                     data_localizacao = CURRENT_TIMESTAMP,
                     data_atualizacao = CURRENT_TIMESTAMP
                 WHERE numero_bem = ?
-            ''', (localizacao, numero_bem))
+            '''''', (localizacao, numero_bem))
             
             conn.commit()
             
