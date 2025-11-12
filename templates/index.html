@@ -164,10 +164,34 @@
         animation: scanSuccess 1s ease-in-out;
     }
 
+    /* ANIMAÇÃO DE FOCO AUTOMÁTICO */
+    @keyframes autoFocus {
+        0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
+        50% { box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+    }
+
+    .auto-focus {
+        animation: autoFocus 1s ease-in-out;
+    }
+
     /* DROPDOWN DE LOCALIDADES */
     .localidades-dropdown {
         max-height: 200px;
         overflow-y: auto;
+    }
+
+    /* MENSAGEM FLASH TEMPORÁRIA */
+    .flash-temporary {
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .flash-hidden {
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
     }
 </style>
 
@@ -273,7 +297,7 @@
         {% if messages %}
         <div class="flash-messages mb-4">
             {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <div class="alert alert-{{ category }} alert-dismissible fade show flash-temporary" role="alert" id="flash-{{ loop.index }}">
                 <div class="d-flex align-items-center">
                     {% if category == 'success' %}
                     <i class="bi bi-check-circle-fill me-2"></i>
@@ -294,8 +318,8 @@
         {% endwith %}
 
         {% if mensagem %}
-        <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3"
-            role="alert">
+        <div class="alert alert-dismissible fade show {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}alert-success{% elif '❌' in mensagem or 'erro' in mensagem|lower %}alert-danger{% else %}alert-info{% endif %} mb-3 flash-temporary"
+            role="alert" id="main-message">
             <div class="d-flex align-items-center">
                 {% if '✅' in mensagem or 'sucesso' in mensagem|lower %}
                 <i class="bi bi-check-circle-fill me-2"></i>
@@ -647,6 +671,7 @@
                 this.searchForm = document.getElementById('searchForm');
                 this.scannerSistema = new ScannerSistema();
                 this.localidades = [];
+                this.autoSubmitEnabled = true;
             }
 
             async initialize() {
@@ -661,8 +686,11 @@
                 // Carregar localidades
                 await this.carregarLocalidades();
                 
+                // Configurar mensagens temporárias
+                this.setupFlashMessages();
+                
                 // Foco automático inicial
-                setTimeout(() => this.focusNumeroBem(), 500);
+                setTimeout(() => this.focusAndClearNumeroBem(), 800);
             }
 
             setupEventListeners() {
@@ -690,18 +718,54 @@
                     if (!e.target.closest('.modal') &&
                         !e.target.closest('.actions-grid') &&
                         e.target !== this.localizacaoInput) {
-                        setTimeout(() => this.focusNumeroBem(), 100);
+                        setTimeout(() => this.focusAndClearNumeroBem(), 100);
                     }
                 });
+
+                // Prevenir submit duplo
+                this.searchForm?.addEventListener('submit', (e) => {
+                    if (!this.autoSubmitEnabled) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    const numeroBem = this.numeroBemInput?.value.trim();
+                    if (!numeroBem) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    // Mostrar loading
+                    this.mostrarLoading(true);
+                    
+                    // Temporariamente desabilitar auto-submit
+                    this.autoSubmitEnabled = false;
+                    
+                    // Restaurar após 3 segundos
+                    setTimeout(() => {
+                        this.autoSubmitEnabled = true;
+                    }, 3000);
+                });
+            }
+
+            setupFlashMessages() {
+                // Esconder mensagens flash automaticamente após 3 segundos
+                setTimeout(() => {
+                    const flashMessages = document.querySelectorAll('.flash-temporary');
+                    flashMessages.forEach(msg => {
+                        msg.classList.add('flash-hidden');
+                        setTimeout(() => {
+                            if (msg.parentElement) {
+                                msg.remove();
+                            }
+                        }, 500);
+                    });
+                }, 3000);
             }
 
             async carregarLocalidades() {
                 try {
                     console.log('📋 Carregando localidades...');
-                    
-                    // Simular carregamento de localidades (substitua por chamada real à API)
-                    // const response = await fetch('/api/localidades');
-                    // this.localidades = await response.json();
                     
                     // Dados de exemplo - substitua pela sua lógica real
                     this.localidades = [
@@ -792,7 +856,7 @@
                     if (dropdown) dropdown.hide();
                     
                     // Voltar foco para número do bem
-                    this.focusNumeroBem();
+                    this.focusAndClearNumeroBem();
                 }
             }
 
@@ -810,38 +874,146 @@
                 console.log('🔍 Processando busca para:', numeroBem);
 
                 // Mostrar loading
-                const btnLocalizar = document.getElementById('btnLocalizar');
-                const spinner = document.getElementById('loadingSpinner');
-                if (btnLocalizar && spinner) {
-                    spinner.classList.remove('d-none');
-                    btnLocalizar.disabled = true;
-                }
+                this.mostrarLoading(true);
 
                 try {
-                    // Submeter formulário
-                    this.searchForm.submit();
-                    
-                    // O foco será restaurado após o reload da página
-                    // que acontece após o submit do formulário
+                    // Usar AJAX para não recarregar a página
+                    await this.processarBuscaAjax(numeroBem);
                     
                 } catch (error) {
                     console.error('❌ Erro ao processar busca:', error);
+                    this.mostrarLoading(false);
                     
-                    // Restaurar botão em caso de erro
-                    if (btnLocalizar && spinner) {
+                    // Mostrar mensagem de erro
+                    this.mostrarMensagem('❌ Erro ao processar busca', 'danger');
+                }
+            }
+
+            async processarBuscaAjax(numeroBem) {
+                const formData = new FormData();
+                formData.append('numero_bem', numeroBem);
+                formData.append('localizacao', this.localizacaoInput?.value || '');
+
+                try {
+                    const response = await fetch('{{ url_for("index") }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (response.redirected) {
+                        // Se houve redirect, recarregar a página
+                        window.location.reload();
+                        return;
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Atualizar estatísticas
+                        this.atualizarEstatisticas(result.estatisticas);
+                        
+                        // Mostrar mensagem de sucesso
+                        this.mostrarMensagem(result.mensagem, 'success');
+                        
+                        // Limpar e focar no campo
+                        setTimeout(() => {
+                            this.focusAndClearNumeroBem();
+                        }, 500);
+                        
+                    } else {
+                        // Mostrar mensagem de erro
+                        this.mostrarMensagem(result.mensagem, 'danger');
+                        this.mostrarLoading(false);
+                    }
+                    
+                } catch (error) {
+                    console.error('Erro AJAX:', error);
+                    // Fallback: submeter formulário normal
+                    this.searchForm.submit();
+                }
+            }
+
+            atualizarEstatisticas(estatisticas) {
+                if (estatisticas) {
+                    const countLocalizados = document.getElementById('count-localizados');
+                    const countPendentes = document.getElementById('count-pendentes');
+                    const totalBens = document.getElementById('total-bens');
+                    
+                    if (countLocalizados) countLocalizados.textContent = estatisticas.localizados.toLocaleString();
+                    if (countPendentes) countPendentes.textContent = estatisticas.pendentes.toLocaleString();
+                    if (totalBens) totalBens.textContent = estatisticas.total.toLocaleString();
+                }
+            }
+
+            mostrarMensagem(mensagem, tipo) {
+                // Remover mensagens existentes
+                const existingAlerts = document.querySelectorAll('.alert-dismissible');
+                existingAlerts.forEach(alert => {
+                    if (alert.id !== 'main-message') {
+                        alert.remove();
+                    }
+                });
+
+                // Criar nova mensagem
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${tipo} alert-dismissible fade show flash-temporary`;
+                alertDiv.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <i class="bi ${tipo === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'} me-2"></i>
+                        <span>${mensagem}</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+
+                // Inserir antes do card de busca
+                const searchCard = document.querySelector('.search-card');
+                if (searchCard) {
+                    searchCard.parentNode.insertBefore(alertDiv, searchCard);
+                }
+
+                // Auto-remover após 3 segundos
+                setTimeout(() => {
+                    alertDiv.classList.add('flash-hidden');
+                    setTimeout(() => alertDiv.remove(), 500);
+                }, 3000);
+            }
+
+            mostrarLoading(mostrar) {
+                const btnLocalizar = document.getElementById('btnLocalizar');
+                const spinner = document.getElementById('loadingSpinner');
+                
+                if (btnLocalizar && spinner) {
+                    if (mostrar) {
+                        spinner.classList.remove('d-none');
+                        btnLocalizar.disabled = true;
+                    } else {
                         spinner.classList.add('d-none');
                         btnLocalizar.disabled = false;
                     }
                 }
             }
 
-            focusNumeroBem() {
+            focusAndClearNumeroBem() {
                 if (!this.numeroBemInput) return;
 
                 try {
+                    // Limpar campo
+                    this.numeroBemInput.value = '';
+                    
+                    // Focar e animar
                     this.numeroBemInput.focus();
-                    this.numeroBemInput.setSelectionRange(0, this.numeroBemInput.value.length);
-                    console.log('🎯 Foco automático em numero_bem');
+                    this.numeroBemInput.classList.add('auto-focus');
+                    
+                    console.log('🎯 Campo limpo e com foco automático');
+                    
+                    // Remover animação após completar
+                    setTimeout(() => {
+                        this.numeroBemInput.classList.remove('auto-focus');
+                    }, 1000);
+                    
                 } catch (error) {
                     console.log('⚠️ Foco não pôde ser aplicado:', error);
                 }
@@ -857,13 +1029,10 @@
                 // Feedback visual
                 this.numeroBemInput.classList.add('scan-success');
                 
-                // Focar e selecionar
-                this.focusNumeroBem();
-                
                 // Submeter automaticamente após breve delay
                 setTimeout(() => {
                     this.processarBusca();
-                }, 800);
+                }, 500);
             }
         }
 
@@ -907,7 +1076,7 @@
                     // Focar no campo após fechar
                     setTimeout(() => {
                         if (window.sistemaPatrimonial) {
-                            window.sistemaPatrimonial.focusNumeroBem();
+                            window.sistemaPatrimonial.focusAndClearNumeroBem();
                         }
                     }, 300);
                 });
@@ -1073,7 +1242,7 @@
                 
                 setTimeout(() => {
                     if (window.sistemaPatrimonial) {
-                        window.sistemaPatrimonial.focusNumeroBem();
+                        window.sistemaPatrimonial.focusAndClearNumeroBem();
                     }
                 }, 300);
             }
@@ -1173,7 +1342,7 @@
         // ===== FUNÇÕES GLOBAIS =====
         window.focarNumeroBem = function () {
             if (window.sistemaPatrimonial) {
-                window.sistemaPatrimonial.focusNumeroBem();
+                window.sistemaPatrimonial.focusAndClearNumeroBem();
                 return true;
             }
             return false;
