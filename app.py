@@ -1933,6 +1933,120 @@ def internal_error(error):
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
     return render_template('500.html'), 500
 
+
+
+# ==============================
+# ROTAS DE DEBUG
+# ==============================
+
+
+@app.route('/debug')
+def debug_info():
+    """Página de debug para verificar o estado do servidor"""
+    info = {
+        'servidor_tempo': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'python_version': sys.version,
+        'diretorio_atual': os.getcwd(),
+        'arquivos': os.listdir('.'),
+        'database_existe': os.path.exists('database.db'),
+        'templates_existe': os.path.exists('templates'),
+        'static_existe': os.path.exists('static'),
+    }
+    
+    # Verificar banco
+    if info['database_existe']:
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+            info['tabelas'] = [t[0] for t in cursor.fetchall()]
+            
+            # Contar registros
+            cursor.execute("SELECT COUNT(*) FROM bem_patrimonial")
+            info['total_bens'] = cursor.fetchone()[0]
+            conn.close()
+        except Exception as e:
+            info['erro_banco'] = str(e)
+    
+    return render_template_string('''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Debug - Sistema Patrimonial</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h1>🔧 Debug do Sistema</h1>
+            
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Informações do Servidor</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        {% for key, value in info.items() %}
+                        <tr>
+                            <td><strong>{{ key }}</strong></td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <a href="/" class="btn btn-primary">Voltar para a aplicação</a>
+                <a href="/debug/static" class="btn btn-info">Testar Arquivos Estáticos</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    ''', info=info)
+
+@app.route('/debug/static')
+def debug_static():
+    """Testar se arquivos estáticos estão carregando"""
+    return render_template_string('''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Teste de Arquivos Estáticos</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <style>
+            .test-box { padding: 20px; margin: 10px; border: 2px solid #ccc; }
+            .success { border-color: green; background: #d4edda; }
+            .error { border-color: red; background: #f8d7da; }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h1>🧪 Teste de Arquivos Estáticos</h1>
+            
+            <div class="test-box {{ 'success' if static_css else 'error' }}">
+                <h4>CSS Personalizado</h4>
+                <p>Arquivo: <code>static/style.css</code></p>
+                <p>Status: {{ '✅ Carregado' if static_css else '❌ Não carregado' }}</p>
+                {% if static_css %}
+                <div class="alert alert-success">
+                    Este alerta verde indica que o CSS personalizado está funcionando!
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-3">
+                <a href="/debug" class="btn btn-secondary">Voltar ao Debug</a>
+                <a href="/" class="btn btn-primary">Ir para Aplicação</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    ''', static_css=os.path.exists('static/style.css'))
+
+
+
+
 # ==============================
 # INICIALIZAÇÃO
 # ==============================
