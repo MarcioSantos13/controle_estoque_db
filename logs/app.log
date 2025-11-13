@@ -7417,3 +7417,45 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-13 08:09:48,430 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
 2025-11-13 08:09:48,432 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
 2025-11-13 08:09:48,468 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-13 20:30:41,637 - app - INFO - ==================================================
+2025-11-13 20:30:41,637 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-13 20:30:41,637 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-13 20:30:41,637 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 20:30:41,637 - app - INFO - ==================================================
+2025-11-13 20:30:41,643 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-13 20:30:41,643 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-13 20:30:41,644 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-13 20:30:41,644 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-13 20:30:41,645 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-13 20:30:41,647 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-13 20:30:41,648 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-13 20:30:41,648 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-13 20:30:41,648 - app - INFO - 🗄️  Banco de dados: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 20:30:41,648 - app - INFO - 🔧 Ambiente: development
+2025-11-13 20:30:41,649 - app - INFO - 🐛 Debug: True
+2025-11-13 20:30:41,649 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-13 20:30:41,649 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-13 20:30:41,649 - app - INFO -    - /api/health
+2025-11-13 20:30:41,649 - app - INFO -    - /api/diagnostico
+2025-11-13 20:30:41,650 - app - INFO -    - /api/debug-routes
+2025-11-13 20:30:41,917 - app - INFO - ==================================================
+2025-11-13 20:30:41,917 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-13 20:30:41,918 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-13 20:30:41,918 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 20:30:41,918 - app - INFO - ==================================================
+2025-11-13 20:30:41,924 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-13 20:30:41,924 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-13 20:30:41,924 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-13 20:30:41,925 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-13 20:30:41,925 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-13 20:30:41,928 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-13 20:30:41,928 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-13 20:30:41,928 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-13 20:30:41,929 - app - INFO - 🗄️  Banco de dados: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 20:30:41,929 - app - INFO - 🔧 Ambiente: development
+2025-11-13 20:30:41,929 - app - INFO - 🐛 Debug: True
+2025-11-13 20:30:41,929 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-13 20:30:41,929 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-13 20:30:41,930 - app - INFO -    - /api/health
+2025-11-13 20:30:41,930 - app - INFO -    - /api/diagnostico
+2025-11-13 20:30:41,930 - app - INFO -    - /api/debug-routes
