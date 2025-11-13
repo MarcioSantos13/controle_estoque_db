@@ -1704,7 +1704,7 @@ def importar_excel():
 @app.route('/sistema-crud')
 @login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA COM FILTROS"""
     try:
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 50, type=int)
@@ -1724,31 +1724,41 @@ def sistema_crud():
         elif situacao_filtro == 'Pendente':
             tipo = 'nao-localizados'
         
+        # Obter dados paginados do banco
         paginacao = obter_bens_paginados(DATABASE, tipo, pagina, por_pagina)
         estatisticas = carregar_dados_bancos()
         
         # Aplicar filtros adicionais se necessário
         if termo_busca or responsavel_filtro:
             dados_filtrados = []
+            
             for bem in paginacao['dados']:
-                # Filtro por termo de busca
+                # Normalizar strings para comparação case-insensitive e sem acentos
+                bem_numero = (bem.get('numero') or '').lower()
+                bem_nome = (bem.get('nome') or '').lower()
+                bem_responsavel = (bem.get('responsavel') or '').lower()
+                
+                # Filtro por termo de busca (número ou nome)
+                termo_match = True
                 if termo_busca:
-                    termo_match = (termo_busca.lower() in (bem.get('numero', '') or '').lower() or 
-                                  termo_busca.lower() in (bem.get('nome', '') or '').lower())
-                else:
-                    termo_match = True
+                    termo_normalizado = termo_busca.lower().strip()
+                    termo_match = (termo_normalizado in bem_numero or termo_normalizado in bem_nome)
                 
-                # Filtro por responsável
+                # Filtro por responsável - CORREÇÃO APLICADA
+                responsavel_match = True
                 if responsavel_filtro:
-                    resp_match = responsavel_filtro.lower() in (bem.get('responsavel', '') or '').lower()
-                else:
-                    resp_match = True
+                    responsavel_normalizado = responsavel_filtro.lower().strip()
+                    # Busca parcial no campo responsavel
+                    responsavel_match = responsavel_normalizado in bem_responsavel
                 
-                if termo_match and resp_match:
+                # Aplicar ambos os filtros
+                if termo_match and responsavel_match:
                     dados_filtrados.append(bem)
             
+            # Atualizar a paginação com os dados filtrados
             paginacao['dados'] = dados_filtrados
             paginacao['total_registros'] = len(dados_filtrados)
+            paginacao['total_paginas'] = max(1, (len(dados_filtrados) + por_pagina - 1) // por_pagina)
         
         return render_template('sistema_crud.html',
                             paginacao=paginacao,
@@ -1771,7 +1781,7 @@ def sistema_crud():
                             localizados_count=0,
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
-
+        
 # ==============================
 # ROTA DE RELATÓRIO POR LOCALIDADE
 # ==============================
