@@ -1705,53 +1705,27 @@ def importar_excel():
 @app.route('/sistema-crud')
 @login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens - VERSÃO COM DIAGNÓSTICO"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA DEFINITIVA"""
     try:
-        # Coletar parâmetros
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 50, type=int)
         termo_busca = request.args.get('q', '').strip()
         situacao_filtro = request.args.get('situacao', '').strip()
         responsavel_filtro = request.args.get('responsavel', '').strip()
         
-        # Log completo dos parâmetros
-        app.logger.info("🎯 PARÂMETROS RECEBIDOS:")
-        app.logger.info(f"   📄 Página: {pagina}")
-        app.logger.info(f"   📊 Por página: {por_pagina}")
-        app.logger.info(f"   🔍 Busca: '{termo_busca}'")
-        app.logger.info(f"   🏷️  Situação: '{situacao_filtro}'")
-        app.logger.info(f"   👤 Responsável: '{responsavel_filtro}'")
-        app.logger.info(f"   🌐 URL completa: {request.url}")
+        app.logger.info(f"🎯 FILTROS CRUD - Página: {pagina}, Busca: '{termo_busca}', Responsável: '{responsavel_filtro}'")
         
-        # Verificar se há filtros ativos
-        filtros_ativos = any([termo_busca, situacao_filtro, responsavel_filtro])
-        
-        if filtros_ativos:
-            app.logger.info("🎯 FILTROS ATIVOS - usando busca filtrada")
-            paginacao = obter_bens_com_filtros_diagnostico(
-                DATABASE, 
-                pagina, 
-                por_pagina,
-                termo_busca=termo_busca,
-                situacao_filtro=situacao_filtro,
-                responsavel_filtro=responsavel_filtro
-            )
-        else:
-            app.logger.info("🎯 SEM FILTROS - usando busca normal")
-            paginacao = obter_bens_paginados(DATABASE, 'todos', pagina, por_pagina)
+        # Usar função CORRIGIDA que aplica filtros NO BANCO antes da paginação
+        paginacao = obter_bens_com_filtros_no_banco(
+            DATABASE, 
+            pagina, 
+            por_pagina,
+            termo_busca=termo_busca,
+            situacao_filtro=situacao_filtro,
+            responsavel_filtro=responsavel_filtro
+        )
         
         estatisticas = carregar_dados_bancos()
-        
-        # Log do resultado
-        app.logger.info(f"📦 RESULTADO DA BUSCA:")
-        app.logger.info(f"   ✅ Registros encontrados: {len(paginacao['dados'])}")
-        app.logger.info(f"   📄 Página atual: {paginacao['pagina_atual']}")
-        app.logger.info(f"   📊 Total de páginas: {paginacao['total_paginas']}")
-        app.logger.info(f"   🗂️  Total de registros: {paginacao['total_registros']}")
-        
-        # Se não encontrou resultados na página 1, mas há mais páginas
-        if pagina == 1 and len(paginacao['dados']) == 0 and paginacao['total_registros'] > 0:
-            app.logger.warning("⚠️  Nenhum resultado na página 1, mas há registros no total")
         
         return render_template('sistema_crud.html',
                             paginacao=paginacao,
@@ -1760,8 +1734,7 @@ def sistema_crud():
                             mensagem=None)
         
     except Exception as e:
-        app.logger.error(f"💥 ERRO CRÍTICO na página CRUD: {e}")
-        app.logger.error(f"📋 Traceback completo: {traceback.format_exc()}")
+        app.logger.error(f"❌ Erro na página CRUD: {e}")
         return render_template('sistema_crud.html',
                             paginacao={
                                 'dados': [],
@@ -1776,68 +1749,52 @@ def sistema_crud():
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
 
-def obter_bens_com_filtros_diagnostico(db_path: str, pagina: int = 1, por_pagina: int = 50, 
-                                     termo_busca: str = '', situacao_filtro: str = '', 
-                                     responsavel_filtro: str = '') -> Dict[str, Any]:
-    """Função de filtragem com diagnóstico completo - VERSÃO ULTRA-ROBUSTA"""
+def obter_bens_com_filtros_no_banco(db_path: str, pagina: int = 1, por_pagina: int = 50, 
+                                  termo_busca: str = '', situacao_filtro: str = '', 
+                                  responsavel_filtro: str = '') -> Dict[str, Any]:
+    """OBTEM BENS COM FILTROS APLICADOS NO BANCO - VERSÃO CORRIGIDA"""
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
         offset = (pagina - 1) * por_pagina
         
-        app.logger.info("🔧 CONSTRUINDO QUERY COM FILTROS:")
-        
-        # Construir query dinamicamente
+        # CONSTRUIR QUERY COM FILTROS
         where_conditions = []
         params = []
-        
-        # DIAGNÓSTICO: Verificar valores possíveis no banco
-        if responsavel_filtro:
-            cursor.execute("SELECT DISTINCT responsavel FROM bens WHERE responsavel IS NOT NULL LIMIT 10")
-            responsaveis_existentes = [row[0] for row in cursor.fetchall()]
-            app.logger.info(f"🔍 Responsáveis existentes no banco: {responsaveis_existentes}")
         
         # Filtro por situação
         if situacao_filtro == 'OK':
             where_conditions.append("(situacao = 'Localizado' OR situacao = 'OK')")
-            app.logger.info("   🏷️  Filtro situação: Localizado/OK")
         elif situacao_filtro == 'Pendente':
-            where_conditions.append("(situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente' OR situacao = '' OR situacao = 'Não Localizado')")
-            app.logger.info("   🏷️  Filtro situação: Pendente")
-        else:
-            app.logger.info("   🏷️  Sem filtro de situação")
+            where_conditions.append("(situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente')")
         
         # Filtro por termo de busca
         if termo_busca:
             search_term = f'%{termo_busca}%'
             where_conditions.append("(numero LIKE ? OR nome LIKE ?)")
             params.extend([search_term, search_term])
-            app.logger.info(f"   🔍 Filtro busca: '{termo_busca}'")
         
-        # Filtro por responsável - MÚLTIPLAS ESTRATÉGIAS
+        # Filtro por responsável - CORREÇÃO CRÍTICA
         if responsavel_filtro:
-            # Estratégia 1: Busca parcial case-insensitive
             search_responsavel = f'%{responsavel_filtro}%'
             where_conditions.append("(responsavel LIKE ? COLLATE NOCASE)")
             params.append(search_responsavel)
-            app.logger.info(f"   👤 Filtro responsável: '{responsavel_filtro}'")
         
-        # Construir query final
+        # CONSTRUIR QUERY FINAL
         where_clause = "WHERE " + " AND ".join(where_conditions) if where_conditions else ""
         
-        app.logger.info(f"📊 QUERY FINAL: {where_clause}")
+        app.logger.info(f"📊 QUERY FILTRADA: SELECT * FROM bens {where_clause}")
         app.logger.info(f"📊 PARÂMETROS: {params}")
         
-        # Contar total
+        # COUNT COM FILTROS
         count_query = f"SELECT COUNT(*) FROM bens {where_clause}"
-        app.logger.info(f"📊 COUNT QUERY: {count_query}")
-        
         cursor.execute(count_query, params)
         total_registros = cursor.fetchone()[0]
-        app.logger.info(f"📊 TOTAL REGISTROS: {total_registros}")
         
-        # Buscar dados
+        app.logger.info(f"📊 TOTAL REGISTROS APÓS FILTROS: {total_registros}")
+        
+        # DADOS COM FILTROS E PAGINAÇÃO
         data_query = f"""
             SELECT * FROM bens 
             {where_clause}
@@ -1846,49 +1803,40 @@ def obter_bens_com_filtros_diagnostico(db_path: str, pagina: int = 1, por_pagina
         """
         
         params_paginacao = params + [por_pagina, offset]
-        app.logger.info(f"📊 DATA QUERY: {data_query}")
-        app.logger.info(f"📊 PARÂMETROS PAGINAÇÃO: {params_paginacao}")
         
         cursor.execute(data_query, params_paginacao)
+        colunas = [desc[0] for desc in cursor.description]
         registros = cursor.fetchall()
         
-        app.logger.info(f"✅ REGISTROS ENCONTRADOS: {len(registros)}")
-        
         # Converter para dicionários
-        colunas = [desc[0] for desc in cursor.description]
         dados = []
-        for i, registro in enumerate(registros):
-            bem_dict = {colunas[j]: registro[j] for j in range(len(colunas))}
+        for registro in registros:
+            bem_dict = {colunas[i]: registro[i] for i in range(len(colunas))}
             dados.append(bem_dict)
-            
-            # Log dos primeiros 3 registros para diagnóstico
-            if i < 3:
-                app.logger.info(f"   📝 Registro {i+1}: {bem_dict.get('numero')} - {bem_dict.get('nome')} - {bem_dict.get('responsavel')}")
         
         conn.close()
         
-        # Calcular paginação
+        # Calcular paginação CORRETA
         total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
+        
+        app.logger.info(f"✅ PAGINAÇÃO CORRIGIDA: Página {pagina}/{total_paginas}, {len(dados)} registros")
         
         return {
             'dados': dados,
             'pagina_atual': pagina,
             'por_pagina': por_pagina,
             'total_registros': total_registros,
-            'total_paginas': total_paginas,
-            'sucesso': True
+            'total_paginas': total_paginas
         }
         
     except Exception as e:
-        app.logger.error(f"💥 ERRO na filtragem: {e}")
+        app.logger.error(f"❌ Erro na filtragem: {e}")
         return {
             'dados': [],
             'pagina_atual': 1,
             'por_pagina': por_pagina,
             'total_registros': 0,
-            'total_paginas': 0,
-            'sucesso': False,
-            'erro': str(e)
+            'total_paginas': 0
         }
 
 # ==============================
