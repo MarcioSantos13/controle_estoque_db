@@ -1701,10 +1701,12 @@ def importar_excel():
 # ==============================
 # ROTA DO SISTEMA CRUD
 # ==============================
+
+
 @app.route('/sistema-crud')
 @login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens - VERSÃO CORRIGIDA COM FILTROS"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO OTIMIZADA"""
     try:
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 50, type=int)
@@ -1717,48 +1719,17 @@ def sistema_crud():
         app.logger.info(f"   - Busca: '{termo_busca}'")
         app.logger.info(f"   - Responsável: '{responsavel_filtro}'")
         
-        # Determinar o tipo baseado no filtro de situação
-        tipo = 'todos'
-        if situacao_filtro == 'OK':
-            tipo = 'localizados'
-        elif situacao_filtro == 'Pendente':
-            tipo = 'nao-localizados'
+        # Usar função otimizada que aplica filtros no banco
+        paginacao = obter_bens_com_filtros(
+            DATABASE, 
+            pagina, 
+            por_pagina,
+            termo_busca=termo_busca,
+            situacao_filtro=situacao_filtro,
+            responsavel_filtro=responsavel_filtro
+        )
         
-        # Obter dados paginados do banco
-        paginacao = obter_bens_paginados(DATABASE, tipo, pagina, por_pagina)
         estatisticas = carregar_dados_bancos()
-        
-        # Aplicar filtros adicionais se necessário
-        if termo_busca or responsavel_filtro:
-            dados_filtrados = []
-            
-            for bem in paginacao['dados']:
-                # Normalizar strings para comparação case-insensitive e sem acentos
-                bem_numero = (bem.get('numero') or '').lower()
-                bem_nome = (bem.get('nome') or '').lower()
-                bem_responsavel = (bem.get('responsavel') or '').lower()
-                
-                # Filtro por termo de busca (número ou nome)
-                termo_match = True
-                if termo_busca:
-                    termo_normalizado = termo_busca.lower().strip()
-                    termo_match = (termo_normalizado in bem_numero or termo_normalizado in bem_nome)
-                
-                # Filtro por responsável - CORREÇÃO APLICADA
-                responsavel_match = True
-                if responsavel_filtro:
-                    responsavel_normalizado = responsavel_filtro.lower().strip()
-                    # Busca parcial no campo responsavel
-                    responsavel_match = responsavel_normalizado in bem_responsavel
-                
-                # Aplicar ambos os filtros
-                if termo_match and responsavel_match:
-                    dados_filtrados.append(bem)
-            
-            # Atualizar a paginação com os dados filtrados
-            paginacao['dados'] = dados_filtrados
-            paginacao['total_registros'] = len(dados_filtrados)
-            paginacao['total_paginas'] = max(1, (len(dados_filtrados) + por_pagina - 1) // por_pagina)
         
         return render_template('sistema_crud.html',
                             paginacao=paginacao,
@@ -1781,7 +1752,101 @@ def sistema_crud():
                             localizados_count=0,
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
+
+def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50, 
+                          termo_busca: str = '', situacao_filtro: str = '', 
+                          responsavel_filtro: str = '') -> Dict[str, Any]:
+    """Obtém bens com filtros aplicados diretamente no banco - VERSÃO OTIMIZADA"""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
         
+        offset = (pagina - 1) * por_pagina
+        
+        # Construir query dinamicamente baseada nos filtros
+        where_conditions = []
+        params = []
+        
+        # Filtro por situação
+        if situacao_filtro == 'OK':
+            where_conditions.append("situacao = 'Localizado'")
+        elif situacao_filtro == 'Pendente':
+            where_conditions.append("(situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente')")
+        
+        # Filtro por termo de busca (número ou nome)
+        if termo_busca:
+            where_conditions.append("(numero LIKE ? OR nome LIKE ?)")
+            params.extend([f'%{termo_busca}%', f'%{termo_busca}%'])
+        
+        # Filtro por responsável - CORREÇÃO CRÍTICA
+        if responsavel_filtro:
+            where_conditions.append("responsavel LIKE ?")
+            params.append(f'%{responsavel_filtro}%')
+        
+        # Construir query WHERE
+        where_clause = ""
+        if where_conditions:
+            where_clause = "WHERE " + " AND ".join(where_conditions)
+        
+        # Query para contar total
+        count_query = f"SELECT COUNT(*) FROM bens {where_clause}"
+        cursor.execute(count_query, params)
+        total_registros = cursor.fetchone()[0]
+        
+        # Query para obter dados
+        data_query = f"""
+            SELECT * FROM bens 
+            {where_clause}
+            ORDER BY numero 
+            LIMIT ? OFFSET ?
+        """
+        
+        # Adicionar parâmetros de paginação
+        params.extend([por_pagina, offset])
+        
+        cursor.execute(data_query, params)
+        colunas = [desc[0] for desc in cursor.description]
+        registros = cursor.fetchall()
+        
+        # Converter para lista de dicionários
+        dados = []
+        for registro in registros:
+            bem_dict = {}
+            for i, valor in enumerate(registro):
+                bem_dict[colunas[i]] = valor
+            dados.append(bem_dict)
+        
+        conn.close()
+        
+        # Calcular paginação
+        total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
+        
+        return {
+            'dados': dados,
+            'pagina_atual': pagina,
+            'por_pagina': por_pagina,
+            'total_registros': total_registros,
+            'total_paginas': total_paginas,
+            'filtros_aplicados': {
+                'termo_busca': termo_busca,
+                'situacao': situacao_filtro,
+                'responsavel': responsavel_filtro
+            }
+        }
+        
+    except Exception as e:
+        app.logger.error(f"❌ Erro ao obter bens com filtros: {e}")
+        return {
+            'dados': [],
+            'pagina_atual': 1,
+            'por_pagina': por_pagina,
+            'total_registros': 0,
+            'total_paginas': 0,
+            'filtros_aplicados': {}
+        }
+
+
+
 # ==============================
 # ROTA DE RELATÓRIO POR LOCALIDADE
 # ==============================

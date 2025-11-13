@@ -111,9 +111,17 @@
             height: 4px;
         }
 
-        .stats-card.total::before { background: var(--gradient-primary); }
-        .stats-card.localizados::before { background: var(--gradient-success); }
-        .stats-card.pendentes::before { background: var(--gradient-warning); }
+        .stats-card.total::before {
+            background: var(--gradient-primary);
+        }
+
+        .stats-card.localizados::before {
+            background: var(--gradient-success);
+        }
+
+        .stats-card.pendentes::before {
+            background: var(--gradient-warning);
+        }
 
         .stats-card:hover {
             transform: translateY(-8px);
@@ -153,9 +161,20 @@
             opacity: 0.9;
         }
 
-        .stats-card.total .card-icon { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
-        .stats-card.localizados .card-icon { background: rgba(5, 150, 105, 0.1); color: var(--success-color); }
-        .stats-card.pendentes .card-icon { background: rgba(217, 119, 6, 0.1); color: var(--warning-color); }
+        .stats-card.total .card-icon {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stats-card.localizados .card-icon {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-color);
+        }
+
+        .stats-card.pendentes .card-icon {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-color);
+        }
 
         /* Barra de Ferramentas */
         .toolbar-section {
@@ -335,9 +354,20 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .action-btn.edit:hover { color: var(--primary-color); border-color: var(--primary-color); }
-        .action-btn.view:hover { color: var(--success-color); border-color: var(--success-color); }
-        .action-btn.delete:hover { color: var(--danger-color); border-color: var(--danger-color); }
+        .action-btn.edit:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .action-btn.view:hover {
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .action-btn.delete:hover {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
 
         /* Paginação */
         .pagination-container {
@@ -499,14 +529,16 @@
         }
 
         /* Formulários */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             padding: 0.75rem 1rem;
             transition: all 0.2s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
@@ -543,14 +575,26 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Animações */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .fade-in {
@@ -623,7 +667,9 @@
                                         </small>
                                     </span>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('index') }}">
                                         <i class="bi bi-person me-2"></i>Meu Perfil
@@ -641,7 +687,9 @@
                                     </a>
                                 </li>
                                 {% endif %}
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema
@@ -676,7 +724,9 @@
                     <h3 class="card-title">{{ localizados_count|number_format }}</h3>
                     <p class="card-text">Bens Localizados</p>
                     <div class="progress" style="height: 4px; background: rgba(5, 150, 105, 0.2);">
-                        <div class="progress-bar" style="width: {{ (localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--success-color);"></div>
+                        <div class="progress-bar"
+                            style="width: {{ (localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--success-color);">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -688,7 +738,9 @@
                     <h3 class="card-title">{{ nao_localizados_count|number_format }}</h3>
                     <p class="card-text">Bens Pendentes</p>
                     <div class="progress" style="height: 4px; background: rgba(217, 119, 6, 0.2);">
-                        <div class="progress-bar" style="width: {{ (nao_localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--warning-color);"></div>
+                        <div class="progress-bar"
+                            style="width: {{ (nao_localizados_count/total_count*100) if total_count > 0 else 0 }}%; background: var(--warning-color);">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -711,6 +763,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- CORREÇÃO: Adicionar name="responsavel" ao input do responsável -->
                         <div class="col-md-5">
                             <div class="search-container">
                                 <div class="input-group">
@@ -887,7 +940,8 @@
                             </td>
                             <td>
                                 {% if bem.observacao %}
-                                <span class="text-info" title="{{ bem.observacao }}">{{ bem.observacao|truncate(30) }}</span>
+                                <span class="text-info" title="{{ bem.observacao }}">{{ bem.observacao|truncate(30)
+                                    }}</span>
                                 {% else %}
                                 <span class="text-muted">-</span>
                                 {% endif %}
@@ -911,10 +965,12 @@
                                 <button class="action-btn edit" onclick="editarBem({{ bem.id }})" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="action-btn view" onclick="visualizarBem({{ bem.id }})" title="Visualizar">
+                                <button class="action-btn view" onclick="visualizarBem({{ bem.id }})"
+                                    title="Visualizar">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="action-btn delete" onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
+                                <button class="action-btn delete"
+                                    onclick="confirmarExclusao({{ bem.id }}, `{{ bem.nome }}`)" title="Excluir">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 {% else %}
@@ -1096,7 +1152,8 @@
                     <button type="button" class="btn btn-secondary btn-modern" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i>Fechar
                     </button>
-                    <button type="button" class="btn btn-primary-modern btn-modern" id="btnSalvar" onclick="salvarBem()">
+                    <button type="button" class="btn btn-primary-modern btn-modern" id="btnSalvar"
+                        onclick="salvarBem()">
                         <i class="bi bi-check-circle me-1"></i>Salvar Alterações
                     </button>
                 </div>
@@ -1118,7 +1175,8 @@
                     <div class="text-center mb-3">
                         <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                     </div>
-                    <p class="text-center">Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?</p>
+                    <p class="text-center">Tem certeza que deseja excluir o bem <strong id="nomeBemExcluir"></strong>?
+                    </p>
                     <p class="text-danger text-center"><small>Esta ação não pode ser desfeita.</small></p>
                 </div>
                 <div class="modal-footer">
@@ -1145,7 +1203,7 @@
         // FUNÇÃO ÚNICA PARA DETECTAR URL BASE - CORRIGIDA
         function getBaseUrl() {
             console.log("🔧 getBaseUrl() executado - Hostname:", window.location.hostname);
-            
+
             // SEMPRE usar /estoque no servidor
             if (window.location.hostname === '164.41.170.85') {
                 return 'https://164.41.170.85/estoque';
@@ -1187,7 +1245,7 @@
             const baseUrl = getBaseUrl();
             const testUrl = `${baseUrl}/api/bens/769`;
             console.log("🧪 Testando URL:", testUrl);
-            
+
             fetch(testUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -1261,7 +1319,7 @@
             // ✅ URL CORRETA - USANDO BASE URL ✅
             const baseUrl = getBaseUrl();
             const rota = `${baseUrl}/api/bens/${bemId}`;
-            
+
             console.log(`📡 Buscando dados via: ${rota}`);
 
             fetch(rota)
@@ -1567,7 +1625,7 @@
         });
 
         // DEBUG FUNCTION
-        window.debugAPI = function() {
+        window.debugAPI = function () {
             console.log("=== DEBUG ===");
             console.log("📍 getBaseUrl():", getBaseUrl());
             console.log("🌐 Location:", window.location.href);
@@ -1576,13 +1634,14 @@
 
         // Service Worker cleanup
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
                     registration.unregister();
                     console.log('ServiceWorker unregistered');
                 }
             });
         }
-    </script>    
+    </script>
 </body>
+
 </html>
