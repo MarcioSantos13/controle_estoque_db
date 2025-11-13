@@ -1702,11 +1702,10 @@ def importar_excel():
 # ROTA DO SISTEMA CRUD
 # ==============================
 
-
 @app.route('/sistema-crud')
 @login_required
 def sistema_crud():
-    """Página completa de CRUD para gerenciamento de bens - VERSÃO OTIMIZADA"""
+    """Página completa de CRUD para gerenciamento de bens - VERSÃO DEFINITIVA CORRIGIDA"""
     try:
         pagina = request.args.get('pagina', 1, type=int)
         por_pagina = request.args.get('por_pagina', 50, type=int)
@@ -1715,12 +1714,13 @@ def sistema_crud():
         responsavel_filtro = request.args.get('responsavel', '').strip()
         
         app.logger.info(f"🔍 FILTROS APLICADOS:")
+        app.logger.info(f"   - Página: {pagina}")
         app.logger.info(f"   - Situação: '{situacao_filtro}'")
         app.logger.info(f"   - Busca: '{termo_busca}'")
         app.logger.info(f"   - Responsável: '{responsavel_filtro}'")
         
-        # Usar função otimizada que aplica filtros no banco
-        paginacao = obter_bens_com_filtros(
+        # Usar função otimizada que aplica filtros no banco ANTES da paginação
+        paginacao = obter_bens_com_filtros_avancados(
             DATABASE, 
             pagina, 
             por_pagina,
@@ -1753,10 +1753,10 @@ def sistema_crud():
                             nao_localizados_count=0,
                             mensagem=f"Erro ao carregar dados: {str(e)}")
 
-def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50, 
-                          termo_busca: str = '', situacao_filtro: str = '', 
-                          responsavel_filtro: str = '') -> Dict[str, Any]:
-    """Obtém bens com filtros aplicados diretamente no banco - VERSÃO OTIMIZADA"""
+def obter_bens_com_filtros_avancados(db_path: str, pagina: int = 1, por_pagina: int = 50, 
+                                   termo_busca: str = '', situacao_filtro: str = '', 
+                                   responsavel_filtro: str = '') -> Dict[str, Any]:
+    """Obtém bens com filtros aplicados ANTES da paginação - VERSÃO DEFINITIVA"""
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -1769,18 +1769,20 @@ def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50,
         
         # Filtro por situação
         if situacao_filtro == 'OK':
-            where_conditions.append("situacao = 'Localizado'")
+            where_conditions.append("(situacao = 'Localizado' OR situacao = 'OK')")
         elif situacao_filtro == 'Pendente':
-            where_conditions.append("(situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente')")
+            where_conditions.append("(situacao != 'Localizado' OR situacao IS NULL OR situacao = 'Pendente' OR situacao = '')")
         
         # Filtro por termo de busca (número ou nome)
         if termo_busca:
+            search_term = f'%{termo_busca}%'
             where_conditions.append("(numero LIKE ? OR nome LIKE ?)")
-            params.extend([f'%{termo_busca}%', f'%{termo_busca}%'])
+            params.extend([search_term, search_term])
         
-        # Filtro por responsável - CORREÇÃO CRÍTICA
+        # Filtro por responsável - BUSCA PARCIAL CASE-INSENSITIVE
         if responsavel_filtro:
-            where_conditions.append("responsavel LIKE ?")
+            # Usar COLLATE NOCASE para busca case-insensitive no SQLite
+            where_conditions.append("(responsavel LIKE ? COLLATE NOCASE)")
             params.append(f'%{responsavel_filtro}%')
         
         # Construir query WHERE
@@ -1788,12 +1790,17 @@ def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50,
         if where_conditions:
             where_clause = "WHERE " + " AND ".join(where_conditions)
         
-        # Query para contar total
+        app.logger.info(f"📊 Query WHERE: {where_clause}")
+        app.logger.info(f"📊 Parâmetros: {params}")
+        
+        # Query para contar total COM FILTROS
         count_query = f"SELECT COUNT(*) FROM bens {where_clause}"
         cursor.execute(count_query, params)
         total_registros = cursor.fetchone()[0]
         
-        # Query para obter dados
+        app.logger.info(f"📊 Total de registros após filtros: {total_registros}")
+        
+        # Query para obter dados COM FILTROS E PAGINAÇÃO
         data_query = f"""
             SELECT * FROM bens 
             {where_clause}
@@ -1802,11 +1809,13 @@ def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50,
         """
         
         # Adicionar parâmetros de paginação
-        params.extend([por_pagina, offset])
+        params_paginacao = params + [por_pagina, offset]
         
-        cursor.execute(data_query, params)
+        cursor.execute(data_query, params_paginacao)
         colunas = [desc[0] for desc in cursor.description]
         registros = cursor.fetchall()
+        
+        app.logger.info(f"📊 Registros encontrados: {len(registros)}")
         
         # Converter para lista de dicionários
         dados = []
@@ -1821,7 +1830,7 @@ def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50,
         # Calcular paginação
         total_paginas = (total_registros + por_pagina - 1) // por_pagina if por_pagina > 0 else 1
         
-        return {
+        resultado = {
             'dados': dados,
             'pagina_atual': pagina,
             'por_pagina': por_pagina,
@@ -1834,18 +1843,21 @@ def obter_bens_com_filtros(db_path: str, pagina: int = 1, por_pagina: int = 50,
             }
         }
         
+        app.logger.info(f"✅ Paginação resultante: Página {pagina} de {total_paginas}, {len(dados)} registros")
+        return resultado
+        
     except Exception as e:
-        app.logger.error(f"❌ Erro ao obter bens com filtros: {e}")
+        app.logger.error(f"❌ Erro crítico ao obter bens com filtros: {e}")
+        app.logger.error(f"📋 Traceback: {traceback.format_exc()}")
         return {
             'dados': [],
             'pagina_atual': 1,
             'por_pagina': por_pagina,
             'total_registros': 0,
             'total_paginas': 0,
-            'filtros_aplicados': {}
+            'filtros_aplicados': {},
+            'erro': str(e)
         }
-
-
 
 # ==============================
 # ROTA DE RELATÓRIO POR LOCALIDADE
