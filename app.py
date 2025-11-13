@@ -1664,13 +1664,18 @@ def importar_excel():
         file.save(temp_path)
         
         try:
-            # Importar usando utils
-            from utils.excel_importer import importar_excel_para_sqlite, importar_csv_para_sqlite
-            
-            if file_ext == '.csv':
-                resultado = importar_csv_para_sqlite(temp_path, DATABASE)
-            else:
-                resultado = importar_excel_para_sqlite(temp_path, DATABASE)
+            # Importar usando utils (com fallback)
+            try:
+                from utils.excel_importer import importar_excel_para_sqlite, importar_csv_para_sqlite
+                
+                if file_ext == '.csv':
+                    resultado = importar_csv_para_sqlite(temp_path, DATABASE)
+                else:
+                    resultado = importar_excel_para_sqlite(temp_path, DATABASE)
+            except ImportError:
+                # Fallback se o módulo utils não existir
+                flash('Módulo de importação não disponível. Use a funcionalidade de importação via interface web.', 'error')
+                return redirect(url_for('index'))
             
             if resultado['sucesso']:
                 flash(f"✅ {resultado['mensagem']}", 'success')
