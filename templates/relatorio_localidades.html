@@ -41,6 +41,11 @@
             border-radius: 12px;
             padding: 2rem;
         }
+        
+        .btn-export:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -163,8 +168,7 @@
                                 <select class="form-select" id="localidade" name="localidade" required>
                                     <option value="">Selecione uma localidade...</option>
                                     {% for localidade in localidades %}
-                                    <option value="{{ localidade }}" {% if localidade==localidade_selecionada
-                                        %}selected{% endif %}>
+                                    <option value="{{ localidade }}" {% if localidade==localidade_selecionada %}selected{% endif %}>
                                         {{ localidade }}
                                     </option>
                                     {% endfor %}
@@ -175,14 +179,10 @@
                                     <i class="bi bi-list-columns me-1"></i>Itens por página
                                 </label>
                                 <select class="form-select" id="por_pagina" name="por_pagina">
-                                    <option value="10" {% if paginacao and paginacao.por_pagina==10 %}selected{% endif
-                                        %}>10</option>
-                                    <option value="20" {% if paginacao and paginacao.por_pagina==20 %}selected{% endif
-                                        %}>20</option>
-                                    <option value="50" {% if paginacao and paginacao.por_pagina==50 %}selected{% endif
-                                        %}>50</option>
-                                    <option value="100" {% if paginacao and paginacao.por_pagina==100 %}selected{% endif
-                                        %}>100</option>
+                                    <option value="10" {% if paginacao and paginacao.por_pagina==10 %}selected{% endif %}>10</option>
+                                    <option value="20" {% if paginacao and paginacao.por_pagina==20 %}selected{% endif %}>20</option>
+                                    <option value="50" {% if paginacao and paginacao.por_pagina==50 %}selected{% endif %}>50</option>
+                                    <option value="100" {% if paginacao and paginacao.por_pagina==100 %}selected{% endif %}>100</option>
                                 </select>
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
@@ -212,10 +212,16 @@
                         </div>
                         {% if paginacao and paginacao.dados %}
                         <div class="d-flex gap-2">
-
+                            <!-- Botão Excel -->
+                            <a href="{{ url_for('exportar_localidade_excel', localidade=localidade_selecionada) }}" 
+                               class="btn btn-success btn-sm btn-export" 
+                               id="btn-export-excel">
+                                <i class="bi bi-file-earmark-excel me-1"></i>Exportar Excel
+                            </a>
                             <!-- Botão CSV -->
-                            <a href="{{ url_for('exportar_localidade_csv', localidade=localidade_selecionada) }}"
-                                class="btn btn-info btn-sm">
+                            <a href="{{ url_for('exportar_localidade_csv', localidade=localidade_selecionada) }}" 
+                               class="btn btn-info btn-sm btn-export" 
+                               id="btn-export-csv">
                                 <i class="bi bi-filetype-csv me-1"></i>Exportar CSV
                             </a>
                             <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
@@ -305,25 +311,24 @@
                                         {% endif %}
 
                                         {% for page in range(1, paginacao.total_paginas + 1) %}
-                                        {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1
-                                            %} <li
-                                            class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
+                                        {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1 %}
+                                        <li class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
                                             <a class="page-link"
                                                 href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=page, por_pagina=paginacao.por_pagina) }}">
                                                 {{ page }}
                                             </a>
-                                            </li>
-                                            {% endif %}
-                                            {% endfor %}
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
 
-                                            {% if paginacao.pagina_atual < paginacao.total_paginas %} <li
-                                                class="page-item">
-                                                <a class="page-link"
-                                                    href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
-                                                    <i class="bi bi-chevron-right"></i>
-                                                </a>
-                                                </li>
-                                                {% endif %}
+                                        {% if paginacao.pagina_atual < paginacao.total_paginas %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -380,8 +385,7 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small class="opacity-75">
-                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now
-                        else '' }}
+                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now else '' }}
                     </small>
                 </div>
             </div>
@@ -411,27 +415,81 @@
             });
         });
 
-        // Feedback visual ao exportar
-        document.querySelectorAll('a[href*="exportar"]').forEach(link => {
+        // Sistema melhorado para feedback visual ao exportar
+        document.querySelectorAll('.btn-export').forEach(link => {
             link.addEventListener('click', function (e) {
                 const btn = this;
                 const originalText = btn.innerHTML;
-                const isExcel = btn.href.includes('excel');
-
-                btn.innerHTML = isExcel
+                const isExcel = btn.id === 'btn-export-excel';
+                
+                // Salvar dados originais
+                btn.setAttribute('data-original-text', originalText);
+                
+                // Mostrar estado de carregamento
+                btn.innerHTML = isExcel 
                     ? '<i class="bi bi-file-earmark-excel spinner-border spinner-border-sm me-1"></i> Gerando Excel...'
                     : '<i class="bi bi-filetype-csv spinner-border spinner-border-sm me-1"></i> Gerando CSV...';
-
+                
                 btn.disabled = true;
                 btn.classList.add('disabled');
 
-                // Timeout de segurança para reativar o botão
+                // Detectar quando a navegação é concluída (quando o download é iniciado)
+                const checkDownloadStarted = setInterval(() => {
+                    // Se o botão ainda estiver na página, significa que o download não iniciou ainda
+                    // Quando o download inicia, o navegador foca na janela de download
+                    if (!document.contains(btn)) {
+                        clearInterval(checkDownloadStarted);
+                        // O download começou, podemos reativar o botão
+                        restoreButton(btn, originalText);
+                    }
+                }, 500);
+
+                // Timeout de segurança para reativar o botão mesmo se o download não for detectado
                 setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    btn.classList.remove('disabled');
-                }, 10000); // 10 segundos
+                    clearInterval(checkDownloadStarted);
+                    restoreButton(btn, originalText);
+                }, 8000); // 8 segundos
+
+                // Também detectar quando a página ganha foco novamente (quando o usuário volta do diálogo de download)
+                window.addEventListener('focus', function restoreOnFocus() {
+                    setTimeout(() => {
+                        restoreButton(btn, originalText);
+                        window.removeEventListener('focus', restoreOnFocus);
+                    }, 1000);
+                });
             });
+        });
+
+        // Função para restaurar o botão ao estado original
+        function restoreButton(btn, originalText) {
+            if (btn && document.contains(btn)) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('disabled');
+            }
+        }
+
+        // Alternativa: usar MutationObserver para detectar mudanças no DOM
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    // Verificar se algum botão de export foi removido/readicionado
+                    document.querySelectorAll('.btn-export[disabled]').forEach(btn => {
+                        setTimeout(() => {
+                            const originalText = btn.getAttribute('data-original-text');
+                            if (originalText) {
+                                restoreButton(btn, originalText);
+                            }
+                        }, 2000);
+                    });
+                }
+            });
+        });
+
+        // Iniciar o observer
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
     </script>
 </body>
