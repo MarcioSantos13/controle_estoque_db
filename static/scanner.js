@@ -79,3 +79,69 @@ class ScannerMinimal {
 document.addEventListener('DOMContentLoaded', function() {
     window.scanner = new ScannerMinimal();
 });
+
+// scanner.js - COM DIAGNÓSTICO
+console.log("🔍 SCANNER.JS CARREGADO - Arquivo correto!");
+
+// Função super simples de diagnóstico
+function diagnosticarScanner() {
+    console.log("🎯 DIAGNÓSTICO INICIADO");
+    
+    // Verificar se o botão existe
+    const btnCamera = document.getElementById('btnCamera');
+    console.log("📷 Botão da câmera encontrado:", !!btnCamera);
+    
+    // Verificar se o campo de texto existe
+    const inputNumero = document.getElementById('numero_bem');
+    console.log("🔤 Campo número_bem encontrado:", !!inputNumero);
+    
+    // Verificar versão do arquivo
+    console.log("🆕 Versão: Scanner Minimalista v2.0");
+    
+    return {
+        botao: !!btnCamera,
+        campo: !!inputNumero,
+        versao: "Scanner Minimalista v2.0"
+    };
+}
+
+// Scanner minimalista
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("🚀 DOM Carregado - Iniciando scanner...");
+    
+    const diagnostico = diagnosticarScanner();
+    console.log("📊 Diagnóstico completo:", diagnostico);
+    
+    const btnCamera = document.getElementById('btnCamera');
+    if (btnCamera) {
+        // Remover eventos antigos
+        const novoBotao = btnCamera.cloneNode(true);
+        btnCamera.parentNode.replaceChild(novoBotao, btnCamera);
+        
+        // Novo evento simples
+        document.getElementById('btnCamera').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log("📸 Botão clicado - Scanner acionado!");
+            
+            // Scanner super simples
+            const codigo = prompt("🎯 DIGITE O NÚMERO DO PATRIMÔNIO:");
+            if (codigo && codigo.trim()) {
+                const input = document.getElementById('numero_bem');
+                if (input) {
+                    input.value = codigo.trim().toUpperCase();
+                    input.focus();
+                    console.log("✅ Código inserido:", codigo);
+                }
+            }
+        });
+        
+        console.log("✅ Scanner configurado com sucesso!");
+    } else {
+        console.log("❌ ERRO: Botão não encontrado após DOM carregado");
+    }
+});
+
+// Mensagem final
+console.log("🏁 scanner.js carregado completamente");
