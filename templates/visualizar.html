@@ -28,25 +28,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-        }
-        .alert {
-            transition: opacity 0.5s ease-in-out;
-        }
-        .alert.fade-out {
-            opacity: 0;
-        }
-        .export-btn {
-            position: relative;
-            overflow: hidden;
-        }
-        .export-btn .spinner-border {
-            width: 1rem;
-            height: 1rem;
         }
     </style>
 </head>
@@ -55,7 +41,7 @@
     <div class="loading-overlay" id="loadingOverlay" style="display: none;">
         <div class="text-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-            <p class="mt-3 text-muted">Exportando dados, aguarde...</p>
+            <p class="mt-3 text-muted">Carregando...</p>
         </div>
     </div>
 
@@ -82,17 +68,17 @@
     </header>
 
     <main class="container py-4">
-        <!-- Container de Botões CORRIGIDO -->
+        <!-- Container de Botões -->
         <div class="d-flex flex-wrap gap-2 mb-4">
-            <!-- Botão de Exportação CORRIGIDO -->
+            <!-- Botão de Exportação -->
             {% if tipo == "localizados" %}
-                <button type="button" class="btn btn-success export-btn" id="btnExportar" onclick="exportarDados('localizados')">
+                <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-success">
                     <i class="bi bi-download me-1"></i>Exportar Tudo
-                </button>
+                </a>
             {% elif tipo == "nao-localizados" %}
-                <button type="button" class="btn btn-warning export-btn" id="btnExportar" onclick="exportarDados('nao-localizados')">
+                <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-warning">
                     <i class="bi bi-download me-1"></i>Exportar Tudo
-                </button>
+                </a>
             {% endif %}
 
             <!-- Botão Voltar -->
@@ -126,7 +112,7 @@
             </div>
         </div>
 
-        <!-- Tabela de Dados -->
+        <!-- Tabela de Dados CORRIGIDA -->
         {% if paginacao.dados %}
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-0">
@@ -158,14 +144,17 @@
                                         </td>
                                         <td>
                                             {% if tipo == "localizados" %}
+                                                <!-- FORÇAR "LOCALIZADO" PARA PÁGINA DE LOCALIZADOS -->
                                                 <span class="badge bg-success">
                                                     <i class="bi bi-check-circle me-1"></i>Localizado
                                                 </span>
                                             {% elif tipo == "nao-localizados" %}
+                                                <!-- FORÇAR "PENDENTE" PARA PÁGINA DE NÃO LOCALIZADOS -->
                                                 <span class="badge bg-warning text-dark">
                                                     <i class="bi bi-clock me-1"></i>Pendente
                                                 </span>
                                             {% else %}
+                                                <!-- MANTÉM LÓGICA ORIGINAL PARA OUTRAS PÁGINAS -->
                                                 {% if bem.situacao and 'OK' in bem.situacao %}
                                                     <span class="badge bg-success">Localizado</span>
                                                 {% else %}
@@ -274,169 +263,10 @@
         </div>
     </footer>
 
-    <!-- Scripts Corrigidos -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Variável para controlar estado de exportação
-        let exportInProgress = false;
-
-        // Função para exportar dados CORRIGIDA
-        async function exportarDados(tipo) {
-            if (exportInProgress) {
-                console.log('⏳ Exportação já em andamento...');
-                return;
-            }
-
-            exportInProgress = true;
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const btnExportar = document.getElementById('btnExportar');
-            const originalText = btnExportar.innerHTML;
-            
-            try {
-                console.log(`📤 Iniciando exportação: ${tipo}`);
-                
-                // Mostrar loading e desabilitar botão
-                loadingOverlay.style.display = 'flex';
-                btnExportar.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Exportando...';
-                btnExportar.disabled = true;
-
-                const response = await fetch(`/exportar/${tipo}`);
-                
-                // Verificar se a resposta é um arquivo Excel (status 200) ou um erro/redirect
-                if (response.status === 200) {
-                    const contentType = response.headers.get('content-type');
-                    const isExcelFile = contentType && (
-                        contentType.includes('application/vnd.openxmlformats-officedocument') || 
-                        contentType.includes('application/octet-stream')
-                    );
-
-                    if (isExcelFile) {
-                        const blob = await response.blob();
-                        
-                        // Verificar se o blob não está vazio
-                        if (blob.size === 0) {
-                            throw new Error('Arquivo vazio recebido do servidor');
-                        }
-                        
-                        // Extrair filename do header ou usar padrão
-                        let filename = getFilenameFromResponse(response);
-                        if (!filename) {
-                            const timestamp = new Date().toISOString().slice(0,16).replace(/[-:T]/g, '').replace('Z', '');
-                            filename = `bens_${tipo}_${timestamp}.xlsx`;
-                        }
-
-                        // Criar link de download
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        a.download = filename;
-                        
-                        document.body.appendChild(a);
-                        a.click();
-                        
-                        // Limpeza
-                        setTimeout(() => {
-                            window.URL.revokeObjectURL(url);
-                            document.body.removeChild(a);
-                        }, 100);
-                        
-                        console.log('✅ Exportação concluída com sucesso');
-                        showTemporaryMessage(`Exportação concluída! Arquivo: ${filename}`, 'success');
-                        
-                    } else {
-                        // Se não for arquivo, pode ser uma mensagem de erro em HTML
-                        const text = await response.text();
-                        console.error('Resposta inesperada:', text);
-                        throw new Error('Resposta inesperada do servidor');
-                    }
-                    
-                } else if (response.status === 302 || response.status === 404) {
-                    // Se for redirect (302) ou não encontrado (404), recarregar a página para ver as flash messages
-                    console.log('🔄 Redirecionamento detectado, recarregando página...');
-                    window.location.reload();
-                    return;
-                    
-                } else {
-                    // Outros erros
-                    const errorText = await response.text();
-                    throw new Error(`Erro ${response.status}: ${errorText || 'Falha na exportação'}`);
-                }
-                
-            } catch (error) {
-                console.error('❌ Erro na exportação:', error);
-                showTemporaryMessage(`Erro ao exportar: ${error.message}`, 'danger');
-                
-            } finally {
-                // Restaurar estado independente do resultado
-                loadingOverlay.style.display = 'none';
-                btnExportar.innerHTML = originalText;
-                btnExportar.disabled = false;
-                exportInProgress = false;
-            }
-        }
-
-        // Função para extrair filename do header
-        function getFilenameFromResponse(response) {
-            const contentDisposition = response.headers.get('content-disposition');
-            if (contentDisposition) {
-                const matches = contentDisposition.match(/filename="(.+?)"/);
-                if (matches && matches[1]) {
-                    return matches[1];
-                }
-                
-                const matches2 = contentDisposition.match(/filename=([^;]+)/);
-                if (matches2 && matches2[1]) {
-                    return matches2[1].trim();
-                }
-            }
-            return null;
-        }
-
-        // Função para mostrar mensagens temporárias
-        function showTemporaryMessage(message, type) {
-            // Remover mensagens existentes
-            const existingAlerts = document.querySelectorAll('.alert-dismissible.temporary-message');
-            existingAlerts.forEach(alert => alert.remove());
-
-            const alertClass = type === 'success' ? 'alert-success' : 
-                              type === 'danger' ? 'alert-danger' : 
-                              type === 'warning' ? 'alert-warning' : 'alert-info';
-            
-            const iconClass = type === 'success' ? 'bi-check-circle-fill' : 
-                             type === 'danger' ? 'bi-exclamation-circle-fill' :
-                             type === 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill';
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert ${alertClass} alert-dismissible fade show temporary-message`;
-            alertDiv.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="bi ${iconClass} me-2"></i>
-                    <span>${message}</span>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="this.parentElement.remove()"></button>
-            `;
-
-            // Inserir antes do container de botões
-            const buttonContainer = document.querySelector('.d-flex.flex-wrap.gap-2.mb-4');
-            if (buttonContainer) {
-                buttonContainer.parentNode.insertBefore(alertDiv, buttonContainer);
-            }
-
-            // Auto-remover após 5 segundos
-            setTimeout(() => {
-                if (alertDiv.parentElement) {
-                    alertDiv.classList.add('fade-out');
-                    setTimeout(() => {
-                        if (alertDiv.parentElement) {
-                            alertDiv.remove();
-                        }
-                    }, 500);
-                }
-            }, 5000);
-        }
-
-        // Função para mostrar loading durante navegação
+        // Função para mostrar loading
         function showLoading() {
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
@@ -444,6 +274,13 @@
         // Esconder loading quando a página carregar
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loadingOverlay').style.display = 'none';
+        });
+
+        // Mostrar loading durante downloads
+        document.querySelectorAll('a[href*="exportar"]').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+            });
         });
 
         // Atalhos de teclado para paginação
@@ -463,7 +300,7 @@
             }
         });
 
-        // Formatação de números
+        // Formatação de números (fallback caso JavaScript queira fazer algo)
         function formatNumber(num) {
             return new Intl.NumberFormat('pt-BR').format(num);
         }
