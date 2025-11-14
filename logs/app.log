@@ -7799,3 +7799,301 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-13 21:42:55,802 - app - INFO - ✅ Bem 315 encontrado - 333035 - MESA EM L
 2025-11-13 21:42:55,802 - app - INFO - 📊 Dados retornados: {'id': 315, 'numero': '333035', 'nome': 'MESA EM L', 'situacao': 'Pendente', 'localizacao': '110124_4393 - SALA CTIC / CEAD', 'responsavel': 'SEBASTIAO HENRIQUE DE BRITTO LOPES', 'data_criacao': '2025-11-01 05:27:31', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': '', 'ultima_atualizacao': '2025-11-11 17:59:53', 'data_localizacao': None, 'observacao': ''}
 2025-11-13 21:42:55,802 - app - INFO - 📡 API Response: GET /api/bens/315 -> 200
+2025-11-14 10:54:44,086 - app - INFO - ==================================================
+2025-11-14 10:54:44,086 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 10:54:44,086 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 10:54:44,087 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 10:54:44,087 - app - INFO - ==================================================
+2025-11-14 10:54:44,098 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 10:54:44,098 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 10:54:44,098 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 10:54:44,099 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 10:54:44,117 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 10:54:44,123 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 10:54:44,123 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 10:54:44,124 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 10:54:44,124 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 10:54:44,124 - app - INFO - 🔧 Ambiente: development
+2025-11-14 10:54:44,124 - app - INFO - 🐛 Debug: True
+2025-11-14 10:54:44,125 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 10:54:44,125 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 10:54:44,125 - app - INFO -    - /api/health
+2025-11-14 10:54:44,125 - app - INFO -    - /api/diagnostico
+2025-11-14 10:54:44,125 - app - INFO -    - /api/debug-routes
+2025-11-14 10:54:45,226 - app - INFO - ==================================================
+2025-11-14 10:54:45,226 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 10:54:45,226 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 10:54:45,227 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 10:54:45,227 - app - INFO - ==================================================
+2025-11-14 10:54:45,238 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 10:54:45,238 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 10:54:45,238 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 10:54:45,239 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 10:54:45,240 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 10:54:45,246 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 10:54:45,246 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 10:54:45,247 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 10:54:45,247 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 10:54:45,247 - app - INFO - 🔧 Ambiente: development
+2025-11-14 10:54:45,247 - app - INFO - 🐛 Debug: True
+2025-11-14 10:54:45,253 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 10:54:45,253 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 10:54:45,253 - app - INFO -    - /api/health
+2025-11-14 10:54:45,253 - app - INFO -    - /api/diagnostico
+2025-11-14 10:54:45,254 - app - INFO -    - /api/debug-routes
+2025-11-14 10:54:53,076 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-14 10:55:01,320 - app - ERROR - ❌ Erro no relatório por localidade: Unexpected end of template. Jinja was looking for the following tags: 'elif' or 'else' or 'endif'. The innermost block that needs to be closed is 'if'.
+2025-11-14 10:59:16,090 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 10:59:16,112 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 10:59:25,375 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-csv/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 10:59:28,711 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-excel/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 10:59:40,152 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-csv/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:54:20,323 - app - INFO - ==================================================
+2025-11-14 11:54:20,327 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 11:54:20,327 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:54:20,327 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:54:20,328 - app - INFO - ==================================================
+2025-11-14 11:54:20,339 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 11:54:20,339 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 11:54:20,340 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 11:54:20,340 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 11:54:20,355 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 11:54:20,362 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 11:54:20,362 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 11:54:20,362 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:54:20,363 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:54:20,363 - app - INFO - 🔧 Ambiente: development
+2025-11-14 11:54:20,363 - app - INFO - 🐛 Debug: True
+2025-11-14 11:54:20,363 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 11:54:20,363 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 11:54:20,364 - app - INFO -    - /api/health
+2025-11-14 11:54:20,364 - app - INFO -    - /api/diagnostico
+2025-11-14 11:54:20,364 - app - INFO -    - /api/debug-routes
+2025-11-14 11:54:22,268 - app - INFO - ==================================================
+2025-11-14 11:54:22,269 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 11:54:22,269 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:54:22,269 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:54:22,270 - app - INFO - ==================================================
+2025-11-14 11:54:22,281 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 11:54:22,281 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 11:54:22,282 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 11:54:22,282 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 11:54:22,284 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 11:54:22,290 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 11:54:22,290 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 11:54:22,291 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:54:22,291 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:54:22,291 - app - INFO - 🔧 Ambiente: development
+2025-11-14 11:54:22,291 - app - INFO - 🐛 Debug: True
+2025-11-14 11:54:22,291 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 11:54:22,292 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 11:54:22,292 - app - INFO -    - /api/health
+2025-11-14 11:54:22,292 - app - INFO -    - /api/diagnostico
+2025-11-14 11:54:22,292 - app - INFO -    - /api/debug-routes
+2025-11-14 11:54:27,352 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-14 11:54:32,848 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 11:54:32,855 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 11:54:35,357 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-excel/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:54:38,707 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-csv/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:55:15,781 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-excel/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:55:59,925 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-excel/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:56:10,629 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/exportar-localidade-excel/110124_4372%20-%20SALA%20DO%20RACK%20/%20CEAD
+2025-11-14 11:59:32,287 - app - INFO - ==================================================
+2025-11-14 11:59:32,287 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 11:59:32,288 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:59:32,288 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:59:32,288 - app - INFO - ==================================================
+2025-11-14 11:59:32,299 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 11:59:32,300 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 11:59:32,300 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 11:59:32,300 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 11:59:32,302 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 11:59:32,308 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 11:59:32,309 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 11:59:32,309 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:59:32,309 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:59:32,309 - app - INFO - 🔧 Ambiente: development
+2025-11-14 11:59:32,309 - app - INFO - 🐛 Debug: True
+2025-11-14 11:59:32,310 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 11:59:32,310 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 11:59:32,310 - app - INFO -    - /api/health
+2025-11-14 11:59:32,311 - app - INFO -    - /api/diagnostico
+2025-11-14 11:59:32,311 - app - INFO -    - /api/debug-routes
+2025-11-14 11:59:42,676 - app - INFO - ==================================================
+2025-11-14 11:59:42,676 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 11:59:42,676 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 11:59:42,677 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 11:59:42,677 - app - INFO - ==================================================
+2025-11-14 12:01:39,416 - app - INFO - ==================================================
+2025-11-14 12:01:39,416 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 12:01:39,417 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 12:01:39,417 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 12:01:39,417 - app - INFO - ==================================================
+2025-11-14 12:03:09,096 - app - INFO - ==================================================
+2025-11-14 12:03:09,097 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 12:03:09,097 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 12:03:09,097 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 12:03:09,097 - app - INFO - ==================================================
+2025-11-14 13:01:34,107 - app - INFO - ==================================================
+2025-11-14 13:01:34,107 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 13:01:34,107 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:01:34,108 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:01:34,108 - app - INFO - ==================================================
+2025-11-14 13:03:23,475 - app - INFO - ==================================================
+2025-11-14 13:03:23,475 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 13:03:23,475 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:03:23,476 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:03:23,476 - app - INFO - ==================================================
+2025-11-14 13:22:04,464 - app - INFO - ==================================================
+2025-11-14 13:22:04,464 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 13:22:04,465 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:22:04,465 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:22:04,465 - app - INFO - ==================================================
+2025-11-14 13:22:04,476 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 13:22:04,476 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 13:22:04,477 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 13:22:04,477 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 13:22:04,497 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 13:22:04,507 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 13:22:04,508 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 13:22:04,508 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:22:04,508 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:22:04,508 - app - INFO - 🔧 Ambiente: development
+2025-11-14 13:22:04,508 - app - INFO - 🐛 Debug: True
+2025-11-14 13:22:04,509 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 13:22:04,509 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 13:22:04,509 - app - INFO -    - /api/health
+2025-11-14 13:22:04,509 - app - INFO -    - /api/diagnostico
+2025-11-14 13:22:04,510 - app - INFO -    - /api/debug-routes
+2025-11-14 13:22:05,446 - app - INFO - ==================================================
+2025-11-14 13:22:05,446 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-14 13:22:05,446 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:22:05,447 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:22:05,447 - app - INFO - ==================================================
+2025-11-14 13:22:05,458 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-14 13:22:05,458 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-14 13:22:05,459 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-14 13:22:05,459 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-14 13:22:05,461 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-14 13:22:05,466 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-14 13:22:05,466 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-14 13:22:05,466 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-14 13:22:05,467 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-14 13:22:05,467 - app - INFO - 🔧 Ambiente: development
+2025-11-14 13:22:05,467 - app - INFO - 🐛 Debug: True
+2025-11-14 13:22:05,468 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-14 13:22:05,468 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-14 13:22:05,468 - app - INFO -    - /api/health
+2025-11-14 13:22:05,468 - app - INFO -    - /api/diagnostico
+2025-11-14 13:22:05,469 - app - INFO -    - /api/debug-routes
+2025-11-14 13:22:22,959 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-14 13:22:38,262 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-14 13:22:38,264 - app - INFO - 📊 Total de registros: 2
+2025-11-14 13:22:38,275 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-14 13:22:58,705 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:22:58,718 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:00,414 - app - INFO - 📊 Exportando CSV para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:00,415 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:00,420 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:00,608 - app - INFO - ✅ CSV exportado: bens_localidade_110124_4372 - SALA DO RACK  CEAD_20251114_1323.csv com 3 registros
+2025-11-14 13:23:16,927 - app - INFO - 📊 Exportando Excel para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:16,927 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:16,931 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:17,014 - app - ERROR - ❌ Erro ao exportar Excel: 'MergedCell' object has no attribute 'column_letter'
+2025-11-14 13:23:17,024 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:17,028 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:20,189 - app - INFO - 📊 Exportando Excel para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:20,190 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:20,193 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:20,208 - app - ERROR - ❌ Erro ao exportar Excel: 'MergedCell' object has no attribute 'column_letter'
+2025-11-14 13:23:20,218 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:20,223 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:21,054 - app - INFO - 📊 Exportando Excel para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:21,054 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:21,058 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:21,073 - app - ERROR - ❌ Erro ao exportar Excel: 'MergedCell' object has no attribute 'column_letter'
+2025-11-14 13:23:21,083 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:21,088 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:25,486 - app - INFO - 📊 Exportando Excel para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:25,486 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:25,491 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:25,506 - app - ERROR - ❌ Erro ao exportar Excel: 'MergedCell' object has no attribute 'column_letter'
+2025-11-14 13:23:25,516 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:25,521 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:26,373 - app - INFO - 📊 Exportando Excel para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:26,374 - app - INFO - 🔍 Buscando bens para localidade: '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:26,378 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:23:26,393 - app - ERROR - ❌ Erro ao exportar Excel: 'MergedCell' object has no attribute 'column_letter'
+2025-11-14 13:23:26,401 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-14 13:23:26,406 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-14 13:25:08,580 - app - INFO - 🎯 FILTROS CRUD - Página: 1, Busca: '', Responsável: ''
+2025-11-14 13:25:08,581 - app - INFO - 📊 QUERY FILTRADA: SELECT * FROM bens 
+2025-11-14 13:25:08,581 - app - INFO - 📊 PARÂMETROS: []
+2025-11-14 13:25:08,583 - app - INFO - 📊 TOTAL REGISTROS APÓS FILTROS: 874
+2025-11-14 13:25:08,605 - app - INFO - ✅ PAGINAÇÃO CORRIGIDA: Página 1/18, 50 registros
+2025-11-14 13:25:08,816 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-14 13:25:08,817 - app - INFO - 📦 Query params: {}
+2025-11-14 13:25:08,817 - app - INFO - 👤 User ID: 6
+2025-11-14 13:25:08,817 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-14 13:25:08,818 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-14 13:25:08,818 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRdX0A.rryWZ1Gy-ZVUf56QbNMYdEnKNxg'}
+2025-11-14 13:25:08,818 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-14 13:25:08,819 - app - INFO - 🔧 Método: GET
+2025-11-14 13:25:08,819 - app - INFO - 👤 Usuário: 6
+2025-11-14 13:25:08,820 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-14 13:25:08,820 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-14 13:25:08,823 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-14 13:25:08,827 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-14 13:25:08,828 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-14 13:25:08,829 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-14 13:25:12,307 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-14 13:25:12,307 - app - INFO - 📦 Query params: {}
+2025-11-14 13:25:12,308 - app - INFO - 👤 User ID: 6
+2025-11-14 13:25:12,308 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-14 13:25:12,308 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-14 13:25:12,308 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRdX0A.rryWZ1Gy-ZVUf56QbNMYdEnKNxg'}
+2025-11-14 13:25:12,309 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-14 13:25:12,309 - app - INFO - 🔧 Método: GET
+2025-11-14 13:25:12,309 - app - INFO - 👤 Usuário: 6
+2025-11-14 13:25:12,310 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-14 13:25:12,310 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-14 13:25:12,311 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-14 13:25:12,314 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-14 13:25:12,314 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-14 13:25:12,314 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-14 13:25:19,164 - app - INFO - 🌐 API Request: PUT /api/bens/769
+2025-11-14 13:25:19,164 - app - INFO - 📦 Query params: {}
+2025-11-14 13:25:19,164 - app - INFO - 👤 User ID: 6
+2025-11-14 13:25:19,165 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-14 13:25:19,165 - app - INFO - 🎯 API: Atualizando bem ID 769
+2025-11-14 13:25:19,165 - app - INFO - 📦 Dados recebidos: {'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'auditor': 'Auditor 001', 'observacao': 'Observação 001', 'id': '769'}
+2025-11-14 13:25:19,165 - app - INFO - 📝 Dados preparados para atualização: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 001'}
+2025-11-14 13:25:19,166 - app - INFO - 🔧 Atualizando bem ID 769 com dados: {'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'observacao': 'Observação 001', 'auditor': 'Auditor 001'}
+2025-11-14 13:25:19,168 - app - INFO - 📝 Campos a atualizar: ['nome = ?', 'situacao = ?', 'localizacao = ?', 'responsavel = ?', 'observacao = ?', 'auditor = ?']
+2025-11-14 13:25:19,168 - app - INFO - 📝 Valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 001']
+2025-11-14 13:25:19,168 - app - INFO - 📝 Executando query: UPDATE bens SET nome = ?, situacao = ?, localizacao = ?, responsavel = ?, observacao = ?, auditor = ? WHERE id = ?
+2025-11-14 13:25:19,169 - app - INFO - 📝 Com valores: ['Mesa redonda 001', 'Localizado', 'Sala 001', 'Marcio', 'Observação 001', 'Auditor 001', 769]
+2025-11-14 13:25:19,253 - app - INFO - ✅ Bem 769 atualizado com sucesso
+2025-11-14 13:25:19,254 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-14 13:25:19,255 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-14 13:25:19,257 - app - INFO - 📡 API Response: PUT /api/bens/769 -> 200
+2025-11-14 13:25:22,114 - app - INFO - 🎯 FILTROS CRUD - Página: 1, Busca: '', Responsável: ''
+2025-11-14 13:25:22,114 - app - INFO - 📊 QUERY FILTRADA: SELECT * FROM bens 
+2025-11-14 13:25:22,114 - app - INFO - 📊 PARÂMETROS: []
+2025-11-14 13:25:22,116 - app - INFO - 📊 TOTAL REGISTROS APÓS FILTROS: 874
+2025-11-14 13:25:22,119 - app - INFO - ✅ PAGINAÇÃO CORRIGIDA: Página 1/18, 50 registros
+2025-11-14 13:25:22,148 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-14 13:25:22,148 - app - INFO - 📦 Query params: {}
+2025-11-14 13:25:22,148 - app - INFO - 👤 User ID: 6
+2025-11-14 13:25:22,149 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0
+2025-11-14 13:25:22,149 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-14 13:25:22,149 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'Sec-Ch-Ua': '"Chromium";v="142", "Microsoft Edge";v="142", "Not_A Brand";v="99"', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABUtSi0tSHUrzkvSSipCkM1OUrMwQ3Lz83FSYYiRVJZkFIIMTU3Iz85RqAWX4KyM.aRdX0A.rryWZ1Gy-ZVUf56QbNMYdEnKNxg'}
+2025-11-14 13:25:22,150 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-14 13:25:22,150 - app - INFO - 🔧 Método: GET
+2025-11-14 13:25:22,151 - app - INFO - 👤 Usuário: 6
+2025-11-14 13:25:22,151 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-14 13:25:22,152 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-14 13:25:22,155 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-14 13:25:22,158 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-14 13:25:22,159 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 001', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-14 13:25:22,159 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200

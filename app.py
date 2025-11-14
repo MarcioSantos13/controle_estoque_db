@@ -1,5 +1,5 @@
 # ==============================
-# app.py CORRIGIDO - VERSÃO COM DIAGNÓSTICO COMPLETO
+# app.py CORRIGIDO - VERSÃO COM EXPORTAÇÃO FUNCIONAL
 # ==============================
 
 import os
@@ -9,6 +9,10 @@ import sqlite3
 import shutil
 import io
 import csv
+import pandas as pd
+from io import BytesIO
+import openpyxl
+from openpyxl.styles import Font
 import hashlib
 import traceback
 from functools import wraps
@@ -307,6 +311,8 @@ def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
+        app.logger.info(f"🔍 Buscando bens para localidade: '{localidade}'")
+        
         cursor.execute("SELECT * FROM bens WHERE localizacao = ? ORDER BY numero", (localidade,))
         
         # Converter manualmente para evitar erro de dicionário
@@ -321,9 +327,10 @@ def obter_todos_bens_por_localidade(db_path: str, localidade: str) -> List[Dict]
             bens.append(bem_dict)
             
         conn.close()
+        app.logger.info(f"✅ Encontrados {len(bens)} bens para localidade '{localidade}'")
         return bens
     except Exception as e:
-        app.logger.error(f"❌ Erro ao obter bens por localidade: {e}")
+        app.logger.error(f"❌ Erro ao obter bens por localidade '{localidade}': {e}")
         return []
 
 def obter_bem_por_id(db_path: str, bem_id: int) -> Dict[str, Any]:
@@ -1208,43 +1215,6 @@ def exportar(tipo: str):
         app.logger.error(f"❌ Erro na exportação: {e}")
         abort(500, description="Erro ao exportar dados")
 
-@app.route('/exportar-localidade/<localidade>')
-@login_required
-def exportar_localidade(localidade: str):
-    """Exporta relatório por localidade"""
-    if not os.path.exists(DATABASE):
-        abort(404, description="Banco de dados não encontrado.")
-    
-    try:
-        import pandas as pd
-        
-        registros = obter_todos_bens_por_localidade(DATABASE, localidade)
-        
-        if not registros:
-            abort(404, description=f"Nenhum bem encontrado para a localidade: {localidade}")
-        
-        df = pd.DataFrame(registros)
-        if 'numero' in df.columns:
-            df = df.sort_values(by='numero')
-        
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        nome_seguro = re.sub(r'[^\w\s-]', '', localidade).strip().lower()
-        nome_seguro = re.sub(r'[-\s]+', '_', nome_seguro)
-        
-        caminho_arquivo = os.path.join(
-            os.path.dirname(DATABASE),
-            f"bens_localidade_{nome_seguro}_{timestamp}.xlsx"
-        )
-        
-        df.to_excel(caminho_arquivo, index=False)
-        app.logger.info(f"✅ Relatório por localidade exportado: {caminho_arquivo}")
-        
-        return send_file(caminho_arquivo, as_attachment=True)
-        
-    except Exception as e:
-        app.logger.error(f"❌ Erro ao exportar localidade: {e}")
-        abort(500, description="Erro ao exportar dados da localidade")
-
 @app.route('/debug-bens')
 @login_required
 def debug_bens():
@@ -2112,90 +2082,360 @@ def debug_static():
     </body>
     </html>
     ''', static_css=os.path.exists('static/style.css'))
-    
-    
+
 # ==============================
-# EXPORTAR LOCALIDADE PARA CSV
+# ROTAS DE EXPORTAÇÃO PARA EXCEL E CSV - VERSÃO CORRIGIDA
 # ==============================
 
-import csv
-import os
-from datetime import datetime
-from flask import send_file, jsonify
-import codecs
-
-@app.route('/exportar-localidade-csv/<localidade>')
-def exportar_localidade_csv(localidade):
+@app.route('/exportar-localidade-excel/<path:localidade>')
+@login_required
+def exportar_localidade_excel(localidade):
+    """Exporta relatório por localidade para Excel - VERSÃO CORRIGIDA"""
     try:
-        # Criar diretório de exports se não existir
-        export_dir = os.path.join(os.path.dirname(__file__), 'exports')
-        os.makedirs(export_dir, exist_ok=True)
+        app.logger.info(f"📊 Exportando Excel para localidade: {localidade}")
         
-        # Nome do arquivo com timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        safe_localidade = "".join(c for c in localidade if c.isalnum() or c in (' ', '-', '_')).rstrip()
-        filename = f"bens_{safe_localidade}_{timestamp}.csv"
-        filepath = os.path.join(export_dir, filename)
+        # Obter todos os bens da localidade
+        bens = obter_todos_bens_por_localidade(DATABASE, localidade)
         
-        # Consultar dados do banco
-        conn = sqlite3.connect('relatorios/controle_patrimonial.db')
-        cursor = conn.cursor()
+        if not bens:
+            flash('Nenhum bem encontrado para esta localidade.', 'warning')
+            return redirect(url_for('relatorio_localidades', localidade=localidade))
         
-        cursor.execute('''
-            SELECT numero, nome, situacao, localizacao, responsavel, 
-                   data_criacao, data_ultima_vistoria, auditor, observacao
-            FROM bens 
-            WHERE localizacao = ? 
-            ORDER BY numero
-        ''', (localidade,))
+        # Criar DataFrame
+        df = pd.DataFrame(bens)
         
-        bens = cursor.fetchall()
-        conn.close()
+        # Ordenar por número do bem
+        if 'numero' in df.columns:
+            df = df.sort_values('numero')
         
-        # SOLUÇÃO: Usar encoding UTF-8 com BOM (Byte Order Mark)
-        with open(filepath, 'w', newline='', encoding='utf-8-sig') as csvfile:
-            writer = csv.writer(csvfile, delimiter=';')
+        # Selecionar e renomear colunas para melhor apresentação
+        colunas_para_exportar = [
+            'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+            'observacao', 'auditor', 'data_criacao'
+        ]
+        
+        # Filtrar apenas colunas existentes
+        colunas_existentes = [col for col in colunas_para_exportar if col in df.columns]
+        df = df[colunas_existentes]
+        
+        # Renomear colunas para português
+        mapeamento_colunas = {
+            'numero': 'Número do Bem',
+            'nome': 'Nome do Bem',
+            'situacao': 'Situação',
+            'localizacao': 'Localização',
+            'responsavel': 'Responsável',
+            'observacao': 'Observações',
+            'auditor': 'Auditor',
+            'data_criacao': 'Data de Criação'
+        }
+        
+        df = df.rename(columns=mapeamento_colunas)
+        
+        # Criar arquivo Excel em memória
+        output = BytesIO()
+        
+        # Nome seguro para a planilha (máximo 31 caracteres)
+        sheet_name = f'Bens - {localidade}'[:31]
+        
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=3)
             
-            # Cabeçalho com acentuação correta
-            writer.writerow([
-                'Número', 'Nome do Bem', 'Situação', 'Localização', 
-                'Responsável', 'Data de Criação', 'Última Vistoria', 
-                'Auditor', 'Observações'
-            ])
+            # Obter a worksheet
+            worksheet = writer.sheets[sheet_name]
             
-            # Dados - garantir que strings estejam codificadas corretamente
-            for bem in bens:
-                # Processar cada campo para garantir encoding correto
-                processed_row = []
-                for field in bem:
-                    if field is None:
-                        processed_row.append('')
-                    elif isinstance(field, str):
-                        # Garantir que a string está em UTF-8
-                        processed_row.append(field)
-                    else:
-                        processed_row.append(str(field))
-                
-                writer.writerow(processed_row)
+            # Adicionar cabeçalho com informações
+            worksheet['A1'] = f'Relatório de Bens - Localidade: {localidade}'
+            worksheet['A1'].font = Font(bold=True, size=14)
+            worksheet.merge_cells('A1:H1')
+            
+            worksheet['A2'] = f'Data de exportação: {datetime.now().strftime("%d/%m/%Y %H:%M")}'
+            worksheet['A2'].font = Font(italic=True)
+            worksheet.merge_cells('A2:H2')
+            
+            worksheet['A3'] = f'Total de bens: {len(bens)}'
+            worksheet.merge_cells('A3:H3')
+            
+            # Ajustar largura das colunas
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
         
-        # Enviar arquivo para download
+        output.seek(0)
+        
+        # Nome do arquivo
+        nome_seguro = "".join(c for c in localidade if c.isalnum() or c in (' ', '-', '_')).rstrip()
+        nome_arquivo = f"bens_localidade_{nome_seguro}_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
+        
+        app.logger.info(f"✅ Excel exportado: {nome_arquivo} com {len(bens)} registros")
+        
         return send_file(
-            filepath,
+            output,
             as_attachment=True,
-            download_name=filename,
+            download_name=nome_arquivo,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        
+    except Exception as e:
+        app.logger.error(f"❌ Erro ao exportar Excel: {e}")
+        flash(f'Erro ao exportar para Excel: {str(e)}', 'error')
+        return redirect(url_for('relatorio_localidades', localidade=localidade))
+
+@app.route('/exportar-localidade-csv/<path:localidade>')
+@login_required
+def exportar_localidade_csv(localidade):
+    """Exporta relatório por localidade para CSV - VERSÃO CORRIGIDA"""
+    try:
+        app.logger.info(f"📊 Exportando CSV para localidade: {localidade}")
+        
+        # Obter todos os bens da localidade
+        bens = obter_todos_bens_por_localidade(DATABASE, localidade)
+        
+        if not bens:
+            flash('Nenhum bem encontrado para esta localidade.', 'warning')
+            return redirect(url_for('relatorio_localidades', localidade=localidade))
+        
+        # Criar DataFrame
+        df = pd.DataFrame(bens)
+        
+        # Ordenar por número do bem
+        if 'numero' in df.columns:
+            df = df.sort_values('numero')
+        
+        # Selecionar colunas para exportação
+        colunas_para_exportar = [
+            'numero', 'nome', 'situacao', 'localizacao', 'responsavel', 
+            'observacao', 'auditor', 'data_criacao'
+        ]
+        
+        # Filtrar apenas colunas existentes
+        colunas_existentes = [col for col in colunas_para_exportar if col in df.columns]
+        df = df[colunas_existentes]
+        
+        # Renomear colunas para português
+        mapeamento_colunas = {
+            'numero': 'Número do Bem',
+            'nome': 'Nome do Bem',
+            'situacao': 'Situação',
+            'localizacao': 'Localização',
+            'responsavel': 'Responsável',
+            'observacao': 'Observações',
+            'auditor': 'Auditor',
+            'data_criacao': 'Data de Criação'
+        }
+        
+        df = df.rename(columns=mapeamento_colunas)
+        
+        # Criar arquivo CSV em memória
+        output = BytesIO()
+        
+        # Exportar para CSV com encoding UTF-8 e delimitador ponto e vírgula
+        df.to_csv(output, index=False, sep=';', encoding='utf-8')
+        output.seek(0)
+        
+        # Nome do arquivo
+        nome_seguro = "".join(c for c in localidade if c.isalnum() or c in (' ', '-', '_')).rstrip()
+        nome_arquivo = f"bens_localidade_{nome_seguro}_{datetime.now().strftime('%Y%m%d_%H%M')}.csv"
+        
+        app.logger.info(f"✅ CSV exportado: {nome_arquivo} com {len(bens)} registros")
+        
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=nome_arquivo,
             mimetype='text/csv; charset=utf-8'
         )
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        app.logger.error(f"❌ Erro ao exportar CSV: {e}")
+        flash(f'Erro ao exportar para CSV: {str(e)}', 'error')
+        return redirect(url_for('relatorio_localidades', localidade=localidade))
 
+@app.route('/exportar-todos-excel')
+@login_required
+def exportar_todos_excel():
+    """Exporta todos os bens para Excel"""
+    try:
+        app.logger.info("📊 Exportando todos os bens para Excel")
+        
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT * FROM bens ORDER BY localizacao, numero")
+        colunas = [desc[0] for desc in cursor.description]
+        registros = cursor.fetchall()
+        
+        # Converter para lista de dicionários
+        bens = []
+        for registro in registros:
+            bem_dict = {}
+            for i, valor in enumerate(registro):
+                bem_dict[colunas[i]] = valor
+            bens.append(bem_dict)
+        
+        conn.close()
+        
+        if not bens:
+            flash('Nenhum bem encontrado no sistema.', 'warning')
+            return redirect(url_for('sistema_crud'))
+        
+        # Criar DataFrame
+        df = pd.DataFrame(bens)
+        
+        # Ordenar por localização e número
+        if 'localizacao' in df.columns and 'numero' in df.columns:
+            df = df.sort_values(['localizacao', 'numero'])
+        
+        # Criar arquivo Excel em memória
+        output = BytesIO()
+        
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Todos os Bens', index=False, startrow=3)
+            
+            # Obter a worksheet
+            worksheet = writer.sheets['Todos os Bens']
+            
+            # Adicionar cabeçalho com informações
+            worksheet['A1'] = 'Relatório Completo de Bens Patrimoniais'
+            worksheet['A1'].font = Font(bold=True, size=14)
+            worksheet.merge_cells('A1:H1')
+            
+            worksheet['A2'] = f'Data de exportação: {datetime.now().strftime("%d/%m/%Y %H:%M")}'
+            worksheet['A2'].font = Font(italic=True)
+            worksheet.merge_cells('A2:H2')
+            
+            worksheet['A3'] = f'Total de bens: {len(bens)}'
+            worksheet.merge_cells('A3:H3')
+            
+            # Ajustar largura das colunas
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
+        
+        output.seek(0)
+        
+        nome_arquivo = f"relatorio_completo_bens_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
+        
+        app.logger.info(f"✅ Excel completo exportado: {nome_arquivo} com {len(bens)} registros")
+        
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=nome_arquivo,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        
+    except Exception as e:
+        app.logger.error(f"❌ Erro ao exportar Excel completo: {e}")
+        flash(f'Erro ao exportar para Excel: {str(e)}', 'error')
+        return redirect(url_for('sistema_crud'))
 
-# =================================
-# FIM EXPORTAR LOCALIDADE PARA CSV
-# =================================
-
-
-
+@app.route('/exportar-relatorio-situacao-excel/<situacao>')
+@login_required
+def exportar_relatorio_situacao_excel(situacao):
+    """Exporta relatório por situação para Excel"""
+    try:
+        if situacao == 'localizados':
+            query = "SELECT * FROM bens WHERE situacao = 'Localizado' OR situacao = 'OK'"
+            titulo = 'Bens Localizados'
+        elif situacao == 'nao-localizados':
+            query = "SELECT * FROM bens WHERE situacao != 'Localizado' AND situacao != 'OK'"
+            titulo = 'Bens Não Localizados'
+        else:
+            flash('Tipo de relatório inválido.', 'error')
+            return redirect(url_for('visualizar', tipo=situacao))
+        
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute(query + " ORDER BY localizacao, numero")
+        colunas = [desc[0] for desc in cursor.description]
+        registros = cursor.fetchall()
+        
+        # Converter para lista de dicionários
+        bens = []
+        for registro in registros:
+            bem_dict = {}
+            for i, valor in enumerate(registro):
+                bem_dict[colunas[i]] = valor
+            bens.append(bem_dict)
+        
+        conn.close()
+        
+        if not bens:
+            flash(f'Nenhum bem encontrado para {titulo.lower()}.', 'warning')
+            return redirect(url_for('visualizar', tipo=situacao))
+        
+        # Criar DataFrame
+        df = pd.DataFrame(bens)
+        
+        # Criar arquivo Excel em memória
+        output = BytesIO()
+        
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name=titulo, index=False, startrow=3)
+            
+            # Obter a worksheet
+            worksheet = writer.sheets[titulo]
+            
+            # Adicionar cabeçalho com informações
+            worksheet['A1'] = f'Relatório - {titulo}'
+            worksheet['A1'].font = Font(bold=True, size=14)
+            worksheet.merge_cells('A1:H1')
+            
+            worksheet['A2'] = f'Data de exportação: {datetime.now().strftime("%d/%m/%Y %H:%M")}'
+            worksheet['A2'].font = Font(italic=True)
+            worksheet.merge_cells('A2:H2')
+            
+            worksheet['A3'] = f'Total de bens: {len(bens)}'
+            worksheet.merge_cells('A3:H3')
+            
+            # Ajustar largura das colunas
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
+        
+        output.seek(0)
+        
+        nome_arquivo = f"relatorio_{situacao}_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
+        
+        app.logger.info(f"✅ Excel {situacao} exportado: {nome_arquivo} com {len(bens)} registros")
+        
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=nome_arquivo,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        
+    except Exception as e:
+        app.logger.error(f"❌ Erro ao exportar Excel {situacao}: {e}")
+        flash(f'Erro ao exportar para Excel: {str(e)}', 'error')
+        return redirect(url_for('visualizar', tipo=situacao))
 
 # ==============================
 # INICIALIZAÇÃO
