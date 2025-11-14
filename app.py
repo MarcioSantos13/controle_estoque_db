@@ -8,6 +8,7 @@ import re
 import sqlite3
 import shutil
 import io
+import csv
 import hashlib
 import traceback
 from functools import wraps
@@ -2111,6 +2112,90 @@ def debug_static():
     </body>
     </html>
     ''', static_css=os.path.exists('static/style.css'))
+    
+    
+# ==============================
+# EXPORTAR LOCALIDADE PARA CSV
+# ==============================
+
+import csv
+import os
+from datetime import datetime
+from flask import send_file, jsonify
+import codecs
+
+@app.route('/exportar-localidade-csv/<localidade>')
+def exportar_localidade_csv(localidade):
+    try:
+        # Criar diretório de exports se não existir
+        export_dir = os.path.join(os.path.dirname(__file__), 'exports')
+        os.makedirs(export_dir, exist_ok=True)
+        
+        # Nome do arquivo com timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_localidade = "".join(c for c in localidade if c.isalnum() or c in (' ', '-', '_')).rstrip()
+        filename = f"bens_{safe_localidade}_{timestamp}.csv"
+        filepath = os.path.join(export_dir, filename)
+        
+        # Consultar dados do banco
+        conn = sqlite3.connect('relatorios/controle_patrimonial.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT numero, nome, situacao, localizacao, responsavel, 
+                   data_criacao, data_ultima_vistoria, auditor, observacao
+            FROM bens 
+            WHERE localizacao = ? 
+            ORDER BY numero
+        ''', (localidade,))
+        
+        bens = cursor.fetchall()
+        conn.close()
+        
+        # SOLUÇÃO: Usar encoding UTF-8 com BOM (Byte Order Mark)
+        with open(filepath, 'w', newline='', encoding='utf-8-sig') as csvfile:
+            writer = csv.writer(csvfile, delimiter=';')
+            
+            # Cabeçalho com acentuação correta
+            writer.writerow([
+                'Número', 'Nome do Bem', 'Situação', 'Localização', 
+                'Responsável', 'Data de Criação', 'Última Vistoria', 
+                'Auditor', 'Observações'
+            ])
+            
+            # Dados - garantir que strings estejam codificadas corretamente
+            for bem in bens:
+                # Processar cada campo para garantir encoding correto
+                processed_row = []
+                for field in bem:
+                    if field is None:
+                        processed_row.append('')
+                    elif isinstance(field, str):
+                        # Garantir que a string está em UTF-8
+                        processed_row.append(field)
+                    else:
+                        processed_row.append(str(field))
+                
+                writer.writerow(processed_row)
+        
+        # Enviar arquivo para download
+        return send_file(
+            filepath,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='text/csv; charset=utf-8'
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# =================================
+# FIM EXPORTAR LOCALIDADE PARA CSV
+# =================================
+
+
+
 
 # ==============================
 # INICIALIZAÇÃO

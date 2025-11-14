@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,27 +15,27 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        
+
         .localidade-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
+
         .stats-badge {
             font-size: 0.8rem;
             padding: 0.35rem 0.75rem;
         }
-        
+
         .localidade-item {
             border-left: 4px solid #0d6efd;
             transition: all 0.2s ease;
         }
-        
+
         .localidade-item:hover {
             background-color: #f8f9fa;
             border-left-color: #198754;
         }
-        
+
         .export-section {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 12px;
@@ -42,6 +43,7 @@
         }
     </style>
 </head>
+
 <body class="bg-light">
     <!-- Header -->
     <header class="bg-primary text-white shadow-sm">
@@ -80,7 +82,8 @@
                                     Resumo de Localidades
                                 </h5>
                                 <p class="text-muted mb-0">
-                                    {{ total_localidades }} localidade{{ 's' if total_localidades != 1 }} cadastradas no sistema
+                                    {{ total_localidades }} localidade{{ 's' if total_localidades != 1 }} cadastradas no
+                                    sistema
                                 </p>
                             </div>
                             <div class="col-md-4 text-md-end">
@@ -113,13 +116,14 @@
                         {% if localidades %}
                         <div class="list-group list-group-flush">
                             {% for localidade in localidades %}
-                            <a href="{{ url_for('relatorio_localidades', localidade=localidade, por_pagina=20) }}" 
-                               class="list-group-item list-group-item-action localidade-item 
+                            <a href="{{ url_for('relatorio_localidades', localidade=localidade, por_pagina=20) }}"
+                                class="list-group-item list-group-item-action localidade-item 
                                       {{ 'active' if localidade == localidade_selecionada }}
                                       {{ 'fw-bold' if localidade == localidade_selecionada }}">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span>
-                                        <i class="bi bi-geo-alt-fill me-2 
+                                        <i
+                                            class="bi bi-geo-alt-fill me-2 
                                            {{ 'text-white' if localidade == localidade_selecionada else 'text-primary' }}"></i>
                                         {{ localidade }}
                                     </span>
@@ -159,8 +163,8 @@
                                 <select class="form-select" id="localidade" name="localidade" required>
                                     <option value="">Selecione uma localidade...</option>
                                     {% for localidade in localidades %}
-                                    <option value="{{ localidade }}" 
-                                        {% if localidade == localidade_selecionada %}selected{% endif %}>
+                                    <option value="{{ localidade }}" {% if localidade==localidade_selecionada
+                                        %}selected{% endif %}>
                                         {{ localidade }}
                                     </option>
                                     {% endfor %}
@@ -171,10 +175,14 @@
                                     <i class="bi bi-list-columns me-1"></i>Itens por página
                                 </label>
                                 <select class="form-select" id="por_pagina" name="por_pagina">
-                                    <option value="10" {% if paginacao and paginacao.por_pagina == 10 %}selected{% endif %}>10</option>
-                                    <option value="20" {% if paginacao and paginacao.por_pagina == 20 %}selected{% endif %}>20</option>
-                                    <option value="50" {% if paginacao and paginacao.por_pagina == 50 %}selected{% endif %}>50</option>
-                                    <option value="100" {% if paginacao and paginacao.por_pagina == 100 %}selected{% endif %}>100</option>
+                                    <option value="10" {% if paginacao and paginacao.por_pagina==10 %}selected{% endif
+                                        %}>10</option>
+                                    <option value="20" {% if paginacao and paginacao.por_pagina==20 %}selected{% endif
+                                        %}>20</option>
+                                    <option value="50" {% if paginacao and paginacao.por_pagina==50 %}selected{% endif
+                                        %}>50</option>
+                                    <option value="100" {% if paginacao and paginacao.por_pagina==100 %}selected{% endif
+                                        %}>100</option>
                                 </select>
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
@@ -197,15 +205,22 @@
                             </h5>
                             {% if paginacao %}
                             <small class="text-muted">
-                                {{ paginacao.total_registros }} bem{{ 'ns' if paginacao.total_registros != 1 }} encontrado{{ 's' if paginacao.total_registros != 1 }}
+                                {{ paginacao.total_registros }} bem{{ 'ns' if paginacao.total_registros != 1 }}
+                                encontrado{{ 's' if paginacao.total_registros != 1 }}
                             </small>
                             {% endif %}
                         </div>
                         {% if paginacao and paginacao.dados %}
+                        <!-- No card de resultados, atualize a seção de botões: -->
                         <div class="d-flex gap-2">
-                            <a href="{{ url_for('exportar_localidade', localidade=localidade_selecionada) }}" 
-                               class="btn btn-success btn-sm">
+                            <a href="{{ url_for('exportar_localidade', localidade=localidade_selecionada) }}"
+                                class="btn btn-success btn-sm">
                                 <i class="bi bi-file-earmark-excel me-1"></i>Exportar Excel
+                            </a>
+                            <!-- NOVO BOTÃO CSV -->
+                            <a href="{{ url_for('exportar_localidade_csv', localidade=localidade_selecionada) }}"
+                                class="btn btn-info btn-sm">
+                                <i class="bi bi-filetype-csv me-1"></i>Exportar CSV
                             </a>
                             <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
                                 <i class="bi bi-printer me-1"></i>Imprimir
@@ -213,7 +228,7 @@
                         </div>
                         {% endif %}
                     </div>
-                    
+
                     {% if paginacao and paginacao.dados %}
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -277,7 +292,8 @@
                         <div class="row align-items-center">
                             <div class="col-md-6">
                                 <small class="text-muted">
-                                    Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros }} registro{{ 's' if paginacao.total_registros != 1 }}
+                                    Mostrando {{ paginacao.dados|length }} de {{ paginacao.total_registros }} registro{{
+                                    's' if paginacao.total_registros != 1 }}
                                 </small>
                             </div>
                             <div class="col-md-6">
@@ -285,32 +301,33 @@
                                     <ul class="pagination pagination-sm justify-content-end mb-0">
                                         {% if paginacao.pagina_atual > 1 %}
                                         <li class="page-item">
-                                            <a class="page-link" 
-                                               href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina) }}">
+                                            <a class="page-link"
+                                                href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual-1, por_pagina=paginacao.por_pagina) }}">
                                                 <i class="bi bi-chevron-left"></i>
                                             </a>
                                         </li>
                                         {% endif %}
 
                                         {% for page in range(1, paginacao.total_paginas + 1) %}
-                                            {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1 %}
-                                            <li class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
-                                                <a class="page-link" 
-                                                   href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=page, por_pagina=paginacao.por_pagina) }}">
-                                                    {{ page }}
-                                                </a>
+                                        {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1
+                                            %} <li
+                                            class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
+                                            <a class="page-link"
+                                                href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=page, por_pagina=paginacao.por_pagina) }}">
+                                                {{ page }}
+                                            </a>
                                             </li>
                                             {% endif %}
-                                        {% endfor %}
+                                            {% endfor %}
 
-                                        {% if paginacao.pagina_atual < paginacao.total_paginas %}
-                                        <li class="page-item">
-                                            <a class="page-link" 
-                                               href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                        {% endif %}
+                                            {% if paginacao.pagina_atual < paginacao.total_paginas %} <li
+                                                class="page-item">
+                                                <a class="page-link"
+                                                    href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
+                                                    <i class="bi bi-chevron-right"></i>
+                                                </a>
+                                                </li>
+                                                {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -367,7 +384,8 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small class="opacity-75">
-                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now else '' }}
+                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now
+                        else '' }}
                     </small>
                 </div>
             </div>
@@ -377,17 +395,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Auto-submit quando mudar o número de itens por página
-        document.getElementById('por_pagina')?.addEventListener('change', function() {
+        document.getElementById('por_pagina')?.addEventListener('change', function () {
             this.form.submit();
         });
 
         // Foco no select de localidade
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const localidadeSelect = document.getElementById('localidade');
             if (localidadeSelect && !localidadeSelect.value) {
                 setTimeout(() => localidadeSelect.focus(), 300);
             }
-            
+
             // Adicionar classe ativa aos links de localidade
             const currentLocation = window.location.href;
             document.querySelectorAll('.localidade-item').forEach(item => {
@@ -399,12 +417,12 @@
 
         // Feedback visual ao exportar
         document.querySelectorAll('a[href*="exportar-localidade"]').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 const btn = this;
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Gerando...';
                 btn.disabled = true;
-                
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -413,4 +431,5 @@
         });
     </script>
 </body>
+
 </html>
