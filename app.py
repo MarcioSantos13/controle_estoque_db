@@ -1161,6 +1161,7 @@ def atualizar_status(numero_bem: str, localizacao: str):
     except Exception as e:
         return jsonify({'sucesso': False, 'erro': str(e)})
 
+
 @app.route('/exportar/<tipo>')
 @login_required
 def exportar(tipo: str):
@@ -1173,6 +1174,7 @@ def exportar(tipo: str):
     
     try:
         import pandas as pd
+        import io
 
         if tipo == 'localizados':
             query = "SELECT numero, nome, situacao, localizacao, responsavel, observacao, auditor FROM bens WHERE situacao = 'Localizado'"
@@ -1186,27 +1188,40 @@ def exportar(tipo: str):
         conn.close()
 
         if df.empty:
-            abort(404, description="Nenhum dado encontrado para exportação")
+            flash('Nenhum dado encontrado para exportação', 'warning')
+            return redirect(url_for('visualizar', tipo=tipo))
 
         if 'numero' in df.columns:
             df = df.sort_values(by='numero')
 
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        caminho_arquivo = os.path.join(
-            os.path.dirname(DATABASE),
-            f"{nome_arquivo}_{timestamp}.xlsx"
+        filename = f"{nome_arquivo}_{timestamp}.xlsx"
+
+        # Criar arquivo em memória (NÃO salvar no disco)
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name='Relatorio')
+        
+        output.seek(0)
+
+        app.logger.info(f"✅ Relatório exportado: {filename} ({len(df)} registros)")
+
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 
-        df.to_excel(caminho_arquivo, index=False)
-        app.logger.info(f"✅ Relatório exportado: {caminho_arquivo} ({len(df)} registros)")
-
-        return send_file(caminho_arquivo, as_attachment=True)
-
     except ImportError:
-        abort(500, description="Pandas não está instalado")
+        flash('Biblioteca Pandas não está instalada', 'error')
+        return redirect(url_for('visualizar', tipo=tipo))
     except Exception as e:
         app.logger.error(f"❌ Erro na exportação: {e}")
-        abort(500, description="Erro ao exportar dados")
+        flash(f'Erro ao exportar dados: {str(e)}', 'error')
+        return redirect(url_for('visualizar', tipo=tipo))
+
+
 
 @app.route('/exportar-localidade/<localidade>')
 @login_required

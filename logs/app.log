@@ -7799,3 +7799,153 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-13 21:42:55,802 - app - INFO - ✅ Bem 315 encontrado - 333035 - MESA EM L
 2025-11-13 21:42:55,802 - app - INFO - 📊 Dados retornados: {'id': 315, 'numero': '333035', 'nome': 'MESA EM L', 'situacao': 'Pendente', 'localizacao': '110124_4393 - SALA CTIC / CEAD', 'responsavel': 'SEBASTIAO HENRIQUE DE BRITTO LOPES', 'data_criacao': '2025-11-01 05:27:31', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': '', 'ultima_atualizacao': '2025-11-11 17:59:53', 'data_localizacao': None, 'observacao': ''}
 2025-11-13 21:42:55,802 - app - INFO - 📡 API Response: GET /api/bens/315 -> 200
+2025-11-13 21:55:59,112 - app - INFO - 🎯 FILTROS CRUD - Página: 1, Busca: '', Responsável: 'SEBASTIAO HENRIQUE DE BRITTO LOPES'
+2025-11-13 21:55:59,112 - app - INFO - 📊 QUERY FILTRADA: SELECT * FROM bens WHERE (responsavel LIKE ? COLLATE NOCASE)
+2025-11-13 21:55:59,113 - app - INFO - 📊 PARÂMETROS: ['%SEBASTIAO HENRIQUE DE BRITTO LOPES%']
+2025-11-13 21:55:59,114 - app - INFO - 📊 TOTAL REGISTROS APÓS FILTROS: 47
+2025-11-13 21:55:59,115 - app - INFO - ✅ PAGINAÇÃO CORRIGIDA: Página 1/1, 47 registros
+2025-11-13 21:55:59,166 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-13 21:55:59,166 - app - INFO - 📦 Query params: {}
+2025-11-13 21:55:59,166 - app - INFO - 👤 User ID: 10
+2025-11-13 21:55:59,167 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0
+2025-11-13 21:55:59,167 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-13 21:55:59,167 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', 'Accept': '*/*', 'Accept-Language': 'pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Referer': 'http://127.0.0.1:5000/sistema-crud?q=&responsavel=SEBASTIAO+HENRIQUE+DE+BRITTO+LOPES', 'Connection': 'keep-alive', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABXPzM4tTix1K85L0koqQ5DNTlKwMDRD8vPzcVKByX7ByJHUlmQUgsxNTcjPzlGoB4uwsBA.aRZrEg.CDhGQ3aapqx3k4Qybyld-lH4kJw', 'Sec-Fetch-Dest': 'empty', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'same-origin', 'Priority': 'u=4'}
+2025-11-13 21:55:59,167 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-13 21:55:59,167 - app - INFO - 🔧 Método: GET
+2025-11-13 21:55:59,168 - app - INFO - 👤 Usuário: 10
+2025-11-13 21:55:59,168 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-13 21:55:59,168 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-13 21:55:59,169 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-13 21:55:59,170 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-13 21:55:59,170 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-13 21:55:59,170 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-13 21:59:09,031 - app - INFO - 🎯 FILTROS CRUD - Página: 1, Busca: '', Responsável: ''
+2025-11-13 21:59:09,032 - app - INFO - 📊 QUERY FILTRADA: SELECT * FROM bens 
+2025-11-13 21:59:09,032 - app - INFO - 📊 PARÂMETROS: []
+2025-11-13 21:59:09,034 - app - INFO - 📊 TOTAL REGISTROS APÓS FILTROS: 874
+2025-11-13 21:59:09,035 - app - INFO - ✅ PAGINAÇÃO CORRIGIDA: Página 1/18, 50 registros
+2025-11-13 21:59:09,086 - app - INFO - 🌐 API Request: GET /api/bens/769
+2025-11-13 21:59:09,087 - app - INFO - 📦 Query params: {}
+2025-11-13 21:59:09,087 - app - INFO - 👤 User ID: 10
+2025-11-13 21:59:09,087 - app - INFO - 🔧 User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0
+2025-11-13 21:59:09,087 - app - INFO - 🎯 API GET: Buscando bem ID 769
+2025-11-13 21:59:09,087 - app - INFO - 📡 Headers: {'Host': '127.0.0.1:5000', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', 'Accept': '*/*', 'Accept-Language': 'pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Referer': 'http://127.0.0.1:5000/sistema-crud', 'Connection': 'keep-alive', 'Cookie': 'session=.eJyrViotLk0sysyPT0ktSCwqScxNzSvJV7JSCvFU0oHLpeYmZuYABXPzM4tTix1K85L0koqQ5DNTlKwMDRD8vPzcVKByX7ByJHUlmQUgsxNTcjPzlGoB4uwsBA.aRZrEg.CDhGQ3aapqx3k4Qybyld-lH4kJw', 'Sec-Fetch-Dest': 'empty', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'same-origin', 'Priority': 'u=4'}
+2025-11-13 21:59:09,088 - app - INFO - 🌐 URL: http://127.0.0.1:5000/api/bens/769
+2025-11-13 21:59:09,088 - app - INFO - 🔧 Método: GET
+2025-11-13 21:59:09,088 - app - INFO - 👤 Usuário: 10
+2025-11-13 21:59:09,088 - app - INFO - 🔍 Verificando existência do bem ID 769 no banco...
+2025-11-13 21:59:09,089 - app - INFO - 🔍 Buscando bem por ID: 769
+2025-11-13 21:59:09,090 - app - INFO - ✅ Bem encontrado: 001 - Mesa redonda 001
+2025-11-13 21:59:09,091 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
+2025-11-13 21:59:09,091 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
+2025-11-13 21:59:09,091 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-13 22:00:01,624 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:00:01,625 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:00:01,625 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:00:08,175 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251113-220008.xlsx (2 registros)
+2025-11-13 22:01:32,947 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:01:32,948 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:01:32,948 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:01:37,923 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251113-220137.xlsx (2 registros)
+2025-11-13 22:01:56,271 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:01:56,272 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:01:56,273 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:04:54,327 - app - INFO - ✅ Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20251113-220454.xlsx (2 registros)
+2025-11-13 22:08:53,529 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:08:53,530 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:08:53,531 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:13:43,949 - app - INFO - ==================================================
+2025-11-13 22:13:43,949 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-13 22:13:43,949 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-13 22:13:43,949 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:43,949 - app - INFO - ==================================================
+2025-11-13 22:13:43,956 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-13 22:13:43,956 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-13 22:13:43,956 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-13 22:13:43,957 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-13 22:13:43,958 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-13 22:13:43,959 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-13 22:13:43,959 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-13 22:13:43,959 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-13 22:13:43,960 - app - INFO - 🗄️  Banco de dados: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:43,960 - app - INFO - 🔧 Ambiente: development
+2025-11-13 22:13:43,960 - app - INFO - 🐛 Debug: True
+2025-11-13 22:13:43,960 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-13 22:13:43,960 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-13 22:13:43,960 - app - INFO -    - /api/health
+2025-11-13 22:13:43,961 - app - INFO -    - /api/diagnostico
+2025-11-13 22:13:43,961 - app - INFO -    - /api/debug-routes
+2025-11-13 22:13:54,278 - app - INFO - ==================================================
+2025-11-13 22:13:54,278 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-13 22:13:54,278 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-13 22:13:54,278 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:54,279 - app - INFO - ==================================================
+2025-11-13 22:13:54,285 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-13 22:13:54,285 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-13 22:13:54,286 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-13 22:13:54,286 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-13 22:13:54,288 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-13 22:13:54,290 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-13 22:13:54,290 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-13 22:13:54,290 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-13 22:13:54,290 - app - INFO - 🗄️  Banco de dados: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:54,291 - app - INFO - 🔧 Ambiente: development
+2025-11-13 22:13:54,291 - app - INFO - 🐛 Debug: True
+2025-11-13 22:13:54,291 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-13 22:13:54,291 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-13 22:13:54,291 - app - INFO -    - /api/health
+2025-11-13 22:13:54,292 - app - INFO -    - /api/diagnostico
+2025-11-13 22:13:54,292 - app - INFO -    - /api/debug-routes
+2025-11-13 22:13:58,598 - app - INFO - ==================================================
+2025-11-13 22:13:58,598 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-13 22:13:58,598 - app - INFO - 📁 Diretório: D:\controle_estoque_db
+2025-11-13 22:13:58,599 - app - INFO - 🗄️  Banco: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:58,599 - app - INFO - ==================================================
+2025-11-13 22:13:58,606 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\temp
+2025-11-13 22:13:58,607 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\logs
+2025-11-13 22:13:58,607 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios
+2025-11-13 22:13:58,607 - app - INFO - ✅ Diretório criado/verificado: D:\controle_estoque_db\relatorios\backups
+2025-11-13 22:13:58,609 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-13 22:13:58,611 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-13 22:13:58,611 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-13 22:13:58,611 - app - INFO - 📁 Diretório de trabalho: D:\controle_estoque_db
+2025-11-13 22:13:58,612 - app - INFO - 🗄️  Banco de dados: D:\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-13 22:13:58,612 - app - INFO - 🔧 Ambiente: development
+2025-11-13 22:13:58,612 - app - INFO - 🐛 Debug: True
+2025-11-13 22:13:58,612 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-13 22:13:58,612 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-13 22:13:58,612 - app - INFO -    - /api/health
+2025-11-13 22:13:58,613 - app - INFO -    - /api/diagnostico
+2025-11-13 22:13:58,613 - app - INFO -    - /api/debug-routes
+2025-11-13 22:14:04,862 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:14:05,741 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:14:06,565 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:14:07,402 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:14:13,781 - app - INFO - ✅ Relatório exportado: bens_localizados_20251113-221413.xlsx (2 registros)
+2025-11-13 22:14:51,013 - app - INFO - ✅ Relatório exportado: bens_localizados_20251113-221451.xlsx (2 registros)
+2025-11-13 22:15:10,991 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:15:10,992 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:15:10,993 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:15:13,701 - app - INFO - ✅ Relatório exportado: bens_localizados_20251113-221513.xlsx (2 registros)
+2025-11-13 22:15:45,306 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:15:45,307 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:15:45,307 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:35:14,978 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:35:15,921 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/favicon.ico
+2025-11-13 22:35:19,021 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:35:19,022 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:35:19,023 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:35:21,509 - app - INFO - ✅ Relatório exportado: bens_localizados_20251113-223521.xlsx (2 registros)
+2025-11-13 22:38:38,379 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:38:38,380 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:38:38,380 - app - INFO - ✅ Dados convertidos: 2 registros
+2025-11-13 22:38:51,716 - app - INFO - ✅ Relatório exportado: bens_localizados_20251113-223851.xlsx (2 registros)
+2025-11-13 22:55:25,357 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-13 22:55:25,359 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-13 22:55:25,459 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-13 22:55:25,508 - app - INFO - 🎯 PROCESSANDO: 001 | Localização: ''
+2025-11-13 22:55:25,509 - app - INFO - 📋 Bem: 001 | Status anterior: Localizado | Localização anterior: Sala 001
+2025-11-13 22:55:25,603 - app - INFO - ✅ SUCESSO: 🔁 Bem 001 já estava localizado. Localização atualizada (localização mantida: Sala 001)
+2025-11-13 22:55:29,876 - app - INFO - 🔍 Buscando bens - Tipo: localizados, Página: 1, Por página: 200
+2025-11-13 22:55:29,877 - app - INFO - 📊 Total de registros: 2
+2025-11-13 22:55:29,878 - app - INFO - ✅ Dados convertidos: 2 registros
