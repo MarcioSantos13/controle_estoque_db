@@ -1,5 +1,35 @@
 // scanner.js - VERSÃO MINIMALISTA
 // Apenas transfere texto para o campo ao clicar na câmera
+// scanner.js - AGORA NA PASTA JS/
+console.log("🎯 SCANNER.JS CARREGADO DA PASTA JS/ - CAMINHO CORRETO!");
+
+// Resto do código continua igual...
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("🚀 Scanner da pasta js/ inicializado!");
+    
+    const btnCamera = document.getElementById('btnCamera');
+    if (btnCamera) {
+        btnCamera.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("📸 Botão clicado - Scanner da pasta js/!");
+            
+            const codigo = prompt("DIGITE O NÚMERO DO PATRIMÔNIO:");
+            if (codigo) {
+                const input = document.getElementById('numero_bem');
+                if (input) {
+                    input.value = codigo.trim().toUpperCase();
+                    input.focus();
+                    console.log("✅ Código transferido:", input.value);
+                }
+            }
+        });
+        
+        console.log("✅ Scanner configurado da pasta js/!");
+    }
+});
+
+
+
 
 class ScannerMinimal {
     constructor() {
