@@ -198,6 +198,11 @@
     <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+
+<!-- Adicione APENAS o CSS do scanner simples -->
+<link rel="stylesheet" href="{{ url_for('static', filename='scanner-simple.css') }}">
+</head>
+
 </head>
 
 <body class="bg-light">
@@ -1391,6 +1396,11 @@
             }
         });
     </script>
+
+
+
+<script src="{{ url_for('static', filename='scanner-simple.js') }}"></script>
+
 
 </body>
 
