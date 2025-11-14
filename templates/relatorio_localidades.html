@@ -163,7 +163,8 @@
                                 <select class="form-select" id="localidade" name="localidade" required>
                                     <option value="">Selecione uma localidade...</option>
                                     {% for localidade in localidades %}
-                                    <option value="{{ localidade }}" {% if localidade==localidade_selecionada %}selected{% endif %}>
+                                    <option value="{{ localidade }}" {% if localidade==localidade_selecionada
+                                        %}selected{% endif %}>
                                         {{ localidade }}
                                     </option>
                                     {% endfor %}
@@ -174,10 +175,14 @@
                                     <i class="bi bi-list-columns me-1"></i>Itens por página
                                 </label>
                                 <select class="form-select" id="por_pagina" name="por_pagina">
-                                    <option value="10" {% if paginacao and paginacao.por_pagina==10 %}selected{% endif %}>10</option>
-                                    <option value="20" {% if paginacao and paginacao.por_pagina==20 %}selected{% endif %}>20</option>
-                                    <option value="50" {% if paginacao and paginacao.por_pagina==50 %}selected{% endif %}>50</option>
-                                    <option value="100" {% if paginacao and paginacao.por_pagina==100 %}selected{% endif %}>100</option>
+                                    <option value="10" {% if paginacao and paginacao.por_pagina==10 %}selected{% endif
+                                        %}>10</option>
+                                    <option value="20" {% if paginacao and paginacao.por_pagina==20 %}selected{% endif
+                                        %}>20</option>
+                                    <option value="50" {% if paginacao and paginacao.por_pagina==50 %}selected{% endif
+                                        %}>50</option>
+                                    <option value="100" {% if paginacao and paginacao.por_pagina==100 %}selected{% endif
+                                        %}>100</option>
                                 </select>
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
@@ -207,15 +212,10 @@
                         </div>
                         {% if paginacao and paginacao.dados %}
                         <div class="d-flex gap-2">
-                            <!-- Botão Excel -->
-                            <a href="{{ url_for('exportar_localidade_excel', localidade=localidade_selecionada) }}" 
-                               class="btn btn-success btn-sm" 
-                               id="btn-export-excel">
-                                <i class="bi bi-file-earmark-excel me-1"></i>Exportar Excel
-                            </a>
+
                             <!-- Botão CSV -->
-                            <a href="{{ url_for('exportar_localidade_csv', localidade=localidade_selecionada) }}" 
-                               class="btn btn-info btn-sm">
+                            <a href="{{ url_for('exportar_localidade_csv', localidade=localidade_selecionada) }}"
+                                class="btn btn-info btn-sm">
                                 <i class="bi bi-filetype-csv me-1"></i>Exportar CSV
                             </a>
                             <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
@@ -305,24 +305,25 @@
                                         {% endif %}
 
                                         {% for page in range(1, paginacao.total_paginas + 1) %}
-                                        {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1 %}
-                                        <li class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
+                                        {% if page >= paginacao.pagina_atual - 1 and page <= paginacao.pagina_atual + 1
+                                            %} <li
+                                            class="page-item {% if page == paginacao.pagina_atual %}active{% endif %}">
                                             <a class="page-link"
                                                 href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=page, por_pagina=paginacao.por_pagina) }}">
                                                 {{ page }}
                                             </a>
-                                        </li>
-                                        {% endif %}
-                                        {% endfor %}
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
 
-                                        {% if paginacao.pagina_atual < paginacao.total_paginas %}
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                        {% endif %}
+                                            {% if paginacao.pagina_atual < paginacao.total_paginas %} <li
+                                                class="page-item">
+                                                <a class="page-link"
+                                                    href="{{ url_for('relatorio_localidades', localidade=localidade_selecionada, pagina=paginacao.pagina_atual+1, por_pagina=paginacao.por_pagina) }}">
+                                                    <i class="bi bi-chevron-right"></i>
+                                                </a>
+                                                </li>
+                                                {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -379,7 +380,8 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small class="opacity-75">
-                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now else '' }}
+                        <i class="bi bi-clock me-1"></i>Relatório gerado em {{ now.strftime('%d/%m/%Y %H:%M') if now
+                        else '' }}
                     </small>
                 </div>
             </div>
@@ -415,11 +417,11 @@
                 const btn = this;
                 const originalText = btn.innerHTML;
                 const isExcel = btn.href.includes('excel');
-                
-                btn.innerHTML = isExcel 
+
+                btn.innerHTML = isExcel
                     ? '<i class="bi bi-file-earmark-excel spinner-border spinner-border-sm me-1"></i> Gerando Excel...'
                     : '<i class="bi bi-filetype-csv spinner-border spinner-border-sm me-1"></i> Gerando CSV...';
-                
+
                 btn.disabled = true;
                 btn.classList.add('disabled');
 
