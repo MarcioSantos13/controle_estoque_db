@@ -1,11 +1,14 @@
-/* Scanner Mobile Optimized */
+/* Scanner Mobile Optimized - SIMPLIFICADO */
 .scanner-container {
     position: relative;
     width: 100%;
-    height: 60vh;
+    height: 50vh;
     max-height: 400px;
     background: #000;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .scanner-viewport {
@@ -23,20 +26,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 
 .scanner-frame {
-    width: 70%;
-    height: 200px;
-    border: 2px solid #00ff00;
+    width: 80%;
+    height: 150px;
+    border: 3px solid #00ff00;
     border-radius: 10px;
-    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4);
     animation: scanner-pulse 2s infinite;
 }
 
 @keyframes scanner-pulse {
-    0%, 100% { border-color: #00ff00; }
-    50% { border-color: #00cc00; }
+    0%, 100% { 
+        border-color: #00ff00;
+        box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 0, 0.5);
+    }
+    50% { 
+        border-color: #00cc00;
+        box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 0, 0.8);
+    }
 }
 
 .scanner-loading {
@@ -56,17 +66,34 @@
     justify-content: center;
     height: 100%;
     background: #000;
+    text-align: center;
+    padding: 2rem;
 }
 
-/* Modal mobile optimizado */
+/* Estados do scanner */
+#scanner-status {
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    padding: 1rem;
+    text-align: center;
+}
+
+#scan-result {
+    background: #198754;
+    border-top: 1px solid #20c997;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
     .scanner-container {
-        height: 50vh;
+        height: 40vh;
     }
     
     .scanner-frame {
-        width: 85%;
-        height: 150px;
+        width: 90%;
+        height: 120px;
     }
     
     .modal-dialog {
@@ -75,25 +102,20 @@
     }
 }
 
-/* Estados do scanner */
-#scanner-status {
-    background: #1a1a1a;
-    border-top: 1px solid #333;
-}
-
-#scan-result {
-    background: #198754;
-    border-top: 1px solid #20c997;
-}
-
-/* Botões mobile */
+/* Botões mobile otimizados */
 .btn-scanner {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
+    margin: 0.25rem;
 }
 
-/* Loading animation */
-.spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
+/* Melhorias de acessibilidade */
+.scanner-viewport:focus {
+    outline: 2px solid #0d6efd;
+}
+
+/* Loading states */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
 }
