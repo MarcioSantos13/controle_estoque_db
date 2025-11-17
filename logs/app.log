@@ -8097,3 +8097,5 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-14 13:25:22,158 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
 2025-11-14 13:25:22,159 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': 'Sala 001', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 001', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
 2025-11-14 13:25:22,159 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-14 15:37:33,818 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/static/scanner-simple.css
+2025-11-14 15:37:33,824 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/static/scanner-simple.js
