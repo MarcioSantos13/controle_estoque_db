@@ -1398,10 +1398,12 @@
     </script>
 
 
+<!-- REMOVA estas linhas: -->
+<!-- <script src="{{ url_for('static', filename='scanner-simple.js') }}"></script> -->
+<!-- <script src="{{ url_for('static', filename='js/scanner.js') }}"></script> -->
 
-<script src="{{ url_for('static', filename='scanner-simple.js') }}"></script>
-<!-- Procure por algo assim: -->
-<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+<!-- ADICIONE isto antes do </body>: -->
+<script src="{{ url_for('static', filename='scanner-funcional.js') }}"></script>
 
 
 </body>
