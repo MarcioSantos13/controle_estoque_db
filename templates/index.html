@@ -17,55 +17,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-    /* CORREÇÃO CRÍTICA - REMOVER OVERFLOW E FIXAR POSICIONAMENTO */
+    /* CORREÇÃO CRÍTICA - DROPDOWN FUNCIONAL */
     .app-header {
         position: relative;
         z-index: 1030;
-        overflow: visible !important; /* IMPEDIR QUE CORTE O DROPDOWN */
     }
 
-    .container {
-        position: relative;
-        overflow: visible !important; /* CONTAINER NÃO PODE CORTAR */
-    }
-
-    .row {
-        overflow: visible !important; /* LINHA NÃO PODE CORTAR */
-    }
-
-    .col-md-4 {
-        overflow: visible !important; /* COLUNA NÃO PODE CORTAR */
-    }
-
-    /* CONTAINER DO DROPDOWN - POSICIONAMENTO CORRETO */
     .header-dropdown {
-        position: static !important; /* MUDAR PARA static PARA PERMITIR QUE DROPDOWN "VÁZEU" */
+        position: relative;
     }
 
-    /* DROPDOWN MENU - POSICIONAMENTO ABSOLUTO GLOBAL */
     .dropdown-menu {
         z-index: 9999 !important;
-        position: absolute !important;
-        top: 100% !important;
-        right: 0 !important;
-        left: auto !important;
-        transform: none !important;
-        margin-top: 0.125rem !important;
-    }
-
-    /* GARANTIR QUE O TOGGLE TENHA POSICIONAMENTO RELATIVO */
-    .dropdown-toggle {
-        position: relative;
-        z-index: 10000;
-    }
-
-    /* REMOVER QUALQUER OVERFLOW QUE POSSA ESTAR CONFLITANDO */
-    body {
-        overflow-x: hidden !important;
-    }
-
-    main.container {
-        overflow: visible !important;
     }
 
     /* HEADER ESPECÍFICO */
@@ -175,10 +138,14 @@
         animation: autoFocus 1s ease-in-out;
     }
 
-    /* DROPDOWN DE LOCALIDADES */
-    .localidades-dropdown {
-        max-height: 200px;
-        overflow-y: auto;
+    /* NOVO ESTILO PARA SELECT DE LOCALIDADES */
+    .localidades-select {
+        height: 48px;
+        font-size: 1rem;
+    }
+
+    .localidades-select option {
+        padding: 8px 12px;
     }
 
     /* MENSAGEM FLASH TEMPORÁRIA */
@@ -193,21 +160,73 @@
         margin: 0;
         overflow: hidden;
     }
+
+    /* ESTILOS PARA CARDS DE ESTATÍSTICAS */
+    .stats-card {
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .stats-card.success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+    }
+
+    .stats-card.warning {
+        background: linear-gradient(135deg, #ffc107, #fd7e14);
+        color: white;
+    }
+
+    .stats-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.8;
+    }
+
+    .stats-count {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* AÇÕES RÁPIDAS */
+    .quick-actions {
+        margin: 2rem 0;
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .actions-grid .btn {
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
     <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-
-<!-- Adicione APENAS o CSS do scanner simples -->
-<link rel="stylesheet" href="{{ url_for('static', filename='scanner-simple.css') }}">
-</head>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='scanner-simple.css') }}">
 </head>
 
 <body class="bg-light">
     <!-- Header Corrigido -->
-    <header class="app-header bg-primary text-white shadow-sm" style="position: relative; z-index: 1000;">
+    <header class="app-header bg-primary text-white shadow-sm">
         <div class="container py-3">
             <div class="row align-items-center">
                 <div class="col-md-8">
@@ -367,22 +386,20 @@
                         <div class="form-text">Digite o número e pressione Enter para localizar o bem</div>
                     </div>
 
-                    <!-- CAMPO LOCALIZAÇÃO COM AUTOCOMPLETE -->
+                    <!-- NOVO: SELECT DE LOCALIDADES OBRIGATÓRIO -->
                     <div class="col-md-5">
                         <label for="localizacao" class="form-label fw-semibold">
-                            <i class="bi bi-geo-alt me-1"></i>Localização (Opcional)
+                            <i class="bi bi-geo-alt me-1"></i>Localização Atual
                         </label>
-                        <div class="dropdown">
-                            <input type="text" name="localizacao" id="localizacao" class="form-control form-control-lg"
-                                placeholder="Ex: Almoxarifado Central, Sala 101"
-                                value="{{ request.form.localizacao or '' }}"
-                                data-bs-toggle="dropdown" aria-expanded="false"
-                                autocomplete="off">
-                            <ul class="dropdown-menu w-100 localidades-dropdown" id="localidadesDropdown">
-                                <li><span class="dropdown-item-text text-muted">Carregando localidades...</span></li>
-                            </ul>
-                        </div>
-                        <div class="form-text">Selecione uma localidade do inventário atual</div>
+                        <select name="localizacao" id="localizacao" class="form-select form-select-lg localidades-select" required>
+                            <option value="">Selecione uma localidade...</option>
+                            {% for localidade in localidades %}
+                            <option value="{{ localidade }}" {% if request.form.localizacao == localidade %}selected{% endif %}>
+                                {{ localidade }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Selecione sua localização atual no inventário</div>
                     </div>
 
                     <div class="col-12 col-md-12 col-lg-2 d-flex align-items-end">
@@ -397,9 +414,8 @@
                 <div class="mt-3 p-3 bg-light rounded">
                     <small class="text-muted">
                         <i class="bi bi-lightbulb me-1"></i>
-                        <strong>Como usar:</strong> Digite o número do bem e pressione Enter para marcá-lo como
-                        localizado.
-                        Use o campo de localização apenas se precisar corrigir.
+                        <strong>Como usar:</strong> Selecione sua localização, digite o número do bem e pressione Enter para marcá-lo como localizado.
+                        O scanner automaticamente atualiza o bem na localização selecionada.
                     </small>
                 </div>
             </div>
@@ -419,10 +435,10 @@
                         <p class="stats-label mb-2">Bens Localizados</p>
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="{{ url_for('visualizar', tipo='localizados') }}"
-                                class="btn btn-outline-success btn-sm">
+                                class="btn btn-outline-light btn-sm">
                                 <i class="bi bi-list-ul me-1"></i>Visualizar
                             </a>
-                            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-success btn-sm">
+                            <a href="{{ url_for('exportar', tipo='localizados') }}" class="btn btn-light btn-sm">
                                 <i class="bi bi-download me-1"></i>Exportar
                             </a>
                         </div>
@@ -442,10 +458,10 @@
                         <p class="stats-label mb-2">Bens Pendentes</p>
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="{{ url_for('visualizar', tipo='nao-localizados') }}"
-                                class="btn btn-outline-warning btn-sm">
+                                class="btn btn-outline-light btn-sm">
                                 <i class="bi bi-list-ul me-1"></i>Visualizar
                             </a>
-                            <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-warning btn-sm">
+                            <a href="{{ url_for('exportar', tipo='nao-localizados') }}" class="btn btn-light btn-sm">
                                 <i class="bi bi-download me-1"></i>Exportar
                             </a>
                         </div>
@@ -668,16 +684,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ===== SISTEMA PRINCIPAL CORRIGIDO =====
+        // ===== SISTEMA PRINCIPAL CORRIGIDO E MELHORADO =====
         class SistemaPatrimonial {
             constructor() {
                 this.numeroBemInput = document.getElementById('numero_bem');
-                this.localizacaoInput = document.getElementById('localizacao');
+                this.localizacaoSelect = document.getElementById('localizacao');
                 this.searchForm = document.getElementById('searchForm');
                 this.scannerSistema = new ScannerSistema();
-                this.localidades = [];
-                this.autoSubmitEnabled = true;
-                this.isProcessing = false; // Nova flag para controlar processamento
+                this.isProcessing = false;
             }
 
             async initialize() {
@@ -689,18 +703,15 @@
                 // Configurar eventos
                 this.setupEventListeners();
                 
-                // Carregar localidades
-                await this.carregarLocalidades();
-                
                 // Configurar mensagens temporárias
                 this.setupFlashMessages();
                 
-                // Foco automático inicial - COM TIMING CORRIGIDO
+                // Foco automático inicial
                 setTimeout(() => this.focusAndClearNumeroBem(), 1000);
             }
 
             setupEventListeners() {
-                // Enter para submeter formulário - CORRIGIDO
+                // Enter para submeter formulário
                 this.numeroBemInput?.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !this.isProcessing) {
                         e.preventDefault();
@@ -708,21 +719,15 @@
                     }
                 });
 
-                // Evento de input para limpar após sucesso - CORRIGIDO
+                // Evento de input para limpar após sucesso
                 this.numeroBemInput?.addEventListener('input', (e) => {
-                    // Remove classe de sucesso se usuário começar a digitar
                     if (e.target.classList.contains('scan-success')) {
                         e.target.classList.remove('scan-success');
                     }
                 });
 
-                // Foco quando o usuário clicar em qualquer lugar da página - CORRIGIDO
+                // Foco quando o usuário clicar em qualquer lugar da página
                 document.addEventListener('click', (e) => {
-                    // Não focar se o clique foi em:
-                    // - Modal
-                    // - Dropdown
-                    // - Botões de ação
-                    // - Campo de localização
                     if (!e.target.closest('.modal') &&
                         !e.target.closest('.dropdown-menu') &&
                         !e.target.closest('.actions-grid') &&
@@ -735,7 +740,7 @@
                     }
                 });
 
-                // Prevenir submit duplo - CORRIGIDO
+                // Validar localização antes do submit
                 this.searchForm?.addEventListener('submit', (e) => {
                     if (this.isProcessing) {
                         e.preventDefault();
@@ -743,9 +748,18 @@
                     }
 
                     const numeroBem = this.numeroBemInput?.value.trim();
+                    const localizacao = this.localizacaoSelect?.value;
+
                     if (!numeroBem) {
                         e.preventDefault();
                         this.focusAndClearNumeroBem();
+                        return;
+                    }
+
+                    if (!localizacao) {
+                        e.preventDefault();
+                        this.mostrarMensagem('Por favor, selecione uma localização antes de continuar.', 'warning');
+                        this.localizacaoSelect.focus();
                         return;
                     }
 
@@ -759,8 +773,13 @@
                     }, 5000);
                 });
 
-                // Configurar autocomplete de localidades
-                this.setupLocalidadesAutocomplete();
+                // Auto-submit quando selecionar localização e já tiver número do bem
+                this.localizacaoSelect?.addEventListener('change', () => {
+                    const numeroBem = this.numeroBemInput?.value.trim();
+                    if (numeroBem && this.localizacaoSelect.value && !this.isProcessing) {
+                        setTimeout(() => this.processarBusca(), 300);
+                    }
+                });
             }
 
             setupFlashMessages() {
@@ -780,126 +799,29 @@
                 }, 4000);
             }
 
-            async carregarLocalidades() {
-                try {
-                    console.log('📋 Carregando localidades...');
-                    
-                    // Dados de exemplo - substitua pela sua lógica real
-                    this.localidades = [
-                        "Almoxarifado Central",
-                        "Sala 101 - Administração", 
-                        "Sala 102 - Diretoria",
-                        "Laboratório de Informática A",
-                        "Laboratório de Informática B",
-                        "Biblioteca Central",
-                        "Auditório Principal",
-                        "Copa dos Funcionários",
-                        "Sala dos Professores",
-                        "Manutenção Predial"
-                    ];
-                    
-                    this.atualizarDropdownLocalidades();
-                    
-                } catch (error) {
-                    console.error('❌ Erro ao carregar localidades:', error);
-                    this.localidades = [];
-                }
-            }
-
-            atualizarDropdownLocalidades() {
-                const dropdown = document.getElementById('localidadesDropdown');
-                if (!dropdown || this.localidades.length === 0) return;
-
-                dropdown.innerHTML = '';
-                
-                this.localidades.forEach(localidade => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <button class="dropdown-item" type="button" onclick="sistemaPatrimonial.selecionarLocalidade('${localidade}')">
-                            <i class="bi bi-geo-alt me-2"></i>${localidade}
-                        </button>
-                    `;
-                    dropdown.appendChild(li);
-                });
-
-                // Adicionar opção para digitar manualmente
-                const liManual = document.createElement('li');
-                liManual.innerHTML = `
-                    <button class="dropdown-item text-muted" type="button" onclick="sistemaPatrimonial.focarInputLocalidade()">
-                        <i class="bi bi-keyboard me-2"></i>Digitar manualmente...
-                    </button>
-                `;
-                dropdown.appendChild(liManual);
-            }
-
-            setupLocalidadesAutocomplete() {
-                if (!this.localizacaoInput) return;
-
-                // Mostrar dropdown ao focar
-                this.localizacaoInput.addEventListener('focus', () => {
-                    const dropdown = new bootstrap.Dropdown(this.localizacaoInput);
-                    dropdown.show();
-                });
-
-                // Filtrar localidades ao digitar
-                this.localizacaoInput.addEventListener('input', (e) => {
-                    const termo = e.target.value.toLowerCase();
-                    this.filtrarLocalidades(termo);
-                });
-            }
-
-            filtrarLocalidades(termo) {
-                const dropdown = document.getElementById('localidadesDropdown');
-                if (!dropdown) return;
-
-                const itens = dropdown.getElementsByClassName('dropdown-item');
-                
-                Array.from(itens).forEach(item => {
-                    const texto = item.textContent.toLowerCase();
-                    if (texto.includes(termo) || item.classList.contains('text-muted')) {
-                        item.parentElement.style.display = '';
-                    } else {
-                        item.parentElement.style.display = 'none';
-                    }
-                });
-            }
-
-            selecionarLocalidade(localidade) {
-                if (this.localizacaoInput) {
-                    this.localizacaoInput.value = localidade;
-                    
-                    // Esconder dropdown
-                    const dropdown = bootstrap.Dropdown.getInstance(this.localizacaoInput);
-                    if (dropdown) dropdown.hide();
-                    
-                    // Voltar foco para número do bem
-                    this.focusAndClearNumeroBem();
-                }
-            }
-
-            focarInputLocalidade() {
-                if (this.localizacaoInput) {
-                    this.localizacaoInput.focus();
-                    this.localizacaoInput.select();
-                }
-            }
-
             async processarBusca() {
                 if (this.isProcessing) return;
 
                 const numeroBem = this.numeroBemInput?.value.trim();
+                const localizacao = this.localizacaoSelect?.value;
+
                 if (!numeroBem) {
                     this.focusAndClearNumeroBem();
                     return;
                 }
 
-                console.log('🔍 Processando busca para:', numeroBem);
+                if (!localizacao) {
+                    this.mostrarMensagem('Por favor, selecione uma localização.', 'warning');
+                    this.localizacaoSelect.focus();
+                    return;
+                }
+
+                console.log('🔍 Processando busca para:', numeroBem, 'na localização:', localizacao);
                 this.isProcessing = true;
                 this.mostrarLoading(true);
 
                 try {
-                    // Tentar AJAX primeiro
-                    await this.processarBuscaAjax(numeroBem);
+                    await this.processarBuscaAjax(numeroBem, localizacao);
                 } catch (error) {
                     console.error('❌ Erro ao processar busca AJAX, usando fallback:', error);
                     // Fallback: submeter formulário normal
@@ -907,10 +829,10 @@
                 }
             }
 
-            async processarBuscaAjax(numeroBem) {
+            async processarBuscaAjax(numeroBem, localizacao) {
                 const formData = new FormData();
                 formData.append('numero_bem', numeroBem);
-                formData.append('localizacao', this.localizacaoInput?.value || '');
+                formData.append('localizacao', localizacao);
 
                 try {
                     const response = await fetch('{{ url_for("index") }}', {
@@ -955,7 +877,7 @@
                     
                 } catch (error) {
                     console.error('Erro AJAX:', error);
-                    throw error; // Propagar para o catch externo
+                    throw error;
                 }
             }
 
@@ -1048,9 +970,16 @@
                 }
             }
 
-            // Método para ser chamado após sucesso no scan - CORRIGIDO
+            // Método para ser chamado após sucesso no scan
             onScanSuccess(codigo) {
                 if (!this.numeroBemInput || this.isProcessing) return;
+
+                // Verificar se há localização selecionada
+                if (!this.localizacaoSelect?.value) {
+                    this.mostrarMensagem('Por favor, selecione uma localização antes de escanear.', 'warning');
+                    this.localizacaoSelect.focus();
+                    return;
+                }
 
                 // Definir valor
                 this.numeroBemInput.value = codigo;
@@ -1366,6 +1295,7 @@
             console.log('   - Total de bens:', {{ total_count }});
             console.log('   - Localizados:', {{ localizados_count }});
             console.log('   - Pendentes:', {{ nao_localizados_count }});
+            console.log('   - Localidades disponíveis:', {{ localidades|length }});
         });
 
         // ===== FUNÇÕES GLOBAIS =====
@@ -1396,16 +1326,5 @@
             }
         });
     </script>
-
-
-<!-- REMOVA estas linhas: -->
-<!-- <script src="{{ url_for('static', filename='scanner-simple.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='js/scanner.js') }}"></script> -->
-
-<!-- ADICIONE isto antes do </body>: -->
-<script src="{{ url_for('static', filename='scanner-funcional.js') }}"></script>
-
-
 </body>
-
 </html>
