@@ -1,5 +1,5 @@
 # ==============================
-# app.py CORRIGIDO - VERSÃO COM EXPORTAÇÃO FUNCIONAL
+# app.py CORRIGIDO - VERSÃO COM LOCALIDADES
 # ==============================
 
 import os
@@ -988,103 +988,126 @@ def api_debug_routes():
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    """Página inicial - LÓGICA CORRIGIDA: Bem é localizado automaticamente"""
-    if request.method == 'POST':
-        numero_bem = request.form.get('numero_bem', '').strip()
-        localizacao = request.form.get('localizacao', '').strip()
+    """Página inicial - VERSÃO CORRIGIDA COM LOCALIDADES"""
+    try:
+        # OBTER LOCALIDADES DO BANCO DE DADOS
+        localidades = obter_localidades(DATABASE)
+        app.logger.info(f"📋 Localidades carregadas: {len(localidades)}")
         
-        app.logger.info(f"🎯 PROCESSANDO: {numero_bem} | Localização: '{localizacao}'")
-        
-        valido, mensagem_validacao = InputValidator.validate_number_format(numero_bem)
-        if not valido:
-            flash(mensagem_validacao, 'error')
-            return render_template('index.html', 
-                                 mensagem=mensagem_validacao,
-                                 **carregar_dados_bancos())
+        if request.method == 'POST':
+            numero_bem = request.form.get('numero_bem', '').strip()
+            localizacao = request.form.get('localizacao', '').strip()
+            
+            app.logger.info(f"🎯 PROCESSANDO: {numero_bem} | Localização: '{localizacao}'")
+            
+            valido, mensagem_validacao = InputValidator.validate_number_format(numero_bem)
+            if not valido:
+                flash(mensagem_validacao, 'error')
+                return render_template('index.html', 
+                                     mensagem=mensagem_validacao,
+                                     localidades=localidades,
+                                     **carregar_dados_bancos())
 
-        try:
-            if not numero_bem:
-                flash('Número do bem é obrigatório.', 'error')
-                return redirect(url_for('index'))
-            
-            conn = sqlite3.connect(DATABASE)
-            cursor = conn.cursor()
-            
-            # Verificar se o bem existe
-            cursor.execute("SELECT numero, nome, situacao, localizacao FROM bens WHERE numero = ?", (numero_bem,))
-            resultado = cursor.fetchone()
-            
-            if not resultado:
-                flash(f'❌ Bem {numero_bem} não encontrado no sistema.', 'error')
-                conn.close()
-                return redirect(url_for('index'))
-            
-            # Extrair dados
-            bem_numero = resultado[0]
-            bem_nome = resultado[1]
-            bem_situacao_anterior = resultado[2]
-            bem_localizacao_anterior = resultado[3]
-            
-            app.logger.info(f"📋 Bem: {bem_numero} | Status anterior: {bem_situacao_anterior} | Localização anterior: {bem_localizacao_anterior}")
-            
-            # LÓGICA PRINCIPAL CORRIGIDA:
-            # 1. O bem é SEMPRE marcado como localizado quando encontrado
-            # 2. A localização é atualizada se for informada, senão mantém a anterior
-            
-            if localizacao:
-                # Usar a nova localização informada
-                nova_localizacao = localizacao
-                mensagem_localizacao = f' em: {localizacao}'
-            else:
-                # Manter a localização anterior se existir
-                nova_localizacao = bem_localizacao_anterior if bem_localizacao_anterior else 'Localizado'
-                mensagem_localizacao = f' (localização mantida: {bem_localizacao_anterior})' if bem_localizacao_anterior else ''
-            
-            # ATUALIZAR PARA LOCALIZADO
-            cursor.execute(
-                "UPDATE bens SET localizacao = ?, situacao = 'Localizado' WHERE numero = ?",
-                (nova_localizacao, numero_bem)
-            )
-            
-            linhas_afetadas = cursor.rowcount
-            
-            if linhas_afetadas > 0:
-                conn.commit()
+            try:
+                if not numero_bem:
+                    flash('Número do bem é obrigatório.', 'error')
+                    return redirect(url_for('index'))
                 
-                if bem_situacao_anterior == 'Localizado':
-                    mensagem = f'🔁 Bem {bem_numero} já estava localizado. Localização atualizada{mensagem_localizacao}'
-                    categoria = 'info'
+                conn = sqlite3.connect(DATABASE)
+                cursor = conn.cursor()
+                
+                # Verificar se o bem existe
+                cursor.execute("SELECT numero, nome, situacao, localizacao FROM bens WHERE numero = ?", (numero_bem,))
+                resultado = cursor.fetchone()
+                
+                if not resultado:
+                    flash(f'❌ Bem {numero_bem} não encontrado no sistema.', 'error')
+                    conn.close()
+                    return render_template('index.html', 
+                                         mensagem=f'Bem {numero_bem} não encontrado',
+                                         localidades=localidades,
+                                         **carregar_dados_bancos())
+                
+                # Extrair dados
+                bem_numero = resultado[0]
+                bem_nome = resultado[1]
+                bem_situacao_anterior = resultado[2]
+                bem_localizacao_anterior = resultado[3]
+                
+                app.logger.info(f"📋 Bem: {bem_numero} | Status anterior: {bem_situacao_anterior} | Localização anterior: {bem_localizacao_anterior}")
+                
+                # LÓGICA PRINCIPAL CORRIGIDA:
+                # 1. O bem é SEMPRE marcado como localizado quando encontrado
+                # 2. A localização é atualizada se for informada, senão mantém a anterior
+                
+                if localizacao:
+                    # Usar a nova localização informada
+                    nova_localizacao = localizacao
+                    mensagem_localizacao = f' em: {localizacao}'
                 else:
-                    mensagem = f'✅ Bem {bem_numero} localizado com sucesso{mensagem_localizacao}'
-                    categoria = 'success'
+                    # Manter a localização anterior se existir
+                    nova_localizacao = bem_localizacao_anterior if bem_localizacao_anterior else 'Localizado'
+                    mensagem_localizacao = f' (localização mantida: {bem_localizacao_anterior})' if bem_localizacao_anterior else ''
                 
-                flash(mensagem, categoria)
-                app.logger.info(f"✅ SUCESSO: {mensagem}")
+                # ATUALIZAR PARA LOCALIZADO
+                cursor.execute(
+                    "UPDATE bens SET localizacao = ?, situacao = 'Localizado' WHERE numero = ?",
+                    (nova_localizacao, numero_bem)
+                )
                 
-            else:
-                flash('⚠️ Bem encontrado, mas não foi possível atualizar o status.', 'warning')
-            
-            conn.close()
-            
-            # Focar automaticamente no campo de número para próximo bem
-            return render_template('index.html', 
-                                 mensagem=None,
-                                 focus_numero_bem=True,
-                                 **carregar_dados_bancos())
-            
-        except Exception as e:
-            app.logger.error(f"❌ ERRO: {e}")
-            flash(f'Erro ao processar o bem: {str(e)}', 'error')
-            return redirect(url_for('index'))
+                linhas_afetadas = cursor.rowcount
+                
+                if linhas_afetadas > 0:
+                    conn.commit()
+                    
+                    if bem_situacao_anterior == 'Localizado':
+                        mensagem = f'🔁 Bem {bem_numero} já estava localizado. Localização atualizada{mensagem_localizacao}'
+                        categoria = 'info'
+                    else:
+                        mensagem = f'✅ Bem {bem_numero} localizado com sucesso{mensagem_localizacao}'
+                        categoria = 'success'
+                    
+                    flash(mensagem, categoria)
+                    app.logger.info(f"✅ SUCESSO: {mensagem}")
+                    
+                else:
+                    flash('⚠️ Bem encontrado, mas não foi possível atualizar o status.', 'warning')
+                
+                conn.close()
+                
+                # Focar automaticamente no campo de número para próximo bem
+                return render_template('index.html', 
+                                     mensagem=None,
+                                     localidades=localidades,
+                                     focus_numero_bem=True,
+                                     **carregar_dados_bancos())
+                
+            except Exception as e:
+                app.logger.error(f"❌ ERRO: {e}")
+                flash(f'Erro ao processar o bem: {str(e)}', 'error')
+                return render_template('index.html', 
+                                     mensagem=f'Erro: {str(e)}',
+                                     localidades=localidades,
+                                     **carregar_dados_bancos())
+        
+        # GET request - foco automático no campo de número do bem
+        focus_numero_bem = request.args.get('focus_numero_bem', True)
+        
+        return render_template('index.html', 
+                             mensagem=None,
+                             localidades=localidades,
+                             show_modal=False,
+                             focus_numero_bem=focus_numero_bem,
+                             **carregar_dados_bancos())
     
-    # GET request - foco automático no campo de número do bem
-    focus_numero_bem = request.args.get('focus_numero_bem', True)
-    
-    return render_template('index.html', 
-                         mensagem=None,
-                         show_modal=False,
-                         focus_numero_bem=focus_numero_bem,
-                         **carregar_dados_bancos())
+    except Exception as e:
+        app.logger.error(f"❌ ERRO CRÍTICO na rota index: {e}")
+        flash(f'Erro interno do sistema: {str(e)}', 'error')
+        # Fallback: retornar com localidades vazias
+        return render_template('index.html', 
+                             mensagem=f'Erro: {str(e)}',
+                             localidades=[],
+                             **carregar_dados_bancos())
 
 @app.route('/visualizar/<tipo>')
 @login_required

@@ -173,12 +173,12 @@
     }
 
     .stats-card.success {
-        background: linear-gradient(135deg, #28a745, #20c997);
+        background: linear-gradient(135deg, #cee4d3, #20c997);
         color: white;
     }
 
     .stats-card.warning {
-        background: linear-gradient(135deg, #ffc107, #fd7e14);
+        background: linear-gradient(135deg, #dfd8c1, #d7ad8b);
         color: white;
     }
 
@@ -386,20 +386,37 @@
                         <div class="form-text">Digite o número e pressione Enter para localizar o bem</div>
                     </div>
 
-                    <!-- NOVO: SELECT DE LOCALIDADES OBRIGATÓRIO -->
+                    <!-- SELECT DE LOCALIDADES OPCIONAL - SIMPLIFICADO -->
                     <div class="col-md-5">
                         <label for="localizacao" class="form-label fw-semibold">
-                            <i class="bi bi-geo-alt me-1"></i>Localização Atual
+                            <i class="bi bi-geo-alt me-1"></i>Localização Atual (Opcional)
                         </label>
-                        <select name="localizacao" id="localizacao" class="form-select form-select-lg localidades-select" required>
+                        <select name="localizacao" id="localizacao" class="form-select form-select-lg localidades-select">
                             <option value="">Selecione uma localidade...</option>
-                            {% for localidade in localidades %}
-                            <option value="{{ localidade }}" {% if request.form.localizacao == localidade %}selected{% endif %}>
-                                {{ localidade }}
-                            </option>
-                            {% endfor %}
+                            
+                            <!-- VERIFICAÇÃO SIMPLES DAS LOCALIDADES -->
+                            {% if localidades %}
+                                {% for localidade in localidades %}
+                                    <option value="{{ localidade }}" 
+                                            {% if request.form.localizacao == localidade %}selected{% endif %}>
+                                        {{ localidade }}
+                                    </option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="" disabled>
+                                    Nenhuma localidade cadastrada
+                                </option>
+                            {% endif %}
                         </select>
-                        <div class="form-text">Selecione sua localização atual no inventário</div>
+                        <div class="form-text">
+                            Selecione sua localização atual no inventário (opcional)
+                            {% if not localidades %}
+                            <span class="text-warning">
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                Cadastre localidades no sistema primeiro.
+                            </span>
+                            {% endif %}
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-12 col-lg-2 d-flex align-items-end">
@@ -414,8 +431,8 @@
                 <div class="mt-3 p-3 bg-light rounded">
                     <small class="text-muted">
                         <i class="bi bi-lightbulb me-1"></i>
-                        <strong>Como usar:</strong> Selecione sua localização, digite o número do bem e pressione Enter para marcá-lo como localizado.
-                        O scanner automaticamente atualiza o bem na localização selecionada.
+                        <strong>Como usar:</strong> Digite o número do bem e pressione Enter para marcá-lo como localizado.
+                        Use o campo de localização para corrigir a sala onde o bem está localizado.
                     </small>
                 </div>
             </div>
@@ -595,28 +612,6 @@
         </div>
     </div>
 
-    <!-- Modal de Detalhes do Bem -->
-    <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow-lg rounded-3">
-                <div class="modal-header bg-primary text-white rounded-top-3">
-                    <h5 class="modal-title" id="resultadoModalLabel">
-                        <i class="bi bi-info-circle me-2"></i>Gestão do Bem Patrimonial
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <!-- Conteúdo dinâmico via JavaScript -->
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i>Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal do Scanner -->
     <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -684,7 +679,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ===== SISTEMA PRINCIPAL CORRIGIDO E MELHORADO =====
+        // ===== SISTEMA PRINCIPAL SIMPLIFICADO =====
         class SistemaPatrimonial {
             constructor() {
                 this.numeroBemInput = document.getElementById('numero_bem');
@@ -697,6 +692,9 @@
             async initialize() {
                 console.log("🚀 Inicializando Sistema Patrimonial");
                 
+                // Verificar localidades disponíveis
+                this.verificarLocalidades();
+                
                 // Inicializar scanner
                 await this.scannerSistema.initialize();
                 
@@ -708,6 +706,14 @@
                 
                 // Foco automático inicial
                 setTimeout(() => this.focusAndClearNumeroBem(), 1000);
+            }
+
+            verificarLocalidades() {
+                const select = this.localizacaoSelect;
+                if (!select) return;
+
+                const options = select.querySelectorAll('option');
+                console.log('📋 Localidades disponíveis:', options.length - 1); // -1 para a opção padrão
             }
 
             setupEventListeners() {
@@ -740,7 +746,7 @@
                     }
                 });
 
-                // Validar localização antes do submit
+                // Prevenir submit duplo
                 this.searchForm?.addEventListener('submit', (e) => {
                     if (this.isProcessing) {
                         e.preventDefault();
@@ -748,18 +754,9 @@
                     }
 
                     const numeroBem = this.numeroBemInput?.value.trim();
-                    const localizacao = this.localizacaoSelect?.value;
-
                     if (!numeroBem) {
                         e.preventDefault();
                         this.focusAndClearNumeroBem();
-                        return;
-                    }
-
-                    if (!localizacao) {
-                        e.preventDefault();
-                        this.mostrarMensagem('Por favor, selecione uma localização antes de continuar.', 'warning');
-                        this.localizacaoSelect.focus();
                         return;
                     }
 
@@ -783,7 +780,6 @@
             }
 
             setupFlashMessages() {
-                // Esconder mensagens flash automaticamente após 4 segundos
                 setTimeout(() => {
                     const flashMessages = document.querySelectorAll('.flash-temporary');
                     flashMessages.forEach(msg => {
@@ -810,13 +806,7 @@
                     return;
                 }
 
-                if (!localizacao) {
-                    this.mostrarMensagem('Por favor, selecione uma localização.', 'warning');
-                    this.localizacaoSelect.focus();
-                    return;
-                }
-
-                console.log('🔍 Processando busca para:', numeroBem, 'na localização:', localizacao);
+                console.log('🔍 Processando busca para:', numeroBem, 'na localização:', localizacao || 'Não informada');
                 this.isProcessing = true;
                 this.mostrarLoading(true);
 
@@ -824,7 +814,6 @@
                     await this.processarBuscaAjax(numeroBem, localizacao);
                 } catch (error) {
                     console.error('❌ Erro ao processar busca AJAX, usando fallback:', error);
-                    // Fallback: submeter formulário normal
                     this.searchForm.submit();
                 }
             }
@@ -832,7 +821,7 @@
             async processarBuscaAjax(numeroBem, localizacao) {
                 const formData = new FormData();
                 formData.append('numero_bem', numeroBem);
-                formData.append('localizacao', localizacao);
+                formData.append('localizacao', localizacao || '');
 
                 try {
                     const response = await fetch('{{ url_for("index") }}', {
@@ -844,7 +833,6 @@
                     });
 
                     if (response.redirected) {
-                        // Se houve redirect, recarregar a página
                         window.location.reload();
                         return;
                     }
@@ -852,13 +840,9 @@
                     const result = await response.json();
                     
                     if (result.success) {
-                        // Atualizar estatísticas
                         this.atualizarEstatisticas(result.estatisticas);
-                        
-                        // Mostrar mensagem de sucesso
                         this.mostrarMensagem(result.mensagem, 'success');
                         
-                        // Limpar e focar no campo APÓS SUCESSO
                         setTimeout(() => {
                             this.focusAndClearNumeroBem();
                             this.isProcessing = false;
@@ -866,12 +850,10 @@
                         }, 800);
                         
                     } else {
-                        // Mostrar mensagem de erro
                         this.mostrarMensagem(result.mensagem, 'danger');
                         this.isProcessing = false;
                         this.mostrarLoading(false);
                         
-                        // Manter foco no campo para correção
                         setTimeout(() => this.focusAndClearNumeroBem(), 1000);
                     }
                     
@@ -894,7 +876,6 @@
             }
 
             mostrarMensagem(mensagem, tipo) {
-                // Remover mensagens existentes
                 const existingAlerts = document.querySelectorAll('.alert-dismissible');
                 existingAlerts.forEach(alert => {
                     if (alert.id !== 'main-message') {
@@ -902,7 +883,6 @@
                     }
                 });
 
-                // Criar nova mensagem
                 const alertDiv = document.createElement('div');
                 alertDiv.className = `alert alert-${tipo} alert-dismissible fade show flash-temporary`;
                 alertDiv.innerHTML = `
@@ -913,13 +893,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 `;
 
-                // Inserir antes do card de busca
                 const searchCard = document.querySelector('.search-card');
                 if (searchCard) {
                     searchCard.parentNode.insertBefore(alertDiv, searchCard);
                 }
 
-                // Auto-remover após 3 segundos
                 setTimeout(() => {
                     alertDiv.classList.add('flash-hidden');
                     setTimeout(() => alertDiv.remove(), 500);
@@ -945,56 +923,38 @@
                 if (!this.numeroBemInput || this.isProcessing) return;
 
                 try {
-                    // Só limpar se não estiver processando
                     if (!this.isProcessing) {
                         this.numeroBemInput.value = '';
                     }
                     
-                    // Focar sempre (mesmo se não limpar)
                     this.numeroBemInput.focus();
                     
-                    // Aplicar animação de foco apenas se não estiver processando
                     if (!this.isProcessing) {
                         this.numeroBemInput.classList.add('auto-focus');
                         
-                        // Remover animação após completar
                         setTimeout(() => {
                             this.numeroBemInput.classList.remove('auto-focus');
                         }, 1000);
                     }
-                    
-                    console.log('🎯 Campo com foco automático');
                     
                 } catch (error) {
                     console.log('⚠️ Foco não pôde ser aplicado:', error);
                 }
             }
 
-            // Método para ser chamado após sucesso no scan
             onScanSuccess(codigo) {
                 if (!this.numeroBemInput || this.isProcessing) return;
 
-                // Verificar se há localização selecionada
-                if (!this.localizacaoSelect?.value) {
-                    this.mostrarMensagem('Por favor, selecione uma localização antes de escanear.', 'warning');
-                    this.localizacaoSelect.focus();
-                    return;
-                }
-
-                // Definir valor
                 this.numeroBemInput.value = codigo;
-                
-                // Feedback visual
                 this.numeroBemInput.classList.add('scan-success');
                 
-                // Submeter automaticamente após breve delay
                 setTimeout(() => {
                     this.processarBusca();
                 }, 300);
             }
         }
 
-        // ===== SISTEMA DE SCANNER CORRIGIDO =====
+        // ===== SISTEMA DE SCANNER =====
         class ScannerSistema {
             constructor() {
                 this.codeReader = null;
@@ -1023,15 +983,12 @@
                 const scannerModal = document.getElementById('scannerModal');
                 if (!scannerModal) return;
 
-                // Quando modal abre
                 scannerModal.addEventListener('shown.bs.modal', () => {
                     setTimeout(() => this.startScanner(), 500);
                 });
 
-                // Quando modal fecha
                 scannerModal.addEventListener('hidden.bs.modal', () => {
                     this.stopScanner();
-                    // Focar no campo após fechar
                     setTimeout(() => {
                         if (window.sistemaPatrimonial) {
                             window.sistemaPatrimonial.focusAndClearNumeroBem();
@@ -1039,7 +996,6 @@
                     }, 300);
                 });
 
-                // Botões do modal
                 document.getElementById('usar-codigo-btn')?.addEventListener('click', () => this.useScannedCode());
                 document.getElementById('ler-outro-btn')?.addEventListener('click', () => this.scanAgain());
                 document.getElementById('trocar-camera-btn')?.addEventListener('click', () => this.switchCamera());
@@ -1052,7 +1008,6 @@
                     return;
                 }
                 
-                // Mostrar modal
                 const modal = new bootstrap.Modal(document.getElementById('scannerModal'));
                 modal.show();
             }
@@ -1092,7 +1047,6 @@
                     throw new Error('Elemento de vídeo não encontrado');
                 }
 
-                // Parar stream anterior se existir
                 if (this.currentStream) {
                     this.currentStream.getTracks().forEach(track => track.stop());
                 }
@@ -1100,7 +1054,6 @@
                 this.currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 this.videoElement.srcObject = this.currentStream;
 
-                // Esperar vídeo carregar
                 await new Promise((resolve) => {
                     this.videoElement.onloadedmetadata = () => {
                         this.videoElement.play();
@@ -1110,7 +1063,6 @@
             }
 
             async startBarcodeDetection() {
-                // Usar ZXing como principal
                 if (typeof ZXing === 'undefined') {
                     throw new Error('Biblioteca ZXing não carregada');
                 }
@@ -1131,15 +1083,12 @@
             }
 
             onScanSuccess(decodedText) {
-                // Limpar e validar código
                 const cleanCode = this.cleanBarcode(decodedText);
                 if (!cleanCode) return;
 
-                // Feedback visual e sonoro
                 this.playSuccessSound();
                 if (navigator.vibrate) navigator.vibrate(200);
 
-                // Mostrar resultado
                 this.showScanResult(cleanCode);
                 this.stopScanner();
             }
@@ -1151,7 +1100,6 @@
             }
 
             playSuccessSound() {
-                // Beep simples
                 try {
                     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
@@ -1182,7 +1130,6 @@
                 if (window.sistemaPatrimonial && code) {
                     window.sistemaPatrimonial.onScanSuccess(code);
                     
-                    // Fechar modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('scannerModal'));
                     modal.hide();
                 }
@@ -1214,19 +1161,16 @@
             async stopScanner() {
                 this.isScanning = false;
 
-                // Parar ZXing
                 if (this.codeReader) {
                     this.codeReader.reset();
                     this.codeReader = null;
                 }
 
-                // Parar stream de vídeo
                 if (this.currentStream) {
                     this.currentStream.getTracks().forEach(track => track.stop());
                     this.currentStream = null;
                 }
 
-                // Limpar elemento de vídeo
                 if (this.videoElement) {
                     this.videoElement.srcObject = null;
                 }
@@ -1264,7 +1208,6 @@
                 
                 this.updateScannerStatus(`❌ ${message}`);
                 
-                // Mostrar interface de erro
                 const container = document.querySelector('.scanner-container');
                 if (container) {
                     container.innerHTML = `
@@ -1290,40 +1233,10 @@
             window.scannerSistema = new ScannerSistema();
             window.scannerSistema.initialize();
 
-            // Estatísticas para debug
-            console.log('📊 Estatísticas carregadas:');
+            console.log('📊 Sistema carregado:');
             console.log('   - Total de bens:', {{ total_count }});
             console.log('   - Localizados:', {{ localizados_count }});
             console.log('   - Pendentes:', {{ nao_localizados_count }});
-            console.log('   - Localidades disponíveis:', {{ localidades|length }});
-        });
-
-        // ===== FUNÇÕES GLOBAIS =====
-        window.focarNumeroBem = function () {
-            if (window.sistemaPatrimonial) {
-                window.sistemaPatrimonial.focusAndClearNumeroBem();
-                return true;
-            }
-            return false;
-        };
-
-        // ===== DEBUG DO FORMULÁRIO DE IMPORTAÇÃO =====
-        document.addEventListener('DOMContentLoaded', function () {
-            const importForm = document.getElementById('importForm');
-            if (importForm) {
-                importForm.addEventListener('submit', function (e) {
-                    console.log('📤 Formulário de importação enviado');
-                    const btnImportar = document.getElementById('btnImportar');
-                    const originalText = btnImportar.innerHTML;
-                    btnImportar.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Importando...';
-                    btnImportar.disabled = true;
-
-                    setTimeout(() => {
-                        btnImportar.innerHTML = originalText;
-                        btnImportar.disabled = false;
-                    }, 10000);
-                });
-            }
         });
     </script>
 </body>
