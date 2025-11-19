@@ -8583,3 +8583,132 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-19 11:27:10,444 - app - INFO -    - /api/health
 2025-11-19 11:27:10,444 - app - INFO -    - /api/diagnostico
 2025-11-19 11:27:10,444 - app - INFO -    - /api/debug-routes
+2025-11-19 13:11:31,937 - app - INFO - ==================================================
+2025-11-19 13:11:31,941 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 13:11:31,942 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:11:31,942 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:11:31,942 - app - INFO - ==================================================
+2025-11-19 13:11:31,953 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 13:11:31,954 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 13:11:31,954 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 13:11:31,955 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 13:11:31,973 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 13:11:31,978 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 13:11:31,979 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 13:11:31,979 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:11:31,979 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:11:31,980 - app - INFO - 🔧 Ambiente: development
+2025-11-19 13:11:31,980 - app - INFO - 🐛 Debug: True
+2025-11-19 13:11:31,980 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 13:11:31,981 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 13:11:31,981 - app - INFO -    - /api/health
+2025-11-19 13:11:31,981 - app - INFO -    - /api/diagnostico
+2025-11-19 13:11:31,981 - app - INFO -    - /api/debug-routes
+2025-11-19 13:11:33,037 - app - INFO - ==================================================
+2025-11-19 13:11:33,037 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 13:11:33,038 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:11:33,038 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:11:33,038 - app - INFO - ==================================================
+2025-11-19 13:11:33,049 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 13:11:33,050 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 13:11:33,050 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 13:11:33,050 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 13:11:33,052 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 13:11:33,057 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 13:11:33,058 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 13:11:33,058 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:11:33,058 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:11:33,058 - app - INFO - 🔧 Ambiente: development
+2025-11-19 13:11:33,059 - app - INFO - 🐛 Debug: True
+2025-11-19 13:11:33,059 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 13:11:33,059 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 13:11:33,059 - app - INFO -    - /api/health
+2025-11-19 13:11:33,060 - app - INFO -    - /api/diagnostico
+2025-11-19 13:11:33,060 - app - INFO -    - /api/debug-routes
+2025-11-19 13:13:27,093 - app - INFO - 📋 Localidades carregadas: 29
+2025-11-19 13:13:27,154 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/static/scanner-simple.css
+2025-11-19 13:14:17,684 - app - INFO - 🔍 Buscando bens - Tipo: nao-localizados, Página: 1, Por página: 200
+2025-11-19 13:14:17,685 - app - INFO - 📊 Total de registros: 872
+2025-11-19 13:14:17,690 - app - INFO - ✅ Dados convertidos: 200 registros
+2025-11-19 13:14:19,765 - app - INFO - 📋 Localidades carregadas: 29
+2025-11-19 13:14:19,785 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/static/scanner-simple.css
+2025-11-19 13:14:26,317 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-19 13:14:26,322 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-19 13:14:27,600 - app - INFO - 🔍 Buscando bens para localidade: 110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501
+2025-11-19 13:14:27,609 - app - INFO - ✅ Encontrados 67 bens para localidade '110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501'
+2025-11-19 13:14:28,652 - app - INFO - 🔍 Buscando bens para localidade: 110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122
+2025-11-19 13:14:28,656 - app - INFO - ✅ Encontrados 1 bens para localidade '110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122'
+2025-11-19 13:14:29,813 - app - INFO - 🔍 Buscando bens para localidade: 110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134
+2025-11-19 13:14:29,818 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134'
+2025-11-19 13:14:32,060 - app - INFO - 🔍 Buscando bens para localidade: 110.124_4397 - CEAD-COMPLEXO CEBRASPE-BLOCO 1 - ALA A
+2025-11-19 13:14:32,065 - app - INFO - ✅ Encontrados 4 bens para localidade '110.124_4397 - CEAD-COMPLEXO CEBRASPE-BLOCO 1 - ALA A'
+2025-11-19 13:14:34,092 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-19 13:14:34,097 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-19 13:14:35,469 - app - INFO - 🔍 Buscando bens para localidade: 110124_4373 - CENTRO DE EDUCAÇÃO  ADISTÂNCIA/CEAD_133728
+2025-11-19 13:14:35,485 - app - INFO - ✅ Encontrados 77 bens para localidade '110124_4373 - CENTRO DE EDUCAÇÃO  ADISTÂNCIA/CEAD_133728'
+2025-11-19 13:14:36,469 - app - INFO - 🔍 Buscando bens para localidade: 110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501
+2025-11-19 13:14:36,474 - app - INFO - ✅ Encontrados 67 bens para localidade '110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501'
+2025-11-19 13:14:37,414 - app - INFO - 🔍 Buscando bens para localidade: 110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122
+2025-11-19 13:14:37,419 - app - INFO - ✅ Encontrados 1 bens para localidade '110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122'
+2025-11-19 13:14:38,949 - app - INFO - 🔍 Buscando bens para localidade: 110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134
+2025-11-19 13:14:38,954 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134'
+2025-11-19 13:14:44,627 - app - INFO - 🔍 Buscando bens para localidade: 110.124_4397 - CEAD-COMPLEXO CEBRASPE-BLOCO 1 - ALA A
+2025-11-19 13:14:44,631 - app - INFO - ✅ Encontrados 4 bens para localidade '110.124_4397 - CEAD-COMPLEXO CEBRASPE-BLOCO 1 - ALA A'
+2025-11-19 13:14:46,012 - app - INFO - 🔍 Buscando bens para localidade: 110124_4372 - SALA DO RACK / CEAD
+2025-11-19 13:14:46,017 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4372 - SALA DO RACK / CEAD'
+2025-11-19 13:14:47,214 - app - INFO - 🔍 Buscando bens para localidade: 110124_4373 - CENTRO DE EDUCAÇÃO  ADISTÂNCIA/CEAD_133728
+2025-11-19 13:14:47,227 - app - INFO - ✅ Encontrados 77 bens para localidade '110124_4373 - CENTRO DE EDUCAÇÃO  ADISTÂNCIA/CEAD_133728'
+2025-11-19 13:14:48,355 - app - INFO - 🔍 Buscando bens para localidade: 110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501
+2025-11-19 13:14:48,360 - app - INFO - ✅ Encontrados 67 bens para localidade '110124_4375 - UNIVERSIDADE ABERTA DO BRASIL/CEAD_185501'
+2025-11-19 13:14:49,382 - app - INFO - 🔍 Buscando bens para localidade: 110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122
+2025-11-19 13:14:49,386 - app - INFO - ✅ Encontrados 1 bens para localidade '110124_4377 - BRASILÃ‰IA/ AC /CEAD_186122'
+2025-11-19 13:14:50,508 - app - INFO - 🔍 Buscando bens para localidade: 110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134
+2025-11-19 13:14:50,513 - app - INFO - ✅ Encontrados 3 bens para localidade '110124_4379 - PRODUÇÃO MULTIMIDIA/CEAD_186134'
+2025-11-19 13:14:52,189 - app - INFO - 🔍 Buscando bens para localidade: 110124_4381 - COORD.DO CURSO DE LETRAS-LIP/CEAD_186773
+2025-11-19 13:14:52,193 - app - INFO - ✅ Encontrados 17 bens para localidade '110124_4381 - COORD.DO CURSO DE LETRAS-LIP/CEAD_186773'
+2025-11-19 13:14:54,172 - app - INFO - 🔍 Buscando bens para localidade: 110124_4382 - COORD. DO CURSO ADMINISTRAÇÃO PUBLICA/FACE/CEAD_187781
+2025-11-19 13:14:54,183 - app - INFO - ✅ Encontrados 5 bens para localidade '110124_4382 - COORD. DO CURSO ADMINISTRAÇÃO PUBLICA/FACE/CEAD_187781'
+2025-11-19 13:51:21,597 - app - INFO - ==================================================
+2025-11-19 13:51:21,597 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 13:51:21,598 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:51:21,598 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:51:21,598 - app - INFO - ==================================================
+2025-11-19 13:51:21,608 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 13:51:21,609 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 13:51:21,609 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 13:51:21,609 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 13:51:21,611 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 13:51:21,619 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 13:51:21,620 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 13:51:21,620 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:51:21,620 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:51:21,620 - app - INFO - 🔧 Ambiente: development
+2025-11-19 13:51:21,621 - app - INFO - 🐛 Debug: True
+2025-11-19 13:51:21,621 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 13:51:21,621 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 13:51:21,621 - app - INFO -    - /api/health
+2025-11-19 13:51:21,621 - app - INFO -    - /api/diagnostico
+2025-11-19 13:51:21,622 - app - INFO -    - /api/debug-routes
+2025-11-19 13:51:22,550 - app - INFO - ==================================================
+2025-11-19 13:51:22,550 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 13:51:22,550 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:51:22,551 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:51:22,551 - app - INFO - ==================================================
+2025-11-19 13:51:22,561 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 13:51:22,561 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 13:51:22,562 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 13:51:22,562 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 13:51:22,564 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 13:51:22,570 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 13:51:22,570 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 13:51:22,571 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 13:51:22,571 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 13:51:22,571 - app - INFO - 🔧 Ambiente: development
+2025-11-19 13:51:22,571 - app - INFO - 🐛 Debug: True
+2025-11-19 13:51:22,571 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 13:51:22,572 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 13:51:22,572 - app - INFO -    - /api/health
+2025-11-19 13:51:22,572 - app - INFO -    - /api/diagnostico
+2025-11-19 13:51:22,572 - app - INFO -    - /api/debug-routes
+2025-11-19 13:51:30,066 - app - INFO - 📋 Localidades carregadas: 29
+2025-11-19 13:51:30,122 - app - ERROR - ❌ 404 Not Found: http://127.0.0.1:5000/static/scanner-simple.css
