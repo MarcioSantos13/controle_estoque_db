@@ -8520,3 +8520,66 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-19 10:33:30,160 - app - INFO - ✅ Bem 769 encontrado - 001 - Mesa redonda 001
 2025-11-19 10:33:30,160 - app - INFO - 📊 Dados retornados: {'id': 769, 'numero': '001', 'nome': 'Mesa redonda 001', 'situacao': 'Localizado', 'localizacao': '110124_4393 - SALA CTIC / CEAD', 'responsavel': 'Marcio', 'data_criacao': '2025-11-02 00:01:33', 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': 'Auditor 01', 'ultima_atualizacao': None, 'data_localizacao': None, 'observacao': 'Observação 001'}
 2025-11-19 10:33:30,160 - app - INFO - 📡 API Response: GET /api/bens/769 -> 200
+2025-11-19 11:15:59,999 - app - INFO - ==================================================
+2025-11-19 11:15:59,999 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 11:16:00,000 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:16:00,000 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:16:00,000 - app - INFO - ==================================================
+2025-11-19 11:16:00,012 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 11:16:00,012 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 11:16:00,012 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 11:16:00,013 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 11:16:00,015 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 11:16:00,020 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 11:16:00,021 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 11:16:00,021 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:16:00,022 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:16:00,022 - app - INFO - 🔧 Ambiente: development
+2025-11-19 11:16:00,023 - app - INFO - 🐛 Debug: True
+2025-11-19 11:16:00,023 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 11:16:00,023 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 11:16:00,024 - app - INFO -    - /api/health
+2025-11-19 11:16:00,024 - app - INFO -    - /api/diagnostico
+2025-11-19 11:16:00,024 - app - INFO -    - /api/debug-routes
+2025-11-19 11:16:00,967 - app - INFO - ==================================================
+2025-11-19 11:16:00,968 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 11:16:00,968 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:16:00,968 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:16:00,968 - app - INFO - ==================================================
+2025-11-19 11:16:00,978 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 11:16:00,979 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 11:16:00,979 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 11:16:00,980 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 11:16:00,981 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 11:16:00,987 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 11:16:00,988 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 11:16:00,988 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:16:00,988 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:16:00,988 - app - INFO - 🔧 Ambiente: development
+2025-11-19 11:16:00,989 - app - INFO - 🐛 Debug: True
+2025-11-19 11:16:00,989 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 11:16:00,989 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 11:16:00,989 - app - INFO -    - /api/health
+2025-11-19 11:16:00,990 - app - INFO -    - /api/diagnostico
+2025-11-19 11:16:00,990 - app - INFO -    - /api/debug-routes
+2025-11-19 11:27:10,424 - app - INFO - ==================================================
+2025-11-19 11:27:10,424 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 11:27:10,424 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:27:10,425 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:27:10,425 - app - INFO - ==================================================
+2025-11-19 11:27:10,435 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 11:27:10,436 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 11:27:10,436 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 11:27:10,436 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 11:27:10,438 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 11:27:10,442 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 11:27:10,443 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 11:27:10,443 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 11:27:10,443 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 11:27:10,443 - app - INFO - 🔧 Ambiente: development
+2025-11-19 11:27:10,443 - app - INFO - 🐛 Debug: True
+2025-11-19 11:27:10,444 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 11:27:10,444 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 11:27:10,444 - app - INFO -    - /api/health
+2025-11-19 11:27:10,444 - app - INFO -    - /api/diagnostico
+2025-11-19 11:27:10,444 - app - INFO -    - /api/debug-routes

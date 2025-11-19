@@ -281,6 +281,36 @@
     }
 </style>
 
+
+<!-- No cabeçalho, após os estilos -->
+<script>
+    // Configurações do ambiente
+    const IS_PRODUCTION = {{ 'true' if is_production else 'false' }};
+    const SCANNER_HABILITADO = {{ 'true' if scanner_habilitado else 'false' }};
+    const BASE_URL = '{{ base_url }}';
+    
+    console.log('🌐 Ambiente:', IS_PRODUCTION ? 'Produção' : 'Desenvolvimento');
+    console.log('📷 Scanner:', SCANNER_HABILITADO ? 'Habilitado' : 'Desabilitado');
+</script>
+
+<!-- No botão do scanner, condicional -->
+{% if scanner_habilitado %}
+<button type="button" class="btn btn-outline-primary" id="btnCamera"
+    title="Escanear código de barras">
+    <i class="bi bi-camera"></i>
+</button>
+{% else %}
+<button type="button" class="btn btn-outline-secondary" id="btnCamera"
+    title="Scanner não disponível em produção sem HTTPS" disabled>
+    <i class="bi bi-camera-video-off"></i>
+</button>
+{% endif %}
+
+
+
+
+
+
     <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 </head>
