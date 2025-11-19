@@ -46,6 +46,18 @@ class Config:
 app = Flask(__name__)
 app.config.from_object(Config())
 
+
+# ==============================
+# CONTEXT PROCESSOR PARA CACHE BUSTING
+# ==============================
+@app.context_processor
+def inject_now():
+    """Injeta a data/hora atual em todos os templates para cache busting"""
+    return {'now': datetime.now}
+
+
+
+
 # ==============================
 # CONSTANTES GLOBAIS
 # ==============================
@@ -100,6 +112,27 @@ def setup_app_logging():
 
 # Configurar logging
 setup_app_logging()
+
+
+# ==============================
+# MIDDLEWARE PARA PREVENIR CACHE
+# ==============================
+@app.after_request
+def add_header(response):
+    """
+    Adiciona headers para prevenir cache em desenvolvimento
+    Isso força o navegador a sempre buscar versões novas dos arquivos
+    """
+    if app.config['DEBUG']:  # Só aplica em desenvolvimento
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        response.headers['Last-Modified'] = datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT')
+    return response
+
+
+
+
 
 # ==============================
 # MIDDLEWARE DE LOG DE REQUISIÇÕES

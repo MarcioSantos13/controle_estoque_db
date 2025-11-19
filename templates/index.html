@@ -14,210 +14,229 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ now().timestamp() | int }}">
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='scanner-simple.css') }}?v={{ now().timestamp() | int }}">
     <style>
-    /* CORREÇÃO CRÍTICA - DROPDOWN FUNCIONAL */
-    .app-header {
-        position: relative;
-        z-index: 1030;
-    }
+        /* CORREÇÃO CRÍTICA - DROPDOWN FUNCIONAL */
+        .app-header {
+            position: relative;
+            z-index: 1030;
+        }
 
-    .header-dropdown {
-        position: relative;
-    }
+        .header-dropdown {
+            position: relative;
+        }
 
-    .dropdown-menu {
-        z-index: 9999 !important;
-    }
+        .dropdown-menu {
+            z-index: 9999 !important;
+        }
 
-    /* HEADER ESPECÍFICO */
-    .header-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+        /* HEADER ESPECÍFICO */
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
 
-    .header-subtitle {
-        font-size: 0.9rem;
-        opacity: 0.9;
-    }
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
 
-    .header-stats {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-    }
+        .header-stats {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
 
-    /* ESTILOS EXISTENTES MANTIDOS */
-    .card-dashboard {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
+        /* ESTILOS EXISTENTES MANTIDOS */
+        .card-dashboard {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
-    .card-dashboard:hover {
-        transform: translateY(-5px);
-    }
+        .card-dashboard:hover {
+            transform: translateY(-5px);
+        }
 
-    .stats-number {
-        font-size: 2.5rem;
-        font-weight: bold;
-    }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
 
-    .bg-total {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
+        .bg-total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
-    .bg-localizados {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
+        .bg-localizados {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
 
-    .bg-pendentes {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
+        .bg-pendentes {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
 
-    .quick-action {
-        border: none;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-    }
+        .quick-action {
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
 
-    .quick-action:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
+        .quick-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
 
-    /* GARANTIR VISIBILIDADE */
-    .dropdown-menu.show {
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
+        /* GARANTIR VISIBILIDADE */
+        .dropdown-menu.show {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
 
-    /* MELHORIAS PARA SCANNER - FOCO AUTOMÁTICO */
-    .search-input-group {
-        position: relative;
-        display: flex;
-        align-items: stretch;
-    }
+        /* MELHORIAS PARA SCANNER - FOCO AUTOMÁTICO */
+        .search-input-group {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+        }
 
-    .search-input-group .form-control {
-        flex: 1;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
+        .search-input-group .form-control {
+            flex: 1;
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
 
-    .search-input-group .btn {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-left: none;
-    }
+        .search-input-group .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+        }
 
-    /* ANIMAÇÃO DE SUCESSO */
-    @keyframes scanSuccess {
-        0% { background-color: transparent; }
-        50% { background-color: rgba(40, 167, 69, 0.2); }
-        100% { background-color: transparent; }
-    }
+        /* ANIMAÇÃO DE SUCESSO */
+        @keyframes scanSuccess {
+            0% {
+                background-color: transparent;
+            }
 
-    .scan-success {
-        animation: scanSuccess 1s ease-in-out;
-    }
+            50% {
+                background-color: rgba(40, 167, 69, 0.2);
+            }
 
-    /* ANIMAÇÃO DE FOCO AUTOMÁTICO */
-    @keyframes autoFocus {
-        0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
-        50% { box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
-    }
+            100% {
+                background-color: transparent;
+            }
+        }
 
-    .auto-focus {
-        animation: autoFocus 1s ease-in-out;
-    }
+        .scan-success {
+            animation: scanSuccess 1s ease-in-out;
+        }
 
-    /* NOVO ESTILO PARA SELECT DE LOCALIDADES */
-    .localidades-select {
-        height: 48px;
-        font-size: 1rem;
-    }
+        /* ANIMAÇÃO DE FOCO AUTOMÁTICO */
+        @keyframes autoFocus {
+            0% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+            }
 
-    .localidades-select option {
-        padding: 8px 12px;
-    }
+            50% {
+                box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+            }
 
-    /* MENSAGEM FLASH TEMPORÁRIA */
-    .flash-temporary {
-        transition: opacity 0.5s ease-in-out;
-    }
+            100% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+            }
+        }
 
-    .flash-hidden {
-        opacity: 0;
-        height: 0;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-    }
+        .auto-focus {
+            animation: autoFocus 1s ease-in-out;
+        }
 
-    /* ESTILOS PARA CARDS DE ESTATÍSTICAS */
-    .stats-card {
-        border-radius: 15px;
-        transition: all 0.3s ease;
-    }
+        /* NOVO ESTILO PARA SELECT DE LOCALIDADES */
+        .localidades-select {
+            height: 48px;
+            font-size: 1rem;
+        }
 
-    .stats-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    }
+        .localidades-select option {
+            padding: 8px 12px;
+        }
 
-    .stats-card.success {
-        background: linear-gradient(135deg, #cee4d3, #20c997);
-        color: white;
-    }
+        /* MENSAGEM FLASH TEMPORÁRIA */
+        .flash-temporary {
+            transition: opacity 0.5s ease-in-out;
+        }
 
-    .stats-card.warning {
-        background: linear-gradient(135deg, #dfd8c1, #d7ad8b);
-        color: white;
-    }
+        .flash-hidden {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
 
-    .stats-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.8;
-    }
+        /* ESTILOS PARA CARDS DE ESTATÍSTICAS */
+        .stats-card {
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
 
-    .stats-count {
-        font-size: 2.5rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
 
-    .stats-label {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-    }
+        .stats-card.success {
+            background: linear-gradient(135deg, #cee4d3, #20c997);
+            color: white;
+        }
 
-    /* AÇÕES RÁPIDAS */
-    .quick-actions {
-        margin: 2rem 0;
-    }
+        .stats-card.warning {
+            background: linear-gradient(135deg, #dfd8c1, #d7ad8b);
+            color: white;
+        }
 
-    .actions-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-    }
+        .stats-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
 
-    .actions-grid .btn {
-        padding: 0.75rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
+        .stats-count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-label {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* AÇÕES RÁPIDAS */
+        .quick-actions {
+            margin: 2rem 0;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .actions-grid .btn {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 
     <!-- Bibliotecas de Scanner -->
     <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
@@ -321,7 +340,8 @@
         {% if messages %}
         <div class="flash-messages mb-4">
             {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show flash-temporary" role="alert" id="flash-{{ loop.index }}">
+            <div class="alert alert-{{ category }} alert-dismissible fade show flash-temporary" role="alert"
+                id="flash-{{ loop.index }}">
                 <div class="d-flex align-items-center">
                     {% if category == 'success' %}
                     <i class="bi bi-check-circle-fill me-2"></i>
@@ -391,21 +411,22 @@
                         <label for="localizacao" class="form-label fw-semibold">
                             <i class="bi bi-geo-alt me-1"></i>Localização Atual (Opcional)
                         </label>
-                        <select name="localizacao" id="localizacao" class="form-select form-select-lg localidades-select">
+                        <select name="localizacao" id="localizacao"
+                            class="form-select form-select-lg localidades-select">
                             <option value="">Selecione uma localidade...</option>
-                            
+
                             <!-- VERIFICAÇÃO SIMPLES DAS LOCALIDADES -->
                             {% if localidades %}
-                                {% for localidade in localidades %}
-                                    <option value="{{ localidade }}" 
-                                            {% if request.form.localizacao == localidade %}selected{% endif %}>
-                                        {{ localidade }}
-                                    </option>
-                                {% endfor %}
+                            {% for localidade in localidades %}
+                            <option value="{{ localidade }}" {% if request.form.localizacao==localidade %}selected{%
+                                endif %}>
+                                {{ localidade }}
+                            </option>
+                            {% endfor %}
                             {% else %}
-                                <option value="" disabled>
-                                    Nenhuma localidade cadastrada
-                                </option>
+                            <option value="" disabled>
+                                Nenhuma localidade cadastrada
+                            </option>
                             {% endif %}
                         </select>
                         <div class="form-text">
@@ -431,7 +452,8 @@
                 <div class="mt-3 p-3 bg-light rounded">
                     <small class="text-muted">
                         <i class="bi bi-lightbulb me-1"></i>
-                        <strong>Como usar:</strong> Digite o número do bem e pressione Enter para marcá-lo como localizado.
+                        <strong>Como usar:</strong> Digite o número do bem e pressione Enter para marcá-lo como
+                        localizado.
                         Use o campo de localização para corrigir a sala onde o bem está localizado.
                     </small>
                 </div>
@@ -691,19 +713,19 @@
 
             async initialize() {
                 console.log("🚀 Inicializando Sistema Patrimonial");
-                
+
                 // Verificar localidades disponíveis
                 this.verificarLocalidades();
-                
+
                 // Inicializar scanner
                 await this.scannerSistema.initialize();
-                
+
                 // Configurar eventos
                 this.setupEventListeners();
-                
+
                 // Configurar mensagens temporárias
                 this.setupFlashMessages();
-                
+
                 // Foco automático inicial
                 setTimeout(() => this.focusAndClearNumeroBem(), 1000);
             }
@@ -741,7 +763,7 @@
                         !e.target.closest('.btn') &&
                         e.target.type !== 'submit' &&
                         !this.isProcessing) {
-                        
+
                         setTimeout(() => this.focusAndClearNumeroBem(), 50);
                     }
                 });
@@ -762,7 +784,7 @@
 
                     this.isProcessing = true;
                     this.mostrarLoading(true);
-                    
+
                     // Restaurar após 5 segundos (timeout de segurança)
                     setTimeout(() => {
                         this.isProcessing = false;
@@ -838,25 +860,25 @@
                     }
 
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         this.atualizarEstatisticas(result.estatisticas);
                         this.mostrarMensagem(result.mensagem, 'success');
-                        
+
                         setTimeout(() => {
                             this.focusAndClearNumeroBem();
                             this.isProcessing = false;
                             this.mostrarLoading(false);
                         }, 800);
-                        
+
                     } else {
                         this.mostrarMensagem(result.mensagem, 'danger');
                         this.isProcessing = false;
                         this.mostrarLoading(false);
-                        
+
                         setTimeout(() => this.focusAndClearNumeroBem(), 1000);
                     }
-                    
+
                 } catch (error) {
                     console.error('Erro AJAX:', error);
                     throw error;
@@ -868,7 +890,7 @@
                     const countLocalizados = document.getElementById('count-localizados');
                     const countPendentes = document.getElementById('count-pendentes');
                     const totalBens = document.getElementById('total-bens');
-                    
+
                     if (countLocalizados) countLocalizados.textContent = estatisticas.localizados.toLocaleString();
                     if (countPendentes) countPendentes.textContent = estatisticas.pendentes.toLocaleString();
                     if (totalBens) totalBens.textContent = estatisticas.total.toLocaleString();
@@ -907,7 +929,7 @@
             mostrarLoading(mostrar) {
                 const btnLocalizar = document.getElementById('btnLocalizar');
                 const spinner = document.getElementById('loadingSpinner');
-                
+
                 if (btnLocalizar && spinner) {
                     if (mostrar) {
                         spinner.classList.remove('d-none');
@@ -926,17 +948,17 @@
                     if (!this.isProcessing) {
                         this.numeroBemInput.value = '';
                     }
-                    
+
                     this.numeroBemInput.focus();
-                    
+
                     if (!this.isProcessing) {
                         this.numeroBemInput.classList.add('auto-focus');
-                        
+
                         setTimeout(() => {
                             this.numeroBemInput.classList.remove('auto-focus');
                         }, 1000);
                     }
-                    
+
                 } catch (error) {
                     console.log('⚠️ Foco não pôde ser aplicado:', error);
                 }
@@ -947,7 +969,7 @@
 
                 this.numeroBemInput.value = codigo;
                 this.numeroBemInput.classList.add('scan-success');
-                
+
                 setTimeout(() => {
                     this.processarBusca();
                 }, 300);
@@ -1007,7 +1029,7 @@
                     alert('Seu navegador não suporta acesso à câmera. Use Chrome ou Edge.');
                     return;
                 }
-                
+
                 const modal = new bootstrap.Modal(document.getElementById('scannerModal'));
                 modal.show();
             }
@@ -1023,7 +1045,7 @@
                     this.showScannerLoading();
                     await this.initializeCamera();
                     await this.startBarcodeDetection();
-                    
+
                     this.isScanning = true;
                     this.updateScannerStatus("📷 Aponte para o código de barras");
 
@@ -1075,7 +1097,7 @@
                         console.log('✅ Código lido:', result.text);
                         this.onScanSuccess(result.text);
                     }
-                    
+
                     if (error && !error.message.includes('NotFoundException')) {
                         console.log('Scanning:', error.message);
                     }
@@ -1104,13 +1126,13 @@
                     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
                     const gainNode = audioContext.createGain();
-                    
+
                     oscillator.connect(gainNode);
                     gainNode.connect(audioContext.destination);
-                    
+
                     oscillator.frequency.value = 800;
                     gainNode.gain.value = 0.1;
-                    
+
                     oscillator.start();
                     oscillator.stop(audioContext.currentTime + 0.1);
                 } catch (e) {
@@ -1126,10 +1148,10 @@
 
             useScannedCode() {
                 const code = document.getElementById('scanned-code').textContent;
-                
+
                 if (window.sistemaPatrimonial && code) {
                     window.sistemaPatrimonial.onScanSuccess(code);
-                    
+
                     const modal = bootstrap.Modal.getInstance(document.getElementById('scannerModal'));
                     modal.hide();
                 }
@@ -1144,7 +1166,7 @@
             closeAndFocus() {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('scannerModal'));
                 modal.hide();
-                
+
                 setTimeout(() => {
                     if (window.sistemaPatrimonial) {
                         window.sistemaPatrimonial.focusAndClearNumeroBem();
@@ -1199,15 +1221,15 @@
 
             handleScannerError(error) {
                 let message = 'Erro ao acessar a câmera';
-                
+
                 if (error.name === 'NotAllowedError') {
                     message = 'Permissão da câmera negada. Permita o acesso nas configurações.';
                 } else if (error.name === 'NotFoundError') {
                     message = 'Nenhuma câmera encontrada no dispositivo.';
                 }
-                
+
                 this.updateScannerStatus(`❌ ${message}`);
-                
+
                 const container = document.querySelector('.scanner-container');
                 if (container) {
                     container.innerHTML = `
@@ -1229,15 +1251,16 @@
         document.addEventListener("DOMContentLoaded", function () {
             window.sistemaPatrimonial = new SistemaPatrimonial();
             window.sistemaPatrimonial.initialize();
-            
+
             window.scannerSistema = new ScannerSistema();
             window.scannerSistema.initialize();
 
             console.log('📊 Sistema carregado:');
             console.log('   - Total de bens:', {{ total_count }});
-            console.log('   - Localizados:', {{ localizados_count }});
-            console.log('   - Pendentes:', {{ nao_localizados_count }});
+        console.log('   - Localizados:', {{ localizados_count }});
+        console.log('   - Pendentes:', {{ nao_localizados_count }});
         });
     </script>
 </body>
+
 </html>
