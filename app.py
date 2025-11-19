@@ -48,14 +48,16 @@ app.config.from_object(Config())
 
 
 # ==============================
-# CONTEXT PROCESSOR PARA CACHE BUSTING  
+# CACHE BUSTING - SOLUÇÃO GARANTIDA
 # ==============================
-@app.context_processor
-def inject_now():
-    """Injeta a data/hora atual em todos os templates para cache busting"""
-    print("🔄 Context Processor executado!")  # Para debug
-    return {'now': datetime.now}
+import time
 
+@app.context_processor
+def inject_cache_bust():
+    """Injeta versão de cache que muda a cada 5 minutos"""
+    return {
+        'cache_bust': str(int(time.time()) // 300)  # Muda a cada 5 minutos
+    }
 
 
 

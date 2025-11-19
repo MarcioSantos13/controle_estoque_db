@@ -8956,3 +8956,87 @@ AssertionError: View function mapping is overwriting an existing endpoint functi
 2025-11-19 14:59:08,165 - app - INFO -    - /api/health
 2025-11-19 14:59:08,165 - app - INFO -    - /api/diagnostico
 2025-11-19 14:59:08,165 - app - INFO -    - /api/debug-routes
+2025-11-19 15:02:10,577 - app - INFO - ==================================================
+2025-11-19 15:02:10,577 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 15:02:10,577 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:02:10,578 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:02:10,578 - app - INFO - ==================================================
+2025-11-19 15:02:10,588 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 15:02:10,589 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 15:02:10,590 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 15:02:10,591 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 15:02:10,593 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 15:02:10,599 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 15:02:10,600 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 15:02:10,600 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:02:10,600 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:02:10,601 - app - INFO - 🔧 Ambiente: development
+2025-11-19 15:02:10,601 - app - INFO - 🐛 Debug: True
+2025-11-19 15:02:10,601 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 15:02:10,602 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 15:02:10,602 - app - INFO -    - /api/health
+2025-11-19 15:02:10,602 - app - INFO -    - /api/diagnostico
+2025-11-19 15:02:10,602 - app - INFO -    - /api/debug-routes
+2025-11-19 15:02:16,981 - app - INFO - ==================================================
+2025-11-19 15:02:16,981 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 15:02:16,981 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:02:16,982 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:02:16,982 - app - INFO - ==================================================
+2025-11-19 15:02:16,993 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 15:02:16,993 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 15:02:16,994 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 15:02:16,994 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 15:02:16,996 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 15:02:17,002 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 15:02:17,003 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 15:02:17,003 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:02:17,003 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:02:17,004 - app - INFO - 🔧 Ambiente: development
+2025-11-19 15:02:17,004 - app - INFO - 🐛 Debug: True
+2025-11-19 15:02:17,004 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 15:02:17,005 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 15:02:17,006 - app - INFO -    - /api/health
+2025-11-19 15:02:17,006 - app - INFO -    - /api/diagnostico
+2025-11-19 15:02:17,006 - app - INFO -    - /api/debug-routes
+2025-11-19 15:03:23,425 - app - INFO - ==================================================
+2025-11-19 15:03:23,426 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 15:03:23,426 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:03:23,426 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:03:23,427 - app - INFO - ==================================================
+2025-11-19 15:03:23,437 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 15:03:23,437 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 15:03:23,437 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 15:03:23,438 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 15:03:23,440 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 15:03:23,446 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 15:03:23,446 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 15:03:23,447 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:03:23,447 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:03:23,447 - app - INFO - 🔧 Ambiente: development
+2025-11-19 15:03:23,447 - app - INFO - 🐛 Debug: True
+2025-11-19 15:03:23,448 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 15:03:23,448 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 15:03:23,448 - app - INFO -    - /api/health
+2025-11-19 15:03:23,448 - app - INFO -    - /api/diagnostico
+2025-11-19 15:03:23,448 - app - INFO -    - /api/debug-routes
+2025-11-19 15:03:24,432 - app - INFO - ==================================================
+2025-11-19 15:03:24,433 - app - INFO - 🚀 Sistema Patrimonial Iniciado
+2025-11-19 15:03:24,433 - app - INFO - 📁 Diretório: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:03:24,433 - app - INFO - 🗄️  Banco: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:03:24,433 - app - INFO - ==================================================
+2025-11-19 15:03:24,444 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\temp
+2025-11-19 15:03:24,444 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\logs
+2025-11-19 15:03:24,444 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios
+2025-11-19 15:03:24,445 - app - INFO - ✅ Diretório criado/verificado: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\backups
+2025-11-19 15:03:24,447 - app - INFO - ℹ️ Tabela usuarios já existe
+2025-11-19 15:03:24,452 - app - INFO - ✅ Tabela bens criada/verificada com campos completos
+2025-11-19 15:03:24,452 - app - INFO - === SISTEMA INICIADO COM DIAGNÓSTICO ===
+2025-11-19 15:03:24,452 - app - INFO - 📁 Diretório de trabalho: D:\Discovery2025\Projetos python3\controle_estoque_db
+2025-11-19 15:03:24,452 - app - INFO - 🗄️  Banco de dados: D:\Discovery2025\Projetos python3\controle_estoque_db\relatorios\controle_patrimonial.db
+2025-11-19 15:03:24,453 - app - INFO - 🔧 Ambiente: development
+2025-11-19 15:03:24,453 - app - INFO - 🐛 Debug: True
+2025-11-19 15:03:24,453 - app - INFO - 🌐 Servidor iniciado em http://0.0.0.0:5000
+2025-11-19 15:03:24,454 - app - INFO - 🔍 Rotas de diagnóstico disponíveis:
+2025-11-19 15:03:24,454 - app - INFO -    - /api/health
+2025-11-19 15:03:24,454 - app - INFO -    - /api/diagnostico
+2025-11-19 15:03:24,454 - app - INFO -    - /api/debug-routes
