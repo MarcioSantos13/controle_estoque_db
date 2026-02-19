@@ -1,0 +1,22 @@
+2025-10-17 21:33:45,638 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-17 21:33:45,650 - werkzeug - WARNING -  * Debugger is active!
+2025-10-17 21:33:45,652 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-17 21:33:49,728 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\scripts\\migrate_excel_to_sqlite.py', reloading
+2025-10-17 21:33:50,369 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-17 21:33:50,378 - werkzeug - WARNING -  * Debugger is active!
+2025-10-17 21:33:50,381 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-17 21:34:33,934 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-10-17 23:51:52,074 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-17 23:51:52,132 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-17 23:51:52,133 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-17 23:51:52,134 - werkzeug - INFO -  * Restarting with stat
+2025-10-17 23:51:52,669 - utils.logger - INFO - Iniciando aplicação Flask
+2025-10-17 23:51:52,677 - werkzeug - WARNING -  * Debugger is active!
+2025-10-17 23:51:52,680 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-10-17 23:51:58,627 - werkzeug - INFO - 127.0.0.1 - - [17/Oct/2025 23:51:58] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-17 23:51:58,666 - werkzeug - INFO - 127.0.0.1 - - [17/Oct/2025 23:51:58] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-17 23:51:58,686 - werkzeug - INFO - 127.0.0.1 - - [17/Oct/2025 23:51:58] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-17 23:51:58,770 - werkzeug - INFO - 127.0.0.1 - - [17/Oct/2025 23:51:58] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=HBG0d7bEmSnAp4CAgwE2 HTTP/1.1" 200 -
+2025-10-18 00:14:39,237 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-10-18 00:14:39,314 - werkzeug - INFO -  * Restarting with stat

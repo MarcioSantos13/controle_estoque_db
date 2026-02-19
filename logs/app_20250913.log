@@ -1,0 +1,32 @@
+2025-09-13 23:24:04,779 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:24:04,860 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-13 23:24:04,861 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-13 23:24:04,866 - werkzeug - INFO -  * Restarting with stat
+2025-09-13 23:24:05,448 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:24:05,458 - werkzeug - WARNING -  * Debugger is active!
+2025-09-13 23:24:05,461 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-13 23:24:23,181 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:23] "GET / HTTP/1.1" 200 -
+2025-09-13 23:24:23,293 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:23] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-13 23:24:35,077 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:35] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-13 23:24:35,103 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:35] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-13 23:24:40,000 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:40] "GET / HTTP/1.1" 200 -
+2025-09-13 23:24:40,021 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:24:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-13 23:34:15,916 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:34:15,933 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-13 23:34:15,933 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-13 23:34:15,934 - werkzeug - INFO -  * Restarting with stat
+2025-09-13 23:34:16,460 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:34:16,469 - werkzeug - WARNING -  * Debugger is active!
+2025-09-13 23:34:16,472 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-13 23:36:08,070 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:36:08,087 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-13 23:36:08,087 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-13 23:36:08,088 - werkzeug - INFO -  * Restarting with stat
+2025-09-13 23:36:08,631 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-13 23:36:08,639 - werkzeug - WARNING -  * Debugger is active!
+2025-09-13 23:36:08,641 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-13 23:36:24,269 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:36:24] "GET / HTTP/1.1" 200 -
+2025-09-13 23:36:24,416 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:36:24] "GET /static/style.css HTTP/1.1" 200 -

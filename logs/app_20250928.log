@@ -1,0 +1,538 @@
+2025-09-28 00:26:00,119 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 00:26:00,210 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-28 00:26:00,210 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-28 00:26:00,213 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 00:26:00,765 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 00:26:00,775 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 00:26:00,779 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 00:26:07,587 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:07] "GET / HTTP/1.1" 200 -
+2025-09-28 00:26:07,694 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:26:17,789 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:17] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-28 00:26:17,814 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:26:23,818 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:23] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-28 00:26:23,838 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:23] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:26:33,303 - utils.logger - INFO - Localização do bem 001: Sala da Direção
+2025-09-28 00:26:33,304 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-28 00:26:33,576 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:33] "POST / HTTP/1.1" 200 -
+2025-09-28 00:26:33,597 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:26:45,947 - utils.logger - INFO - Bem 320584 atualizado com sucesso
+2025-09-28 00:26:45,948 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:45] "PUT /api/bens/320584 HTTP/1.1" 200 -
+2025-09-28 00:26:48,722 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:48] "GET / HTTP/1.1" 200 -
+2025-09-28 00:26:48,741 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:48] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:26:53,662 - utils.logger - INFO - Localização do bem 001: Sala da Direção 1
+2025-09-28 00:26:53,663 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-28 00:26:53,764 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:53] "POST / HTTP/1.1" 200 -
+2025-09-28 00:26:53,786 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:26:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:15,087 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-28 00:27:15,186 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:15] "POST / HTTP/1.1" 200 -
+2025-09-28 00:27:15,212 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:22,606 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:22] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-28 00:27:22,635 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:35,687 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:35] "GET / HTTP/1.1" 200 -
+2025-09-28 00:27:35,711 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:35] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:38,056 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:38] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-28 00:27:38,078 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:45,267 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:45] "GET /relatorio/localidades?localidade=Sala+da+Direção+2&por_pagina=20 HTTP/1.1" 200 -
+2025-09-28 00:27:45,289 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:27:51,346 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:51] "GET /relatorio/localidades?localidade=Sala+da+Direção+12&por_pagina=20 HTTP/1.1" 200 -
+2025-09-28 00:27:51,368 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:27:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:28:03,630 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:28:03] "GET /relatorio/localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-28 00:28:03,658 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:28:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 00:28:08,102 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:28:08] "GET / HTTP/1.1" 200 -
+2025-09-28 00:28:08,130 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 00:28:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:00:23,893 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-28 01:00:24,057 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:00:24,663 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:00:24,672 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:00:24,674 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:00:36,844 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-28 01:00:36,922 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:00:37,554 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:00:37,564 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:00:37,567 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:04:01,055 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\excel_importer.py', reloading
+2025-09-28 01:04:01,134 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:14:16,133 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:14:16,152 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-28 01:14:16,152 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-28 01:14:16,153 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:14:16,676 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:14:16,686 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:14:16,690 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:14:21,743 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:14:21] "GET / HTTP/1.1" 200 -
+2025-09-28 01:14:21,886 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:14:21] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-28 01:14:22,116 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:14:22] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-09-28 01:14:27,045 - utils.logger - INFO - Localização do bem 001: Sala Direção 02
+2025-09-28 01:14:27,046 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-28 01:14:27,157 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:14:27] "POST / HTTP/1.1" 200 -
+2025-09-28 01:14:27,184 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:14:27] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:29,360 - utils.logger - INFO - Coluna responsavel adicionada à tabela bens
+2025-09-28 01:16:29,457 - utils.logger - INFO - Coluna data_ultima_vistoria adicionada à tabela bens
+2025-09-28 01:16:29,549 - utils.logger - INFO - Coluna data_vistoria_atual adicionada à tabela bens
+2025-09-28 01:16:29,646 - utils.logger - INFO - Coluna auditor adicionada à tabela bens
+2025-09-28 01:16:29,647 - utils.logger - INFO - Tabela bens criada/atualizada com sucesso
+2025-09-28 01:16:29,670 - utils.logger - INFO - Backup criado: D:\controle_estoque_db\relatorios\backups\backup_controle_20250928_011629.db
+2025-09-28 01:16:29,962 - utils.logger - INFO - Colunas encontradas no Excel: ['NOME ', 'NUMERO DO BEM', 'SITUAÇÃO', 'LOCALIZAÇÃO']
+2025-09-28 01:16:29,982 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-28 01:16:29,983 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-28 01:16:29,983 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-28 01:16:29,983 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-28 01:16:29,983 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'situacao': 'SITUAÇÃO', 'localizacao': 'LOCALIZAÇÃO', 'responsavel': None, 'data_ultima_vistoria': None, 'data_vistoria_atual': None, 'auditor': None}
+2025-09-28 01:16:30,232 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:30] "POST /importar-excel HTTP/1.1" 200 -
+2025-09-28 01:16:30,256 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:30] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:39,566 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:39] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-28 01:16:39,587 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:44,358 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:44] "GET / HTTP/1.1" 200 -
+2025-09-28 01:16:44,380 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:47,615 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:47] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-28 01:16:47,635 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:49,933 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:49] "GET / HTTP/1.1" 200 -
+2025-09-28 01:16:49,959 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:49] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:16:57,298 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:57] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-28 01:16:57,317 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:16:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:17:01,429 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:17:01] "GET /relatorio/localidades?localidade=Sala+da+Direção+2&por_pagina=20 HTTP/1.1" 200 -
+2025-09-28 01:17:01,451 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:17:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:17:27,986 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:17:27] "GET / HTTP/1.1" 200 -
+2025-09-28 01:17:28,013 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:17:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:22:04,603 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:22:04,625 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-28 01:22:04,626 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-28 01:22:04,627 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:22:05,157 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:22:05,168 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:22:05,171 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:22:07,639 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:07] "GET / HTTP/1.1" 200 -
+2025-09-28 01:22:07,770 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:22:21,366 - utils.logger - INFO - Tabela bens criada/atualizada com sucesso
+2025-09-28 01:22:21,382 - utils.logger - INFO - Backup criado: D:\controle_estoque_db\relatorios\backups\backup_controle_20250928_012221.db
+2025-09-28 01:22:21,480 - utils.logger - INFO - Colunas encontradas no Excel: ['NOME ', 'NUMERO DO BEM', 'SITUAÇÃO', 'LOCALIZAÇÃO', 'Responsavel', 'Data da ultima vistoria', 'Data da vistoria atual', 'Auditor']
+2025-09-28 01:22:21,481 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-28 01:22:21,481 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-28 01:22:21,481 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-28 01:22:21,481 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-28 01:22:21,481 - utils.logger - INFO - Coluna 'responsavel' detectada como: 'Responsavel'
+2025-09-28 01:22:21,482 - utils.logger - INFO - Coluna 'data_ultima_vistoria' detectada como: 'Data da ultima vistoria'
+2025-09-28 01:22:21,482 - utils.logger - INFO - Coluna 'data_vistoria_atual' detectada como: 'Data da vistoria atual'
+2025-09-28 01:22:21,482 - utils.logger - INFO - Coluna 'auditor' detectada como: 'Auditor'
+2025-09-28 01:22:21,482 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'situacao': 'SITUAÇÃO', 'localizacao': 'LOCALIZAÇÃO', 'responsavel': 'Responsavel', 'data_ultima_vistoria': 'Data da ultima vistoria', 'data_vistoria_atual': 'Data da vistoria atual', 'auditor': 'Auditor'}
+2025-09-28 01:22:21,501 - utils.logger - WARNING - Erro na linha 12: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,502 - utils.logger - WARNING - Erro na linha 13: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,502 - utils.logger - WARNING - Erro na linha 14: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,503 - utils.logger - WARNING - Erro na linha 15: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,503 - utils.logger - WARNING - Erro na linha 16: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,503 - utils.logger - WARNING - Erro na linha 17: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,504 - utils.logger - WARNING - Erro na linha 18: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,504 - utils.logger - WARNING - Erro na linha 19: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,505 - utils.logger - WARNING - Erro na linha 20: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,505 - utils.logger - WARNING - Erro na linha 21: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,505 - utils.logger - WARNING - Erro na linha 22: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,506 - utils.logger - WARNING - Erro na linha 23: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,506 - utils.logger - WARNING - Erro na linha 24: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,506 - utils.logger - WARNING - Erro na linha 25: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,507 - utils.logger - WARNING - Erro na linha 26: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,507 - utils.logger - WARNING - Erro na linha 27: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,507 - utils.logger - WARNING - Erro na linha 28: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,508 - utils.logger - WARNING - Erro na linha 29: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,508 - utils.logger - WARNING - Erro na linha 30: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,508 - utils.logger - WARNING - Erro na linha 31: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,509 - utils.logger - WARNING - Erro na linha 32: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,509 - utils.logger - WARNING - Erro na linha 33: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,509 - utils.logger - WARNING - Erro na linha 34: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,510 - utils.logger - WARNING - Erro na linha 35: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,511 - utils.logger - WARNING - Erro na linha 36: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,511 - utils.logger - WARNING - Erro na linha 37: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,512 - utils.logger - WARNING - Erro na linha 38: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,512 - utils.logger - WARNING - Erro na linha 39: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,512 - utils.logger - WARNING - Erro na linha 40: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,513 - utils.logger - WARNING - Erro na linha 41: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,513 - utils.logger - WARNING - Erro na linha 42: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,514 - utils.logger - WARNING - Erro na linha 43: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,514 - utils.logger - WARNING - Erro na linha 44: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,515 - utils.logger - WARNING - Erro na linha 45: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,515 - utils.logger - WARNING - Erro na linha 46: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,516 - utils.logger - WARNING - Erro na linha 47: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,516 - utils.logger - WARNING - Erro na linha 48: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,517 - utils.logger - WARNING - Erro na linha 49: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,517 - utils.logger - WARNING - Erro na linha 50: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,517 - utils.logger - WARNING - Erro na linha 51: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,518 - utils.logger - WARNING - Erro na linha 52: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,519 - utils.logger - WARNING - Erro na linha 53: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,519 - utils.logger - WARNING - Erro na linha 54: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,519 - utils.logger - WARNING - Erro na linha 55: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,519 - utils.logger - WARNING - Erro na linha 56: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,520 - utils.logger - WARNING - Erro na linha 57: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,520 - utils.logger - WARNING - Erro na linha 58: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,520 - utils.logger - WARNING - Erro na linha 59: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,521 - utils.logger - WARNING - Erro na linha 60: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,521 - utils.logger - WARNING - Erro na linha 61: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,521 - utils.logger - WARNING - Erro na linha 62: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,522 - utils.logger - WARNING - Erro na linha 63: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,522 - utils.logger - WARNING - Erro na linha 64: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,522 - utils.logger - WARNING - Erro na linha 65: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,523 - utils.logger - WARNING - Erro na linha 66: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,523 - utils.logger - WARNING - Erro na linha 67: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,523 - utils.logger - WARNING - Erro na linha 68: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,524 - utils.logger - WARNING - Erro na linha 69: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,524 - utils.logger - WARNING - Erro na linha 70: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,525 - utils.logger - WARNING - Erro na linha 71: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,525 - utils.logger - WARNING - Erro na linha 72: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,525 - utils.logger - WARNING - Erro na linha 73: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,526 - utils.logger - WARNING - Erro na linha 74: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,526 - utils.logger - WARNING - Erro na linha 75: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,526 - utils.logger - WARNING - Erro na linha 76: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,527 - utils.logger - WARNING - Erro na linha 77: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,527 - utils.logger - WARNING - Erro na linha 78: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,527 - utils.logger - WARNING - Erro na linha 79: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,528 - utils.logger - WARNING - Erro na linha 80: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,528 - utils.logger - WARNING - Erro na linha 81: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,528 - utils.logger - WARNING - Erro na linha 82: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,528 - utils.logger - WARNING - Erro na linha 83: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,529 - utils.logger - WARNING - Erro na linha 84: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,529 - utils.logger - WARNING - Erro na linha 85: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,529 - utils.logger - WARNING - Erro na linha 86: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,530 - utils.logger - WARNING - Erro na linha 87: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,530 - utils.logger - WARNING - Erro na linha 88: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,530 - utils.logger - WARNING - Erro na linha 89: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,531 - utils.logger - WARNING - Erro na linha 90: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,531 - utils.logger - WARNING - Erro na linha 91: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,531 - utils.logger - WARNING - Erro na linha 92: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,532 - utils.logger - WARNING - Erro na linha 93: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,532 - utils.logger - WARNING - Erro na linha 94: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,533 - utils.logger - WARNING - Erro na linha 95: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,533 - utils.logger - WARNING - Erro na linha 96: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,533 - utils.logger - WARNING - Erro na linha 97: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,534 - utils.logger - WARNING - Erro na linha 98: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,534 - utils.logger - WARNING - Erro na linha 99: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,534 - utils.logger - WARNING - Erro na linha 100: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,535 - utils.logger - WARNING - Erro na linha 101: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,535 - utils.logger - WARNING - Erro na linha 102: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,535 - utils.logger - WARNING - Erro na linha 103: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,536 - utils.logger - WARNING - Erro na linha 104: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,536 - utils.logger - WARNING - Erro na linha 105: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,536 - utils.logger - WARNING - Erro na linha 106: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,536 - utils.logger - WARNING - Erro na linha 107: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,537 - utils.logger - WARNING - Erro na linha 108: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,537 - utils.logger - WARNING - Erro na linha 109: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,538 - utils.logger - WARNING - Erro na linha 110: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,538 - utils.logger - WARNING - Erro na linha 111: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,539 - utils.logger - WARNING - Erro na linha 112: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,539 - utils.logger - WARNING - Erro na linha 113: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,540 - utils.logger - WARNING - Erro na linha 114: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,540 - utils.logger - WARNING - Erro na linha 115: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,540 - utils.logger - WARNING - Erro na linha 116: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,541 - utils.logger - WARNING - Erro na linha 117: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,541 - utils.logger - WARNING - Erro na linha 118: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,541 - utils.logger - WARNING - Erro na linha 119: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,541 - utils.logger - WARNING - Erro na linha 120: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,542 - utils.logger - WARNING - Erro na linha 121: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,542 - utils.logger - WARNING - Erro na linha 122: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,542 - utils.logger - WARNING - Erro na linha 123: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,543 - utils.logger - WARNING - Erro na linha 124: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,543 - utils.logger - WARNING - Erro na linha 125: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,543 - utils.logger - WARNING - Erro na linha 126: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,544 - utils.logger - WARNING - Erro na linha 127: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,544 - utils.logger - WARNING - Erro na linha 128: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,544 - utils.logger - WARNING - Erro na linha 129: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,545 - utils.logger - WARNING - Erro na linha 130: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,545 - utils.logger - WARNING - Erro na linha 131: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,546 - utils.logger - WARNING - Erro na linha 132: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,546 - utils.logger - WARNING - Erro na linha 133: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,547 - utils.logger - WARNING - Erro na linha 134: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,547 - utils.logger - WARNING - Erro na linha 135: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,547 - utils.logger - WARNING - Erro na linha 136: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,548 - utils.logger - WARNING - Erro na linha 137: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,548 - utils.logger - WARNING - Erro na linha 138: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,548 - utils.logger - WARNING - Erro na linha 139: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,548 - utils.logger - WARNING - Erro na linha 140: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,549 - utils.logger - WARNING - Erro na linha 141: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,549 - utils.logger - WARNING - Erro na linha 142: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,549 - utils.logger - WARNING - Erro na linha 143: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,549 - utils.logger - WARNING - Erro na linha 144: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,550 - utils.logger - WARNING - Erro na linha 145: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,550 - utils.logger - WARNING - Erro na linha 146: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,550 - utils.logger - WARNING - Erro na linha 147: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,550 - utils.logger - WARNING - Erro na linha 148: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,551 - utils.logger - WARNING - Erro na linha 149: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,551 - utils.logger - WARNING - Erro na linha 150: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,551 - utils.logger - WARNING - Erro na linha 151: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,552 - utils.logger - WARNING - Erro na linha 152: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,552 - utils.logger - WARNING - Erro na linha 153: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,553 - utils.logger - WARNING - Erro na linha 154: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,553 - utils.logger - WARNING - Erro na linha 155: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,554 - utils.logger - WARNING - Erro na linha 156: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,554 - utils.logger - WARNING - Erro na linha 157: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,554 - utils.logger - WARNING - Erro na linha 158: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,555 - utils.logger - WARNING - Erro na linha 159: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,555 - utils.logger - WARNING - Erro na linha 160: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,555 - utils.logger - WARNING - Erro na linha 161: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,556 - utils.logger - WARNING - Erro na linha 162: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,556 - utils.logger - WARNING - Erro na linha 163: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,556 - utils.logger - WARNING - Erro na linha 164: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,556 - utils.logger - WARNING - Erro na linha 165: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,557 - utils.logger - WARNING - Erro na linha 166: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,557 - utils.logger - WARNING - Erro na linha 167: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,557 - utils.logger - WARNING - Erro na linha 168: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,557 - utils.logger - WARNING - Erro na linha 169: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,558 - utils.logger - WARNING - Erro na linha 170: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,558 - utils.logger - WARNING - Erro na linha 171: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,558 - utils.logger - WARNING - Erro na linha 172: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,559 - utils.logger - WARNING - Erro na linha 173: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,559 - utils.logger - WARNING - Erro na linha 174: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,559 - utils.logger - WARNING - Erro na linha 175: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,560 - utils.logger - WARNING - Erro na linha 176: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,560 - utils.logger - WARNING - Erro na linha 177: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,560 - utils.logger - WARNING - Erro na linha 178: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,561 - utils.logger - WARNING - Erro na linha 179: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,561 - utils.logger - WARNING - Erro na linha 180: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,561 - utils.logger - WARNING - Erro na linha 181: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,561 - utils.logger - WARNING - Erro na linha 182: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,562 - utils.logger - WARNING - Erro na linha 183: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,562 - utils.logger - WARNING - Erro na linha 184: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,562 - utils.logger - WARNING - Erro na linha 185: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,563 - utils.logger - WARNING - Erro na linha 186: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,563 - utils.logger - WARNING - Erro na linha 187: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,563 - utils.logger - WARNING - Erro na linha 188: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,564 - utils.logger - WARNING - Erro na linha 189: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,564 - utils.logger - WARNING - Erro na linha 190: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,564 - utils.logger - WARNING - Erro na linha 191: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,565 - utils.logger - WARNING - Erro na linha 192: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,565 - utils.logger - WARNING - Erro na linha 193: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,565 - utils.logger - WARNING - Erro na linha 194: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,566 - utils.logger - WARNING - Erro na linha 195: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,566 - utils.logger - WARNING - Erro na linha 196: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,566 - utils.logger - WARNING - Erro na linha 197: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,567 - utils.logger - WARNING - Erro na linha 198: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,567 - utils.logger - WARNING - Erro na linha 199: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,567 - utils.logger - WARNING - Erro na linha 200: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,568 - utils.logger - WARNING - Erro na linha 201: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,568 - utils.logger - WARNING - Erro na linha 202: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:22:21,677 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:21] "POST /importar-excel HTTP/1.1" 200 -
+2025-09-28 01:22:21,701 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:22:59,304 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:59] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-28 01:22:59,328 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:22:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:23:05,166 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:05] "GET / HTTP/1.1" 200 -
+2025-09-28 01:23:05,189 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:23:06,518 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:06] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-28 01:23:06,541 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:06] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:23:09,880 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:09] "GET / HTTP/1.1" 200 -
+2025-09-28 01:23:09,903 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:09] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:23:21,896 - utils.logger - INFO - Tabela bens criada/atualizada com sucesso
+2025-09-28 01:23:21,913 - utils.logger - INFO - Backup criado: D:\controle_estoque_db\relatorios\backups\backup_controle_20250928_012321.db
+2025-09-28 01:23:21,946 - utils.logger - INFO - Colunas encontradas no Excel: ['NOME ', 'NUMERO DO BEM', 'SITUAÇÃO', 'LOCALIZAÇÃO', 'Responsavel', 'Data da ultima vistoria', 'Data da vistoria atual', 'Auditor']
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'responsavel' detectada como: 'Responsavel'
+2025-09-28 01:23:21,947 - utils.logger - INFO - Coluna 'data_ultima_vistoria' detectada como: 'Data da ultima vistoria'
+2025-09-28 01:23:21,948 - utils.logger - INFO - Coluna 'data_vistoria_atual' detectada como: 'Data da vistoria atual'
+2025-09-28 01:23:21,948 - utils.logger - INFO - Coluna 'auditor' detectada como: 'Auditor'
+2025-09-28 01:23:21,948 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'situacao': 'SITUAÇÃO', 'localizacao': 'LOCALIZAÇÃO', 'responsavel': 'Responsavel', 'data_ultima_vistoria': 'Data da ultima vistoria', 'data_vistoria_atual': 'Data da vistoria atual', 'auditor': 'Auditor'}
+2025-09-28 01:23:21,951 - utils.logger - WARNING - Erro na linha 12: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,951 - utils.logger - WARNING - Erro na linha 13: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,952 - utils.logger - WARNING - Erro na linha 14: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,952 - utils.logger - WARNING - Erro na linha 15: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,952 - utils.logger - WARNING - Erro na linha 16: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,952 - utils.logger - WARNING - Erro na linha 17: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,953 - utils.logger - WARNING - Erro na linha 18: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,953 - utils.logger - WARNING - Erro na linha 19: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,953 - utils.logger - WARNING - Erro na linha 20: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,954 - utils.logger - WARNING - Erro na linha 21: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,954 - utils.logger - WARNING - Erro na linha 22: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,954 - utils.logger - WARNING - Erro na linha 23: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,955 - utils.logger - WARNING - Erro na linha 24: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,955 - utils.logger - WARNING - Erro na linha 25: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,955 - utils.logger - WARNING - Erro na linha 26: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,956 - utils.logger - WARNING - Erro na linha 27: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,956 - utils.logger - WARNING - Erro na linha 28: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,956 - utils.logger - WARNING - Erro na linha 29: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,957 - utils.logger - WARNING - Erro na linha 30: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,957 - utils.logger - WARNING - Erro na linha 31: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,957 - utils.logger - WARNING - Erro na linha 32: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,957 - utils.logger - WARNING - Erro na linha 33: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,958 - utils.logger - WARNING - Erro na linha 34: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,958 - utils.logger - WARNING - Erro na linha 35: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,958 - utils.logger - WARNING - Erro na linha 36: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,958 - utils.logger - WARNING - Erro na linha 37: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,959 - utils.logger - WARNING - Erro na linha 38: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,959 - utils.logger - WARNING - Erro na linha 39: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,959 - utils.logger - WARNING - Erro na linha 40: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,959 - utils.logger - WARNING - Erro na linha 41: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,960 - utils.logger - WARNING - Erro na linha 42: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,961 - utils.logger - WARNING - Erro na linha 43: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,961 - utils.logger - WARNING - Erro na linha 44: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,961 - utils.logger - WARNING - Erro na linha 45: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,962 - utils.logger - WARNING - Erro na linha 46: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,962 - utils.logger - WARNING - Erro na linha 47: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,962 - utils.logger - WARNING - Erro na linha 48: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,963 - utils.logger - WARNING - Erro na linha 49: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,963 - utils.logger - WARNING - Erro na linha 50: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,963 - utils.logger - WARNING - Erro na linha 51: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,963 - utils.logger - WARNING - Erro na linha 52: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,964 - utils.logger - WARNING - Erro na linha 53: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,964 - utils.logger - WARNING - Erro na linha 54: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,964 - utils.logger - WARNING - Erro na linha 55: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,964 - utils.logger - WARNING - Erro na linha 56: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,965 - utils.logger - WARNING - Erro na linha 57: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,965 - utils.logger - WARNING - Erro na linha 58: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,965 - utils.logger - WARNING - Erro na linha 59: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,965 - utils.logger - WARNING - Erro na linha 60: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,965 - utils.logger - WARNING - Erro na linha 61: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,966 - utils.logger - WARNING - Erro na linha 62: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,966 - utils.logger - WARNING - Erro na linha 63: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,966 - utils.logger - WARNING - Erro na linha 64: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,966 - utils.logger - WARNING - Erro na linha 65: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,967 - utils.logger - WARNING - Erro na linha 66: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,967 - utils.logger - WARNING - Erro na linha 67: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,967 - utils.logger - WARNING - Erro na linha 68: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,968 - utils.logger - WARNING - Erro na linha 69: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,968 - utils.logger - WARNING - Erro na linha 70: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,969 - utils.logger - WARNING - Erro na linha 71: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,969 - utils.logger - WARNING - Erro na linha 72: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,969 - utils.logger - WARNING - Erro na linha 73: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,969 - utils.logger - WARNING - Erro na linha 74: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,970 - utils.logger - WARNING - Erro na linha 75: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,970 - utils.logger - WARNING - Erro na linha 76: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,970 - utils.logger - WARNING - Erro na linha 77: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,970 - utils.logger - WARNING - Erro na linha 78: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,971 - utils.logger - WARNING - Erro na linha 79: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,971 - utils.logger - WARNING - Erro na linha 80: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,971 - utils.logger - WARNING - Erro na linha 81: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,971 - utils.logger - WARNING - Erro na linha 82: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,971 - utils.logger - WARNING - Erro na linha 83: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,972 - utils.logger - WARNING - Erro na linha 84: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,972 - utils.logger - WARNING - Erro na linha 85: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,972 - utils.logger - WARNING - Erro na linha 86: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,972 - utils.logger - WARNING - Erro na linha 87: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,973 - utils.logger - WARNING - Erro na linha 88: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,973 - utils.logger - WARNING - Erro na linha 89: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,973 - utils.logger - WARNING - Erro na linha 90: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,974 - utils.logger - WARNING - Erro na linha 91: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,974 - utils.logger - WARNING - Erro na linha 92: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,974 - utils.logger - WARNING - Erro na linha 93: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,975 - utils.logger - WARNING - Erro na linha 94: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,975 - utils.logger - WARNING - Erro na linha 95: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,975 - utils.logger - WARNING - Erro na linha 96: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,976 - utils.logger - WARNING - Erro na linha 97: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,976 - utils.logger - WARNING - Erro na linha 98: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,976 - utils.logger - WARNING - Erro na linha 99: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,976 - utils.logger - WARNING - Erro na linha 100: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,977 - utils.logger - WARNING - Erro na linha 101: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,977 - utils.logger - WARNING - Erro na linha 102: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,977 - utils.logger - WARNING - Erro na linha 103: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,977 - utils.logger - WARNING - Erro na linha 104: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,978 - utils.logger - WARNING - Erro na linha 105: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,978 - utils.logger - WARNING - Erro na linha 106: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,978 - utils.logger - WARNING - Erro na linha 107: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,979 - utils.logger - WARNING - Erro na linha 108: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,979 - utils.logger - WARNING - Erro na linha 109: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,979 - utils.logger - WARNING - Erro na linha 110: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,979 - utils.logger - WARNING - Erro na linha 111: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,979 - utils.logger - WARNING - Erro na linha 112: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,980 - utils.logger - WARNING - Erro na linha 113: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,980 - utils.logger - WARNING - Erro na linha 114: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,980 - utils.logger - WARNING - Erro na linha 115: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,980 - utils.logger - WARNING - Erro na linha 116: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,981 - utils.logger - WARNING - Erro na linha 117: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,981 - utils.logger - WARNING - Erro na linha 118: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,981 - utils.logger - WARNING - Erro na linha 119: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,982 - utils.logger - WARNING - Erro na linha 120: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,982 - utils.logger - WARNING - Erro na linha 121: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,982 - utils.logger - WARNING - Erro na linha 122: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,983 - utils.logger - WARNING - Erro na linha 123: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,983 - utils.logger - WARNING - Erro na linha 124: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,983 - utils.logger - WARNING - Erro na linha 125: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,984 - utils.logger - WARNING - Erro na linha 126: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,984 - utils.logger - WARNING - Erro na linha 127: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,984 - utils.logger - WARNING - Erro na linha 128: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,984 - utils.logger - WARNING - Erro na linha 129: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,984 - utils.logger - WARNING - Erro na linha 130: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,985 - utils.logger - WARNING - Erro na linha 131: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,985 - utils.logger - WARNING - Erro na linha 132: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,985 - utils.logger - WARNING - Erro na linha 133: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,985 - utils.logger - WARNING - Erro na linha 134: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,986 - utils.logger - WARNING - Erro na linha 135: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,986 - utils.logger - WARNING - Erro na linha 136: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,986 - utils.logger - WARNING - Erro na linha 137: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,986 - utils.logger - WARNING - Erro na linha 138: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,987 - utils.logger - WARNING - Erro na linha 139: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,987 - utils.logger - WARNING - Erro na linha 140: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,987 - utils.logger - WARNING - Erro na linha 141: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,987 - utils.logger - WARNING - Erro na linha 142: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,988 - utils.logger - WARNING - Erro na linha 143: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,988 - utils.logger - WARNING - Erro na linha 144: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,989 - utils.logger - WARNING - Erro na linha 145: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,989 - utils.logger - WARNING - Erro na linha 146: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,990 - utils.logger - WARNING - Erro na linha 147: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,990 - utils.logger - WARNING - Erro na linha 148: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,991 - utils.logger - WARNING - Erro na linha 149: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,991 - utils.logger - WARNING - Erro na linha 150: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,991 - utils.logger - WARNING - Erro na linha 151: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,992 - utils.logger - WARNING - Erro na linha 152: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,992 - utils.logger - WARNING - Erro na linha 153: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,992 - utils.logger - WARNING - Erro na linha 154: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,993 - utils.logger - WARNING - Erro na linha 155: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,993 - utils.logger - WARNING - Erro na linha 156: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,993 - utils.logger - WARNING - Erro na linha 157: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,994 - utils.logger - WARNING - Erro na linha 158: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,994 - utils.logger - WARNING - Erro na linha 159: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,994 - utils.logger - WARNING - Erro na linha 160: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,994 - utils.logger - WARNING - Erro na linha 161: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,995 - utils.logger - WARNING - Erro na linha 162: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,995 - utils.logger - WARNING - Erro na linha 163: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,996 - utils.logger - WARNING - Erro na linha 164: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,996 - utils.logger - WARNING - Erro na linha 165: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,997 - utils.logger - WARNING - Erro na linha 166: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,997 - utils.logger - WARNING - Erro na linha 167: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,997 - utils.logger - WARNING - Erro na linha 168: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,998 - utils.logger - WARNING - Erro na linha 169: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,998 - utils.logger - WARNING - Erro na linha 170: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,998 - utils.logger - WARNING - Erro na linha 171: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,999 - utils.logger - WARNING - Erro na linha 172: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:21,999 - utils.logger - WARNING - Erro na linha 173: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,001 - utils.logger - WARNING - Erro na linha 174: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,002 - utils.logger - WARNING - Erro na linha 175: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,004 - utils.logger - WARNING - Erro na linha 176: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,004 - utils.logger - WARNING - Erro na linha 177: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,005 - utils.logger - WARNING - Erro na linha 178: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,005 - utils.logger - WARNING - Erro na linha 179: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,006 - utils.logger - WARNING - Erro na linha 180: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,006 - utils.logger - WARNING - Erro na linha 181: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,006 - utils.logger - WARNING - Erro na linha 182: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,007 - utils.logger - WARNING - Erro na linha 183: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,007 - utils.logger - WARNING - Erro na linha 184: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,007 - utils.logger - WARNING - Erro na linha 185: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,008 - utils.logger - WARNING - Erro na linha 186: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,008 - utils.logger - WARNING - Erro na linha 187: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,008 - utils.logger - WARNING - Erro na linha 188: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,009 - utils.logger - WARNING - Erro na linha 189: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,009 - utils.logger - WARNING - Erro na linha 190: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,009 - utils.logger - WARNING - Erro na linha 191: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,010 - utils.logger - WARNING - Erro na linha 192: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,011 - utils.logger - WARNING - Erro na linha 193: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,011 - utils.logger - WARNING - Erro na linha 194: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,012 - utils.logger - WARNING - Erro na linha 195: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,012 - utils.logger - WARNING - Erro na linha 196: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,012 - utils.logger - WARNING - Erro na linha 197: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,013 - utils.logger - WARNING - Erro na linha 198: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,013 - utils.logger - WARNING - Erro na linha 199: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,014 - utils.logger - WARNING - Erro na linha 200: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,014 - utils.logger - WARNING - Erro na linha 201: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,014 - utils.logger - WARNING - Erro na linha 202: Error binding parameter 5: type 'NaTType' is not supported
+2025-09-28 01:23:22,115 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:22] "POST /importar-excel HTTP/1.1" 200 -
+2025-09-28 01:23:22,137 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 01:23:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-28 01:26:48,842 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\logger.py', reloading
+2025-09-28 01:26:48,939 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:26:49,539 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:26:49,549 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:26:49,552 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:26:49,578 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\logger.py', reloading
+2025-09-28 01:26:49,650 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 01:26:50,212 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-28 01:26:50,221 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 01:26:50,223 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-28 01:27:17,580 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\logger.py', reloading
+2025-09-28 01:27:17,657 - werkzeug - INFO -  * Restarting with stat

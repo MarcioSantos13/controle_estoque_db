@@ -1,0 +1,670 @@
+2025-09-26 00:37:10,334 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:37:10,423 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 00:37:10,424 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 00:37:10,427 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:37:11,032 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:37:11,042 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 00:37:11,046 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 00:37:14,833 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:14] "GET / HTTP/1.1" 200 -
+2025-09-26 00:37:14,940 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:14] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-26 00:37:28,325 - utils.logger - INFO - Localização do bem 01: Não definida
+2025-09-26 00:37:28,326 - utils.logger - INFO - Verificação do bem 01: Não encontrado
+2025-09-26 00:37:28,327 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:28] "POST / HTTP/1.1" 200 -
+2025-09-26 00:37:28,350 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:37:40,542 - utils.logger - INFO - Localização do bem 001: Sala da Direção 1
+2025-09-26 00:37:40,543 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 00:37:40,843 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:40] "POST / HTTP/1.1" 200 -
+2025-09-26 00:37:40,865 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:37:45,947 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:45] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 00:37:45,971 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:37:50,230 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:50] "GET / HTTP/1.1" 200 -
+2025-09-26 00:37:50,253 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:37:53,251 - utils.logger - INFO - Localização do bem 001: Sala da Direção 1
+2025-09-26 00:37:53,252 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 00:37:53,366 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:53] "POST / HTTP/1.1" 200 -
+2025-09-26 00:37:53,386 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:37:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:38:14,937 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 00:38:15,049 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:38:15] "POST / HTTP/1.1" 200 -
+2025-09-26 00:38:15,072 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:38:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:39:26,974 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 00:39:27,104 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:39:47,352 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:39:47,370 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 00:39:47,370 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 00:39:47,371 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:39:47,896 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:39:47,905 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 00:39:47,908 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 00:39:53,778 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:39:53] "GET / HTTP/1.1" 200 -
+2025-09-26 00:39:53,794 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:39:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:40:05,099 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 00:40:05,100 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 00:40:05,227 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:05] "POST / HTTP/1.1" 200 -
+2025-09-26 00:40:05,250 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:40:10,750 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:10] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 00:40:10,772 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:40:15,568 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:15] "GET / HTTP/1.1" 200 -
+2025-09-26 00:40:15,591 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:40:19,318 - utils.logger - INFO - Localização do bem 469703: Sala da Direção
+2025-09-26 00:40:19,318 - utils.logger - INFO - Verificação do bem 469703: Encontrado
+2025-09-26 00:40:19,435 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:19] "POST / HTTP/1.1" 200 -
+2025-09-26 00:40:19,457 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:40:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:41:37,044 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:41:37,067 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 00:41:37,067 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 00:41:37,068 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:41:37,596 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:41:37,605 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 00:41:37,608 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 00:41:40,590 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:41:40] "GET / HTTP/1.1" 200 -
+2025-09-26 00:41:40,729 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:41:40] "GET /static/style.css HTTP/1.1" 200 -
+2025-09-26 00:43:08,755 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\db_handler.py', reloading
+2025-09-26 00:43:08,834 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:43:25,860 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:43:25,884 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 00:43:25,885 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 00:43:25,886 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:43:26,418 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:43:26,426 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 00:43:26,429 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 00:43:29,325 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:29] "GET / HTTP/1.1" 200 -
+2025-09-26 00:43:29,354 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:43:33,645 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 00:43:33,645 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 00:43:33,770 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:33] "POST / HTTP/1.1" 200 -
+2025-09-26 00:43:33,791 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:43:37,924 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:37] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-26 00:43:37,943 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:43:42,264 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-26 00:43:42,265 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:42] "GET /relatorio-localidades?localidade=Sala+001&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 00:43:42,286 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 00:43:42] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 00:50:21,536 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 00:50:21,612 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:54:41,279 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:54:41,297 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 00:54:41,297 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 00:54:41,298 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 00:54:41,855 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 00:54:41,864 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 00:54:41,867 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 16:04:04,311 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 16:04:04,438 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 16:04:04,438 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 16:04:04,443 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 16:04:04,978 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 16:04:04,986 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 16:04:04,990 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 16:04:10,631 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:04:10] "GET / HTTP/1.1" 200 -
+2025-09-26 16:04:10,736 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:04:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 16:04:14,999 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 16:04:14,999 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 16:04:15,233 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:04:15] "POST / HTTP/1.1" 200 -
+2025-09-26 16:04:15,253 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:04:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 16:23:27,727 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 16:23:27,889 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 16:23:28,460 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 16:23:28,469 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 16:23:28,471 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 16:23:45,164 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:23:45] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-26 16:23:45,214 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:23:45] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-26 16:23:45,236 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:23:45] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-26 16:23:45,251 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 16:23:45] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=YY6mEFsNyvmQhRJ7XRNM HTTP/1.1" 200 -
+2025-09-26 16:24:15,073 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 16:24:15,173 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 16:24:15,759 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 16:24:15,768 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 16:24:15,771 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 17:37:54,350 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 17:37:54,368 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 17:37:54,368 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 17:37:54,370 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 17:37:54,925 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 17:37:54,936 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 17:37:54,938 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 17:37:57,017 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 17:37:57] "GET / HTTP/1.1" 200 -
+2025-09-26 17:37:57,034 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 17:37:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 17:38:04,689 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 17:38:04,689 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 17:38:04,826 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 17:38:04] "POST / HTTP/1.1" 200 -
+2025-09-26 17:38:04,849 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 17:38:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 17:38:20,422 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 17:38:20] "[33mPOST /api/bem/editar HTTP/1.1[0m" 404 -
+2025-09-26 20:37:39,161 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 20:37:39,162 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 20:37:39,280 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:37:39] "POST / HTTP/1.1" 200 -
+2025-09-26 20:37:39,333 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:37:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:37:48,932 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:37:48] "[33mPOST /api/bem/editar HTTP/1.1[0m" 404 -
+2025-09-26 20:38:18,438 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:38:18] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 20:38:18,472 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:38:18] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:38:22,126 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:38:22] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 20:38:22,149 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:38:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:51:21,711 - utils.logger - INFO - Localização do bem 001: Sala 001
+2025-09-26 20:51:21,711 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 20:51:21,872 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:21] "POST / HTTP/1.1" 200 -
+2025-09-26 20:51:21,893 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:51:34,001 - utils.logger - INFO - Bem 320381 atualizado com sucesso
+2025-09-26 20:51:34,002 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:34] "PUT /api/bens/320381 HTTP/1.1" 200 -
+2025-09-26 20:51:37,027 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:37] "GET / HTTP/1.1" 200 -
+2025-09-26 20:51:37,047 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:51:40,197 - utils.logger - INFO - Localização do bem 001: Sala 002
+2025-09-26 20:51:40,198 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 20:51:40,302 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:40] "POST / HTTP/1.1" 200 -
+2025-09-26 20:51:40,326 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:51:56,145 - utils.logger - INFO - Bem 320381 atualizado com sucesso
+2025-09-26 20:51:56,146 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:56] "PUT /api/bens/320381 HTTP/1.1" 200 -
+2025-09-26 20:51:59,339 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:59] "GET / HTTP/1.1" 200 -
+2025-09-26 20:51:59,364 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:51:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:01,709 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:01] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 20:52:01,736 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:08,321 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:08] "GET / HTTP/1.1" 200 -
+2025-09-26 20:52:08,351 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:11,597 - utils.logger - INFO - Localização do bem 001: Sala 002
+2025-09-26 20:52:11,597 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 20:52:11,722 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:11] "POST / HTTP/1.1" 200 -
+2025-09-26 20:52:11,745 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:18,942 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:18] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 20:52:18,967 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:18] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:21,846 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:21] "GET / HTTP/1.1" 200 -
+2025-09-26 20:52:21,871 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:37,970 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 20:52:38,083 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:38] "POST / HTTP/1.1" 200 -
+2025-09-26 20:52:38,101 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:43,303 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:43] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 20:52:43,333 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:51,303 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:51] "GET / HTTP/1.1" 200 -
+2025-09-26 20:52:51,325 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:53,894 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:53] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 20:52:53,915 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:55,544 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:55] "GET / HTTP/1.1" 200 -
+2025-09-26 20:52:55,568 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:52:57,222 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:57] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 20:52:57,245 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:52:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:53:00,543 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:00] "GET / HTTP/1.1" 200 -
+2025-09-26 20:53:00,568 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:53:03,889 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250926-205303.xlsx (9 registros)
+2025-09-26 20:53:03,903 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:03] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-09-26 20:53:19,587 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:19] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-26 20:53:19,619 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:19] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:53:34,585 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-26 20:53:34,586 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:34] "GET /relatorio-localidades?localidade=Sala+CTIC&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 20:53:34,610 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:53:40,328 - utils.logger - ERROR - Erro ao obter bens por localidade: no such column: observacoes
+2025-09-26 20:53:40,329 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:40] "GET /relatorio-localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 20:53:40,353 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:53:58,173 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:58] "GET / HTTP/1.1" 200 -
+2025-09-26 20:53:58,197 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:53:58] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 20:54:01,535 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20250926-205401.xlsx (193 registros)
+2025-09-26 20:54:01,545 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:54:01] "GET /exportar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 20:56:51,565 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:56:51] "GET /relatorio-localidades HTTP/1.1" 200 -
+2025-09-26 20:56:51,593 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 20:56:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:20:00,189 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 21:20:00,382 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 21:20:06,510 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 21:20:06,543 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 21:20:06,546 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 21:20:16,684 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 21:20:16,763 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 21:20:17,371 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 21:20:17,381 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 21:20:17,384 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 21:20:53,882 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 21:20:53,902 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 21:20:53,902 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 21:20:53,903 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 21:20:54,449 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 21:20:54,459 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 21:20:54,462 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 21:21:00,008 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:00] "GET / HTTP/1.1" 200 -
+2025-09-26 21:21:00,027 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:09,357 - utils.logger - INFO - Localização do bem 001: sala 13
+2025-09-26 21:21:09,357 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 21:21:09,675 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:09] "POST / HTTP/1.1" 200 -
+2025-09-26 21:21:09,694 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:09] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:18,562 - utils.logger - INFO - Bem 320381 atualizado com sucesso
+2025-09-26 21:21:18,563 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:18] "PUT /api/bens/320381 HTTP/1.1" 200 -
+2025-09-26 21:21:21,068 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:21] "GET / HTTP/1.1" 200 -
+2025-09-26 21:21:21,096 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:26,959 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:26] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 21:21:26,989 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:28,969 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:28] "GET / HTTP/1.1" 200 -
+2025-09-26 21:21:28,997 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:30,126 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:30] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 21:21:30,150 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:30] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:32,108 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:32] "GET / HTTP/1.1" 200 -
+2025-09-26 21:21:32,130 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:39,206 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:39] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 21:21:39,235 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:21:46,468 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:46] "GET /relatorio/localidades?localidade=Sala+da+Direção+1&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 21:21:46,491 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:21:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:22:26,220 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:26] "GET / HTTP/1.1" 200 -
+2025-09-26 21:22:26,247 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:22:32,387 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:32] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 21:22:32,420 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:22:44,610 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:44] "GET / HTTP/1.1" 200 -
+2025-09-26 21:22:44,644 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:22:49,250 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:49] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 21:22:49,276 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:49] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 21:22:54,694 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:54] "GET /relatorio/localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 21:22:54,721 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 21:22:54] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 22:52:24,912 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 22:52:24] "GET / HTTP/1.1" 200 -
+2025-09-26 22:52:24,941 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 22:52:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:05:06,824 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\utils\\excel_importer.py', reloading
+2025-09-26 23:05:06,948 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:34:29,379 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:34:29,437 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 23:34:29,437 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 23:34:29,438 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:34:29,993 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:34:30,003 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 23:34:30,005 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 23:34:33,722 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:33] "GET / HTTP/1.1" 200 -
+2025-09-26 23:34:33,765 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:34:37,295 - utils.logger - INFO - Localização do bem 001: sala 14
+2025-09-26 23:34:37,296 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 23:34:37,486 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:37] "POST / HTTP/1.1" 200 -
+2025-09-26 23:34:37,507 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:34:48,568 - utils.logger - INFO - Bem 320381 atualizado com sucesso
+2025-09-26 23:34:48,568 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:48] "PUT /api/bens/320381 HTTP/1.1" 200 -
+2025-09-26 23:34:51,528 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:51] "GET / HTTP/1.1" 200 -
+2025-09-26 23:34:51,551 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:34:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:35:01,862 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:01] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:35:01,892 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:35:32,097 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:32] "GET / HTTP/1.1" 200 -
+2025-09-26 23:35:32,127 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:35:36,111 - utils.logger - INFO - Localização do bem 469704: Sala da Direção
+2025-09-26 23:35:36,112 - utils.logger - INFO - Verificação do bem 469704: Encontrado
+2025-09-26 23:35:36,231 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:36] "POST / HTTP/1.1" 200 -
+2025-09-26 23:35:36,257 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:35:44,109 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:44] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:35:44,135 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:35:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:36:02,513 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização']
+2025-09-26 23:36:02,513 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-26 23:36:02,513 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-26 23:36:02,513 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-26 23:36:02,513 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-26 23:36:02,536 - utils.logger - INFO - Backup criado: relatorios/backup_controle_20250926_233602.db
+2025-09-26 23:36:02,537 - utils.logger - INFO - Iniciando importação do arquivo: temp\controle_patrimonial.xlsx
+2025-09-26 23:36:02,561 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização']
+2025-09-26 23:36:02,562 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-26 23:36:02,562 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-26 23:36:02,562 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-26 23:36:02,562 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-26 23:36:02,562 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'localizacao': 'LOCALIZAÇÃO', 'situacao': 'SITUAÇÃO', 'responsavel_bem': None, 'data_aquisicao': None, 'data_ultima_vistoria': None, 'vistoria_atual': None}
+2025-09-26 23:36:02,564 - utils.logger - INFO - Tabela limpa para nova importação
+2025-09-26 23:36:02,565 - utils.logger - WARNING - Erro na linha 2: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,565 - utils.logger - WARNING - Erro na linha 3: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,565 - utils.logger - WARNING - Erro na linha 4: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,566 - utils.logger - WARNING - Erro na linha 5: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,566 - utils.logger - WARNING - Erro na linha 6: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,566 - utils.logger - WARNING - Erro na linha 7: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,566 - utils.logger - WARNING - Erro na linha 8: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,567 - utils.logger - WARNING - Erro na linha 9: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,567 - utils.logger - WARNING - Erro na linha 10: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,567 - utils.logger - WARNING - Erro na linha 11: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,568 - utils.logger - WARNING - Erro na linha 12: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,568 - utils.logger - WARNING - Erro na linha 13: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,568 - utils.logger - WARNING - Erro na linha 14: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,569 - utils.logger - WARNING - Erro na linha 15: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,569 - utils.logger - WARNING - Erro na linha 16: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,569 - utils.logger - WARNING - Erro na linha 17: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,569 - utils.logger - WARNING - Erro na linha 18: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,570 - utils.logger - WARNING - Erro na linha 19: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,570 - utils.logger - WARNING - Erro na linha 20: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,570 - utils.logger - WARNING - Erro na linha 21: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,571 - utils.logger - WARNING - Erro na linha 22: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,571 - utils.logger - WARNING - Erro na linha 23: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,571 - utils.logger - WARNING - Erro na linha 24: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,572 - utils.logger - WARNING - Erro na linha 25: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,572 - utils.logger - WARNING - Erro na linha 26: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,572 - utils.logger - WARNING - Erro na linha 27: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,573 - utils.logger - WARNING - Erro na linha 28: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,573 - utils.logger - WARNING - Erro na linha 29: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,573 - utils.logger - WARNING - Erro na linha 30: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,573 - utils.logger - WARNING - Erro na linha 31: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,574 - utils.logger - WARNING - Erro na linha 32: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,574 - utils.logger - WARNING - Erro na linha 33: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,574 - utils.logger - WARNING - Erro na linha 34: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,575 - utils.logger - WARNING - Erro na linha 35: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,575 - utils.logger - WARNING - Erro na linha 36: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,575 - utils.logger - WARNING - Erro na linha 37: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,575 - utils.logger - WARNING - Erro na linha 38: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,576 - utils.logger - WARNING - Erro na linha 39: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,576 - utils.logger - WARNING - Erro na linha 40: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,576 - utils.logger - WARNING - Erro na linha 41: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,577 - utils.logger - WARNING - Erro na linha 42: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,577 - utils.logger - WARNING - Erro na linha 43: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,577 - utils.logger - WARNING - Erro na linha 44: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,578 - utils.logger - WARNING - Erro na linha 45: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,578 - utils.logger - WARNING - Erro na linha 46: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,578 - utils.logger - WARNING - Erro na linha 47: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,578 - utils.logger - WARNING - Erro na linha 48: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,579 - utils.logger - WARNING - Erro na linha 49: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,579 - utils.logger - WARNING - Erro na linha 50: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,579 - utils.logger - WARNING - Erro na linha 51: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,580 - utils.logger - WARNING - Erro na linha 52: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,580 - utils.logger - WARNING - Erro na linha 53: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,580 - utils.logger - WARNING - Erro na linha 54: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,580 - utils.logger - WARNING - Erro na linha 55: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,581 - utils.logger - WARNING - Erro na linha 56: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,581 - utils.logger - WARNING - Erro na linha 57: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,581 - utils.logger - WARNING - Erro na linha 58: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,582 - utils.logger - WARNING - Erro na linha 59: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,582 - utils.logger - WARNING - Erro na linha 60: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,583 - utils.logger - WARNING - Erro na linha 61: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,583 - utils.logger - WARNING - Erro na linha 62: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,583 - utils.logger - WARNING - Erro na linha 63: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,583 - utils.logger - WARNING - Erro na linha 64: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,584 - utils.logger - WARNING - Erro na linha 65: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,584 - utils.logger - WARNING - Erro na linha 66: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,585 - utils.logger - WARNING - Erro na linha 67: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,585 - utils.logger - WARNING - Erro na linha 68: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,585 - utils.logger - WARNING - Erro na linha 69: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,586 - utils.logger - WARNING - Erro na linha 70: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,586 - utils.logger - WARNING - Erro na linha 71: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,586 - utils.logger - WARNING - Erro na linha 72: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,586 - utils.logger - WARNING - Erro na linha 73: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,586 - utils.logger - WARNING - Erro na linha 74: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,587 - utils.logger - WARNING - Erro na linha 75: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,587 - utils.logger - WARNING - Erro na linha 76: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,587 - utils.logger - WARNING - Erro na linha 77: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,587 - utils.logger - WARNING - Erro na linha 78: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,588 - utils.logger - WARNING - Erro na linha 79: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,588 - utils.logger - WARNING - Erro na linha 80: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,589 - utils.logger - WARNING - Erro na linha 81: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,589 - utils.logger - WARNING - Erro na linha 82: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,589 - utils.logger - WARNING - Erro na linha 83: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,590 - utils.logger - WARNING - Erro na linha 84: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,590 - utils.logger - WARNING - Erro na linha 85: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,590 - utils.logger - WARNING - Erro na linha 86: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,591 - utils.logger - WARNING - Erro na linha 87: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,591 - utils.logger - WARNING - Erro na linha 88: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,591 - utils.logger - WARNING - Erro na linha 89: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,592 - utils.logger - WARNING - Erro na linha 90: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,592 - utils.logger - WARNING - Erro na linha 91: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,592 - utils.logger - WARNING - Erro na linha 92: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,593 - utils.logger - WARNING - Erro na linha 93: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,593 - utils.logger - WARNING - Erro na linha 94: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,593 - utils.logger - WARNING - Erro na linha 95: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,593 - utils.logger - WARNING - Erro na linha 96: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,594 - utils.logger - WARNING - Erro na linha 97: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,594 - utils.logger - WARNING - Erro na linha 98: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,594 - utils.logger - WARNING - Erro na linha 99: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,594 - utils.logger - WARNING - Erro na linha 100: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,595 - utils.logger - WARNING - Erro na linha 101: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,595 - utils.logger - WARNING - Erro na linha 102: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,595 - utils.logger - WARNING - Erro na linha 103: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,596 - utils.logger - WARNING - Erro na linha 104: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,596 - utils.logger - WARNING - Erro na linha 105: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,596 - utils.logger - WARNING - Erro na linha 106: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,597 - utils.logger - WARNING - Erro na linha 107: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,597 - utils.logger - WARNING - Erro na linha 108: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,598 - utils.logger - WARNING - Erro na linha 109: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,598 - utils.logger - WARNING - Erro na linha 110: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,598 - utils.logger - WARNING - Erro na linha 111: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,598 - utils.logger - WARNING - Erro na linha 112: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,599 - utils.logger - WARNING - Erro na linha 113: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,599 - utils.logger - WARNING - Erro na linha 114: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,599 - utils.logger - WARNING - Erro na linha 115: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,600 - utils.logger - WARNING - Erro na linha 116: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,600 - utils.logger - WARNING - Erro na linha 117: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,600 - utils.logger - WARNING - Erro na linha 118: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,600 - utils.logger - WARNING - Erro na linha 119: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,601 - utils.logger - WARNING - Erro na linha 120: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,601 - utils.logger - WARNING - Erro na linha 121: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,601 - utils.logger - WARNING - Erro na linha 122: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,601 - utils.logger - WARNING - Erro na linha 123: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,602 - utils.logger - WARNING - Erro na linha 124: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,602 - utils.logger - WARNING - Erro na linha 125: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,602 - utils.logger - WARNING - Erro na linha 126: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,603 - utils.logger - WARNING - Erro na linha 127: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,603 - utils.logger - WARNING - Erro na linha 128: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,603 - utils.logger - WARNING - Erro na linha 129: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,603 - utils.logger - WARNING - Erro na linha 130: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,604 - utils.logger - WARNING - Erro na linha 131: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,604 - utils.logger - WARNING - Erro na linha 132: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,604 - utils.logger - WARNING - Erro na linha 133: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,604 - utils.logger - WARNING - Erro na linha 134: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,605 - utils.logger - WARNING - Erro na linha 135: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,605 - utils.logger - WARNING - Erro na linha 136: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,605 - utils.logger - WARNING - Erro na linha 137: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,606 - utils.logger - WARNING - Erro na linha 138: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,606 - utils.logger - WARNING - Erro na linha 139: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,606 - utils.logger - WARNING - Erro na linha 140: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,606 - utils.logger - WARNING - Erro na linha 141: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,607 - utils.logger - WARNING - Erro na linha 142: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,607 - utils.logger - WARNING - Erro na linha 143: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,607 - utils.logger - WARNING - Erro na linha 144: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,608 - utils.logger - WARNING - Erro na linha 145: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,608 - utils.logger - WARNING - Erro na linha 146: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,608 - utils.logger - WARNING - Erro na linha 147: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,608 - utils.logger - WARNING - Erro na linha 148: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,609 - utils.logger - WARNING - Erro na linha 149: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,609 - utils.logger - WARNING - Erro na linha 150: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,609 - utils.logger - WARNING - Erro na linha 151: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,610 - utils.logger - WARNING - Erro na linha 152: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,610 - utils.logger - WARNING - Erro na linha 153: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,610 - utils.logger - WARNING - Erro na linha 154: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,611 - utils.logger - WARNING - Erro na linha 155: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,611 - utils.logger - WARNING - Erro na linha 156: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,612 - utils.logger - WARNING - Erro na linha 157: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,612 - utils.logger - WARNING - Erro na linha 158: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,612 - utils.logger - WARNING - Erro na linha 159: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,612 - utils.logger - WARNING - Erro na linha 160: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,613 - utils.logger - WARNING - Erro na linha 161: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,613 - utils.logger - WARNING - Erro na linha 162: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,613 - utils.logger - WARNING - Erro na linha 163: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,614 - utils.logger - WARNING - Erro na linha 164: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,614 - utils.logger - WARNING - Erro na linha 165: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,614 - utils.logger - WARNING - Erro na linha 166: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,614 - utils.logger - WARNING - Erro na linha 167: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,615 - utils.logger - WARNING - Erro na linha 168: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,615 - utils.logger - WARNING - Erro na linha 169: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,615 - utils.logger - WARNING - Erro na linha 170: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,615 - utils.logger - WARNING - Erro na linha 171: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,616 - utils.logger - WARNING - Erro na linha 172: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,616 - utils.logger - WARNING - Erro na linha 173: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,616 - utils.logger - WARNING - Erro na linha 174: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,617 - utils.logger - WARNING - Erro na linha 175: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,617 - utils.logger - WARNING - Erro na linha 176: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,617 - utils.logger - WARNING - Erro na linha 177: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,617 - utils.logger - WARNING - Erro na linha 178: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,618 - utils.logger - WARNING - Erro na linha 179: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,618 - utils.logger - WARNING - Erro na linha 180: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,618 - utils.logger - WARNING - Erro na linha 181: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,619 - utils.logger - WARNING - Erro na linha 182: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,619 - utils.logger - WARNING - Erro na linha 183: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,619 - utils.logger - WARNING - Erro na linha 184: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,619 - utils.logger - WARNING - Erro na linha 185: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,620 - utils.logger - WARNING - Erro na linha 186: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,620 - utils.logger - WARNING - Erro na linha 187: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,620 - utils.logger - WARNING - Erro na linha 188: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,620 - utils.logger - WARNING - Erro na linha 189: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,621 - utils.logger - WARNING - Erro na linha 190: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,621 - utils.logger - WARNING - Erro na linha 191: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,621 - utils.logger - WARNING - Erro na linha 192: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,621 - utils.logger - WARNING - Erro na linha 193: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,622 - utils.logger - WARNING - Erro na linha 194: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,622 - utils.logger - WARNING - Erro na linha 195: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,622 - utils.logger - WARNING - Erro na linha 196: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,623 - utils.logger - WARNING - Erro na linha 197: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,623 - utils.logger - WARNING - Erro na linha 198: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,623 - utils.logger - WARNING - Erro na linha 199: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,623 - utils.logger - WARNING - Erro na linha 200: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,624 - utils.logger - WARNING - Erro na linha 201: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,624 - utils.logger - WARNING - Erro na linha 202: table bens has no column named responsavel_bem
+2025-09-26 23:36:02,731 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:02] "POST /importar-excel HTTP/1.1" 200 -
+2025-09-26 23:36:02,767 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:02] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:36:10,653 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:10] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:36:10,685 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:36:21,111 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:21] "GET / HTTP/1.1" 200 -
+2025-09-26 23:36:21,134 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:36:21] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:38:27,233 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:38:27,253 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 23:38:27,253 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 23:38:27,254 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:38:27,805 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:38:27,815 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 23:38:27,818 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 23:38:29,477 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:29] "GET / HTTP/1.1" 200 -
+2025-09-26 23:38:29,499 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:38:50,025 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização']
+2025-09-26 23:38:50,025 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-26 23:38:50,026 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-26 23:38:50,026 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-26 23:38:50,026 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-26 23:38:50,070 - utils.logger - INFO - Backup criado: relatorios/backup_controle_20250926_233850.db
+2025-09-26 23:38:50,070 - utils.logger - INFO - Iniciando importação do arquivo: temp\controle_patrimonial.xlsx
+2025-09-26 23:38:50,100 - utils.logger - INFO - Colunas encontradas no Excel: ['nome', 'numero do bem', 'situação', 'localização']
+2025-09-26 23:38:50,100 - utils.logger - INFO - Coluna 'numero' detectada como: 'NUMERO DO BEM'
+2025-09-26 23:38:50,100 - utils.logger - INFO - Coluna 'nome' detectada como: 'NOME '
+2025-09-26 23:38:50,100 - utils.logger - INFO - Coluna 'localizacao' detectada como: 'LOCALIZAÇÃO'
+2025-09-26 23:38:50,101 - utils.logger - INFO - Coluna 'situacao' detectada como: 'SITUAÇÃO'
+2025-09-26 23:38:50,101 - utils.logger - INFO - Mapeamento de colunas detectado: {'numero': 'NUMERO DO BEM', 'nome': 'NOME ', 'localizacao': 'LOCALIZAÇÃO', 'situacao': 'SITUAÇÃO'}
+2025-09-26 23:38:50,102 - utils.logger - INFO - Tabela limpa para nova importação
+2025-09-26 23:38:50,118 - utils.logger - INFO - Registros processados: 100
+2025-09-26 23:38:50,130 - utils.logger - INFO - Registros processados: 200
+2025-09-26 23:38:50,290 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:50] "POST /importar-excel HTTP/1.1" 200 -
+2025-09-26 23:38:50,328 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:38:59,655 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:59] "[35m[1mGET /novo-bem HTTP/1.1[0m" 500 -
+2025-09-26 23:38:59,687 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:59] "GET /novo-bem?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-26 23:38:59,695 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:59] "GET /novo-bem?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-26 23:38:59,709 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:59] "GET /novo-bem?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-26 23:38:59,709 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:38:59] "GET /novo-bem?__debugger__=yes&cmd=resource&f=console.png&s=xVibdTtQf7Y5TFS9XrkA HTTP/1.1" 200 -
+2025-09-26 23:39:16,895 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:16] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 23:39:16,918 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:39:22,304 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:22] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:39:22,327 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:22] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:39:33,167 - utils.logger - INFO - Localização do bem 367248: Sala da Direção
+2025-09-26 23:39:33,167 - utils.logger - INFO - Verificação do bem 367248: Encontrado
+2025-09-26 23:39:33,305 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:33] "POST / HTTP/1.1" 200 -
+2025-09-26 23:39:33,326 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:39:44,450 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:44] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:39:44,472 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:39:50,818 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:50] "GET / HTTP/1.1" 200 -
+2025-09-26 23:39:50,846 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:39:55,031 - utils.logger - INFO - Localização do bem 404500: Sala da Direção
+2025-09-26 23:39:55,032 - utils.logger - INFO - Verificação do bem 404500: Encontrado
+2025-09-26 23:39:55,163 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:55] "POST / HTTP/1.1" 200 -
+2025-09-26 23:39:55,188 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:39:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:04,555 - utils.logger - INFO - Bem 320383 atualizado com sucesso
+2025-09-26 23:40:04,555 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:04] "PUT /api/bens/320383 HTTP/1.1" 200 -
+2025-09-26 23:40:07,525 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:07] "GET / HTTP/1.1" 200 -
+2025-09-26 23:40:07,546 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:11,229 - utils.logger - INFO - Localização do bem 404500: Sala da Direção 1
+2025-09-26 23:40:11,230 - utils.logger - INFO - Verificação do bem 404500: Encontrado
+2025-09-26 23:40:11,365 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:11] "POST / HTTP/1.1" 200 -
+2025-09-26 23:40:11,393 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:21,765 - utils.logger - INFO - Bem 320383 atualizado com sucesso
+2025-09-26 23:40:21,766 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:21] "PUT /api/bens/320383 HTTP/1.1" 200 -
+2025-09-26 23:40:24,016 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:24] "GET / HTTP/1.1" 200 -
+2025-09-26 23:40:24,040 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:26,242 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:26] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:40:26,268 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:30,181 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:30] "GET /visualizar/nao-localizados?pagina=1&por_pagina=50 HTTP/1.1" 200 -
+2025-09-26 23:40:30,207 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:30] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:33,417 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:33] "GET /visualizar/nao-localizados?pagina=2&por_pagina=50 HTTP/1.1" 200 -
+2025-09-26 23:40:33,441 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:37,087 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:37] "GET / HTTP/1.1" 200 -
+2025-09-26 23:40:37,116 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:39,558 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:39] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 23:40:39,580 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:40:44,645 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:44] "GET /relatorio/localidades?localidade=Sala+da+Direção+12&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 23:40:44,670 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:40:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:41:15,897 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:15] "GET /relatorio/localidades?localidade=Sala+da+Direção&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 23:41:15,923 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:41:37,427 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:37] "GET / HTTP/1.1" 200 -
+2025-09-26 23:41:37,456 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:41:42,226 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:42] "[35m[1mGET /novo-bem HTTP/1.1[0m" 500 -
+2025-09-26 23:41:42,253 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:42] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:41:42,253 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:42] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-26 23:41:42,264 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:41:42] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=console.png&s=xVibdTtQf7Y5TFS9XrkA HTTP/1.1[0m" 304 -
+2025-09-26 23:42:04,974 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:04] "GET /visualizar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:42:04,997 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:04] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:42:10,535 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250926-234210.xlsx (2 registros)
+2025-09-26 23:42:10,546 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:10] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-09-26 23:42:26,529 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250926-234226.xlsx (2 registros)
+2025-09-26 23:42:26,542 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:26] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-09-26 23:42:38,288 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_nao_localizados_20250926-234238.xlsx (199 registros)
+2025-09-26 23:42:38,297 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:38] "GET /exportar/nao-localizados HTTP/1.1" 200 -
+2025-09-26 23:42:55,719 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:55] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 23:42:55,747 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:42:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:43:44,480 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:43:44] "GET /sair HTTP/1.1" 200 -
+2025-09-26 23:43:44,505 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:43:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:43:56,097 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:43:56] "GET / HTTP/1.1" 200 -
+2025-09-26 23:43:56,128 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:43:56] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:44:01,788 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:44:01] "[35m[1mGET /novo-bem HTTP/1.1[0m" 500 -
+2025-09-26 23:44:01,811 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:44:01] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:44:01,812 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:44:01] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-26 23:44:01,821 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:44:01] "[36mGET /novo-bem?__debugger__=yes&cmd=resource&f=console.png&s=xVibdTtQf7Y5TFS9XrkA HTTP/1.1[0m" 304 -
+2025-09-26 23:50:35,878 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:50:35,896 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 23:50:35,897 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 23:50:35,898 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:50:36,442 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:50:36,450 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 23:50:36,454 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 23:50:47,055 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:50:47] "GET /novo-bem HTTP/1.1" 200 -
+2025-09-26 23:50:47,078 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:50:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:51:25,169 - utils.logger - INFO - Novo bem criado: 002 - Computador Dell - TESTE PARA CRIAR CADASTRO 02
+2025-09-26 23:51:25,170 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:25] "[32mPOST /api/bens HTTP/1.1[0m" 302 -
+2025-09-26 23:51:25,221 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:51:32,814 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:32] "GET /visualizar/localizados HTTP/1.1" 200 -
+2025-09-26 23:51:32,835 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:51:39,802 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:39] "GET / HTTP/1.1" 200 -
+2025-09-26 23:51:39,827 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:39] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:51:55,662 - utils.logger - INFO - Localização do bem 002: Sala da Direção
+2025-09-26 23:51:55,663 - utils.logger - INFO - Verificação do bem 002: Encontrado
+2025-09-26 23:51:55,805 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:55] "POST / HTTP/1.1" 200 -
+2025-09-26 23:51:55,828 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:51:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:52:11,336 - utils.logger - INFO - Bem 320583 atualizado com sucesso
+2025-09-26 23:52:11,337 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:11] "PUT /api/bens/320583 HTTP/1.1" 200 -
+2025-09-26 23:52:13,534 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:13] "GET / HTTP/1.1" 200 -
+2025-09-26 23:52:13,553 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:52:23,217 - utils.logger - INFO - Relatório exportado: D:\controle_estoque_db\relatorios\bens_localizados_20250926-235223.xlsx (3 registros)
+2025-09-26 23:52:23,231 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:23] "GET /exportar/localizados HTTP/1.1" 200 -
+2025-09-26 23:52:42,023 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:42] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 23:52:42,048 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:42] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:52:47,257 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:47] "GET /relatorio/localidades?localidade=Sala+da+Direção+12&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 23:52:47,278 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:52:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:53:14,480 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:53:14] "GET / HTTP/1.1" 200 -
+2025-09-26 23:53:14,504 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:53:14] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:54:59,861 - werkzeug - INFO -  * Detected change in 'D:\\controle_estoque_db\\app.py', reloading
+2025-09-26 23:54:59,938 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:55:00,520 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:55:00,529 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 23:55:00,532 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 23:55:28,514 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:55:28,533 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-26 23:55:28,534 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-26 23:55:28,535 - werkzeug - INFO -  * Restarting with stat
+2025-09-26 23:55:29,084 - utils.logger - INFO - Iniciando aplicação Flask
+2025-09-26 23:55:29,094 - werkzeug - WARNING -  * Debugger is active!
+2025-09-26 23:55:29,097 - werkzeug - INFO -  * Debugger PIN: 425-947-988
+2025-09-26 23:55:32,169 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:32] "GET / HTTP/1.1" 200 -
+2025-09-26 23:55:32,188 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:55:40,792 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:40] "GET /relatorio/localidades HTTP/1.1" 200 -
+2025-09-26 23:55:40,816 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:55:43,774 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:43] "GET /relatorio/localidades?localidade=Sala+da+Direção+12&por_pagina=20 HTTP/1.1" 200 -
+2025-09-26 23:55:43,792 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:55:50,137 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:50] "GET / HTTP/1.1" 200 -
+2025-09-26 23:55:50,167 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:55:52,454 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:52] "GET /novo-bem HTTP/1.1" 200 -
+2025-09-26 23:55:52,478 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:55:52] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:56:26,056 - utils.logger - INFO - Novo bem criado: 001 - COMPUTADOR DELL - VERSÃO TESTE
+2025-09-26 23:56:26,057 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:56:26] "[32mPOST /api/bens HTTP/1.1[0m" 302 -
+2025-09-26 23:56:26,095 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:56:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-09-26 23:56:29,175 - utils.logger - INFO - Localização do bem 001: Sala da Direção
+2025-09-26 23:56:29,175 - utils.logger - INFO - Verificação do bem 001: Encontrado
+2025-09-26 23:56:29,275 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:56:29] "POST / HTTP/1.1" 200 -
+2025-09-26 23:56:29,307 - werkzeug - INFO - 127.0.0.1 - - [26/Sep/2025 23:56:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
